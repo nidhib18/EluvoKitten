@@ -8,21 +8,17 @@
   "color-primary-700": "#AC4C3A",
   "color-primary-800": "#8B2D25",
   "color-primary-900": "#731816",
-  
   "color-primary-default": "$color-primary-500",
   "color-primary-hover": "$color-primary-400",
   "color-primary-focus": "$color-primary-600",
   "color-primary-active": "$color-primary-600",
   "color-primary-disabled": "$color-basic-transparent-300",
-  
   "text-basic-color": "$color-basic-100",
-  
+  "text-control-color": "$color-primary-500",
   "background-basic-color-1": "$color-primary-500",
   "background-basic-color-2": "$color-primary-500",
   "background-basic-color-3": "$color-primary-500",
   "background-basic-color-4": "$color-primary-500",
-  
-  
   "color-primary-transparent-100": "rgba(240, 152, 116, 0.08)",
   "color-primary-transparent-200": "rgba(240, 152, 116, 0.16)",
   "color-primary-transparent-300": "rgba(240, 152, 116, 0.24)",
