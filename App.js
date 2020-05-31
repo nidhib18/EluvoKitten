@@ -5,9 +5,6 @@ import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { default as theme } from './theme.json'
 import { AppNavigator } from './src/screens/navigation.component';
 
-
-
-
 export default () => (
   <>
     <IconRegistry icons={EvaIconsPack}/>
