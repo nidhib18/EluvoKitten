@@ -50,7 +50,8 @@ export const WelcomeScreen = ({ navigation }) => {
                 style={styles.loginBtnContainer}
                 onPress={navigateDetails}>Login</Button>
 
-            <Button style={styles.signBtnContainer}>Sign Up</Button>
+            <Button style={styles.signBtnContainer}
+                    onPress={navigateDetails}>Create an account</Button>
 
 
         </Layout>
