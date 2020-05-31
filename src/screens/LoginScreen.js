@@ -7,7 +7,7 @@ const BackIcon = (props) => (
   <Icon {...props} name='arrow-back' />
 );
 
-export const DetailsScreen = ({ navigation }) => {
+export const LoginScreen = ({ navigation }) => {
 
   const navigateBack = () => {
     navigation.goBack();

@@ -3,7 +3,7 @@ import * as eva from '@eva-design/eva';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { default as theme } from './theme.json'
-import { AppNavigator } from './src/screens/navigation.component';
+import { AppNavigator } from './src/screens/NavigationComponent';
 
 export default () => (
   <>
