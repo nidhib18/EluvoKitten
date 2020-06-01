@@ -4,11 +4,7 @@ import { Button, Divider, Layout, TopNavigation } from '@ui-kitten/components';
 import { ImageStyles } from "./ImageStyles";
 const { width, height } = Dimensions.get('window');
 
-export const WelcomeScreen = ({ navigation }) => {
-
-    const navigateDetails = () => {
-        navigation.navigate('Login');
-    };
+export const WelcomeScreen = ({ navigation }) =>{
 
     return (
         <Layout style={ImageStyles.mainContainer}>
@@ -48,11 +44,10 @@ export const WelcomeScreen = ({ navigation }) => {
 
             <Button
                 style={styles.loginBtnContainer}
-                onPress={navigateDetails}>Login</Button>
+                onPress={()=>navigation.navigate('Login')}>Login</Button>
 
             <Button style={styles.signBtnContainer}
-                    onPress={navigateDetails}>Create an account</Button>
-
+                    onPress={()=>navigation.navigate('SignUp')}>Create an account</Button>
 
         </Layout>
 

@@ -24,11 +24,6 @@ export const LoginScreen = ({ navigation }) => {
         <Divider />
 
         <Image
-            style={ImageStyles.logoContainer}
-            source={require('../../assets/logo.png')}
-        />
-
-        <Image
             style={ImageStyles.bubbleContainer}
             source={require('../../assets/bubble.png')}
         />
@@ -43,15 +38,6 @@ export const LoginScreen = ({ navigation }) => {
             source={require('../../assets/dots.png')}
         />
 
-        <Image
-            style={ImageStyles.eluvoContainer}
-            source={require('../../assets/eluvo.png')}
-        />
-
-        <Image
-            style={ImageStyles.eluvoTextContainer}
-            source={require('../../assets/eluvotext.png')}
-        />
     </Layout>
     
   );
