@@ -27,12 +27,15 @@ export const LoginScreen = ({ navigation }) => {
   };
 
   const AlertIcon = (props) => (
-    <Icon {...props} name='alert-circle-outline' />
+    <Icon {...props} name='alert-circle-outline'  />
   );
 
   const renderIcon = (props) => (
     <TouchableWithoutFeedback onPress={toggleSecureEntry}>
-      <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'} />
+      <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'}
+        fill='#000000'
+     />
+      
     </TouchableWithoutFeedback>
   );
 
@@ -81,6 +84,7 @@ export const LoginScreen = ({ navigation }) => {
         color={'black'}
         height={28}
         alignItems={'center'}
+        
 
       />
 
@@ -103,13 +107,9 @@ export const LoginScreen = ({ navigation }) => {
         onPress={() => navigation.navigate('Home')}>Submit</Button>
 
       <Button style={LoginStyles.forgotBtnContainer}
-        
         appearance='ghost'
-        status='warning' 
+        status='warning'
         onPress={() => navigation.navigate('Forgot')}>forgot password</Button>
-
-
-
 
     </Layout>
 

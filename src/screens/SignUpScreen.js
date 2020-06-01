@@ -34,7 +34,8 @@ export const SignUpScreen = ({ navigation }) => {
 
   const renderIcon = (props) => (
     <TouchableWithoutFeedback onPress={toggleSecureEntry}>
-      <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'} />
+      <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'}
+      fill='#000000' />
     </TouchableWithoutFeedback>
   );
   return (

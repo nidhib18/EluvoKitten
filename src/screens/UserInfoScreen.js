@@ -24,7 +24,8 @@ export const UserInfoScreen = ({ navigation }) => {
     const [nameValue, setNameValue] = React.useState('');
     const [lnameValue, setLnameValue] = React.useState('');
     const [date, setDate] = React.useState(new Date());
-
+    
+   
 
     return (
         <Layout style={ImageStyles.mainContainer}>
@@ -81,6 +82,7 @@ export const UserInfoScreen = ({ navigation }) => {
                 date={date}
                 onSelect={nextDate => setDate(nextDate)}
                 accessoryRight={CalendarIcon}
+
             />
 
             <Button style={UserInfoStyles.submitBtnContainer}

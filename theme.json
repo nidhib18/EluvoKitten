@@ -17,6 +17,8 @@
   
   "text-basic-color": "$color-basic-100",
   "text-control-color": "$color-primary-500",
+  "text-hint-color":"$color-basic-100",
+  "icon-hint-color":"$color-basic-700",
   
   "background-basic-color-1": "$color-primary-500",
   "background-basic-color-2": "$color-primary-500",

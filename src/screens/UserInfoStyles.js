@@ -53,5 +53,9 @@ export const UserInfoStyles = {
         alignItems: 'center',
 
 
-    }
+    },
+    label: {
+        color:'#FFFFFF',
+        fontSize: 18,
+      },
 }
