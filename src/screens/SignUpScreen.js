@@ -1,9 +1,9 @@
 import React from 'react';
-import { SafeAreaView, View, Image } from 'react-native';
-import { Divider, Icon, Layout, Text, TopNavigation, TopNavigationAction, Input, props } from '@ui-kitten/components';
+import { SafeAreaView, View, Image, KeyboardAvoidingView, ScrollView } from 'react-native';
+import { Divider, Icon, Layout, Text, TopNavigation, TopNavigationAction, Input, props, Button } from '@ui-kitten/components';
 import { ImageStyles } from "./ImageStyles";
 import { SignUpStyles } from './SignUpStyles';
-import { TouchableWithoutFeedback } from 'react-native';
+import { TouchableWithoutFeedback, Keyboard } from 'react-native';
 
 const BackIcon = (props) => (
   <Icon {...props} name='arrow-back' />
@@ -38,6 +38,7 @@ export const SignUpScreen = ({ navigation }) => {
     </TouchableWithoutFeedback>
   );
   return (
+
     <Layout style={ImageStyles.mainContainer}>
 
       <TopNavigation position='absolute' />
@@ -115,11 +116,21 @@ export const SignUpScreen = ({ navigation }) => {
         height={28}
       />
 
+      <Button style={SignUpStyles.nextBtnContainer}
+        appearance='outline'
+        status='warning'
+        onPress={() => navigation.navigate('UserInfo')}>Next</Button>
+
+     
+
 
 
 
 
     </Layout>
+
+
+
 
   );
 };

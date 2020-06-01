@@ -19,8 +19,8 @@ export const SignUpStyles = {
     backgroundColor: 'white',
     top: 130,
     borderRadius: 24,
-    left: 18,
-    color: 'black'
+    color: 'black',
+    alignLabel:'left',
   },
 
 
@@ -31,7 +31,7 @@ export const SignUpStyles = {
     backgroundColor: 'white',
     top: 230,
     borderRadius: 25,
-    left: 18,
+    
   },
 
   passwordInput: {
@@ -41,8 +41,8 @@ export const SignUpStyles = {
     backgroundColor: 'white',
     top: 330,
     borderRadius: 24,
-    left: 18,
     
+
   },
 
   passwordConfirmInput: {
@@ -52,17 +52,24 @@ export const SignUpStyles = {
     backgroundColor: 'white',
     top: 430,
     borderRadius: 24,
-    left: 18,
-    color: 'black'
+  
+    color: 'black',
+    
+
   },
 
+  nextBtnContainer:
+  {
 
-
-
-
-
-
-
+    position: 'absolute',
+    width: width - 55,
+    height: 45,
+    borderRadius: 24,
+    top: 530,
+    alignItems:'center',
+    
+    
+  },
 
 }
 
