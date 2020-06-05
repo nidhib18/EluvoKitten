@@ -21,6 +21,15 @@ export const ForgotStyles = {
 
     },
 
+    passwordInput: {
+        position: 'absolute',
+        width: width - 55,
+        height: 80,
+        backgroundColor: 'white',
+        top: 570,
+        borderRadius: 25,
+
+    },
     submitBtnContainer:
     {
 
@@ -28,7 +37,7 @@ export const ForgotStyles = {
         width: width - 55,
         height: 45,
         borderRadius: 24,
-        top: 580,
+        top: 660,
         alignItems: 'center',
 
 

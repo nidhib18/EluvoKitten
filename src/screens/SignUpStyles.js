@@ -9,18 +9,63 @@ export const SignUpStyles = {
     top: 50,
     alignItems: 'center'
   },
+ 
+  container:{
+    flex:1
+  },
+  modal:{
+    position: 'absolute',
+    width: width - 55,
+    height: 80,
+    backgroundColor: 'white',
+    borderRadius: 24,
+    top: 390,
+  },
 
+  submit:{
 
+    position: 'absolute',
+    width: width - 55,
+    height: 45,
+    borderRadius: 24,
+    top: 440,
+    alignItems: 'center',
+  
+  },
+  scrollView: {
+   // flexGrow: 1,
+    backgroundColor:'#f094',
+    
+    //flex:1,
+   // marginBottom:50, 
+     //paddingBottom:120
+   // height:'100%',
+    //alignSelf:'stretch'
+
+    // position:'absolute',
+    // left:0,
+    // right:0,
+    // paddingBottom: 200
+    // paddingLeft:20,
+    // paddingRight:20,
+    // top:0,
+    // bottom:0
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 
   usernameInput: {
     position: 'absolute',
     width: width - 55,
     height: 80,
     backgroundColor: 'white',
-    top: 130,
+    top: 250,
     borderRadius: 24,
-    color: 'black',
-    alignLabel:'left',
+    
   },
 
 
@@ -29,8 +74,10 @@ export const SignUpStyles = {
     width: width - 55,
     height: 80,
     backgroundColor: 'white',
-    top: 230,
-    borderRadius: 25,
+    top: 320,
+    borderRadius: 24,
+  
+    color: 'black',
     
   },
 
@@ -39,8 +86,9 @@ export const SignUpStyles = {
     width: width - 55,
     height: 80,
     backgroundColor: 'white',
-    top: 330,
     borderRadius: 24,
+    top: 390,
+   
     
 
   },
@@ -50,26 +98,25 @@ export const SignUpStyles = {
     width: width - 55,
     height: 80,
     backgroundColor: 'white',
-    top: 430,
+    top: 450,
     borderRadius: 24,
-  
-    color: 'black',
     
 
   },
 
-  nextBtnContainer:
-  {
 
-    position: 'absolute',
-    width: width - 55,
-    height: 45,
-    borderRadius: 24,
-    top: 530,
-    alignItems:'center',
+  // nextBtnContainer:
+  // {
+
+  //   position: 'absolute',
+  //   width: width - 55,
+  //   height: 45,
+  //   borderRadius: 24,
+  //   top: 530,
+  //   alignItems:'center',
     
     
-  },
+  // },
 
 }
 

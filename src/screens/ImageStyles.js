@@ -3,9 +3,11 @@
 export const ImageStyles = {
 
   mainContainer: {
-    flex: 1,
+    //flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor:'#ff0',
+    
   },
 
   logoContainer: {

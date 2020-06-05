@@ -31,7 +31,6 @@ export const LoginStyles = {
         height: 45,
         borderRadius: 24,
         top: 650,
-        
         alignItems: 'center',
 
 

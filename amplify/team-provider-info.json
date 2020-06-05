@@ -1,0 +1,20 @@
+{
+    "windows": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-eluvokitten-windows-115441-authRole",
+            "UnauthRoleArn": "arn:aws:iam::235481271222:role/amplify-eluvokitten-windows-115441-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::235481271222:role/amplify-eluvokitten-windows-115441-authRole",
+            "Region": "ap-southeast-2",
+            "DeploymentBucketName": "amplify-eluvokitten-windows-115441-deployment",
+            "UnauthRoleName": "amplify-eluvokitten-windows-115441-unauthRole",
+            "StackName": "amplify-eluvokitten-windows-115441",
+            "StackId": "arn:aws:cloudformation:ap-southeast-2:235481271222:stack/amplify-eluvokitten-windows-115441/42f2d6f0-a463-11ea-ae97-0230a916724e",
+            "AmplifyAppId": "d1l0pwufy43x7s"
+        },
+        "categories": {
+            "auth": {
+                "eluvokitten4b06147b": {}
+            }
+        }
+    }
+}

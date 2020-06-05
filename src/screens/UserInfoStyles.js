@@ -16,10 +16,10 @@ export const UserInfoStyles = {
         width: width - 55,
         height: 80,
         backgroundColor: 'white',
-        top: 150,
+        top: 110,
         borderRadius: 24,
         color: 'black',
-
+        alignLabel:'left',
     },
 
     lnameInput: {
@@ -27,15 +27,14 @@ export const UserInfoStyles = {
         width: width - 55,
         height: 80,
         backgroundColor: 'white',
-        top: 250,
-        borderRadius: 24,
-
+        top: 180,
+        borderRadius: 25,
     },
 
     datepicker: {
         width: width - 55,
         position: 'absolute',
-        top: 350,
+        top: 560,
         borderRadius: 24,
         
 
@@ -48,7 +47,7 @@ export const UserInfoStyles = {
         width: width - 55,
         height: 45,
         borderRadius: 24,
-        top: 650,
+        top: 700,
         
         alignItems: 'center',
 
