@@ -34,6 +34,7 @@ export const UserInfoStyles = {
     datepicker: {
         width: width - 55,
         position: 'absolute',
+        
         top: 560,
         borderRadius: 24,
         

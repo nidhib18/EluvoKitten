@@ -22,22 +22,6 @@ import { TouchableWithoutFeedback, Keyboard } from 'react-native';
 // const [passwordValue, setPasswordValue] = React.useState('');
 // const [secureTextEntry, setSecureTextEntry] = React.useState(true);
 
-// const toggleSecureEntry = () => {
-//   setSecureTextEntry(!secureTextEntry);
-// };
-
-// const AlertIcon = (props) => (
-//   <Icon {...props} name='alert-circle-outline'  />
-// );
-
-// const renderIcon = (props) => (
-//   <TouchableWithoutFeedback onPress={toggleSecureEntry}>
-//     <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'}
-//       fill='#000000'
-//    />
-    
-//   </TouchableWithoutFeedback>
-// );
 
 export default class LoginScreen extends Component {
   constructor(props) 
@@ -51,6 +35,27 @@ export default class LoginScreen extends Component {
     }
   };
   
+//   setSecureTextEntry = (textentry) =>
+//   {
+//     this.setState({secureTextEntry:textentry})
+//   };
+  
+//  toggleSecureEntry = () => {
+//   setSecureTextEntry(!secureTextEntry);
+// };
+
+
+//  AlertIcon = (props) => (
+//   <Icon {...props} name='alert-circle-outline'  />
+// );
+// renderIcon = (props) => (
+//   <TouchableWithoutFeedback onPress={toggleSecureEntry}>
+//     <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'}
+//       fill='#000000'
+//    />
+    
+//   </TouchableWithoutFeedback>
+// );
 
   handleSignIn = () => {
     const { username, password } = this.state;
@@ -106,6 +111,7 @@ export default class LoginScreen extends Component {
         placeholder='enter your username'
         //value={usernameValue}
         label='Username'
+       
         onChangeText={
     // Set this.state.email to the value in this Input box
         (value) => this.setState({ username: value })}
@@ -123,9 +129,10 @@ export default class LoginScreen extends Component {
         //value={passwordValue}
         label='Password'
         placeholder='password'
-        accessoryRight={this.renderIcon}
-        secureTextEntry={this.secureTextEntry}
-        onChangeText={
+        //accessoryRight={this.renderIcon}
+        //secureTextEntry={this.secureTextEntry}
+        onChangeText=
+        {
     // Set this.state.email to the value in this Input box
         (value) => this.setState({ password: value })}
         //onChangeText={nextValue => setPasswordValue(nextValue)}

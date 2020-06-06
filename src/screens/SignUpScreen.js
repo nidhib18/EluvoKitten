@@ -1,17 +1,15 @@
-import React, { Component} from "react";
-import 
-{
+import React, { Component, useState } from "react";
+import {
   SafeAreaView,
   View,
   Image,
   KeyboardAvoidingView,
   ScrollView,
- Dimensions,
-  Modal
+  Dimensions,
+  Modal,
 } from "react-native";
-
-import
- {
+import Moment from 'moment';
+import {
   Divider,
   Icon,
   Layout,
@@ -23,6 +21,7 @@ import
   Datepicker,
   Button,
 } from "@ui-kitten/components";
+import setJSExceptionHandler from "react-native-exception-handler";
 import { ImageStyles } from "./ImageStyles";
 import { SignUpStyles } from "./SignUpStyles";
 import { TouchableWithoutFeedback, Keyboard } from "react-native";
@@ -45,64 +44,55 @@ import UserInfoScreen from "./UserInfoScreen";
 
 // //   );
 
-  // const [usernameValue, setUsernameValue] = React.useState('');
-  // const [emailValue, setEmailValue] = React.useState('');
-  // const [passwordValue, setPasswordValue] = React.useState('');
-  // const [passwordCValue, setCPasswordValue] = React.useState('');
+// const [usernameValue, setUsernameValue] = React.useState('');
+// const [emailValue, setEmailValue] = React.useState('');
+// const [passwordValue, setPasswordValue] = React.useState('');
+// const [passwordCValue, setCPasswordValue] = React.useState('');
 
-  const { sheight } = Dimensions.get('window').height;
- 
-//   const now = new Date();
-//     const yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 30000);
-    
-//     const useDatepickerState = (initialDate = null) => {
-//         const [date, setDate] = React.useState(initialDate);
-//         return { date, onSelect: setDate };
-//     };
-//     const minMaxPickerState= useDatepickerState();
+const { sheight } = Dimensions.get("window").height;
 
-    
-  
-//   const CalendarIcon = (props) => (
-//     <Icon {...props} name='calendar' />
-// );
 export default class SignUpScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       //*******changed firstName to given_name ********
-      given_name: "",   //*******changed firstName to given_name ********
+      given_name: "", //*******changed firstName to given_name ********
       family_name: "",
       email: "",
-      username: "", 
+      username: "",
       password: "",
       confirmPassword: " ",
       //birthdate:new Date(),
-      screenHeight:sheight,
-      
-      confirmationCode: "",
-      //secureTextEntry:false,
-       modalVisible: false,
-       
-       
- 
-    };
-    
-    
-        
-    
-  }
-       
-  // const [nameValue, setNameValue] = React.useState("");
-  // const [lnameValue, setLnameValue] = React.useState("");
-  // trial = () => 
-  // {
+      screenHeight: sheight,
 
-  //   this.state = {birthdate},
-  //   this.setState ={setDate=useState(new Date()) };
+      confirmationCode: "",
+      secureTextEntry: false,
+      modalVisible: false,
+      birthdate: new Date(),
+      //secureTextEntry:false,
+      minDate:  new Date(1960, 0, 1),
+      maxDate: new Date() 
+      
+    };
+
+    this.setDate = this.setDate.bind(this);
+  }
+
+  setDate(newDate) 
+  { 
+    let today = new Date();
+    let birthDate = new Date (newDate);
+    if (today.getFullYear()-birthDate.getFullYear() < 12 )
+    {
+      alert("Eluvo is intended for users aged 12 and over. We recommend parental guidance for users under the age of 12.");
+    }
+
+    this.setState({ birthdate:birthDate});
  
-  // }
+  }
+
   
+
   onContentSizeChange = (contentWidth, contentHeight) => {
     this.setState({ screenHeight: contentHeight });
   };
@@ -110,198 +100,230 @@ export default class SignUpScreen extends Component {
     navigation.goBack();
   };
 
-   BackAction = () => (
+  BackAction = () => (
     <TopNavigationAction icon={BackIcon} onPress={navigateBack} />
   );
- 
-      
- toggleSecureEntry = () => 
- {
 
-    setSecureTextEntry(!secureTextEntry);
-  };
+  //  ***Date picker***
 
-  AlertIcon = (props) => <Icon {...props} name="alert-circle-outline" />;
+  //   setSecureTextEntry = (textentry) =>
+  //   {
+  //     this.setState({secureTextEntry:textentry})
+  //   };
 
-  renderIcon = (props) => (
-    <TouchableWithoutFeedback onPress={this.toggleSecureEntry}>
-      <Icon
-        {...props}
-        name={this.secureTextEntry ? "eye-off" : "eye"}
-        fill="#000000"
-      />
-    </TouchableWithoutFeedback>
-  );
+  //  toggleSecureEntry = () =>
+  //  {
 
+  //     setSecureTextEntry(!secureTextEntry);
+  //   };
 
-  handleSignUp = () => 
+  //   AlertIcon = (props) => <Icon {...props} name="alert-circle-outline" />;
+
+  //   renderIcon = (props) => (
+  //     <TouchableWithoutFeedback onPress={toggleSecureEntry}>
+
+  //       <Icon
+  //         {...props}
+  //         name={this.state.secureTextEntry ? "eye-off" : "eye"}
+  //         fill="#000000"
+  //       />
+  //     </TouchableWithoutFeedback>
+  //   );
+
+  errorHandler = (e, isFatal) => 
   {
-    // alert(JSON.stringify(this.state));
-    const { given_name,family_name,username,email, password, confirmPassword,birthdate} = this.state;
-    // Make sure passwords match
-    if (password === confirmPassword) 
+    if (isFatal) {
+      reporter(e);
+      Alert.alert
+      (
+        "Unexpected error occurred",
+        `
+          Error: ${isFatal ? "Fatal:" : ""} ${e.name} ${e.message}
+  
+          We have reported this to our team ! Please close the app and start again!
+          `,
+        [
+          {
+            text: "Close",
+            // onPress: () => {
+            //   BackAndroid.exitApp();
+            // }
+          }
+        ]
+      );
+    } else 
     {
-      Auth.signUp({username: username,password,email,given_name,family_name,birthdate,attributes: {email,family_name,given_name,birthdate},})
+      console.log(e); 
+    }
+  setJSExceptionHandler(errorHandler);
+  }
+
+  DateIcon = (props) => <Icon {...props} name="calendar" />;
+
+  handleSignUp = () => {
+    // alert(JSON.stringify(this.state));
+    const {
+      given_name,
+      family_name,
+      username,
+      email,
+      password,
+      confirmPassword,
+      birthdate,
+    } = this.state;
+    // Make sure passwords match
+    if (password === confirmPassword) {
+     const user= Auth.signUp({
+        username: username,
+        password,
+        attributes: { email, family_name, given_name,birthdate: Moment(birthdate).format("YYYY-MM-DD")},
+        
+      
+      })
         // On success, show Confirmation Code Modal
         .then(() => this.setState({ modalVisible: true }))
-        
+
         // On failure, display error in console
-        .catch((err) => console.log(err));
-    } 
-    else 
-    {   
+        .errorHandler(err,user)
+        .catch((error) => console.log(err));
+    } else {
       alert("Passwords do not match.");
     }
   };
 
   handleConfirmationCode = () => {
-    const { username,confirmationCode } = this.state;
+    const { username, confirmationCode } = this.state;
     Auth.confirmSignUp(username, confirmationCode, {})
       .then(() => {
         this.setState({ modalVisible: false });
-        this.props.navigation.navigate('Home')
+        this.props.navigation.navigate("Home");
       })
-      .catch(err => console.log(err));
-  }
- 
-  render() 
+      .catch((err) => console.log(err));
+  };
 
-  {
-    //now= new Date();
-  //   yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 30000);
+  render() {
     
-  //   useDatepickerState = (initialDate = null) => {
-  //       const [date, setDate] = this.setState(initialDate);
-  //       return { date, onSelect: setDate };
-  //   };
-  //  minMaxPickerState= useDatepickerState();
-   
+
     return (
-    
-      <ScrollView style = {{backgroundColor:'#0000ff'}}
-      //scrollEnabled={scrollEnabled}
-      //bounces={false}
+      <ScrollView
+        style={{ backgroundColor: "#0000ff" }}
+        //scrollEnabled={scrollEnabled}
+        //bounces={false}
         contentContainerStyle={SignUpStyles.scrollView}
-      //onContentSizeChange={this.onContentSizeChange}
-       >
-      
-      <Layout style={ImageStyles.mainContainer}>
-           
-   
-     
-      <TopNavigation position="absolute" />
-      <Divider />
-       
-       
-        <Image
-          style={ImageStyles.bubbleContainer}
-          source={require("../../assets/bubble.png")}
-        />
+        //onContentSizeChange={this.onContentSizeChange}
+      >
+        <Layout style={ImageStyles.mainContainer}>
+          <TopNavigation position="absolute" />
+          <Divider />
 
-        <Image
-          style={ImageStyles.squiggleContainer}
-          source={require("../../assets/squiggle.png")}
-        />
+          <Image
+            style={ImageStyles.bubbleContainer}
+            source={require("../../assets/bubble.png")}
+          />
 
-        <Image
-          style={ImageStyles.dotsContainer}
-          source={require("../../assets/dots.png")}
-        />
+          <Image
+            style={ImageStyles.squiggleContainer}
+            source={require("../../assets/squiggle.png")}
+          />
 
-        <Text style={SignUpStyles.headerText}>Create a new account </Text>
+          <Image
+            style={ImageStyles.dotsContainer}
+            source={require("../../assets/dots.png")}
+          />
 
-        <Input
-          style={UserInfoStyles.nameInput}
-          placeholder="first name"
-          //value={nameValue}
-          label="First name"
-          onChangeText={
-            // Set this.state.email to the value in this Input box
-            (value) => this.setState({given_name: value })
-          }
-          placeholderTextColor={"#f09874"}
-          color={"black"}
-          height={28}
-        />
-        <Input
-          style={SignUpStyles.usernameInput}
-          placeholder={"enter a username"}
-          //value={usernameValue}
-          label="Username"
-          onChangeText={
-            // Set this.state.email to the value in this Input box
-            (value) => this.setState({ username: value })
-          }
-          placeholderTextColor={"#f09874"}
-          color={"black"}
-          height={28}
-        />
+          <Text style={SignUpStyles.headerText}>Create a new account </Text>
 
-        <Input
-          style={SignUpStyles.emailInput}
-          placeholder={"enter your email"}
-          label="Email"
-          onChangeText={
-            // Set this.state.email to the value in this Input box
-            (value) => this.setState({ email: value })
-          }
-          placeholderTextColor={"#f09874"}
-          color={"black"}
-          height={28}
-        />
+          <Input
+            style={UserInfoStyles.nameInput}
+            placeholder="first name"
+            //value={nameValue}
+            label="First name"
+            onChangeText={
+              // Set this.state.email to the value in this Input box
+              (value) => this.setState({ given_name: value })
+            }
+            placeholderTextColor={"#f09874"}
+            color={"black"}
+            height={28}
+          />
+          <Input
+            style={SignUpStyles.usernameInput}
+            placeholder={"enter a username"}
+            //value={usernameValue}
+            label="Username"
+            onChangeText={
+              // Set this.state.email to the value in this Input box
+              (value) => this.setState({ username: value })
+            }
+            placeholderTextColor={"#f09874"}
+            color={"black"}
+            height={28}
+          />
 
-        <Input
-          style={SignUpStyles.passwordInput}
-          // value={passwordValue}
-          label="Password"
-          //placeholder='password'
-          accessoryRight={this.renderIcon}
-          secureTextEntry={this.secureTextEntry}
-          placeholder={"password"}
-          onChangeText={
-            // Set this.state.email to the value in this Input box
-            (value) => this.setState({ password: value })
-          }
-          placeholderTextColor={"#f09874"}
-          color={"black"}
-          height={28}
-        />
+          <Input
+            style={SignUpStyles.emailInput}
+            placeholder={"enter your email"}
+            label="Email"
+            onChangeText={
+              // Set this.state.email to the value in this Input box
+              (value) => this.setState({ email: value })
+            }
+            placeholderTextColor={"#f09874"}
+            color={"black"}
+            height={28}
+          />
 
-        <Input
-          style={SignUpStyles.passwordConfirmInput}
-          // value={passwordCValue}
-          label="Confirm Password"
-          placeholder={"confirm password"}
-          caption="Should contain at least 8 symbols"
-          accessoryRight={this.renderIcon}
-          captionIcon={this.AlertIcon}
-          secureTextEntry={this.secureTextEntry}
-          onChangeText={
-            // Set this.state.email to the value in this Input box
-            (value) => this.setState({ confirmPassword: value })
-          }
-          placeholderTextColor={"#f09874"}
-          color={"black"}
-          height={28}
-        />
-       
-           {/* //**********User info ************ */}
-        <Input
-          style={UserInfoStyles.lnameInput}
-          placeholder="enter your last name"
-          label="Last name"
-          //value={lnameValue}
-          onChangeText={
-            // Set this.state.email to the value in this Input box
-            (value) => this.setState({family_name: value })
-          }
-          placeholderTextColor={"#f09874"}
-          color={"black"}
-          height={28}
-        />
+          <Input
+            style={SignUpStyles.passwordInput}
+            // value={passwordValue}
+            label="Password"
+            //placeholder='password'
+            //accessoryRight={this.renderIcon}
+            //secureTextEntry={this.secureTextEntry}
+            placeholder={"password"}
+            onChangeText={
+              // Set this.state.email to the value in this Input box
+              (value) => this.setState({ password: value })
+            }
+            placeholderTextColor={"#f09874"}
+            color={"black"}
+            height={28}
+          />
 
+          <Input
+            style={SignUpStyles.passwordConfirmInput}
+            // value={passwordCValue}
+            label="Confirm Password"
+            placeholder={"confirm password"}
+            caption="Should contain at least 8 symbols"
+            accessoryRight={this.renderIcon}
+            captionIcon={this.AlertIcon}
+            secureTextEntry={this.secureTextEntry}
+            onChangeText={
+              // Set this.state.email to the value in this Input box
+              (value) => this.setState({ confirmPassword: value })
+            }
+            placeholderTextColor={"#f09874"}
+            color={"black"}
+            height={28}
+          />
 
-            <Input
+          {/* //**********User info ************ */}
+          <Input
+            style={UserInfoStyles.lnameInput}
+            placeholder="enter your last name"
+            label="Last name"
+            //value={lnameValue}
+            onChangeText={
+              // Set this.state.email to the value in this Input box
+              (value) => this.setState({ family_name: value })
+            }
+            placeholderTextColor={"#f09874"}
+            color={"black"}
+            height={28}
+          />
+
+          {/* <Input
               style={UserInfoStyles.datepicker}
               placeholder={"Birth date"}
               label='Date of Birth'
@@ -313,59 +335,58 @@ export default class SignUpScreen extends Component {
                 (value) => this.setState({ birthdate: value })
               }
               placeholderTextColor="#ffff"
-            />
+            /> */}
 
-        <Button
-          style={UserInfoStyles.submitBtnContainer}
-          appearance="outline"
-          status="warning"
-          onPress={this.handleSignUp}
-        >
-          Submit
-        </Button>
-  
+          {/*
+           ****************DATE PICKER ********************** */}
 
-    
-      
-{/* 
-        //******************************** --- MODAL-----****************** */}
-        <Modal
-          visible={this.state.modalVisible}
-        >
-          <Layout
-            style={SignUpStyles.container}
+          <Datepicker
+            style={UserInfoStyles.datepicker}
+            //onSelect={ () => this.setDate}
+            date={this.state.birthdate}
+            onSelect={this.setDate}
+            accessoryRight={this.DateIcon}
+            label="Date of Birth"
+            min={this.state.minDate}
+            max={this.state.maxDate}
+           // max = n
+            placeholder="dd/mm/yyyy"
+          />
+          <Button
+            style={UserInfoStyles.submitBtnContainer}
+            appearance="outline"
+            status="warning"
+            onPress={this.handleSignUp}
           >
-            <Input
-             style = {SignUpStyles.modal}
-              label="Confirmation Code"
-              placeholderTextColor={'#f09874'}
-              //leftIcon={{ type: 'font-awesome', name: 'lock' }}
-              onChangeText={
-                // Set this.state.confirmationCode to the value in this Input box
-                (value) => this.setState({ confirmationCode: value })
+            Submit
+          </Button>
 
-              }
-              color={'black'}
-            />
-            <Button
-              style={SignUpStyles.submit}
-              title='Submit'
-              //appearance='ghost'
-              status='warning'
-              onPress={ this.handleConfirmationCode }
-            />
-          </Layout>
-        </Modal>
-
-     
+          {/* 
+        //******************************** --- MODAL-----****************** */}
+          <Modal visible={this.state.modalVisible}>
+            <Layout style={SignUpStyles.container}>
+              <Input
+                style={SignUpStyles.modal}
+                label="Confirmation Code"
+                placeholderTextColor={"#f09874"}
+                //leftIcon={{ type: 'font-awesome', name: 'lock' }}
+                onChangeText={
+                  // Set this.state.confirmationCode to the value in this Input box
+                  (value) => this.setState({ confirmationCode: value })
+                }
+                color={"black"}
+              />
+              <Button
+                style={SignUpStyles.submit}
+                title="Submit"
+                //appearance='ghost'
+                status="warning"
+                onPress={this.handleConfirmationCode}
+              />
+            </Layout>
+          </Modal>
         </Layout>
-     
-      
-        </ScrollView>
-
-  
-  
-
+      </ScrollView>
     );
   }
 }
