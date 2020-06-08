@@ -2,10 +2,11 @@
 import { Auth } from "aws-amplify";
 import React,{Component} from 'react';
 import { SafeAreaView, Image } from 'react-native';
+import { HeaderHeightContext } from "@react-navigation/stack";
 import { Divider, Input, Icon, Layout, Text, TopNavigation, TopNavigationAction, evaProps, Button } from '@ui-kitten/components';
 import { ImageStyles } from "./ImageStyles";
 import { LoginStyles } from './LoginStyles';
-import { TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { TouchableWithoutFeedback, Keyboard,KeyboardAvoidingView } from 'react-native';
 
 // const BackIcon = (props) => (
 //   <Icon {...props} name='arrow-back' />
@@ -53,11 +54,15 @@ export default class LoginScreen extends Component {
 //     <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'}
 //       fill='#000000'
 //    />
-    
-//   </TouchableWithoutFeedback>
+
+//   </Touchable WithoutFeedback>
 // );
 
-  handleSignIn = () => {
+
+
+
+  handleSignIn = () => 
+  {
     const { username, password } = this.state;
     
     Auth.signIn({username:username, password})
@@ -72,6 +77,17 @@ export default class LoginScreen extends Component {
   {
 
   return (
+    <HeaderHeightContext.Consumer>
+    {headerHeight => (
+<KeyboardAvoidingView
+    {...(Platform.OS === "ios" ? { behavior: "padding" } : {})}
+    contentContainerStyle={{flex: 1}}
+    keyboardVerticalOffset={headerHeight+ 24}
+               // keyboardVerticalOffset={Platform.OS === "ios" ? "40" :0}
+                style={LoginStyles.keyboardAvoidContainer}
+            >
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+   
     <Layout style={ImageStyles.mainContainer}>
 
       <TopNavigation position='absolute' />
@@ -108,7 +124,7 @@ export default class LoginScreen extends Component {
 
       <Input
         style={LoginStyles.usernameInput}
-        placeholder='enter your username'
+        placeholder='username'
         //value={usernameValue}
         label='Username'
        
@@ -130,7 +146,7 @@ export default class LoginScreen extends Component {
         label='Password'
         placeholder='password'
         //accessoryRight={this.renderIcon}
-        //secureTextEntry={this.secureTextEntry}
+        secureTextEntry = {true}
         onChangeText=
         {
     // Set this.state.email to the value in this Input box
@@ -150,9 +166,14 @@ export default class LoginScreen extends Component {
         appearance='ghost'
         status='warning'
         onPress={() => this.props.navigation.navigate('Reset')}>reset password</Button>
+      
+      <Layout style={{ flex : 1 }} />
 
     </Layout>
-
-  );
+    </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
+    )}
+</HeaderHeightContext.Consumer>
+  ); 
 };
 }

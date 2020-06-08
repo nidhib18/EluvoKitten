@@ -10,9 +10,9 @@ export const SignUpStyles = {
     alignItems: 'center'
   },
  
-  container:{
-    flex:1
-  },
+  // container:{
+  //   flex:1
+  // },
   modal:{
     position: 'absolute',
     width: width - 55,
@@ -34,7 +34,7 @@ export const SignUpStyles = {
   },
   scrollView: {
    // flexGrow: 1,
-    backgroundColor:'#f094',
+    //backgroundColor:'#f094',
     
     //flex:1,
    // marginBottom:50, 
@@ -63,7 +63,7 @@ export const SignUpStyles = {
     width: width - 55,
     height: 80,
     backgroundColor: 'white',
-    top: 250,
+    top:110,
     borderRadius: 24,
     
   },
@@ -98,10 +98,28 @@ export const SignUpStyles = {
     width: width - 55,
     height: 80,
     backgroundColor: 'white',
-    top: 450,
+    top: 460,
     borderRadius: 24,
     
 
+  },
+
+  eluvoContainer: 
+  {
+    position: 'absolute',
+    alignItems: 'center',
+    top: 367,
+    height: 74,
+    width: 142,
+    resizeMode: "contain"
+  },
+  eluvoTextContainer: {
+    position: 'absolute',
+    alignItems: 'center',
+    top: 437,
+    height: 22,
+    width: 186,
+    resizeMode: "contain"
   },
 
 

@@ -1,6 +1,7 @@
 import { Dimensions } from 'react-native';
 const { width, height } = Dimensions.get('window');
-export const LoginStyles = {
+export const LoginStyles = 
+{
 
     usernameInput: {
         position: 'absolute',
@@ -23,6 +24,11 @@ export const LoginStyles = {
 
     },
 
+    keyboardAvoidContainer: {
+        flex: 1,
+        backgroundColor: '#f09874',
+        paddingBottom:300,
+      },
     submitBtnContainer:
     {
 
@@ -38,15 +44,12 @@ export const LoginStyles = {
 
     forgotBtnContainer:
     {
-
         position: 'absolute',
         top: 600,
         left:8,
-
-        
-
-
     },
+
+    
 
 
 

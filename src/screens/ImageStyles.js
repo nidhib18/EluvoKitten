@@ -3,10 +3,13 @@
 export const ImageStyles = {
 
   mainContainer: {
-    //flex: 1,
-    justifyContent: 'center',
+    flex: 1,
+    //justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor:'#ff0',
+    justifyContent:'flex-end',
+    padding:24
+    
+    //backgroundColor:'#ff0',
     
   },
 

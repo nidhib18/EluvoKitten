@@ -11,32 +11,50 @@ export default class ResetPassword extends Component {
       super(props);
       this.state = 
       {
-        passwordOld:"",
-        passwordNew:"",
-        //      
+        username:" ",
+        authCode:" ",
+        newPassword:" ",
+            
       }
     }
-     // Change user password for the app
-changePassword = async () => 
-{
-    const { passwordOld, passwordNew } = this.state
-    await Auth.currentAuthenticatedUser()
-    .then(user => {
-      return Auth.changePassword(user, passwordOld, passwordNew)
-    })
-    .then(data => console.log('Password changed successfully', data))
-    .catch(err => {
-      if (! err.message) {
-        console.log('Error changing password: ', err)
-        Alert.alert('Error changing password: ', err)
-      } else {
-        console.log('Error changing password: ', err.message)
-        Alert.alert('Error changing password: ', err.message)
-      }
-    })
-
+  // Request a new password
+ forgotPassword= () => {
+  const { username } = this.state
+   Auth.forgotPassword(username)
+  .then(data => console.log('New code sent', data))
+  .catch(err => {
+    if (! err.message) {
+      console.log('Error while setting up the new password: ', err)
+      Alert.alert('Error while setting up the new password: ', err)
+    } else {
+      console.log('Error while setting up the new password: ', err.message)
+      Alert.alert('Error while setting up the new password: ', err.message)
+    }
+  })
 }
   
+// Upon confirmation redirect the user to the Sign In page
+ forgotPasswordSubmit= () => {
+  const { username, authCode, newPassword } = this.state
+  console.log(username)
+  console.log("print")
+  console.log(authCode)
+  console.log(newPassword)
+Auth.forgotPasswordSubmit(username,authCode,newPassword)
+  .then(() => {
+    this.props.navigation.navigate('Login')
+    console.log('the New password submitted successfully')
+  })
+  .catch(err => {
+    if (! err.message) {
+      console.log('Error while confirming the new password: ', err)
+      Alert.alert('Error while confirming the new password: ', err)
+    } else {
+      console.log('Error while confirming the new password: ', err.message)
+      Alert.alert('Error while confirming the new password: ', err.message)
+    }
+  })
+}
 
 render ()
 {
@@ -49,12 +67,12 @@ return (
             
              
             <Image
-                style={ImageStyles.logoContainer}
+                style={ForgotStyles.logoContainer}
                 source={require('../../assets/logo.png')}
             />
 
             <Image
-                style={ImageStyles.bubbleContainer}
+                style={ForgotStyles.bubbleContainer}
                 source={require('../../assets/bubble.png')}
             />
 
@@ -69,17 +87,58 @@ return (
             />
 
             <Image
-                style={ImageStyles.eluvoContainer}
+                style={ForgotStyles.eluvoContainer}
                 source={require('../../assets/eluvo.png')}
             />
 
             <Image
-                style={ImageStyles.eluvoTextContainer}
+                style={ForgotStyles.eluvoTextContainer}
                 source={require('../../assets/eluvotext.png')}
             />
 
 
             <Input
+                style={ForgotStyles.emailInput}
+                placeholder='email'
+                label='Email'
+                //value={emailValue}
+               // onChangeText={nextValue => setEmailValue(nextValue)}
+                onChangeText={
+                // Set this.state.email to the value in this Input box
+                (value) => this.setState({username: value }) }
+
+             
+            
+                placeholderTextColor={'#f09874'}
+                backgroundColor = '#fff'
+                color={'black'}
+                height={28}/>
+
+            <Button style={ForgotStyles.confirmationButton}
+                appearance='outline'
+                status='warning'
+                
+                onPress={this.forgotPassword}>Request verification code</Button>
+               {/* // onPress={() => navigation.navigate('Home')} */}
+
+
+            <Input
+                style={ForgotStyles.newPassword}
+                placeholder='new password'
+                label='New Password'
+                //value={emailValue}
+               // onChangeText={nextValue => setEmailValue(nextValue)}
+                onChangeText={
+                // Set this.state.email to the value in this Input box
+                (value) => this.setState({newPassword: value }) }
+                placeholderTextColor={'#f09874'}
+                color={'black'}
+                height={28}
+
+
+            />
+
+{/* <Input
                 style={ForgotStyles.emailInput}
                 placeholder='old password'
                 label='Old Password'
@@ -93,18 +152,18 @@ return (
                 height={28}
 
 
-            />
-
+            /> */}
+ 
             
             <Input
-                style={ForgotStyles.passwordInput}
-                placeholder='new password'
-                label='New Password'
+                style={ForgotStyles.confirmCode}
+                placeholder='code'
+                label='Confirmation code'
                // value={emailValue}
                // onChangeText={nextValue => setEmailValue(nextValue)}
                 onChangeText={
                 // Set this.state.email to the value in this Input box
-                (value) => this.setState({ passwordNew: value })}
+                (value) => this.setState({authCode: value }) }
                 placeholderTextColor={'#f09874'}
                 color={'black'}
                 height={28}
@@ -117,7 +176,7 @@ return (
                 appearance='outline'
                 status='warning'
                 
-                onPress={this.changePassword}>Submit</Button>
+                onPress={this.forgotPasswordSubmit}>Confirm new password</Button>
                {/* // onPress={() => navigation.navigate('Home')} */}
 
                

@@ -9,7 +9,8 @@ import {
   Modal,
 } from "react-native";
 import Moment from 'moment';
-import {
+import
+ {
   Divider,
   Icon,
   Layout,
@@ -20,6 +21,7 @@ import {
   props,
   Datepicker,
   Button,
+
 } from "@ui-kitten/components";
 import setJSExceptionHandler from "react-native-exception-handler";
 import { ImageStyles } from "./ImageStyles";
@@ -130,35 +132,38 @@ export default class SignUpScreen extends Component {
   //     </TouchableWithoutFeedback>
   //   );
 
-  errorHandler = (e, isFatal) => 
-  {
-    if (isFatal) {
-      reporter(e);
-      Alert.alert
-      (
-        "Unexpected error occurred",
-        `
-          Error: ${isFatal ? "Fatal:" : ""} ${e.name} ${e.message}
+  // errorHandler = (e, isFatal) => 
+  // {
+  //   if (isFatal) {
+  //     reporter(e);
+  //     Alert.alert
+  //     (
+  //       "Unexpected error occurred",
+  //       `
+  //         Error: ${isFatal ? "Fatal:" : ""} ${e.name} ${e.message}
   
-          We have reported this to our team ! Please close the app and start again!
-          `,
-        [
-          {
-            text: "Close",
-            // onPress: () => {
-            //   BackAndroid.exitApp();
-            // }
-          }
-        ]
-      );
-    } else 
-    {
-      console.log(e); 
-    }
-  setJSExceptionHandler(errorHandler);
-  }
+  //         We have reported this to our team ! Please close the app and start again!
+  //         `,
+  //       [
+  //         {
+  //           text: "Close",
+  //           // onPress: () => {
+  //           //   BackAndroid.exitApp();
+  //           // }
+  //         }
+  //       ]
+  //     );
+  //   } else 
+  //   {
+  //     console.log(e); 
+  //   }
+  // setJSExceptionHandler(errorHandler);
+  // }
 
   DateIcon = (props) => <Icon {...props} name="calendar" />;
+  renderIcon = (props) =>  <Icon {...props} name = {'eye'} fill ="#0000" />
+    
+    
 
   handleSignUp = () => {
     // alert(JSON.stringify(this.state));
@@ -173,7 +178,7 @@ export default class SignUpScreen extends Component {
     } = this.state;
     // Make sure passwords match
     if (password === confirmPassword) {
-     const user= Auth.signUp({
+      Auth.signUp({
         username: username,
         password,
         attributes: { email, family_name, given_name,birthdate: Moment(birthdate).format("YYYY-MM-DD")},
@@ -184,8 +189,8 @@ export default class SignUpScreen extends Component {
         .then(() => this.setState({ modalVisible: true }))
 
         // On failure, display error in console
-        .errorHandler(err,user)
-        .catch((error) => console.log(err));
+        //.errorHandler(err,user)
+        .catch((err) => console.log(err));
     } else {
       alert("Passwords do not match.");
     }
@@ -205,13 +210,13 @@ export default class SignUpScreen extends Component {
     
 
     return (
-      <ScrollView
-        style={{ backgroundColor: "#0000ff" }}
-        //scrollEnabled={scrollEnabled}
-        //bounces={false}
-        contentContainerStyle={SignUpStyles.scrollView}
-        //onContentSizeChange={this.onContentSizeChange}
-      >
+      // // <ScrollView
+      // //   style={{ backgroundColor: "#0000ff" }}
+      //   //scrollEnabled={scrollEnabled}
+      //   //bounces={false}
+      //   // contentContainerStyle={SignUpStyles.scrollView}
+      //   //onContentSizeChange={this.onContentSizeChange}
+      // >
         <Layout style={ImageStyles.mainContainer}>
           <TopNavigation position="absolute" />
           <Divider />
@@ -248,7 +253,8 @@ export default class SignUpScreen extends Component {
           />
           <Input
             style={SignUpStyles.usernameInput}
-            placeholder={"enter a username"}
+            placeholder={"username"}
+
             //value={usernameValue}
             label="Username"
             onChangeText={
@@ -262,13 +268,14 @@ export default class SignUpScreen extends Component {
 
           <Input
             style={SignUpStyles.emailInput}
-            placeholder={"enter your email"}
+            placeholder={"email"}
             label="Email"
             onChangeText={
               // Set this.state.email to the value in this Input box
               (value) => this.setState({ email: value })
             }
             placeholderTextColor={"#f09874"}
+            
             color={"black"}
             height={28}
           />
@@ -280,8 +287,11 @@ export default class SignUpScreen extends Component {
             //placeholder='password'
             //accessoryRight={this.renderIcon}
             //secureTextEntry={this.secureTextEntry}
+            secureTextEntry = {true}
+            accessoryRight={this.renderIcon}
             placeholder={"password"}
-            onChangeText={
+            onChangeText=
+            {
               // Set this.state.email to the value in this Input box
               (value) => this.setState({ password: value })
             }
@@ -296,9 +306,11 @@ export default class SignUpScreen extends Component {
             label="Confirm Password"
             placeholder={"confirm password"}
             caption="Should contain at least 8 symbols"
+            
             accessoryRight={this.renderIcon}
             captionIcon={this.AlertIcon}
-            secureTextEntry={this.secureTextEntry}
+            secureTextEntry = {true}
+            //secureTextEntry={this.secureTextEntry}
             onChangeText={
               // Set this.state.email to the value in this Input box
               (value) => this.setState({ confirmPassword: value })
@@ -311,7 +323,7 @@ export default class SignUpScreen extends Component {
           {/* //**********User info ************ */}
           <Input
             style={UserInfoStyles.lnameInput}
-            placeholder="enter your last name"
+            placeholder="last name"
             label="Last name"
             //value={lnameValue}
             onChangeText={
@@ -386,7 +398,7 @@ export default class SignUpScreen extends Component {
             </Layout>
           </Modal>
         </Layout>
-      </ScrollView>
+      // </ScrollView>
     );
   }
 }

@@ -16,7 +16,7 @@ export const UserInfoStyles = {
         width: width - 55,
         height: 80,
         backgroundColor: 'white',
-        top: 110,
+        top:180,
         borderRadius: 24,
         color: 'black',
         alignLabel:'left',
@@ -27,7 +27,7 @@ export const UserInfoStyles = {
         width: width - 55,
         height: 80,
         backgroundColor: 'white',
-        top: 180,
+        top: 250,
         borderRadius: 25,
     },
 
@@ -48,14 +48,15 @@ export const UserInfoStyles = {
         width: width - 55,
         height: 45,
         borderRadius: 24,
-        top: 700,
+        top: 660,
         
         alignItems: 'center',
 
 
     },
-    label: {
+    label: 
+    {
         color:'#FFFFFF',
         fontSize: 18,
-      },
+    },
 }
