@@ -4,10 +4,12 @@ export const ImageStyles = {
 
   mainContainer: {
     flex: 1,
-    //justifyContent: 'center',
+    justifyContent: 'center',
     alignItems: 'center',
-    justifyContent:'flex-end',
-    padding:24
+    //justifyContent:'flex-end',
+    padding:24,
+    
+    //flexDirection: 'column'
     
     //backgroundColor:'#ff0',
     

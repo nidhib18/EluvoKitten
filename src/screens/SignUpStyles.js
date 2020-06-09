@@ -19,18 +19,17 @@ export const SignUpStyles = {
     height: 80,
     backgroundColor: 'white',
     borderRadius: 24,
-    top: 390,
+    top: 500,
   },
 
   submit:{
 
-    position: 'absolute',
-    width: width - 55,
-    height: 45,
-    borderRadius: 24,
-    top: 440,
-    alignItems: 'center',
-  
+        position: 'absolute',
+        width: width - 55,
+        height: 45,
+        borderRadius: 24,
+        top: 590,
+        alignItems: 'center',
   },
   scrollView: {
    // flexGrow: 1,
@@ -54,6 +53,13 @@ export const SignUpStyles = {
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  modalContainer:{
+    flex: 1,
+    backgroundColor: '#f09874',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -98,7 +104,7 @@ export const SignUpStyles = {
     width: width - 55,
     height: 80,
     backgroundColor: 'white',
-    top: 460,
+    top: 480,
     borderRadius: 24,
     
 

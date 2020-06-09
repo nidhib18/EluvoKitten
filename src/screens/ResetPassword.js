@@ -1,6 +1,7 @@
 import { Auth } from "aws-amplify"
 import React, { Component } from 'react';
-import { SafeAreaView, Image } from 'react-native';
+import { SafeAreaView, Image,TouchableWithoutFeedback,
+  Keyboard,KeyboardAvoidingView, } from 'react-native';
 import { Divider, Input, Icon, Layout, Text, TopNavigation, TopNavigationAction, evaProps, Button } from '@ui-kitten/components';
 import { ImageStyles } from "./ImageStyles";
 import { ForgotStyles } from "./ForgotStyles";
@@ -60,6 +61,7 @@ render ()
 {
 
 return (
+  <KeyboardAvoidingView style={{flex:1,backgroundColor:"#f09874"}} behavior="position" enabled>
         <Layout style={ImageStyles.mainContainer}>
 
             <TopNavigation position='absolute' />
@@ -99,8 +101,8 @@ return (
 
             <Input
                 style={ForgotStyles.emailInput}
-                placeholder='email'
-                label='Email'
+                placeholder='Username'
+                label='Username'
                 //value={emailValue}
                // onChangeText={nextValue => setEmailValue(nextValue)}
                 onChangeText={
@@ -124,7 +126,7 @@ return (
 
             <Input
                 style={ForgotStyles.newPassword}
-                placeholder='new password'
+                placeholder='New Password'
                 label='New Password'
                 //value={emailValue}
                // onChangeText={nextValue => setEmailValue(nextValue)}
@@ -157,7 +159,7 @@ return (
             
             <Input
                 style={ForgotStyles.confirmCode}
-                placeholder='code'
+                placeholder='Code'
                 label='Confirmation code'
                // value={emailValue}
                // onChangeText={nextValue => setEmailValue(nextValue)}
@@ -181,6 +183,7 @@ return (
 
                
         </Layout>
+        </KeyboardAvoidingView>
 
 
     );

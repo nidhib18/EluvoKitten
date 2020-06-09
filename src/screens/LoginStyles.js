@@ -1,59 +1,42 @@
-import { Dimensions } from 'react-native';
-const { width, height } = Dimensions.get('window');
-export const LoginStyles = 
-{
+import { Dimensions } from "react-native";
+const { width, height } = Dimensions.get("window");
+export const LoginStyles = {
+  usernameInput: {
+    position: "absolute",
+    width: width - 55,
+    height: 80,
+    backgroundColor: "white",
+    top: 480,
+    borderRadius: 24,
+    color: "black",
+  },
 
-    usernameInput: {
-        position: 'absolute',
-        width: width - 55,
-        height: 80,
-        backgroundColor: 'white',
-        top: 480,
-        borderRadius: 24,
-        color: 'black',
+  passwordInput: {
+    position: "absolute",
+    width: width - 55,
+    height: 80,
+    backgroundColor: "white",
+    top: 550,
+    borderRadius: 24,
+  },
 
-    },
+  keyboardAvoidContainer: {
+    flex: 1,
+    backgroundColor: "#f09874",
+    paddingBottom: 300,
+  },
+  submitBtnContainer: {
+    position: "absolute",
+    width: width - 55,
+    height: 45,
+    borderRadius: 24,
+    top: 650,
+    alignItems: "center",
+  },
 
-    passwordInput: {
-        position: 'absolute',
-        width: width - 55,
-        height: 80,
-        backgroundColor: 'white',
-        top: 550,
-        borderRadius: 24,
-
-    },
-
-    keyboardAvoidContainer: {
-        flex: 1,
-        backgroundColor: '#f09874',
-        paddingBottom:300,
-      },
-    submitBtnContainer:
-    {
-
-        position: 'absolute',
-        width: width - 55,
-        height: 45,
-        borderRadius: 24,
-        top: 650,
-        alignItems: 'center',
-
-
-    },
-
-    forgotBtnContainer:
-    {
-        position: 'absolute',
-        top: 600,
-        left:8,
-    },
-
-    
-
-
-
-
-
-
-}
+  forgotBtnContainer: {
+    position: "absolute",
+    top: 600,
+    left: 8,
+  },
+};
