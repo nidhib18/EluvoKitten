@@ -1,11 +1,16 @@
 import React from 'react';
-import { StyleSheet, View,Dimensions, Platform,Text,ScrollView} from 'react-native';
-import {TopNavigation,Layout,Divider,Card,List } from  '@ui-kitten/components';
+import { StyleSheet, View,Dimensions,Text,ScrollView,Image,TouchableOpacity} from 'react-native';
+import {TopNavigation,Layout,Divider,List } from  '@ui-kitten/components';
 import CalendarStrip from 'react-native-calendar-strip';
 import moment from 'moment';
-import { Value } from 'react-native-reanimated';
-import { CardList } from 'react-native-card-list';
+//import { Value } from 'react-native-reanimated';
+import {HomeStyles} from "./HomeStyles";
+// import { CardList } from 'react-native-card-list';
 //import { ScrollView } from 'react-native-gesture-handler';
+import { storeData, getData } from "../helpers/StorageHelpers";
+import { constants } from "../resources/Constants";
+//import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
+
 
 const {Width} = Dimensions.get("window");
 let datesWhitelist = [
@@ -21,35 +26,36 @@ let datesBlacklist =
 [{start:moment.vacationStart,
   end:moment.vacationEnd
  }
-]; // 1 day disabled
 
+];
 
-const cards = [
-  {
-    id: "0",
-    title: "Starry Night",
-   // picture: require("../../assets/dots.png"),
-    content: <Text>Starry Night </Text>
-  },
-  {
-    id: "1",
-    title: "Wheat Field",
-    //picture: require("../../assets/dots.png"),
-    content: <Text>Wheat Field with Cypresses</Text>,
-    
+// 1 day disabled
 
-  },
-  {
-    id: "2",
-    title: "Bedroom in Arles",
-    //picture: require("../../assets/dots.png"),
-    content: <Text>Bedroom in Arles</Text>
-  }
-]
+//     //picture: require("../../assets/dots.png"),
+//     content: <Text>Bedroom in Arles</Text>
+//   }
+// ]
   
 export default class Home extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      
+      userDetails: {}, 
+     
+    };
+  }
   render() 
   {
+    getData(constants.USERDETAILS)
+    .then(data => 
+      {
+      // Read back the user details from storage and convert to object
+        this.state.userDetails = JSON.parse(data)
+      }
+      );
+   
     
     return (
 
@@ -57,7 +63,8 @@ export default class Home extends React.Component {
       <TopNavigation position = 'absolute' />
 
        <Divider/>
-
+      
+      <Text>How are you, {userDetails.first_name} ?</Text>
 
       <CalendarStrip
       
@@ -109,9 +116,25 @@ export default class Home extends React.Component {
         
       
 
-      <Layout style = {styles.textContainer}>
-      <CardList cards={cards} />
-      </Layout>
+    
+      <Image
+                    style={HomeStyles.girlContainer}
+                    source={require('../../assets/girl.png')}
+                />
+
+
+      <Text style={HomeStyles.headerText}>You haven't tracked anything today!</Text>
+
+      <TouchableOpacity onPress={() => this.props.navigation.navigate('Track')} >
+                    <Image
+                        style={HomeStyles.ovalContainer}
+                        source={require('../../assets/oval.png')}
+
+                    />
+                </TouchableOpacity>
+
+            
+
 </Layout>
     );
   }

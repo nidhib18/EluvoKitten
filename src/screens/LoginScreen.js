@@ -78,34 +78,30 @@ export default class LoginScreen extends Component {
       // If we are successful, navigate to Home screen
       .then((user) =>
         Auth.currentSession().then((res) => {
-          let accessToken = res.getAccessToken();
           let jwt = accessToken.getJwtToken();
-          //You can print them to see the full objects
-          console.log(`myAccessToken: ${JSON.stringify(accessToken)}`);
-          console.log(`myJwt: ${jwt}`);
           storeData(constants.JWTKEY, jwt);
-          let token = getData(constants.JWTKEY);
-          //Get user details for the logged in user
 
-          fetch(constants.USERDETAILS_DEV_URL + username, {
+          //Get user details for the logged in user
+          fetch(constants.USERDETAILS_DEV_URL + username, {  //calling API
             method: "GET",
             headers: {
-              Authorization: "Bearer " + jwt,
+              Authorization: "Bearer " + jwt,  //Passing this will authorize the user 
             },
           })
           .then(response => response.json()) 
           .then(responseData =>  {
-            console.log(responseData);
             return responseData;
           })
           .then(data => {
-            let userDetails = data.recordset;
-            console.log("User details",userDetails);
+            storeData(constants.USERDETAILS,JSON.stringify(data)); // Convert user details object returned by API to a string and add to storage so that user details can be accessed on any screen without calling API again
+            this.props.navigation.navigate("Home")
+
           })
           .catch((err) =>
             console.log(err)
         );
-          this.props.navigation.navigate("Home");
+        
+          
         })
       )
       // On failure, display error in console
