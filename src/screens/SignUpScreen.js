@@ -20,7 +20,7 @@ import { SignUpStyles } from "./SignUpStyles";
 import { UserInfoStyles } from "./UserInfoStyles";
 
 import { Auth } from "aws-amplify";
-import UserInfoScreen from "./UserInfoScreen";
+// import UserInfoScreen from "./UserInfoScreen";
 
 // const BackIcon = (props) => (
 //   <Icon {...props} name='arrow-back' />
@@ -190,15 +190,7 @@ export default class SignUpScreen extends Component {
 
   render() {
     return (
-      // // <ScrollView
-      // //   style={{ backgroundColor: "#0000ff" }}
-      //   //scrollEnabled={scrollEnabled}
-      //   //bounces={false}
-      //   // contentContainerStyle={SignUpStyles.scrollView}
-      //   //onContentSizeChange={this.onContentSizeChange}
-      // >
-      // <KeyboardAvoidingView style={{flex:1,backgroundColor:"#f09874"}} behavior="position" enabled>
-      // <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    
       <ScrollView
         contentContainerStyle={{
           flex: 1,
@@ -332,22 +324,7 @@ export default class SignUpScreen extends Component {
             height={28}
           />
 
-          {/* <Input
-              style={UserInfoStyles.datepicker}
-              placeholder={"Birth date"}
-              label='Date of Birth'
-              
-           //accessoryRight={CalendarIcon}
-               placeholder='dd/mm/yy'
-              onChangeText={
-                // Set this.state.email to the value in this Input box
-                (value) => this.setState({ birthdate: value })
-              }
-              placeholderTextColor="#ffff"
-            /> */}
-
-          {/*
-           ****************DATE PICKER ********************** */}
+      
 
           <Datepicker
             style={UserInfoStyles.datepicker}

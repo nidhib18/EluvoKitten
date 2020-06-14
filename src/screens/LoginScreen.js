@@ -78,6 +78,7 @@ export default class LoginScreen extends Component {
       // If we are successful, navigate to Home screen
       .then((user) =>
         Auth.currentSession().then((res) => {
+          let accessToken = res.getAccessToken();
           let jwt = accessToken.getJwtToken();
           storeData(constants.JWTKEY, jwt);
 
@@ -93,6 +94,7 @@ export default class LoginScreen extends Component {
             return responseData;
           })
           .then(data => {
+            console.log(data);
             storeData(constants.USERDETAILS,JSON.stringify(data)); // Convert user details object returned by API to a string and add to storage so that user details can be accessed on any screen without calling API again
             this.props.navigation.navigate("Home")
 

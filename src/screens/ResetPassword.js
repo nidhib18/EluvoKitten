@@ -1,7 +1,6 @@
 import { Auth } from "aws-amplify"
 import React, { Component } from 'react';
-import { SafeAreaView, Image,TouchableWithoutFeedback,
-  Keyboard,KeyboardAvoidingView, } from 'react-native';
+import { SafeAreaView, Image,TouchableWithoutFeedback,Keyboard,KeyboardAvoidingView, } from 'react-native';
 import { Divider, Input, Icon, Layout, Text, TopNavigation, TopNavigationAction, evaProps, Button } from '@ui-kitten/components';
 import { ImageStyles } from "./ImageStyles";
 import { ForgotStyles } from "./ForgotStyles";

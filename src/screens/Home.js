@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View,Dimensions,Text,ScrollView,Image,TouchableOpacity} from 'react-native';
-import {TopNavigation,Layout,Divider,List } from  '@ui-kitten/components';
+import {TopNavigation,Layout,Divider,List,Card } from  '@ui-kitten/components';
 import CalendarStrip from 'react-native-calendar-strip';
 import moment from 'moment';
 //import { Value } from 'react-native-reanimated';
@@ -9,6 +9,7 @@ import {HomeStyles} from "./HomeStyles";
 //import { ScrollView } from 'react-native-gesture-handler';
 import { storeData, getData } from "../helpers/StorageHelpers";
 import { constants } from "../resources/Constants";
+
 //import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
 
 
@@ -41,20 +42,44 @@ export default class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      
+      imageVisibility: true,
+      backgroundImagePath:require('../../assets/girl.png'),
       userDetails: {}, 
+
      
     };
+  //  const b = new Home ();
+  
+  
+
+  console.log("render");
+  getData(constants.USERDETAILS)
+  .then(data => 
+    {
+    // Read back the user details from storage and convert to object
+      console.log("Read Back", data);
+      this.state.userDetails = JSON.parse(data);
+      this.setState
+      ({
+        userDetails : JSON.parse(data)
+    });
+
+      console.log("First Name", this.state.userDetails.first_name);
+    }
+    );
   }
+  // changeImgaeVisibility = () => {
+  //   if(this.state.imageVisibility){
+  //       this.setState({imageVisibility: false, backgroundImagePath: null})
+  //   }else{
+  //       this.setState({imageVisibility: true, backgroundImagePath: require("../../assets/girl.png")})
+  //   }
+  //   }
+  
+  
   render() 
   {
-    getData(constants.USERDETAILS)
-    .then(data => 
-      {
-      // Read back the user details from storage and convert to object
-        this.state.userDetails = JSON.parse(data)
-      }
-      );
+   
    
     
     return (
@@ -64,7 +89,7 @@ export default class Home extends React.Component {
 
        <Divider/>
       
-      <Text>How are you, {userDetails.first_name} ?</Text>
+      <Text style={{ color: '#FFFFFF', fontSize: 28,lineHeight:30,letterSpacing:-0.24,includeFontPadding:true,textAlign:'left',fontWeight:'bold',left:-40,top:10}}>How are you, {this.state.userDetails.first_name} ?</Text>
 
       <CalendarStrip
       
@@ -123,9 +148,13 @@ export default class Home extends React.Component {
                 />
 
 
-      <Text style={HomeStyles.headerText}>You haven't tracked anything today!</Text>
 
-      <TouchableOpacity onPress={() => this.props.navigation.navigate('Track')} >
+      {/* <Text style={HomeStyles.headerText}>You haven't tracked anything today!</Text> */}
+      {/* <Layout>
+      <Card style={{ elevation:5,shadowColor:'#000',width: Width - 55, height:100 , borderRadius: 20, top: -30, backgroundColor: '#ffffff' }}/>
+      </Layout> */}
+
+      <TouchableOpacity onPress={() => this.props.navigation.navigate('TrackT')} >
                     <Image
                         style={HomeStyles.ovalContainer}
                         source={require('../../assets/oval.png')}
@@ -136,7 +165,11 @@ export default class Home extends React.Component {
             
 
 </Layout>
+
+
+  
     );
+    
   }
 } 
 
@@ -154,7 +187,7 @@ const styles = StyleSheet.create({
   {
     flex:1,
     position:'absolute',
-    top:250,
+    top:180,
     justifyContent:'center',
     alignItems:'center'
   },
