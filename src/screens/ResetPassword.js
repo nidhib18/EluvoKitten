@@ -44,14 +44,15 @@ Auth.forgotPasswordSubmit(username,authCode,newPassword)
   .then(() => {
     this.props.navigation.navigate('Login')
     console.log('the New password submitted successfully')
+    alert('The new password submitted successfully')
   })
   .catch(err => {
     if (! err.message) {
       console.log('Error while confirming the new password: ', err)
-      Alert.alert('Error while confirming the new password: ', err)
+      alert('Error while confirming the new password: ', err)
     } else {
       console.log('Error while confirming the new password: ', err.message)
-      Alert.alert('Error while confirming the new password: ', err.message)
+      alert('Error while confirming the new password: ', err.message)
     }
   })
 }
@@ -132,6 +133,7 @@ return (
                 onChangeText={
                 // Set this.state.email to the value in this Input box
                 (value) => this.setState({newPassword: value }) }
+                secureTextEntry ={true}
                 placeholderTextColor={'#f09874'}
                 color={'black'}
                 height={28}

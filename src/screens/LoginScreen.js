@@ -21,9 +21,8 @@ import {
   Keyboard,
   KeyboardAvoidingView,
 } from "react-native";
-import { storeData, getData } from "../helpers/StorageHelpers";
+import { saveUserDetails } from "../helpers/AuthHelpers";
 import { constants } from "../resources/Constants";
-import { AsyncStorage } from "react-native";
 // const BackIcon = (props) => (
 //   <Icon {...props} name='arrow-back' />
 // );
@@ -76,43 +75,22 @@ export default class LoginScreen extends Component {
     Auth.signIn({ username: username, password })
 
       // If we are successful, navigate to Home screen
-      .then((user) =>
-        Auth.currentSession().then((res) => {
-          let accessToken = res.getAccessToken();
-          let jwt = accessToken.getJwtToken();
-          storeData(constants.JWTKEY, jwt);
-
-          //Get user details for the logged in user
-          fetch(constants.USERDETAILS_DEV_URL + username, {  //calling API
-            method: "GET",
-            headers: {
-              Authorization: "Bearer " + jwt,  //Passing this will authorize the user 
-            },
-          })
-          .then(response => response.json()) 
-          .then(responseData =>  {
-            return responseData;
-          })
-          .then(data => {
-            console.log(data);
-            storeData(constants.USERDETAILS,JSON.stringify(data)); // Convert user details object returned by API to a string and add to storage so that user details can be accessed on any screen without calling API again
-            this.props.navigation.navigate("Home")
-
-          })
-          .catch((err) =>
-            console.log(err)
-        );
-        
-          
-        })
-      )
+      .then((user) => {
+       
+        saveUserDetails(username);
+        this.props.navigation.navigate("Home");
+      })
+       
       // On failure, display error in console
       .catch((err) =>{
          console.log(err);
          if (err.code == constants.NOTAUTHORISED_EXCEPTION)
             alert(err.message)
+          else if (err.code == constants.USERNOTFOUND_EXCEPTION )
+            alert(err.message)
       });
-  };
+    }
+  
 
   render() {
     return (

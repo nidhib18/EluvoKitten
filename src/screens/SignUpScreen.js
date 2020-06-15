@@ -20,6 +20,9 @@ import { SignUpStyles } from "./SignUpStyles";
 import { UserInfoStyles } from "./UserInfoStyles";
 
 import { Auth } from "aws-amplify";
+import { saveUserDetails } from "../helpers/AuthHelpers";
+
+
 // import UserInfoScreen from "./UserInfoScreen";
 
 // const BackIcon = (props) => (
@@ -181,10 +184,18 @@ export default class SignUpScreen extends Component {
   handleConfirmationCode = () => {
     const { username, confirmationCode } = this.state;
     Auth.confirmSignUp(username, confirmationCode, {})
-      .then(() => {
+      // .then(() => {
+      //   this.setState({ modalVisible: false });
+      //   this.props.navigation.navigate("Home");
+      // })
+
+      .then((user) => {
         this.setState({ modalVisible: false });
+        saveUserDetails(username);
         this.props.navigation.navigate("Home");
       })
+
+
       .catch((err) => console.log(err));
   };
 

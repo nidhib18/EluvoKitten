@@ -14,7 +14,7 @@ export const HomeStyles = {
         position: 'absolute',
         width: 151,
         height: 236,
-        top: 229,
+        top: 280,
         alignItems: 'center',
         resizeMode: "contain"
 
@@ -28,7 +28,8 @@ export const HomeStyles = {
         letterSpacing: -0.1,
         lineHeight: 20,
         alignItems: 'center',
-        top: 500
+        left:65,
+        top: 550
     },
 
     ovalContainer: {
