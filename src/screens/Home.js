@@ -23,17 +23,17 @@ import { HomeStyles } from "./HomeStyles";
 //import { ScrollView } from 'react-native-gesture-handler';
 import { storeData, getData } from "../helpers/StorageHelpers";
 import { constants } from "../resources/Constants";
-
+import { utcToLocal } from "../helpers/DateHelpers";
 //import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
 
 const { Width } = Dimensions.get("window");
 let datesWhitelist = [
   {
     start: moment().local(),
-    //minDate: "1960, 06, 10",
+    minDate: "1960, 06, 10",
     end: moment().local().add(20000, "days"), // total 30 years enabled
 
-    //maxDate: "2020,20,10",
+    maxDate: "2020,20,10",
   },
 ];
 let datesBlacklist = [{ start: moment.vacationStart, end: moment.vacationEnd }];
@@ -53,7 +53,7 @@ export default class Home extends React.Component {
       backgroundImagePath: require("../../assets/girl.png"),
       userDetails: {},
       currentDate: moment().format("YYYY-MM-DD"),
-      painDetails: { pain: { locations: []} },
+      painDetails: { locations: []},
       isPainDataAvailable: false
     };
     this.setDate = this.setDate.bind(this);
@@ -65,11 +65,8 @@ export default class Home extends React.Component {
   //  const b = new Home ();
 
   setDate(newDate) {
-    //this.setState({ currentDate: moment(newDate).format("YYYY-MM-DD hh:mm:ss").startOf('day') });
-    //this.state.currentDate =  moment(newDate).format("YYYY-MM-DD hh:mm:ss").startOf('day') ;
-    this.state.currentDate = moment(newDate, "YYYY-MM-DDThh:mm:ss").startOf('day').format("YYYY-MM-DD");
-    console.log("New Date", newDate);
-    console.log("New Date", moment(newDate).format("YYYY-MM-DD hh:mm:ss"));
+    // CalendarStrip converts the selected date to UTC format for e.g. 2020-06-15T12:00:00Z
+    this.state.currentDate = utcToLocal(newDate);
     console.log("Current Date", this.state.currentDate);
     this.getUserPain();
   }
@@ -92,25 +89,21 @@ export default class Home extends React.Component {
         .then((response) => response.json())
 
         .then((responseData) => {
-          console.log("Response Data", responseData);
-          console.log("Response length", Object.keys(responseData).length);
           // If responseData is not empty, then isPainDataAvailable = true
+          console.log(responseData);
           if (Object.keys(responseData).length)
           {
-            this.state.isPainDataAvailable = true;
             this.setState({
-              isPainDataAvailable: true
+              isPainDataAvailable: true,
+              painDetails : responseData.pain
             });
-            this.state.painDetails = responseData;
-            console.log("Data is there");
           }
           else
           {
             this.setState({
-              isPainDataAvailable: false
+              isPainDataAvailable: false,
+              painDetails: { locations: []}
             });
-            this.state.painDetails =  { pain: { locations: []} };
-            console.log("No data");
           }
         })
         .catch((err) => console.log(err))
@@ -120,7 +113,6 @@ export default class Home extends React.Component {
   {
     getData(constants.USERDETAILS).then((data) => {
       // Read back the user details from storage and convert to object
-      console.log("Read Back", data);
       this.state.userDetails = JSON.parse(data);
       this.setState({
         userDetails: JSON.parse(data),
@@ -142,7 +134,6 @@ export default class Home extends React.Component {
   //   this.setState({ data })
   // }
   render() {
-    console.log("Render");
     return (
       <Layout style={styles.container}>
         <TopNavigation position="absolute" />
@@ -160,10 +151,7 @@ export default class Home extends React.Component {
             fontWeight: "bold",
             left: -40,
             top: 10,
-          }}
-        >
-          How are you, {this.state.userDetails.first_name} ?
-        </Text>
+          }}>How are you, {this.state.userDetails.first_name} ? </Text>
 
         <CalendarStrip
           onDateSelected={(date) => this.setDate(date)}
@@ -202,16 +190,11 @@ export default class Home extends React.Component {
           highlightDateNumberStyle={{ color: "#f09874" }}
           highlightDateNameStyle={{ color: "#f09874" }}
           borderHighlightColor={{ color: "white" }}
-          // = {{borderHighlightColor:'#f09'}}
           disabledDateNameStyle={{ color: "white" }}
           disabledDateNumberStyle={{ color: "white" }}
-          //datesWhitelist={datesWhitelist} // this will disable all date as white colour except the current date from previous
-          datesBlacklist={datesBlacklist}
           iconContainer={{ flex: 0.13 }}
         />
 
-        {/* <Text style =  {styles.textContainer}>Welcome to Eluvo!</Text> */}
-         {console.log(this.state.isPainDataAvailable)}
         {this.state.isPainDataAvailable ?
           ( 
             <>
@@ -220,46 +203,34 @@ export default class Home extends React.Component {
             </Card>
             <Card style={styles.cardContainer}>
               <Text style={styles.cardText}>Today you experienced...</Text>
-              <Text>Today ....,{this.state.painDetails.pain.pain_level}</Text>
+              <Text>Today ....,Pain Level: {this.state.painDetails.pain_level}</Text>
+                       
+                
+              
+             <Text>{moment(this.state.painDetails.occurred_date).format("hh:mm A")}</Text>
+              
+              <Text>{this.state.painDetails.locations.map((location, index) => { 
+                  let locationText = location.pain_location + (index < this.state.painDetails.locations.length-1 ? ", " : "");
+                  return locationText 
+                })}</Text>
+
+
             </Card>
-           </>
-            
+            </>
+           
           ) :
           (
-           
-
-          <>
-              <Image
-                    style={HomeStyles.girlContainer}
-                    source={require('../../assets/girl.png')}
-                />
-
-
-
-             <Text style={HomeStyles.headerText}>You haven't tracked anything today!</Text>
-          </>
-           
-
+            <>
+              <Image style={HomeStyles.girlContainer} source={require('../../assets/girl.png')} />
+              <Text style={HomeStyles.headerText}>You haven't tracked anything today!</Text>
+            </>
           )
-        
-        
         }
 
-
-
-
-
-
-
- 
-      
-        {/* <Layout>
-      <Card style={{ elevation:5,shadowColor:'#000',width: Width - 55, height:100 , borderRadius: 20, top: -30, backgroundColor: '#ffffff' }}/>
-      </Layout> */}
+       
 
         <TouchableOpacity
-          onPress={() => this.props.navigation.navigate("TrackT")}
-        >
+         onPress={() => this.props.navigation.navigate("TrackT",{ currentDate: this.state.currentDate })}>
           <Image
             style={HomeStyles.ovalContainer}
             source={require("../../assets/oval.png")}
@@ -268,6 +239,7 @@ export default class Home extends React.Component {
       </Layout>
     );
   }
+  
 }
 
 const styles = StyleSheet.create({
@@ -319,7 +291,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     justifyContent: "center",
     alignItems: "center",
-    left: -160,
+    left: -100,
     paddingLeft: 10,
     paddingTop: 30,
   },

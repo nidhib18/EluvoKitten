@@ -60,4 +60,3 @@ export default class MoodCard extends React.Component {
         );
     };
 }
-

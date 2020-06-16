@@ -30,7 +30,7 @@ export const TrackTest =({navigation}) => {
                 contentContainerStyle={{ justifyContent: 'space-around', flex: 1, flexGrow: 1, flexDirection: 'row', marginLeft: '-38%', marginRight: '-30%', justifyContent: 'center', top: 410 }}
             >
                 <MedicationCard />
-                <PainCard />
+                <PainCard  navigation={navigation} />
                 <MoodCard />
                 <BloodCard />
                 <DigestionCard />
