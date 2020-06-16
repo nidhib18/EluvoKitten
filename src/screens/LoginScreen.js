@@ -1,117 +1,143 @@
-import React from 'react';
-import { SafeAreaView, Image } from 'react-native';
-import { Divider, Input, Icon, Layout, Text, TopNavigation, TopNavigationAction, evaProps, Button } from '@ui-kitten/components';
+import { Auth } from "aws-amplify";
+import React, { Component } from "react";
+import { SafeAreaView, Image, Platform, ScrollView } from "react-native";
+import { Header } from "@react-navigation/stack";
+import {
+  Divider,
+  Input,
+  Icon,
+  Layout,
+  Text,
+  TopNavigation,
+  TopNavigationAction,
+  evaProps,
+  Button,
+} from "@ui-kitten/components";
+
 import { ImageStyles } from "./ImageStyles";
-import { LoginStyles } from './LoginStyles';
-import { TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { LoginStyles } from "./LoginStyles";
+import {
+  TouchableWithoutFeedback,
+  Keyboard,
+  KeyboardAvoidingView,
+} from "react-native";
+import { saveUserDetails } from "../helpers/AuthHelpers";
+import { constants } from "../resources/Constants";
 
-const BackIcon = (props) => (
-  <Icon {...props} name='arrow-back' />
-);
+export default class LoginScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: "",
+      password: "",
+    };
+  }
 
-export const LoginScreen = ({ navigation }) => {
+  handleSignIn = () => {
+    const { username, password } = this.state;
 
-  const navigateBack = () => {
-    navigation.goBack();
+    Auth.signIn({ username: username, password })
+
+      // If we are successful, navigate to Home screen
+      .then((user) => {
+        saveUserDetails(username);
+        this.props.navigation.navigate("Home");
+      })
+
+      // On failure, display error in console
+      .catch((err) => {
+        console.log(err);
+        if (err.code == constants.NOTAUTHORISED_EXCEPTION) alert(err.message);
+        else if (err.code == constants.USERNOTFOUND_EXCEPTION)
+          alert(err.message);
+      });
   };
-  const BackAction = () => (
-    <TopNavigationAction icon={BackIcon} onPress={navigateBack} />
-  );
 
-  const [usernameValue, setUsernameValue] = React.useState('');
-  const [passwordValue, setPasswordValue] = React.useState('');
-  const [secureTextEntry, setSecureTextEntry] = React.useState(true);
+  render() {
+    return (
+      <KeyboardAvoidingView
+        style={{ flex: 1, backgroundColor: "#f09874" }}
+        behavior="position"
+        enabled
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <Layout style={ImageStyles.mainContainer}>
+            <TopNavigation position="absolute" />
+            <Divider />
 
-  const toggleSecureEntry = () => {
-    setSecureTextEntry(!secureTextEntry);
-  };
+            <Image
+              style={ImageStyles.bubbleContainer}
+              source={require("../../assets/bubble.png")}
+            />
 
-  const AlertIcon = (props) => (
-    <Icon {...props} name='alert-circle-outline'  />
-  );
+            <Image
+              style={ImageStyles.logoContainer}
+              source={require("../../assets/logo.png")}
+            />
 
-  const renderIcon = (props) => (
-    <TouchableWithoutFeedback onPress={toggleSecureEntry}>
-      <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'}
-        fill='#000000'
-     />
-      
-    </TouchableWithoutFeedback>
-  );
+            <Image
+              style={ImageStyles.eluvoContainer}
+              source={require("../../assets/eluvo.png")}
+            />
 
-  return (
-    <Layout style={ImageStyles.mainContainer}>
+            <Image
+              style={ImageStyles.eluvoTextContainer}
+              source={require("../../assets/eluvotext.png")}
+            />
+            <Image
+              style={ImageStyles.squiggleContainer}
+              source={require("../../assets/squiggle.png")}
+            />
 
-      <TopNavigation position='absolute' />
-      <Divider />
+            <Image
+              style={ImageStyles.dotsContainer}
+              source={require("../../assets/dots.png")}
+            />
 
-      <Image
-        style={ImageStyles.bubbleContainer}
-        source={require('../../assets/bubble.png')}
-      />
+            <Input
+              style={LoginStyles.usernameInput}
+              label="Username"
+              onChangeText={(value) => this.setState({ username: value })}
+              placeholderTextColor={"#f09874"}
+              color={"black"}
+              height={28}
+              alignItems={"center"}
+            />
 
-      <Image
-        style={ImageStyles.logoContainer}
-        source={require('../../assets/logo.png')}
-      />
+            <Input
+              style={LoginStyles.passwordInput}
+              //value={passwordValue}
+              label="Password"
+              secureTextEntry={true}
+              onChangeText={
+                // Set this.state.email to the value in this Input box
+                (value) => this.setState({ password: value })
+              }
+              placeholderTextColor={"#f09874"}
+              color={"black"}
+              height={28}
+            />
 
-      <Image
-        style={ImageStyles.eluvoContainer}
-        source={require('../../assets/eluvo.png')}
-      />
+            <Button
+              style={LoginStyles.submitBtnContainer}
+              appearance="outline"
+              status="warning"
+              onPress={this.handleSignIn}
+            >
+              Submit
+            </Button>
 
-      <Image
-        style={ImageStyles.eluvoTextContainer}
-        source={require('../../assets/eluvotext.png')}
-      />
-      <Image
-        style={ImageStyles.squiggleContainer}
-        source={require('../../assets/squiggle.png')}
-      />
-
-      <Image
-        style={ImageStyles.dotsContainer}
-        source={require('../../assets/dots.png')}
-      />
-
-      <Input
-        style={LoginStyles.usernameInput}
-        placeholder='enter your username'
-        value={usernameValue}
-        label='Username'
-        onChangeText={nextValue => setUsernameValue(nextValue)}
-        placeholderTextColor={'#f09874'}
-        color={'black'}
-        height={28}
-        alignItems={'center'}
-        
-
-      />
-
-      <Input
-        style={LoginStyles.passwordInput}
-        value={passwordValue}
-        label='Password'
-        placeholder='password'
-        accessoryRight={renderIcon}
-        secureTextEntry={secureTextEntry}
-        onChangeText={nextValue => setPasswordValue(nextValue)}
-        placeholderTextColor={'#f09874'}
-        color={'black'}
-        height={28}
-      />
-
-      <Button style={LoginStyles.submitBtnContainer}
-        appearance='outline'
-        status='warning'
-        onPress={() => navigation.navigate('Home')}>Submit</Button>
-
-      <Button style={LoginStyles.forgotBtnContainer}
-        appearance='ghost'
-        status='warning'
-        onPress={() => navigation.navigate('Forgot')}>forgot password</Button>
-
-    </Layout>
-
-  );
-};
+            <Button
+              style={LoginStyles.forgotBtnContainer}
+              appearance="ghost"
+              status="warning"
+              onPress={() => this.props.navigation.navigate('Forgot')}
+            >
+              Forgot Password?
+            </Button>
+          </Layout>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    );
+  }
+}

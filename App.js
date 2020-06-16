@@ -1,3 +1,6 @@
+import Amplify from 'aws-amplify'
+import config from './aws-exports'
+Amplify.configure(config)
 import React from 'react';
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
@@ -9,7 +12,7 @@ export default () => (
   <>
     <IconRegistry icons={EvaIconsPack}/>
     <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
-      <AppNavigator/>
+      <AppNavigator/>  
     </ApplicationProvider>
   </>
 );

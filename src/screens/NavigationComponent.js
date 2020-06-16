@@ -2,26 +2,43 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { WelcomeScreen as WelcomeScreen } from './WelcomeScreen';
-import { LoginScreen } from './LoginScreen';
-import { SignUpScreen } from './SignUpScreen';
-import { ForgotPasswordScreen } from './ForgotPasswordScreen';
-import { UserInfoScreen } from './UserInfoScreen';
+import  LoginScreen  from './LoginScreen';
+import SignUpScreen  from './SignUpScreen';
+import ForgotPassword from './ForgotPassword';
 
+import Home from './Home'
+import { TrackScreen } from './TrackScreen';
 
-const { Navigator, Screen } = createStackNavigator();
+const MainStack = createStackNavigator();
+const RootStack = createStackNavigator();
 
-const HomeNavigator = () => (
-  <Navigator headerMode='none'>
-    <Screen name='Welcome' component={WelcomeScreen}/>
-    <Screen name='Login' component={LoginScreen}/>
-    <Screen name='Forgot' component={ForgotPasswordScreen}/>
-    <Screen name='SignUp' component={SignUpScreen}/>
-    <Screen name='UserInfo' component={UserInfoScreen}/>
-  </Navigator>
-);
+function MainStackScreen() {
+  return (
+    <MainStack.Navigator headerMode='none'>
+      <MainStack.Screen name='Welcome' component={WelcomeScreen} />
+      <MainStack.Screen name='Login' component={LoginScreen} />
+      <MainStack.Screen name='Forgot' component= {ForgotPassword}/>
+      <MainStack.Screen name='SignUp' component={SignUpScreen} />
+      <MainStack.Screen name='Home' component={Home} />
+    </MainStack.Navigator>
+  );
+}
+
+function RootStackScreen() {
+  return (
+    <RootStack.Navigator mode="modal" headerMode='none' >
+      <RootStack.Screen
+        name="Back"
+        component={MainStackScreen}
+        options={{ headerShown: false }}
+      />
+      <RootStack.Screen name="Track" component={TrackScreen} />
+    </RootStack.Navigator>
+  );
+}
 
 export const AppNavigator = () => (
   <NavigationContainer>
-    <HomeNavigator/>
+    <RootStackScreen />
   </NavigationContainer>
 );
