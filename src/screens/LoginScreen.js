@@ -13,7 +13,7 @@ import {
   evaProps,
   Button,
 } from "@ui-kitten/components";
-//import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
 import { ImageStyles } from "./ImageStyles";
 import { LoginStyles } from "./LoginStyles";
 import {
@@ -23,51 +23,15 @@ import {
 } from "react-native";
 import { saveUserDetails } from "../helpers/AuthHelpers";
 import { constants } from "../resources/Constants";
-// const BackIcon = (props) => (
-//   <Icon {...props} name='arrow-back' />
-// );
-
-// const navigateBack = () => {
-//   navigation.goBack();
-// };
-// const BackAction = () => (
-//   <TopNavigationAction icon={BackIcon} onPress={navigateBack} />
-// );
-
-// const [usernameValue, setUsernameValue] = React.useState('');
-// const [passwordValue, setPasswordValue] = React.useState('');
-// const [secureTextEntry, setSecureTextEntry] = React.useState(true);
 
 export default class LoginScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      //*******changed firstName to given_name ********
-      username: "", //*******changed firstName to given_name ********
+      username: "",
       password: "",
     };
   }
-
-  //   setSecureTextEntry = (textentry) =>
-  //   {
-  //     this.setState({secureTextEntry:textentry})
-  //   };
-
-  //  toggleSecureEntry = () => {
-  //   setSecureTextEntry(!secureTextEntry);
-  // };
-
-  //  AlertIcon = (props) => (
-  //   <Icon {...props} name='alert-circle-outline'  />
-  // );
-  // renderIcon = (props) => (
-  //   <TouchableWithoutFeedback onPress={toggleSecureEntry}>
-  //     <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'}
-  //       fill='#000000'
-  //    />
-
-  //   </Touchable WithoutFeedback>
-  // );
 
   handleSignIn = () => {
     const { username, password } = this.state;
@@ -76,21 +40,18 @@ export default class LoginScreen extends Component {
 
       // If we are successful, navigate to Home screen
       .then((user) => {
-       
         saveUserDetails(username);
         this.props.navigation.navigate("Home");
       })
-       
+
       // On failure, display error in console
-      .catch((err) =>{
-         console.log(err);
-         if (err.code == constants.NOTAUTHORISED_EXCEPTION)
-            alert(err.message)
-          else if (err.code == constants.USERNOTFOUND_EXCEPTION )
-            alert(err.message)
+      .catch((err) => {
+        console.log(err);
+        if (err.code == constants.NOTAUTHORISED_EXCEPTION) alert(err.message);
+        else if (err.code == constants.USERNOTFOUND_EXCEPTION)
+          alert(err.message);
       });
-    }
-  
+  };
 
   render() {
     return (
@@ -135,14 +96,8 @@ export default class LoginScreen extends Component {
 
             <Input
               style={LoginStyles.usernameInput}
-              //placeholder="Username"
-              //value={usernameValue}
               label="Username"
-              onChangeText={
-                // Set this.state.email to the value in this Input box
-                (value) => this.setState({ username: value })
-              }
-              // onChangeText={nextValue => setUsernameValue(nextValue)}
+              onChangeText={(value) => this.setState({ username: value })}
               placeholderTextColor={"#f09874"}
               color={"black"}
               height={28}
@@ -153,14 +108,11 @@ export default class LoginScreen extends Component {
               style={LoginStyles.passwordInput}
               //value={passwordValue}
               label="Password"
-              // placeholder="Password"
-              //accessoryRight={this.renderIcon}
               secureTextEntry={true}
               onChangeText={
                 // Set this.state.email to the value in this Input box
                 (value) => this.setState({ password: value })
               }
-              //onChangeText={nextValue => setPasswordValue(nextValue)}
               placeholderTextColor={"#f09874"}
               color={"black"}
               height={28}
@@ -179,12 +131,10 @@ export default class LoginScreen extends Component {
               style={LoginStyles.forgotBtnContainer}
               appearance="ghost"
               status="warning"
-              onPress={() => this.props.navigation.navigate("Reset")}
+              onPress={() => this.props.navigation.navigate('Forgot')}
             >
               Forgot Password?
             </Button>
-
-            {/* <Layout style={{ flex: 1 }} /> */}
           </Layout>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>

@@ -6,11 +6,13 @@ import moment from "moment";
 import TagSelector from 'react-native-tag-selector';
 import { storeData, getData } from "../../helpers/StorageHelpers";
 import { constants } from "../../resources/Constants";
-
+import {initPainDetails} from "../../models/PainDetails";
+import {utcToLocal,localToUtcDate,localToUtcDateTime} from "../../helpers/DateHelpers";
+import {mapListItemsToTags} from "../../helpers/TagHelpers"
 const { width } = Dimensions.get('window');
 
 export default class PainCard extends React.Component {
-    painTags = [
+     painTags = [
         {
             id: 'Stomach',
             name: 'Stomach'
@@ -36,7 +38,8 @@ export default class PainCard extends React.Component {
             name: 'Back'
         },
 
-    ]
+    ];
+
     painTypeTags = [
         {
             id: 'Sharp',
@@ -52,7 +55,7 @@ export default class PainCard extends React.Component {
         },
 
     ]
-
+    
     constructor(props) {
         super(props);
         this.state = { painVisible: false };
@@ -64,11 +67,12 @@ export default class PainCard extends React.Component {
             minValue: 0,
             maxValue: 10,
             userDetails: {},
-            painDetails: { locations: []},
+            painDetails: initPainDetails(0, moment().format('YYYY-MM-DD')),
             painLocations: [],
             isPainDataAvailable: false,
             currentDate:  moment().format('YYYY-MM-DD')// / this.props.route.params.CurrentDate    
         };
+        this.savePainDetails = this.savePainDetails.bind(this);
 
     }
 
@@ -91,17 +95,22 @@ export default class PainCard extends React.Component {
             .then((response) => response.json())
     
             .then((responseData) => {
-              console.log("Locations", responseData);
-              this.setState({painLocations: responseData});
+              let painLocations = [];
+              painLocations = mapListItemsToTags(responseData);
+              console.log("Locations", painLocations);
+              this.setState({painLocations: painLocations});
             })
             .catch((err) => console.log(err))
         );
     };
-    getUserPain () {
+    getUserPain =(route)=> {
+
         let userId = this.state.userDetails.user_id;
+        let currentDate = this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD');
+
         let url = constants.USERPAIN_DEV_URL.replace("[userId]", userId).replace(
           "[occurredDate]",
-          this.state.currentDate
+          localToUtcDateTime(currentDate)
         );
         console.log("Url is", url);
         getData(constants.JWTKEY).then((jwt) =>
@@ -121,29 +130,69 @@ export default class PainCard extends React.Component {
               {
                 this.setState({
                   isPainDataAvailable: true,
-                  painDetails : responseData
+                  painDetails : responseData,
+                  painValue: responseData.pain.pain_level,
+                  currentDate: currentDate
                 });
               }
               else
               {
                 this.setState({
                   isPainDataAvailable: false,
-                  painDetails: { 
-                      user_id: userId,
-                      pain: { 
-                          pain_id: 0,
-                          pain_level: 0,
-                          occurred_date: this.state.currentDate,
-                            locations: []
-                      }
-                    }
+                  painDetails: initPainDetails(userId, currentDate),
+                  painValue: 0,
+                  currentDate: currentDate
                 });
               }
-              console.log("PAIN CARD Pain Details", this.state.painDetails.pain)
             })
             .catch((err) => console.log(err))
         );
       };
+      savePainDetails()
+      {
+          if (!this.state.isPainDataAvailable)
+          {
+            // Add the saved pain level
+            let userId = this.state.userDetails.user_id;
+            let occurredDate = moment(this.state.currentDate).add(moment().hour(), 'hour').add(moment().minute(), 'minute');
+            // Add pain locations
+            let locations = [];
+            console.log("selected tags", this.state.selectedTags);
+            this.state.selectedTags.map(tag => {
+                let location = {location_id: tag};
+                locations.push(location);
+            });
+            let pain = {
+                 user_id: userId, 
+                 pain_level: this.state.painValue,
+                 occurred_date: localToUtcDateTime(occurredDate),
+                 locations: locations
+                 };
+            console.log("Saving", pain);
+            let url = constants.ADDUSERPAIN_DEV_URL;
+            getData(constants.JWTKEY).then((jwt) =>
+            fetch(url, {
+                //calling API
+                method: "POST",
+                headers: {
+                    Authorization: "Bearer " + jwt, //Passing this will authorize the user
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(pain)
+                })
+                .then((response) => {
+                    console.log(response.json());
+                    return response.json();
+                })
+                
+            );
+          }
+          else
+          {
+              alert("Update not implemented yet.");
+          }
+      }
       componentDidMount()
       {
 /*           console.log("Route", this.props.route);
@@ -159,9 +208,14 @@ export default class PainCard extends React.Component {
         });
       }
     render() {
-       
-        let p = this.state.painDetails && this.state.painDetails.pain &&this.state.painDetails.pain.pain_level || 0;
-        console.log("PAIN CARD Pain Details in component",p)
+        let painLevel = this.state.painDetails && this.state.painDetails.pain && this.state.painDetails.pain.pain_level || 0;
+        let painLocations = this.state.painLocations || [];
+        let selectedPainLocations = [];
+        if (this.state.painDetails && this.state.painDetails.pain && this.state.painDetails.pain.locations)
+        {
+            selectedPainLocations = mapListItemsToTags(this.state.painDetails.pain.locations);
+            console.log(selectedPainLocations)
+        }
 
         return (
             <Layout style={TrackingStyles.container}>
@@ -185,7 +239,7 @@ export default class PainCard extends React.Component {
                             step={1}
                             minimumValue={this.state.minValue}
                             maximumValue={this.state.maxValue}
-                            value={p}
+                            value={painLevel}
                             onValueChange={val => this.setState({ painValue: val })}
                             maximumTrackTintColor='#d3d3d3'
                             minimumTrackTintColor='#f09874'
@@ -193,17 +247,17 @@ export default class PainCard extends React.Component {
                         <View style={styles.textCon}>
                             <Text style={styles.colorGrey}>{this.state.minValue} </Text>
                             <Text style={styles.colorPeach}>
-                                {this.state.painValue + ''}
+                               { this.state.painValue + ''}
                             </Text>
                             <Text style={styles.colorGrey}>{this.state.maxValue} </Text>
                         </View>
                         <Text style={{ color: '#B3B3B3', textAlign: 'left', top: 120, fontSize: 16 }}>Where is your pain located?</Text>
                         <View style={{ top: 130, left: 35 }}>
-                            {/* <Text> Selected: {this.state.painDetails.pain.locations.map(location => location.pain_location)} </Text> */}
+                            <Text> Selected: {selectedPainLocations.map(tag => `${tag} `)} </Text>
                             <TagSelector
                                 selectedTagStyle={TrackingStyles.tagStyle}
                                 maxHeight={70}
-                                tags={this.state.painLocations}
+                                tags={painLocations}
                                 onChange={(selected) => this.setState({ selectedTags: selected })}
                             />
                         </View>
@@ -223,6 +277,7 @@ export default class PainCard extends React.Component {
 
                             onPress={() => {
                                 this.setPainVisible(!this.state.painVisible);
+                                this.savePainDetails();
                             }}> Track!
                             </Button>
 
@@ -236,6 +291,7 @@ export default class PainCard extends React.Component {
         );
     };
 }
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,

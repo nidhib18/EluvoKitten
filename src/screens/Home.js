@@ -23,7 +23,8 @@ import { HomeStyles } from "./HomeStyles";
 //import { ScrollView } from 'react-native-gesture-handler';
 import { storeData, getData } from "../helpers/StorageHelpers";
 import { constants } from "../resources/Constants";
-import { utcToLocal } from "../helpers/DateHelpers";
+import { utcToLocal,localToUtcDate,localToUtcDateTime } from "../helpers/DateHelpers";
+
 //import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
 
 const { Width } = Dimensions.get("window");
@@ -53,8 +54,8 @@ export default class Home extends React.Component {
       backgroundImagePath: require("../../assets/girl.png"),
       userDetails: {},
       currentDate: moment().format("YYYY-MM-DD"),
-      painDetails: { locations: []},
-      isPainDataAvailable: false
+      painDetails: { locations: [] },
+      isPainDataAvailable: false,
     };
     this.setDate = this.setDate.bind(this);
     this.getUserPain = this.getUserPain.bind(this);
@@ -71,11 +72,11 @@ export default class Home extends React.Component {
     this.getUserPain();
   }
 
-  getUserPain () {
+  getUserPain() {
     let userId = this.state.userDetails.user_id;
     let url = constants.USERPAIN_DEV_URL.replace("[userId]", userId).replace(
       "[occurredDate]",
-      this.state.currentDate
+      localToUtcDateTime(this.state.currentDate)
     );
     console.log("Url is", url);
     getData(constants.JWTKEY).then((jwt) =>
@@ -91,26 +92,22 @@ export default class Home extends React.Component {
         .then((responseData) => {
           // If responseData is not empty, then isPainDataAvailable = true
           console.log(responseData);
-          if (Object.keys(responseData).length)
-          {
+          if (Object.keys(responseData).length) {
             this.setState({
               isPainDataAvailable: true,
-              painDetails : responseData.pain
+              painDetails: responseData.pain,
             });
-          }
-          else
-          {
+          } else {
             this.setState({
               isPainDataAvailable: false,
-              painDetails: { locations: []}
+              painDetails: { locations: [] },
             });
           }
         })
         .catch((err) => console.log(err))
     );
-  };
-  componentDidMount()
-  {
+  }
+  componentDidMount() {
     getData(constants.USERDETAILS).then((data) => {
       // Read back the user details from storage and convert to object
       this.state.userDetails = JSON.parse(data);
@@ -121,18 +118,7 @@ export default class Home extends React.Component {
     });
   }
 
-
-  // changeImgaeVisibility = () => {
-  //   if(this.state.imageVisibility){
-  //       this.setState({imageVisibility: false, backgroundImagePath: null})
-  //   }else{
-  //       this.setState({imageVisibility: true, backgroundImagePath: require("../../assets/girl.png")})
-  //   }
-  //   }
-  // componentDidMount = () => {
-  //   const data = json.stringify(painDetails)
-  //   this.setState({ data })
-  // }
+  
   render() {
     return (
       <Layout style={styles.container}>
@@ -151,7 +137,10 @@ export default class Home extends React.Component {
             fontWeight: "bold",
             left: -40,
             top: 10,
-          }}>How are you, {this.state.userDetails.first_name} ? </Text>
+          }}
+        >
+          How are you, {this.state.userDetails.first_name} ?{" "}
+        </Text>
 
         <CalendarStrip
           onDateSelected={(date) => this.setDate(date)}
@@ -162,7 +151,7 @@ export default class Home extends React.Component {
               dots: [{ key: 0, color: "red", selectedDotColor: "blue" }],
             },
             {
-              onSelectDate:moment().markedDates,
+              onSelectDate: moment().markedDates,
 
               dots: [{ key: 0, color: "red", selectedDotColor: "blue" }],
             },
@@ -195,42 +184,98 @@ export default class Home extends React.Component {
           iconContainer={{ flex: 0.13 }}
         />
 
-        {this.state.isPainDataAvailable ?
-          ( 
-            <>
+        {this.state.isPainDataAvailable ? (
+          <>
             <Card style={styles.cardSmallContainer}>
-              <Text style={styles.cardText}>Take Ginet</Text>
+              <Text style={styles.medicationText}>Take Ginet</Text>
+              <Text
+                style={{
+                  left: -168,
+                  position: "absolute",
+                  paddingLeft: 10,
+                  paddingTop: 40,
+                  color: "#8A8A8E",
+                }}
+              >
+                Remind me at 7:30 am
+              </Text>
+            </Card>
+            <Card style={styles.cardExercise}>
+              <Text style={styles.medicationText}>30 min Yoga</Text>
+              <Text
+                style={{
+                  left: -168,
+                  position: "absolute",
+                  paddingLeft: 10,
+                  paddingTop: 40,
+                  color: "#8A8A8E",
+                }}
+              >
+                Remind me at 9:00 am
+              </Text>
             </Card>
             <Card style={styles.cardContainer}>
               <Text style={styles.cardText}>Today you experienced...</Text>
-              <Text>Today ....,Pain Level: {this.state.painDetails.pain_level}</Text>
-                       
-                
-              
-             <Text>{moment(this.state.painDetails.occurred_date).format("hh:mm A")}</Text>
-              
-              <Text>{this.state.painDetails.locations.map((location, index) => { 
-                  let locationText = location.pain_location + (index < this.state.painDetails.locations.length-1 ? ", " : "");
-                  return locationText 
-                })}</Text>
+              <Text style={styles.painText}>Pain</Text>
+              <Text
+                style={{
+                  left: -50,
+                  paddingLeft: 10,
+                  paddingTop: 80,
+                  color: "#8A8A8E",
+                }}
+              >
+                Pain Level: {this.state.painDetails.pain_level}
+              </Text>
 
+              <Image
+                style={styles.painIcon}
+                source={require("../../assets/painia.png")}
+              />
 
+              <Text style={{ left: 150, top: -20, color: "#8A8A8E" }}>
+                {moment(this.state.painDetails.occurred_date).format("hh:mm A")}
+              </Text>
+
+              <Text
+                style={{
+                  left: -26,
+                  position: "absolute",
+                  paddingLeft: 10,
+                  paddingTop: 120,
+                  color: "#8A8A8E",
+                }}
+              >
+                {this.state.painDetails.locations.map((location, index) => {
+                  let locationText =
+                    location.list_item_name +
+                    (index < this.state.painDetails.locations.length - 1
+                      ? ", "
+                      : "");
+                  return locationText;
+                })}
+              </Text>
             </Card>
-            </>
-           
-          ) :
-          (
-            <>
-              <Image style={HomeStyles.girlContainer} source={require('../../assets/girl.png')} />
-              <Text style={HomeStyles.headerText}>You haven't tracked anything today!</Text>
-            </>
-          )
-        }
-
-       
+          </>
+        ) : (
+          <>
+            <Image
+              style={HomeStyles.girlContainer}
+              source={require("../../assets/girl.png")}
+            />
+            <Text style={HomeStyles.headerText}>
+              You haven't tracked anything today!
+            </Text>
+          </>
+        )}
 
         <TouchableOpacity
-         onPress={() => this.props.navigation.navigate("TrackT",{ currentDate: this.state.currentDate })}>
+          onPress={() =>
+            this.props.navigation.navigate("Track", {
+              currentDate: this.state.currentDate,
+            })
+          }
+        >
           <Image
             style={HomeStyles.ovalContainer}
             source={require("../../assets/oval.png")}
@@ -239,7 +284,6 @@ export default class Home extends React.Component {
       </Layout>
     );
   }
-  
 }
 
 const styles = StyleSheet.create({
@@ -276,12 +320,22 @@ const styles = StyleSheet.create({
     width: 400,
     borderRadius: 20,
     height: 64,
-    top: 260,
+    top: 230,
     alignItems: "center",
     backgroundColor: "#ffff",
     // resizeMode: "contain"
   },
-
+  cardExercise: {
+    flex: 1,
+    position: "absolute",
+    width: 400,
+    borderRadius: 20,
+    height: 64,
+    top: 310,
+    alignItems: "center",
+    backgroundColor: "#ffff",
+    // resizeMode: "contain"
+  },
   cardText: {
     flex: 1,
     position: "absolute",
@@ -291,8 +345,44 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     justifyContent: "center",
     alignItems: "center",
-    left: -100,
+    left: -124,
     paddingLeft: 10,
     paddingTop: 30,
+  },
+  medicationText: {
+    flex: 1,
+    position: "absolute",
+    fontSize: 20,
+    fontWeight: "bold",
+    letterSpacing: -0.32,
+    lineHeight: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    left: -170,
+    paddingLeft: 10,
+    paddingTop: 15,
+  },
+  painText: {
+    flex: 1,
+    position: "absolute",
+    fontSize: 18,
+    fontWeight: "bold",
+    letterSpacing: -0.32,
+    lineHeight: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    left: -25,
+    paddingLeft: 10,
+    paddingTop: 70,
+  },
+  painIcon: {
+    position: "absolute",
+    top: 60,
+    width: 80,
+    height: 80,
+    //left:-50,
+    right: 180,
+
+    resizeMode: "contain",
   },
 });

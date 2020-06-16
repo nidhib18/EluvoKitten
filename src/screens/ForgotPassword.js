@@ -5,7 +5,7 @@ import { Divider, Input, Icon, Layout, Text, TopNavigation, TopNavigationAction,
 import { ImageStyles } from "./ImageStyles";
 import { ForgotStyles } from "./ForgotStyles";
 
-export default class ResetPassword extends Component {
+export default class ForgotPassword extends Component {
     constructor(props)
      {
       super(props);
