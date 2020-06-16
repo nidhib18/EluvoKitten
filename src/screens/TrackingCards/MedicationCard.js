@@ -1,14 +1,29 @@
 import React from 'react';
-import { StyleSheet, Image, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, Image, Dimensions, TouchableOpacity,View } from 'react-native';
 import { Layout, Input, Card, Modal, Text, Button, Toggle } from '@ui-kitten/components';
 import { TrackingStyles } from "../TrackingStyles";
 import DropDownPicker from 'react-native-dropdown-picker';
 import TimePicker from "react-native-24h-timepicker";
-
+import TagSelector from 'react-native-tag-selector';
 
 const { width } = Dimensions.get('window');
 
 export default class MedicationCard extends React.Component {
+    sideEffectTags = [
+        {
+            id: 'Dizziness',
+            name: 'Dizziness'
+        },
+        {
+            id: 'Sleepiness',
+            name: 'Sleepiness'
+        },
+        {
+            id: 'Headache',
+            name: 'Headache'
+        },
+
+    ]
     constructor(props) {
         super(props);
         this.state = { medicationVisible: false };
@@ -51,12 +66,12 @@ export default class MedicationCard extends React.Component {
 
                 <Modal visible={this.state.medicationVisible}>
                     <Card disabled={true}
-                        style={{ width: width - 55, height: 529, borderRadius: 20, top: -30, backgroundColor: '#ffffff' }}>
-                        <Text style={{ color: 'black', textAlign: 'center', fontWeight: 'bold' }}>Medication</Text>
+                        style={TrackingStyles.cardStyle}>
+                        <Text style={TrackingStyles.symptomText}>Medication</Text>
                         <Text style={{ color: '#B3B3B3', textAlign: 'left', top: 40, fontSize: 16 }}>What Medication are you taking?</Text>
 
                         <Input
-                            style={{ borderRadius: 15, backgroundColor: 'rgba(240, 152, 116, 0.48)', top: 70, left: -3 }}
+                            style={{ borderColor: '#ffffff', borderRadius: 15, backgroundColor: 'rgba(240, 152, 116, 0.48)', top: 70, left: -3 }}
                             value={this.state.text}
                             color={'#000'}
                             onChangeText={(text) => this.setState({ text })}
@@ -73,8 +88,8 @@ export default class MedicationCard extends React.Component {
                             max={10}
                             defaultValue={this.state.quantity}
                             containerStyle={{ height: 40, top: 100, width: 150, left: -3 }}
-                            style={{ backgroundColor: 'rgba(240, 152, 116, 0.48)', borderTopLeftRadius: 15, borderTopRightRadius: 15, borderBottomLeftRadius: 15, borderBottomRightRadius: 15 }}
-                            dropDownStyle={{ backgroundColor: '#fafafa', borderBottomLeftRadius: 15, borderBottomRightRadius: 15 }}
+                            style={styles.dropStyle}
+                            dropDownStyle={styles.downStyle}
                             placeholder="Quantity"
                             onChangeItem={item => this.setState({
                                 quantity: item.value
@@ -102,6 +117,16 @@ export default class MedicationCard extends React.Component {
                             onChange={this.onCheckedChange}>
                             {`Checked: ${this.state.checked}`}
                         </Toggle>
+                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: -20, fontSize: 16 }}>Select any of the side effects if applicable</Text>
+                        <View style={{ top: 10, left: 10 }}>
+                            <TagSelector
+
+                                selectedTagStyle={TrackingStyles.tagStyle}
+                                maxHeight={70}
+                                tags={this.sideEffectTags}
+                                onChange={(selected) => this.setState({ selectedTags: selected })}
+                            />
+                        </View>
                         <Button
                             style={TrackingStyles.trackButton}
                             appearance='outline'
@@ -148,6 +173,21 @@ const styles = StyleSheet.create({
     buttonText: {
         color: "#000",
         fontSize: 14,
+
+    },
+
+    dropStyle: {
+        borderColor: '#ffffff',
+        backgroundColor: 'rgba(240, 152, 116, 0.48)',
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        borderBottomLeftRadius: 15,
+        borderBottomRightRadius: 15
+    },
+    downStyle:{
+        backgroundColor: '#fafafa', 
+        borderBottomLeftRadius: 15, 
+        borderBottomRightRadius: 15 
 
     }
 });

@@ -39,12 +39,7 @@ let datesWhitelist = [
 ];
 let datesBlacklist = [{ start: moment.vacationStart, end: moment.vacationEnd }];
 
-// 1 day disabled
 
-//     //picture: require("../../assets/dots.png"),
-//     content: <Text>Bedroom in Arles</Text>
-//   }
-// ]
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -59,11 +54,10 @@ export default class Home extends React.Component {
     };
     this.setDate = this.setDate.bind(this);
     this.getUserPain = this.getUserPain.bind(this);
-    // Get pain details
-    //this.setState({ painDetails: JSON.parse(getUserPain())   })
+   
   }
 
-  //  const b = new Home ();
+  
 
   setDate(newDate) {
     // CalendarStrip converts the selected date to UTC format for e.g. 2020-06-15T12:00:00Z

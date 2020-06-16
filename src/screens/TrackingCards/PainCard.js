@@ -195,8 +195,7 @@ export default class PainCard extends React.Component {
       }
       componentDidMount()
       {
-/*           console.log("Route", this.props.route);
-          console.log("Route Params", this.props.route.params); */
+
         getData(constants.USERDETAILS).then((data) => {
           // Read back the user details from storage and convert to object
           this.state.userDetails = JSON.parse(data);
