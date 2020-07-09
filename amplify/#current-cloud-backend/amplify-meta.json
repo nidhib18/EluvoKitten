@@ -1,0 +1,38 @@
+{
+	"providers": {
+		"awscloudformation": {
+			"AuthRoleName": "amplify-eluvokitten-windows-115441-authRole",
+			"UnauthRoleArn": "arn:aws:iam::235481271222:role/amplify-eluvokitten-windows-115441-unauthRole",
+			"AuthRoleArn": "arn:aws:iam::235481271222:role/amplify-eluvokitten-windows-115441-authRole",
+			"Region": "ap-southeast-2",
+			"DeploymentBucketName": "amplify-eluvokitten-windows-115441-deployment",
+			"UnauthRoleName": "amplify-eluvokitten-windows-115441-unauthRole",
+			"StackName": "amplify-eluvokitten-windows-115441",
+			"StackId": "arn:aws:cloudformation:ap-southeast-2:235481271222:stack/amplify-eluvokitten-windows-115441/42f2d6f0-a463-11ea-ae97-0230a916724e",
+			"AmplifyAppId": "d1l0pwufy43x7s"
+		}
+	},
+	"function": {},
+	"auth": {
+		"eluvokitten4b06147b": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [],
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/amplify-eluvokitten-windows-115441-deployment/amplify-cfn-templates/auth/eluvokitten4b06147b-cloudformation-template.yml",
+				"logicalId": "autheluvokitten4b06147b"
+			},
+			"lastPushTimeStamp": "2020-06-04T14:26:58.656Z",
+			"output": {
+				"AppClientSecret": "agtda14pd3jp5bvf9lh49t6h07skonhuqpifap9806dle19a3a8",
+				"UserPoolId": "ap-southeast-2_d412OhKTl",
+				"AppClientIDWeb": "tg569r2g7crt56421fiejod02",
+				"AppClientID": "1fbohu78ntl5tvan6s4na7nd49",
+				"IdentityPoolId": "ap-southeast-2:1f6aa161-a823-49c9-add9-30818531014d",
+				"IdentityPoolName": "eluvokitten4b06147b_identitypool_4b06147b__windows",
+				"UserPoolName": "eluvokitten4b06147b_userpool_4b06147b"
+			},
+			"lastPushDirHash": "6P1qTtzl89r3rkZV8eqrlqO2D3Y="
+		}
+	}
+}
