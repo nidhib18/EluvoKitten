@@ -1,0 +1,10 @@
+{
+    "function": {},
+    "auth": {
+        "eluvokitten4b06147b": {
+            "service": "Cognito",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": []
+        }
+    }
+}
