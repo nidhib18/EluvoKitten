@@ -1,0 +1,7 @@
+{
+    "windows": {
+        "configLevel": "project",
+        "useProfile": true,
+        "profileName": "Default"
+    }
+}
