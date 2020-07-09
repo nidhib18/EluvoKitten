@@ -1,5 +1,5 @@
+//Blood tracking card
 import React, { Component } from 'react';
-
 import { Image, Dimensions, TouchableOpacity, Slider } from 'react-native';
 import { Layout, Card, Modal, Text, Button } from '@ui-kitten/components';
 import { TrackingStyles } from "../TrackingStyles";
