@@ -2,6 +2,7 @@ import React from "react";
 import { SafeAreaView, Image, StyleSheet, Dimensions } from "react-native";
 import { Button, Divider, Layout, TopNavigation } from "@ui-kitten/components";
 import { ImageStyles } from "./ImageStyles";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 const { width, height } = Dimensions.get("window");
 
 export const WelcomeScreen = ({ navigation }) => {
@@ -60,10 +61,10 @@ export const WelcomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   signBtnContainer: {
     position: "absolute",
-    width: width - 55,
-    height: 50,
+    width: wp('95%') ,
+    height: hp('7%'),
     borderRadius: 24,
-    top: 620,
+    top: hp('85%'),
     backgroundColor: "#fff",
     includeFontPadding: true,
     paddingVertical: 5,
@@ -71,10 +72,10 @@ const styles = StyleSheet.create({
 
   loginBtnContainer: {
     position: "absolute",
-    width: width - 55,
-    height: 50,
+    width:wp('95%'),
+    height: hp('7%'),
     borderRadius: 24,
-    top: 560,
+    top: hp('75%'),
     backgroundColor: "white",
     includeFontPadding: true,
     paddingVertical: 5,
