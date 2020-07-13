@@ -1,4 +1,5 @@
 import { Dimensions } from "react-native";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 const { width, height } = Dimensions.get("window");
 export const HomeStyles = {
   mainContainer: {
@@ -10,7 +11,7 @@ export const HomeStyles = {
   girlContainer: {
     flex: 1,
     position: "absolute",
-    width: 151,
+    width: wp('95%'),
     height: 236,
     top: 280,
     alignItems: "center",

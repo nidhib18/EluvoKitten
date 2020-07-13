@@ -1,23 +1,24 @@
 import { Dimensions } from "react-native";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 const { width, height } = Dimensions.get("window");
 export const LoginStyles = {
   usernameInput: {
     position: "absolute",
-    width: width - 55,
-    height: 80,
+    width: wp('90%'),
+    height: hp('15%'),
     backgroundColor: "white",
-    top: 480,
-    borderRadius: 24,
+    top: hp('68%'),
+    borderRadius: 25,
     color: "black",
   },
 
   passwordInput: {
     position: "absolute",
-    width: width - 55,
-    height: 80,
+    width: wp('90%'),
+    height: hp('15%'),
     backgroundColor: "white",
-    top: 550,
-    borderRadius: 24,
+    top: hp('78%'),
+    borderRadius: 25,
   },
 
   keyboardAvoidContainer: {
@@ -27,16 +28,16 @@ export const LoginStyles = {
   },
   submitBtnContainer: {
     position: "absolute",
-    width: width - 55,
-    height: 45,
-    borderRadius: 24,
-    top: 650,
+    width: wp('90%'),
+    height: hp('5%'),
+    borderRadius: 25,
+    top: hp('91%'),
     alignItems: "center",
   },
 
   forgotBtnContainer: {
     position: "absolute",
-    top: 600,
-    left: 8,
+    top: hp('86%'),
+    left: wp('0%'),
   },
 };
