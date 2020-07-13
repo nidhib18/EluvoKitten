@@ -7,7 +7,7 @@ import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { default as theme } from './theme.json'
 import { AppNavigator } from './src/screens/NavigationComponent';
-
+//comment to check if merging with database branch 
 export default () => (
   <>
     <IconRegistry icons={EvaIconsPack}/>
