@@ -1,6 +1,7 @@
-import { Dimensions } from "react-native";
-const { width, height } = Dimensions.get("window");
+import { Dimensions} from "react-native";
+const { width } = Dimensions.get("window");
 export const LoginStyles = {
+  
   usernameInput: {
     position: "absolute",
     width: width - 55,

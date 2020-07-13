@@ -7,12 +7,15 @@ import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { default as theme } from './theme.json'
 import { AppNavigator } from './src/screens/NavigationComponent';
+console.disableYellowBox = true;
 
 export default () => (
+  
   <>
     <IconRegistry icons={EvaIconsPack}/>
     <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
       <AppNavigator/>  
+      
     </ApplicationProvider>
   </>
 );
