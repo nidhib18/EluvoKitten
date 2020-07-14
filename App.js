@@ -1,6 +1,7 @@
 import Amplify from 'aws-amplify'
 import config from './aws-exports'
 Amplify.configure(config)
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import React from 'react';
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';

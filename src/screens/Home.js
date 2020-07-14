@@ -15,6 +15,7 @@ import {
   List,
   Card,
 } from "@ui-kitten/components";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import CalendarStrip from "react-native-calendar-strip";
 import moment from "moment";
 //import { Value } from 'react-native-reanimated';
@@ -123,14 +124,14 @@ export default class Home extends React.Component {
         <Text
           style={{
             color: "#FFFFFF",
-            fontSize: 28,
-            lineHeight: 30,
-            letterSpacing: -0.24,
+            fontSize:  wp('7%'),
+            //lineHeight: 30,
+            letterSpacing: wp('0%'),
             includeFontPadding: true,
             textAlign: "left",
             fontWeight: "bold",
-            left: -40,
-            top: 10,
+            left: wp('-10%'),
+            top: wp('5%'),
           }}
         >
           How are you, {this.state.userDetails.first_name} ?{" "}
@@ -160,11 +161,11 @@ export default class Home extends React.Component {
           }}
           scrollable
           style={{
-            top: 50,
-            height: 100,
-            width: 500,
-            paddingTop: 10,
-            paddingBottom: -10,
+            top: hp('5%'),
+            height:hp('20%'),
+            width: wp('130%'),
+            paddingTop: hp('2%'),
+            paddingBottom: hp('0%'),
           }}
           calendarHeaderStyle={{ color: "white" }}
           calendarColor={"#f09874"}
@@ -184,10 +185,9 @@ export default class Home extends React.Component {
               <Text style={styles.medicationText}>Take Ginet</Text>
               <Text
                 style={{
-                  left: -168,
-                  position: "absolute",
-                  paddingLeft: 10,
-                  paddingTop: 40,
+                  left: wp('-36%'),
+                  position: "absolute",        
+                  paddingTop: wp('13%'),
                   color: "#8A8A8E",
                 }}
               >
@@ -198,10 +198,9 @@ export default class Home extends React.Component {
               <Text style={styles.medicationText}>30 min Yoga</Text>
               <Text
                 style={{
-                  left: -168,
+                  left: wp('-36%'),
                   position: "absolute",
-                  paddingLeft: 10,
-                  paddingTop: 40,
+                  paddingTop: wp('13%'),
                   color: "#8A8A8E",
                 }}
               >
@@ -213,9 +212,8 @@ export default class Home extends React.Component {
               <Text style={styles.painText}>Pain</Text>
               <Text
                 style={{
-                  left: -50,
-                  paddingLeft: 10,
-                  paddingTop: 80,
+                  left: wp('-10%'),
+                  paddingTop: hp('10%'),
                   color: "#8A8A8E",
                 }}
               >
@@ -227,16 +225,15 @@ export default class Home extends React.Component {
                 source={require("../../assets/painia.png")}
               />
 
-              <Text style={{ left: 150, top: -20, color: "#8A8A8E" }}>
+              <Text style={{ left: wp('35%'), top: hp('-5%'), color: "#8A8A8E" }}>
                 {moment(this.state.painDetails.occurred_date).format("hh:mm A")}
               </Text>
 
               <Text
                 style={{
-                  left: -26,
+                  left: wp('-4%'),
                   position: "absolute",
-                  paddingLeft: 10,
-                  paddingTop: 120,
+                  paddingTop:hp('15%'),
                   color: "#8A8A8E",
                 }}
               >
@@ -285,24 +282,24 @@ const styles = StyleSheet.create({
     //flex: 1,
     backgroundColor: "#f09874",
     alignItems: "center",
-    height: 200,
+    height: hp('25%'),
     justifyContent: "center",
   },
 
   textContainer: {
     flex: 1,
     position: "absolute",
-    top: 180,
+    top: hp('88%'),
     justifyContent: "center",
     alignItems: "center",
   },
   cardContainer: {
     flex: 1,
     position: "absolute",
-    width: 400,
+    width: wp('95%'),
     borderRadius: 20,
-    height: 242,
-    top: 390,
+    height: hp('30%'),
+    top: hp('58%'),
     alignItems: "center",
     backgroundColor: "#ffff",
     // resizeMode: "contain"
@@ -311,10 +308,10 @@ const styles = StyleSheet.create({
   cardSmallContainer: {
     flex: 1,
     position: "absolute",
-    width: 400,
+    width: wp('95%'),
     borderRadius: 20,
-    height: 64,
-    top: 230,
+    height: hp('12%'),
+    top: hp('32%'),
     alignItems: "center",
     backgroundColor: "#ffff",
     // resizeMode: "contain"
@@ -322,10 +319,10 @@ const styles = StyleSheet.create({
   cardExercise: {
     flex: 1,
     position: "absolute",
-    width: 400,
+    width: wp('95%'),
     borderRadius: 20,
-    height: 64,
-    top: 310,
+    height: hp('12%'),
+    top: hp('45%'),
     alignItems: "center",
     backgroundColor: "#ffff",
     // resizeMode: "contain"
@@ -333,50 +330,45 @@ const styles = StyleSheet.create({
   cardText: {
     flex: 1,
     position: "absolute",
-    fontSize: 20,
+    fontSize: hp('3%'),
     fontWeight: "bold",
-    letterSpacing: -0.32,
-    lineHeight: 20,
+    letterSpacing: wp('0%'),
     justifyContent: "center",
     alignItems: "center",
-    left: -124,
-    paddingLeft: 10,
-    paddingTop: 30,
+    left:  wp('-28%'),
+    paddingLeft: hp('2%'),
+    paddingTop: hp('3%'),
   },
   medicationText: {
     flex: 1,
     position: "absolute",
-    fontSize: 20,
+    fontSize: hp('3%'),
     fontWeight: "bold",
-    letterSpacing: -0.32,
-    lineHeight: 20,
+    letterSpacing: wp('0%'),
     justifyContent: "center",
     alignItems: "center",
-    left: -170,
-    paddingLeft: 10,
-    paddingTop: 15,
+    left:  wp('-40%'),
+    paddingLeft: hp('2%'),
+    paddingTop: hp('3%'),
   },
   painText: {
     flex: 1,
     position: "absolute",
-    fontSize: 18,
+    fontSize: hp('2.5%'),
     fontWeight: "bold",
-    letterSpacing: -0.32,
-    lineHeight: 20,
+    letterSpacing: wp('0%'),
     justifyContent: "center",
     alignItems: "center",
-    left: -25,
-    paddingLeft: 10,
-    paddingTop: 70,
+    left:  wp('-8%'),
+    paddingLeft: hp('2%'),
+    paddingTop: hp('9%'),
   },
   painIcon: {
     position: "absolute",
-    top: 60,
-    width: 80,
-    height: 80,
-    //left:-50,
-    right: 180,
-
+    top: hp('3.5%'),
+    width: wp('20%'),
+    height: hp('20%'),
+    left: wp('-28%'),
     resizeMode: "contain",
   },
 });

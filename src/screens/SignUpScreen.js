@@ -1,4 +1,5 @@
 import React, { Component, useState } from "react";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {
   SafeAreaView,
   View,
@@ -143,7 +144,7 @@ export default class SignUpScreen extends Component {
           flexDirection: "column",
           marginTop: "-100%",
           justifyContent: "center",
-          top: 410,
+          top: hp('55%'),
         }}
         vertical={true}
         showsVerticalScrollIndicator={true}

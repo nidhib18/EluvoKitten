@@ -35,13 +35,7 @@ export default class SaveCard extends React.Component {
         <Modal visible={this.state.saveVisible}>
           <Card
             disabled={true}
-            style={{
-              width: width - 55,
-              height: 529,
-              borderRadius: 20,
-              top: -30,
-              backgroundColor: "#ffffff",
-            }}
+            style={TrackingStyles.cardStyle }
             //navigation={this.props.navigation}
           >
             <Text style={TrackingStyles.saveText}>Thanks for That!</Text>

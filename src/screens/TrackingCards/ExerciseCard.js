@@ -1,5 +1,6 @@
 import React from 'react';
-import { Image, Dimensions, TouchableOpacity, View } from 'react-native';
+import { Image, Dimensions, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Layout, Card, Modal, Text, Button, Input, Toggle } from '@ui-kitten/components';
 import { TrackingStyles } from "../TrackingStyles";
 
@@ -40,20 +41,20 @@ export default class ExerciseCard extends React.Component {
                     <Card disabled={true}
                         style={TrackingStyles.cardStyle}>
                         <Text style={TrackingStyles.symptomText}>Exercise</Text>
-                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: 40, fontSize: 16 }}>log your exercise:</Text>
+                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: hp('2%'), fontSize: wp('4%') }}>log your exercise:</Text>
 
                         <Input
-                            style={{ borderColor: '#ffffff', borderRadius: 15, backgroundColor: 'rgba(240, 152, 116, 0.48)', top: 70, left: -3 }}
+                            style={{ borderColor: '#ffffff', borderRadius: 15, backgroundColor: 'rgba(240, 152, 116, 0.48)', top: hp('5%'), left: wp('-1%') }}
                             value={this.state.text}
                             color={'#000'}
                             onChangeText={(text) => this.setState({ text })}
                         />
 
-                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: 90, fontSize: 16 }}>Duration:</Text>
-                        <Text style={{ top: 250, color: '#000', left: 125 }}>{selectedHours} hr: {selectedMinutes} min</Text>
-                        <View>
+                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: hp('7%'), fontSize: wp('4%') }}>Duration:</Text>
+                        <Text style={{ top: hp('25%'), color: '#000', left: wp('30%') }}>{selectedHours} hr: {selectedMinutes} min</Text>
+                        <View style={{ top: hp('-5%') }}>
                             <TimePicker
-                                style={{ top: 150 }}
+                                
                                 selectedHours={selectedHours}
                                 //initial Hours value
                                 selectedMinutes={selectedMinutes}
@@ -64,18 +65,18 @@ export default class ExerciseCard extends React.Component {
                             />
                         </View>
                         <Input
-                            style={{ borderColor: '#ffffff', borderRadius: 15, backgroundColor: 'rgba(240, 152, 116, 0.48)', top: 5, left: 110, width: 100 }}
+                            style={{ borderColor: '#ffffff', borderRadius: 15, backgroundColor: 'rgba(240, 152, 116, 0.48)', width: wp('22'), top: hp('-8%'), left: wp('29%') }}
                             color={'#000'}
 
                         />
-                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: 30, fontSize: 16 }}>Reminder?</Text>
+                        {/* <Text style={{ color: '#B3B3B3', textAlign: 'left', top: 30, fontSize: 16 }}>Reminder?</Text>
                         
                         <Toggle
                             style={{ left: 180, top: 0 }}
                             checked={this.state.checked}
                             onChange={this.onCheckedChange}>
                             {`Checked: ${this.state.checked}`}
-                        </Toggle>
+                        </Toggle> */}
 
                         <Button
                             style={TrackingStyles.trackButton}
@@ -90,3 +91,4 @@ export default class ExerciseCard extends React.Component {
         );
     };
 }
+

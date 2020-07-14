@@ -1,13 +1,7 @@
-
-import { Dimensions} from "react-native";
-const { width } = Dimensions.get("window");
-
 import { Dimensions } from "react-native";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 const { width, height } = Dimensions.get("window");
-
 export const LoginStyles = {
-  
   usernameInput: {
     position: "absolute",
     width: wp('90%'),
@@ -30,7 +24,7 @@ export const LoginStyles = {
   keyboardAvoidContainer: {
     flex: 1,
     backgroundColor: "#f09874",
-    paddingBottom: 300,
+    paddingBottom: hp('40%'),
   },
   submitBtnContainer: {
     position: "absolute",

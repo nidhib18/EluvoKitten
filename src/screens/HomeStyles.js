@@ -23,7 +23,7 @@ export const HomeStyles = {
     height: hp('20%'),
     width: wp('90%'),
     color: "#8A8A8E",
-    fontSize: 18,
+    fontSize:  wp('5%'),
     letterSpacing: -0.2,
     lineHeight: wp('5%'),
     alignItems: "center",
@@ -34,78 +34,15 @@ export const HomeStyles = {
   ovalContainer: {
     flex: 1,
     position: "absolute",
-    width: wp('45%'),
-    height: hp('18%'),
+    width: wp('40%'),
+    height: hp('15%'),
     top: hp('60%'),
     left: wp('-21%'),
     alignItems: "center",
     resizeMode: "contain",
   },
 
-  button: {
-    position: "absolute",
-    top: 100,
-  },
+  
 
-  painButton: {
-    position: "absolute",
-    bottom: 45,
-    width: 100,
-    height: 100,
-    left: 10,
-    resizeMode: "contain",
-  },
-
-  moodButton: {
-    position: "absolute",
-    bottom: 50,
-    width: 100,
-    height: 100,
-    left: 110,
-    resizeMode: "contain",
-  },
-
-  bloodButton: {
-    position: "absolute",
-    bottom: 45,
-    width: 105,
-    height: 105,
-    left: 210,
-    resizeMode: "contain",
-  },
-
-  digestionButton: {
-    position: "absolute",
-    bottom: 50,
-    width: 103,
-    height: 103,
-    left: 310,
-    resizeMode: "contain",
-  },
-
-  exerciseButton: {
-    position: "absolute",
-    bottom: 50,
-    width: 103,
-    height: 103,
-    left: 410,
-    resizeMode: "contain",
-  },
-
-  medicationButton: {
-    position: "absolute",
-    bottom: 50,
-    width: 103,
-    height: 103,
-    left: 510,
-    resizeMode: "contain",
-  },
-  saveButton: {
-    position: "absolute",
-    bottom: 50,
-    width: 103,
-    height: 103,
-    left: 610,
-    resizeMode: "contain",
-  },
+ 
 };
