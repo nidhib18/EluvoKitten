@@ -1,6 +1,7 @@
+//Blood tracking card
 import React, { Component } from 'react';
-
-import { Image, Dimensions, TouchableOpacity, Slider } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { Image, Dimensions, TouchableOpacity, Slider, StyleSheet } from 'react-native';
 import { Layout, Card, Modal, Text, Button } from '@ui-kitten/components';
 import { TrackingStyles } from "../TrackingStyles";
 
@@ -31,17 +32,18 @@ export default class BloodCard extends React.Component {
 
                 <Modal visible={this.state.bloodVisible}>
                     <Card disabled={true}
-                        style={{ width: width - 55, height: 529, borderRadius: 20, top: -30, backgroundColor: '#ffffff' }}>
-                        <Text style={{ color: 'black', textAlign: 'center', fontWeight: 'bold' }}>Blood</Text>
+                        style={TrackingStyles.cardStyle}>
+                        <Text style={TrackingStyles.symptomText}>Blood</Text>
                         <Slider
                             minValue={0}
                             maxValue={100}
                             minimumTrackTintColor={'#f09874'}
                             selectedMinimum={0}
                             selectedMaximum={100}
-                            style={{ top: 80, flex: 1, height: 70, padding: 10, backgroundColor: '#FFF' }}
+                            style={styles.sliderStyle}
                             onChange={(data) => { console.log('normal slider data: ', data); }}
                         />
+                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top:hp('1'), fontSize: wp('4%') }}>How much bleeding did you experience today?</Text>
                         <Button
                             style={TrackingStyles.trackButton}
                             appearance='outline'
@@ -58,3 +60,31 @@ export default class BloodCard extends React.Component {
     };
 }
 
+const styles = StyleSheet.create({
+
+    sliderStyle: {
+
+        top: hp('12%'),
+        flex: 1,
+        width: wp('80%'),
+        height: hp('20.81%'),
+        padding: wp('2.5%'),
+        backgroundColor: '#FFF'
+
+    },
+    textCon: {
+        width: wp('80%'),
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    colorGrey: {
+        color: '#d3d3d3',
+        top: hp('11%'),
+
+    },
+    colorPeach: {
+        color: '#f09874',
+        top: hp('11%'),
+
+    }
+});

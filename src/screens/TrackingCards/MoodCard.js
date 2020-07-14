@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Image, Dimensions, TouchableOpacity, Slider } from 'react-native';
 import { Layout, Card, Modal, Text, Button } from '@ui-kitten/components';
 import { TrackingStyles } from "../TrackingStyles";
@@ -31,16 +31,16 @@ export default class MoodCard extends React.Component {
 
                 <Modal visible={this.state.moodVisible}>
                     <Card disabled={true}
-                        style={{ width: width - 55, height: 529, borderRadius: 20, top: -30, backgroundColor: '#ffffff' }}>
-                        <Text style={{ color: 'black', textAlign: 'left', fontWeight: 'bold', fontSize: 24 }}>Mood </Text>
-                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: 40, fontSize: 16 }}>How do feel today? </Text>
+                        style={ TrackingStyles.cardStyle }>
+                        <Text style={TrackingStyles.symptomText}>Mood </Text>
+                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top:hp('3%'), fontSize: wp('4%') }}>How do you feel today? </Text>
                         <Slider
                             minValue={0}
                             maxValue={100}
                             minimumTrackTintColor={'#f09874'}
                             selectedMinimum={0}
                             selectedMaximum={100}
-                            style={{ top: 80, flex: 1, height: 70, padding: 10, backgroundColor: '#FFF' }}
+                            style={TrackingStyles.slider}
                             onChange={(data) => { console.log('normal slider data: ', data); }}
 
                         />

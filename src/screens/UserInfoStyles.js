@@ -1,20 +1,14 @@
 import { Dimensions } from "react-native";
 const { width, height } = Dimensions.get("window");
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 export const UserInfoStyles = {
-  headerText: {
-    position: "absolute",
-    fontSize: 30,
-    fontWeight: "bold",
-    top: 70,
-    alignItems: "center",
-  },
-
+  
   nameInput: {
     position: "absolute",
-    width: width - 55,
-    height: 80,
+    width: wp('90%'),
+    height: hp('5%'),
     backgroundColor: "white",
-    top: 180,
+    top: hp('31%'),
     borderRadius: 24,
     color: "black",
     alignLabel: "left",
@@ -22,25 +16,25 @@ export const UserInfoStyles = {
 
   lnameInput: {
     position: "absolute",
-    width: width - 55,
-    height: 80,
+    width: wp('90%'),
+    height: hp('5%'),
     backgroundColor: "white",
-    top: 250,
+    top: hp('44%'),
     borderRadius: 25,
   },
 
   datepicker: {
-    width: width - 55,
+    width: wp('90%'),
     position: "absolute",
-    top: 560,
+    top: hp('98%'),
     borderRadius: 24,
   },
   submitBtnContainer: {
     position: "absolute",
-    width: width - 55,
-    height: 45,
+    width: wp('90%'),
+    height: hp('5%'),
     borderRadius: 24,
-    top: 660,
+    top: hp('111%'),
 
     alignItems: "center",
   },

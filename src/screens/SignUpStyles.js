@@ -1,14 +1,15 @@
 import { Dimensions } from "react-native";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 const { width, height } = Dimensions.get("window");
 export const SignUpStyles = {
   headerText: {
     position: "absolute",
-    fontSize: 35,
+    fontSize: wp('8%'),
     fontWeight: "bold",
-    top: 50,
+    top: hp('7%'),
     alignItems: "center",
   },
-
+  //
   modal: {
     position: "absolute",
     width: width - 55,
@@ -43,56 +44,38 @@ export const SignUpStyles = {
 
   usernameInput: {
     position: "absolute",
-    width: width - 55,
-    height: 80,
+    width: wp('90%'),
+    height: hp('5%'),
     backgroundColor: "white",
-    top: 110,
+    top: hp('18%'),
     borderRadius: 24,
   },
 
   emailInput: {
     position: "absolute",
-    width: width - 55,
-    height: 80,
+    width: wp('90%'),
     backgroundColor: "white",
-    top: 320,
+    top: hp('57%'),
     borderRadius: 24,
-
     color: "black",
   },
 
   passwordInput: {
     position: "absolute",
-    width: width - 55,
-    height: 80,
+    width: wp('90%'),
+    height: hp('15%'),
     backgroundColor: "white",
     borderRadius: 24,
-    top: 390,
+    top: hp('70%'),
   },
 
   passwordConfirmInput: {
     position: "absolute",
-    width: width - 55,
-    height: 80,
+    width: wp('90%'),
+    height: hp('15%'),
     backgroundColor: "white",
-    top: 480,
+    top: hp('85%'),
     borderRadius: 24,
   },
 
-  eluvoContainer: {
-    position: "absolute",
-    alignItems: "center",
-    top: 367,
-    height: 74,
-    width: 142,
-    resizeMode: "contain",
-  },
-  eluvoTextContainer: {
-    position: "absolute",
-    alignItems: "center",
-    top: 437,
-    height: 22,
-    width: 186,
-    resizeMode: "contain",
-  },
 };

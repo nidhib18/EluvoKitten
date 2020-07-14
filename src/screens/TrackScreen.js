@@ -1,4 +1,5 @@
 import React from "react";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import MedicationCard from "./TrackingCards/MedicationCard";
 import PainCard from "./TrackingCards/PainCard";
 import MoodCard from "./TrackingCards/MoodCard";
@@ -21,10 +22,10 @@ export const TrackScreen = ({ route,navigation }) => {
       <TopNavigation
         position="absolute"
         top={0}
-        style={{ height: 60, width: width }}
+        style={{ height:hp('9%'), width: width }}
       />
       <Button
-        style={{ left: 170, top: 20, height: 10 }}
+        style={{ left: wp('40%'), top: wp('4%'), height:hp('5%') }}
         s
         appearance="outline"
         onPress={() => navigation.navigate("Home")}
@@ -32,7 +33,7 @@ export const TrackScreen = ({ route,navigation }) => {
         Done
       </Button>
       <Button
-        style={{ right: 170, top: -20, height: 10 }}
+        style={{ right: wp('40%'), top: wp('-8%'), height:hp('5%') }}
         appearance="outline"
         onPress={() => navigation.navigate("Home")}
       >
@@ -51,10 +52,10 @@ export const TrackScreen = ({ route,navigation }) => {
           flex: 1,
           flexGrow: 1,
           flexDirection: "row",
-          marginLeft: "-38%",
+          marginLeft: "-42%",
           marginRight: "-30%",
           justifyContent: "center",
-          top: 340,
+          bottom: hp('-38%'),
         }}
       >
         <MedicationCard />

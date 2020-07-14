@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, Dimensions, TouchableOpacity, Slider, View, StyleSheet } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Layout, Card, Modal, Text, Button, Input } from '@ui-kitten/components';
 import { TrackingStyles } from "../TrackingStyles";
 import TagSelector from 'react-native-tag-selector';
@@ -52,14 +53,14 @@ export default class DigestionCard extends React.Component {
                     <Card disabled={true}
                         style={TrackingStyles.cardStyle}>
                         <Text style={TrackingStyles.symptomText}>Digestion</Text>
-                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: 40, fontSize: 16 }}>What did you eat today?</Text>
+                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: hp('3%'), fontSize: wp('4%') }}>What did you eat today?</Text>
                         <Input
-                            style={{ borderColor: '#ffffff', borderRadius: 15, backgroundColor: 'rgba(240, 152, 116, 0.48)', top: 70, left: -3 }}
+                            style={{ borderColor: '#ffffff', borderRadius: 15, backgroundColor: 'rgba(240, 152, 116, 0.48)', top: hp('5%'), left: wp('0.5%') }}
                             value={this.state.text}
                             color={'#000'}
                             onChangeText={(text) => this.setState({ text })}
                         />
-                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: 100, fontSize: 16 }}>Do you feel bloated?</Text>
+                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: hp('7%'), fontSize: wp('4%') }}>Do you feel bloated?</Text>
                         <Slider
                             style={styles.sliderStyle}
                             step={1}
@@ -77,8 +78,8 @@ export default class DigestionCard extends React.Component {
                             </Text>
                             <Text style={styles.colorGrey}>{this.state.maxValue} </Text>
                         </View>
-                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: 180, fontSize: 16 }}>Select any of the following if applicable</Text>
-                        <View style={{ top: 200, left: 15 }}>
+                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: hp('12%'), fontSize: wp('4%') }}>Select any of the following if applicable</Text>
+                        <View style={{ top: hp('15%'), left: wp('5%')}}>
                             <TagSelector
 
                                 selectedTagStyle={TrackingStyles.tagStyle}
@@ -108,26 +109,28 @@ export default class DigestionCard extends React.Component {
 const styles = StyleSheet.create({
 
     sliderStyle: {
-        width: 300,
-        top: 140,
+
+        top: hp('9%'),
         flex: 1,
-        height: 70,
-        padding: 10,
+        width: wp('80%'),
+        height: hp('20.81%'),
+        padding: wp('2.5%'),
         backgroundColor: '#FFF'
 
     },
     textCon: {
-        width: 320,
+        width: wp('80%'),
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
     colorGrey: {
         color: '#d3d3d3',
-        top: 150
+        top: hp('11%'),
+
     },
     colorPeach: {
         color: '#f09874',
-        top: 150
+        top: hp('11%'),
 
     }
 });

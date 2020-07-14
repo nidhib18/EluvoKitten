@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Image, Dimensions, TouchableOpacity,View } from 'react-native';
+import { StyleSheet, Image, Dimensions, TouchableOpacity, View } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Layout, Input, Card, Modal, Text, Button, Toggle } from '@ui-kitten/components';
 import { TrackingStyles } from "../TrackingStyles";
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -68,10 +69,10 @@ export default class MedicationCard extends React.Component {
                     <Card disabled={true}
                         style={TrackingStyles.cardStyle}>
                         <Text style={TrackingStyles.symptomText}>Medication</Text>
-                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: 40, fontSize: 16 }}>What Medication are you taking?</Text>
+                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: hp('3%'), fontSize: wp('4%') }}>What Medication are you taking?</Text>
 
                         <Input
-                            style={{ borderColor: '#ffffff', borderRadius: 15, backgroundColor: 'rgba(240, 152, 116, 0.48)', top: 70, left: -3 }}
+                            style={{ borderColor: '#ffffff', borderRadius: 15, backgroundColor: 'rgba(240, 152, 116, 0.48)', top: hp('5%'), left: wp('-1%') }}
                             value={this.state.text}
                             color={'#000'}
                             onChangeText={(text) => this.setState({ text })}
@@ -87,7 +88,9 @@ export default class MedicationCard extends React.Component {
                             ]}
                             max={10}
                             defaultValue={this.state.quantity}
-                            containerStyle={{ height: 40, top: 100, width: 150, left: -3 }}
+                            containerStyle={{
+                                paddingVertical: hp('0%'),paddingHorizontal: hp('0.5%'), height: hp('6%'), top: hp('7%'), width: wp('35%'), left: wp('-1%')
+                            }}
                             style={styles.dropStyle}
                             dropDownStyle={styles.downStyle}
                             placeholder="Quantity"
@@ -110,15 +113,15 @@ export default class MedicationCard extends React.Component {
                             onCancel={() => this.onCancel()}
                             onConfirm={(hour, minute) => this.onConfirm(hour, minute)}
                         />
-                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: -30, fontSize: 16 }}>Would you like a Reminder?</Text>
+                        {/* <Text style={{ color: '#B3B3B3', textAlign: 'left', top: -30, fontSize: 16 }}>Would you like a Reminder?</Text>
                         <Toggle
                             style={{ left: 180, top: -55 }}
                             checked={this.state.checked}
                             onChange={this.onCheckedChange}>
                             {`Checked: ${this.state.checked}`}
-                        </Toggle>
-                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: -20, fontSize: 16 }}>Select any of the side effects if applicable</Text>
-                        <View style={{ top: 10, left: 10 }}>
+                        </Toggle> */}
+                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: hp('-15%'), fontSize: wp('4%') }}>Select any of the side effects if applicable</Text>
+                        <View style={{top: hp('-10%'), left: wp('4%') }}>
                             <TagSelector
 
                                 selectedTagStyle={TrackingStyles.tagStyle}
@@ -151,32 +154,33 @@ const styles = StyleSheet.create({
         paddingTop: 100
     },
     text: {
-        fontSize: 16,
-        marginTop: 10,
+        fontSize: wp('4%'),
+        marginTop:hp('3%'),
         color: '#000',
-        left: 250,
-        top: -80,
+        left: wp('52%'),
+        top: hp('-23%'),
         alignContent: 'center',
-
-        width: 145
+        
     },
     button: {
-        width: 145,
+        width: wp('35%'),
         backgroundColor: "rgba(240, 152, 116, 0.48)",
-        paddingVertical: 11,
-        paddingHorizontal: 17,
+        paddingVertical: hp('2%'),
+        paddingHorizontal: hp('1%'),
         borderRadius: 15,
-        marginVertical: 50,
-        left: 160,
-        top: 10
+        marginVertical: wp('15%'),
+        left: wp('38%'),
+        top: hp('-7.2%'),
+        height:hp('6%')
     },
     buttonText: {
         color: "#000",
-        fontSize: 14,
+        fontSize: wp('3.5%'),
 
     },
 
     dropStyle: {
+        fontSize: wp('3.5%'),
         borderColor: '#ffffff',
         backgroundColor: 'rgba(240, 152, 116, 0.48)',
         borderTopLeftRadius: 15,
@@ -184,10 +188,10 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 15,
         borderBottomRightRadius: 15
     },
-    downStyle:{
-        backgroundColor: '#fafafa', 
-        borderBottomLeftRadius: 15, 
-        borderBottomRightRadius: 15 
+    downStyle: {
+        backgroundColor: '#fafafa',
+        borderBottomLeftRadius: 15,
+        borderBottomRightRadius: 15
 
     }
 });
