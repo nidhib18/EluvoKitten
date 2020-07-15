@@ -69,6 +69,14 @@ export default class MedicationCard extends React.Component {
                     <Card disabled={true}
                         style={TrackingStyles.cardStyle}>
                         <Text style={TrackingStyles.symptomText}>Medication</Text>
+                        <TouchableOpacity onPress={() => {
+                            this.setMedicationVisible(!this.state.medicationVisible);
+                        }}>
+                            <Image
+                                style={TrackingStyles.xContainer}
+                                source={require('../../../assets/x.png')}
+                            />
+                        </TouchableOpacity>
                         <Text style={{ color: '#B3B3B3', textAlign: 'left', top: hp('3%'), fontSize: wp('4%') }}>What Medication are you taking?</Text>
 
                         <Input
@@ -169,7 +177,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: hp('1%'),
         borderRadius: 15,
         marginVertical: wp('15%'),
-        left: wp('38%'),
+        left: wp('41%'),
         top: hp('-7.2%'),
         height:hp('6%')
     },

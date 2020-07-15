@@ -83,6 +83,14 @@ export default class MoodCard extends React.Component {
                     <Card disabled={true}
                         style={TrackingStyles.cardStyle}>
                         <Text style={TrackingStyles.symptomText}>Mood </Text>
+                        <TouchableOpacity onPress={() => {
+                            this.setMoodVisible(!this.state.moodVisible);
+                        }}>
+                            <Image
+                                style={TrackingStyles.xContainer}
+                                source={require('../../../assets/x.png')}
+                            />
+                        </TouchableOpacity>
                         <Text style={{ color: '#B3B3B3', textAlign: 'left', top: hp('3%'), fontSize: wp('4%') }}>How do you feel today? </Text>
                         <Slider
                             style={styles.sliderStyle}

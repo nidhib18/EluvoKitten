@@ -56,6 +56,14 @@ export default class BloodCard extends React.Component {
                     <Card disabled={true}
                         style={TrackingStyles.cardStyle}>
                         <Text style={TrackingStyles.symptomText}>Blood</Text>
+                        <TouchableOpacity onPress={() => {
+                            this.setBloodVisible(!this.state.bloodVisible);
+                        }}>
+                            <Image
+                                style={TrackingStyles.xContainer}
+                                source={require('../../../assets/x.png')}
+                            />
+                        </TouchableOpacity>
                         <Slider
                             style={styles.sliderStyle}
                             step={1}

@@ -225,7 +225,16 @@ export default class PainCard extends React.Component {
                     <Card disabled={true}
                         style={TrackingStyles.cardStyle}>
                         <Text style={TrackingStyles.symptomText}>Pain </Text>
-                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top:hp('2%'), fontSize: wp('4%') }}>How much pain did you have today? </Text>
+
+                        <TouchableOpacity onPress={() => {
+                            this.setPainVisible(!this.state.painVisible);
+                        }}>
+                            <Image
+                                style={TrackingStyles.xContainer}
+                                source={require('../../../assets/x.png')}
+                            />
+                        </TouchableOpacity>
+                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: hp('2%'), fontSize: wp('4%') }}>How much pain did you have today? </Text>
 
                         <Slider
                             style={TrackingStyles.slider}
@@ -244,8 +253,8 @@ export default class PainCard extends React.Component {
                             </Text>
                             <Text style={styles.colorGrey}>{this.state.maxValue} </Text>
                         </View>
-                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top:hp('11%'), fontSize: wp('4%') }}>Where is your pain located?</Text>
-                        <View style={{ top:hp('10%'), left: wp('5%') }}>
+                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: hp('11%'), fontSize: wp('4%') }}>Where is your pain located?</Text>
+                        <View style={{ top: hp('10%'), left: wp('5%') }}>
                             <Text> Selected: {selectedPainLocations.map(tag => `${tag} `)} </Text>
                             <TagSelector
                                 selectedTagStyle={TrackingStyles.tagStyle}
@@ -254,8 +263,8 @@ export default class PainCard extends React.Component {
                                 onChange={(selected) => this.setState({ selectedTags: selected })}
                             />
                         </View>
-                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top:hp('12%'), fontSize: wp('4%') }}>What type of pain did you experience?</Text>
-                        <View style={{ top: hp('14%'), left: wp('5%')}}>
+                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: hp('12%'), fontSize: wp('4%') }}>What type of pain did you experience?</Text>
+                        <View style={{ top: hp('14%'), left: wp('5%') }}>
                             <TagSelector
 
                                 selectedTagStyle={TrackingStyles.tagStyle}

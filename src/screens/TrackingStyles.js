@@ -183,25 +183,6 @@ export const TrackingStyles = {
     fontSize: wp('8%')
   }
   ,
-  tagStyle: {
-    alignSelf: "center",
-    fontSize: 12,
-    paddingBottom: 8,
-    paddingTop: 8,
-    paddingLeft: 16,
-    paddingRight: 16,
-    height: 32,
-    margin: 2,
-    color: "white",
-    backgroundColor: "#f09874",
-    //borderRadius: 25,
-    borderTopEndRadius:15,
-        borderBottomEndRadius:15,
-        borderTopLeftRadius:15,
-        borderTopRightRadius:15
-        
-  },
-
   tag: {
     alignSelf: 'center',
     fontSize: 12,
@@ -212,12 +193,21 @@ export const TrackingStyles = {
     height: 32,
     margin: 2,
     backgroundColor: '#EBF1FD',
-    borderBottomEndRadius:15,
-    borderTopEndRadius:15,
-    borderBottomEndRadius:15,
-    borderTopLeftRadius:15,
-    borderTopRightRadius:15
-   
+    borderRadius:15
+},
+tagSelected: {
+    alignSelf: 'center',
+    fontSize: 12,
+    paddingBottom: 8,
+    paddingTop: 8,
+    paddingLeft: 16,
+    paddingRight: 16,
+    height: 32,
+    margin: 2,
+    color: 'white',
+    backgroundColor: '#f09874',
+    borderRadius:15
+    
 },
 
   
@@ -225,5 +215,14 @@ export const TrackingStyles = {
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#fbfbfb",
+  },
+
+  xContainer: {
+    position: "absolute",
+    right: wp('0%'),
+    top: hp('-5%'),
+    width: wp('5%'),
+    height: hp('5%'),
+    resizeMode: "contain",
   },
 };

@@ -21,6 +21,10 @@ export default class DigestionCard extends React.Component {
             id: 'Constipation',
             name: 'Constipation'
         },
+        {
+            id: 'Gassy',
+            name: 'Gassy'
+        }
 
     ]
     constructor(props) {
@@ -30,7 +34,7 @@ export default class DigestionCard extends React.Component {
             selectedTags: [],
             bloatValue: 0,
             minValue: 0,
-            maxValue: 10
+            maxValue: 5
         };
     }
     setDigestionVisible(visible) {
@@ -53,14 +57,17 @@ export default class DigestionCard extends React.Component {
                     <Card disabled={true}
                         style={TrackingStyles.cardStyle}>
                         <Text style={TrackingStyles.symptomText}>Digestion</Text>
-                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: hp('3%'), fontSize: wp('4%') }}>What did you eat today?</Text>
-                        <Input
-                            style={{ borderColor: '#ffffff', borderRadius: 15, backgroundColor: 'rgba(240, 152, 116, 0.48)', top: hp('5%'), left: wp('0.5%') }}
-                            value={this.state.text}
-                            color={'#000'}
-                            onChangeText={(text) => this.setState({ text })}
-                        />
-                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: hp('7%'), fontSize: wp('4%') }}>Do you feel bloated?</Text>
+                        <TouchableOpacity onPress={() => {
+                            this.setDigestionVisible(!this.state.digestionVisible);
+                        }}>
+                            <Image
+                                style={TrackingStyles.xContainer}
+                                source={require('../../../assets/x.png')}
+                            />
+                        </TouchableOpacity>
+                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: hp('3%'), fontSize: wp('4%') }}>How is your digestive health</Text>
+                        
+                        
                         <Slider
                             style={styles.sliderStyle}
                             step={1}
@@ -110,7 +117,7 @@ const styles = StyleSheet.create({
 
     sliderStyle: {
 
-        top: hp('9%'),
+        top: hp('7%'),
         flex: 1,
         width: wp('80%'),
         height: hp('20.81%'),
@@ -125,12 +132,12 @@ const styles = StyleSheet.create({
     },
     colorGrey: {
         color: '#d3d3d3',
-        top: hp('11%'),
+        top: hp('9%'),
 
     },
     colorPeach: {
         color: '#f09874',
-        top: hp('11%'),
+        top: hp('9%'),
 
     }
 });

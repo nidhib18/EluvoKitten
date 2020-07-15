@@ -15,7 +15,7 @@ import {
   List,
   Card,
 } from "@ui-kitten/components";
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import CalendarStrip from "react-native-calendar-strip";
 import moment from "moment";
 //import { Value } from 'react-native-reanimated';
@@ -24,7 +24,7 @@ import { HomeStyles } from "./HomeStyles";
 //import { ScrollView } from 'react-native-gesture-handler';
 import { storeData, getData } from "../helpers/StorageHelpers";
 import { constants } from "../resources/Constants";
-import { utcToLocal,localToUtcDate,localToUtcDateTime } from "../helpers/DateHelpers";
+import { utcToLocal, localToUtcDate, localToUtcDateTime } from "../helpers/DateHelpers";
 
 //import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
 
@@ -55,10 +55,10 @@ export default class Home extends React.Component {
     };
     this.setDate = this.setDate.bind(this);
     this.getUserPain = this.getUserPain.bind(this);
-   
+
   }
 
-  
+
 
   setDate(newDate) {
     // CalendarStrip converts the selected date to UTC format for e.g. 2020-06-15T12:00:00Z
@@ -113,7 +113,7 @@ export default class Home extends React.Component {
     });
   }
 
-  
+
   render() {
     return (
       <Layout style={styles.container}>
@@ -124,7 +124,7 @@ export default class Home extends React.Component {
         <Text
           style={{
             color: "#FFFFFF",
-            fontSize:  wp('7%'),
+            fontSize: wp('7%'),
             //lineHeight: 30,
             letterSpacing: wp('0%'),
             includeFontPadding: true,
@@ -162,7 +162,7 @@ export default class Home extends React.Component {
           scrollable
           style={{
             top: hp('5%'),
-            height:hp('20%'),
+            height: hp('20%'),
             width: wp('130%'),
             paddingTop: hp('2%'),
             paddingBottom: hp('0%'),
@@ -186,7 +186,7 @@ export default class Home extends React.Component {
               <Text
                 style={{
                   left: wp('-36%'),
-                  position: "absolute",        
+                  position: "absolute",
                   paddingTop: wp('13%'),
                   color: "#8A8A8E",
                 }}
@@ -233,7 +233,7 @@ export default class Home extends React.Component {
                 style={{
                   left: wp('-4%'),
                   position: "absolute",
-                  paddingTop:hp('15%'),
+                  paddingTop: hp('15%'),
                   color: "#8A8A8E",
                 }}
               >
@@ -249,16 +249,47 @@ export default class Home extends React.Component {
             </Card>
           </>
         ) : (
-          <>
-            <Image
-              style={HomeStyles.girlContainer}
-              source={require("../../assets/girl.png")}
-            />
-            <Text style={HomeStyles.headerText}>
-              You haven't tracked anything today!
+            <>
+              <Image
+                style={HomeStyles.girlContainer}
+                source={require("../../assets/girl.png")}
+              />
+              <Text style={HomeStyles.headerText}>
+                You haven't tracked anything today!
             </Text>
-          </>
-        )}
+            </>
+          )}
+
+
+
+        <Image
+          style={HomeStyles.tabContainer}
+          source={require("../../assets/bottomtab.png")}
+        />
+        <TouchableOpacity >
+          <Image
+            style={HomeStyles.careplan}
+            source={require("../../assets/careplan.png")}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('Insights')}>
+          <Image
+            style={HomeStyles.insights}
+            source={require("../../assets/insights.png")}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity >
+          <Image
+            style={HomeStyles.learn}
+            source={require("../../assets/learn.png")}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('Settings')}>
+          <Image
+            style={HomeStyles.settings}
+            source={require("../../assets/settings.png")}
+          />
+        </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() =>
@@ -335,7 +366,7 @@ const styles = StyleSheet.create({
     letterSpacing: wp('0%'),
     justifyContent: "center",
     alignItems: "center",
-    left:  wp('-28%'),
+    left: wp('-28%'),
     paddingLeft: hp('2%'),
     paddingTop: hp('3%'),
   },
@@ -347,7 +378,7 @@ const styles = StyleSheet.create({
     letterSpacing: wp('0%'),
     justifyContent: "center",
     alignItems: "center",
-    left:  wp('-40%'),
+    left: wp('-40%'),
     paddingLeft: hp('2%'),
     paddingTop: hp('3%'),
   },
@@ -359,7 +390,7 @@ const styles = StyleSheet.create({
     letterSpacing: wp('0%'),
     justifyContent: "center",
     alignItems: "center",
-    left:  wp('-8%'),
+    left: wp('-8%'),
     paddingLeft: hp('2%'),
     paddingTop: hp('9%'),
   },

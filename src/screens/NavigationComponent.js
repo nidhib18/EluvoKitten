@@ -5,6 +5,8 @@ import { WelcomeScreen as WelcomeScreen } from './WelcomeScreen';
 import  LoginScreen  from './LoginScreen';
 import SignUpScreen  from './SignUpScreen';
 import ForgotPassword from './ForgotPassword';
+import {InsightScreen }from './InsightScreen';
+import {SettingScreen }from './SettingScreen';
 
 import Home from './Home'
 import { TrackScreen } from './TrackScreen';
@@ -33,6 +35,18 @@ function RootStackScreen() {
         options={{ headerShown: false }}
       />
       <RootStack.Screen name="Track" component={TrackScreen} />
+      <RootStack.Screen
+        name="Insight"
+        component={MainStackScreen}
+        options={{ headerShown: false }}
+      />
+      <RootStack.Screen name="Insights" component={InsightScreen} />
+      <RootStack.Screen
+        name="Set"
+        component={MainStackScreen}
+        options={{ headerShown: false }}
+      />
+      <RootStack.Screen name="Settings" component={SettingScreen} />
     </RootStack.Navigator>
   );
 }

@@ -28,20 +28,14 @@ export const TrackScreen = ({ route,navigation }) => {
         style={{ height:hp('9%'), width: width }}
       />
       <Button
-        style={{ left: wp('40%'), top: wp('4%'), height:hp('5%') }}
+        style={{ left: wp('40%'), top: wp('5%'), height:hp('5%') }}
         s
         appearance="outline"
         onPress={() => navigation.navigate("Home")}
       >
         Done
       </Button>
-      <Button
-        style={{ right: wp('40%'), top: wp('-8%'), height:hp('5%') }}
-        appearance="outline"
-        onPress={() => navigation.navigate("Home")}
-      >
-        Cancel
-      </Button>
+      
       <Image
         style={HomeStyles.girlContainer}
         source={require("../../assets/girl.png")}
@@ -58,7 +52,7 @@ export const TrackScreen = ({ route,navigation }) => {
           marginLeft: "-63%",
           marginRight: "-82%",
           justifyContent: "center",
-          bottom: hp('-38%'),
+          bottom: hp('-45%'),
         }}
       >
         
