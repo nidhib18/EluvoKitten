@@ -7,11 +7,14 @@ import BloodCard from "./TrackingCards/BloodCard";
 import DigestionCard from "./TrackingCards/DigestionCard";
 import ExerciseCard from "./TrackingCards/ExerciseCard";
 import SaveCard from "./TrackingCards/SaveCard";
+import DietCard from "./TrackingCards/DietCard";
+import SexCard from "./TrackingCards/SexCard";
 import { TrackingStyles } from "./TrackingStyles";
 import { HomeStyles } from "./HomeStyles";
 
 import { Divider, Layout, TopNavigation, Button } from "@ui-kitten/components";
 import { ScrollView, Dimensions, Image, Text } from "react-native";
+
 
 const { width } = Dimensions.get("window");
 export const TrackScreen = ({ route,navigation }) => {
@@ -52,12 +55,13 @@ export const TrackScreen = ({ route,navigation }) => {
           flex: 1,
           flexGrow: 1,
           flexDirection: "row",
-          marginLeft: "-42%",
-          marginRight: "-30%",
+          marginLeft: "-63%",
+          marginRight: "-82%",
           justifyContent: "center",
           bottom: hp('-38%'),
         }}
       >
+        
         <MedicationCard />
         <PainCard navigation={navigation}
          route= {route} />
@@ -65,7 +69,12 @@ export const TrackScreen = ({ route,navigation }) => {
         <BloodCard />
         <DigestionCard />
         <ExerciseCard />
+        <DietCard />
+        <SexCard />
         <SaveCard navigation={navigation} />
+        <Text style={TrackingStyles.dietText}>Diet</Text>
+        <Text style={TrackingStyles.sexText}>Sex</Text>
+        <Text style={TrackingStyles.painText}>Pain</Text>
       </ScrollView>
     </Layout>
   );

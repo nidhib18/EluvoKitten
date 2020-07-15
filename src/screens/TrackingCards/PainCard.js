@@ -66,7 +66,7 @@ export default class PainCard extends React.Component {
             selectedTags: [],
             painValue: 0,
             minValue: 0,
-            maxValue: 10,
+            maxValue: 5,
             userDetails: {},
             painDetails: initPainDetails(0, moment().format('YYYY-MM-DD')),
             painLocations: [],
@@ -257,8 +257,8 @@ export default class PainCard extends React.Component {
                         <Text style={{ color: '#B3B3B3', textAlign: 'left', top:hp('12%'), fontSize: wp('4%') }}>What type of pain did you experience?</Text>
                         <View style={{ top: hp('14%'), left: wp('5%')}}>
                             <TagSelector
-
-                                selectedTagStyle={TrackingStyles.tagStyle}
+                                //tagStyle ={TrackingStyles.tag}
+                                selectedTagStyle={TrackingStyles.tagSelected}
                                 maxHeight={hp('20%')}
                                 tags={this.painTypeTags}
                                 onChange={(selected) => this.setState({ selectedTags: selected })}
@@ -305,5 +305,16 @@ const styles = StyleSheet.create({
         color: '#f09874',
         top: hp('9%')
 
-    }
+    },
+    button: {
+        // width: wp('35%'),
+        // backgroundColor: "rgba(240, 152, 116, 0.48)",
+        // paddingVertical: hp('2%'),
+        // paddingHorizontal: hp('1%'),
+        borderRadius: 15,
+        // marginVertical: wp('15%'),
+        // left: wp('38%'),
+        // top: hp('-7.2%'),
+        // height:hp('6%')
+    },
 });
