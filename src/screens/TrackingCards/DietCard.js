@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { Image, Dimensions, TouchableOpacity, Slider, StyleSheet } from 'react-native';
+import { Image, Dimensions, TouchableOpacity, Slider, StyleSheet, View } from 'react-native';
 import { Layout, Card, Modal, Text, Button } from '@ui-kitten/components';
 import { TrackingStyles } from "../TrackingStyles";
 import TagGroup from 'react-native-tag-group';
@@ -10,10 +10,10 @@ import TagGroup from 'react-native-tag-group';
 const { width } = Dimensions.get('window');
 
 export default class DietCard extends React.Component {
-    
+
     constructor(props) {
         super(props);
-       
+
         this.state = { dietVisible: false };
     }
     setDietVisible(visible) {
@@ -48,7 +48,17 @@ export default class DietCard extends React.Component {
                             onChange={(data) => { console.log('normal slider data: ', data); }}
 
                         />
+                        <View>
+                        <TagGroup
+                            tagStyle={{borderRadius:15}}
+                            tintColor="#f09874"
+                            ref={ref => this.tagGroup = ref}
+                            source={['One', 'Two', 'Three']}
+                            onSelectedTagChange={(selected) => { this.setState({ selected }); }}
+                        />
+                        </View>
                         
+
                         <Button
                             style={TrackingStyles.trackButton}
                             appearance='outline'
@@ -66,7 +76,7 @@ export default class DietCard extends React.Component {
     };
 }
 const styles = StyleSheet.create({
-    
+
     button: {
         // width: wp('35%'),
         // backgroundColor: "rgba(240, 152, 116, 0.48)",
@@ -84,5 +94,5 @@ const styles = StyleSheet.create({
 
     // },
 
-   
+
 });
