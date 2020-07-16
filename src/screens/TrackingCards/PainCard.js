@@ -66,7 +66,7 @@ export default class PainCard extends React.Component {
             selectedTags: [],
             painValue: 0,
             minValue: 0,
-            maxValue: 10,
+            maxValue: 5,
             userDetails: {},
             painDetails: initPainDetails(0, moment().format('YYYY-MM-DD')),
             painLocations: [],

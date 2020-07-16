@@ -165,7 +165,7 @@ export default class Home extends React.Component {
             height: hp('20%'),
             width: wp('130%'),
             paddingTop: hp('2%'),
-            paddingBottom: hp('0%'),
+            paddingBottom: hp('2.2%'),
           }}
           calendarHeaderStyle={{ color: "white" }}
           calendarColor={"#f09874"}

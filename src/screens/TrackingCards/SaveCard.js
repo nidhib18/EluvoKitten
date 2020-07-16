@@ -31,18 +31,31 @@ export default class SaveCard extends React.Component {
             style={TrackingStyles.saveButton}
             source={require("../../../assets/save.png")}
           />
+          
         </TouchableOpacity>
         <Modal visible={this.state.saveVisible}>
           <Card
             disabled={true}
-            style={TrackingStyles.cardStyle }
-            //navigation={this.props.navigation}
+            style={TrackingStyles.cardStyle}
+          //navigation={this.props.navigation}
+          
           >
+          <TouchableOpacity onPress={() => {
+            this.setSaveVisible(!this.state.saveVisible);
+          }}>
+            <Image
+              style={TrackingStyles.xContainer}
+              source={require('../../../assets/x.png')}
+            />
+          </TouchableOpacity>
+          
+          
             <Text style={TrackingStyles.saveText}>Thanks for That!</Text>
             <Text style={TrackingStyles.saveLogText}>
               Logging your symptoms every day will help paint a better picture
               of your health
             </Text>
+            
             <Image
               style={TrackingStyles.girlSaveContainer}
               source={require("../../../assets/Illustration.png")}
@@ -52,14 +65,15 @@ export default class SaveCard extends React.Component {
               appearance="outline"
               onPress={this.onNavigate}
 
-              //    onPress=  {() => {
-              //     this.props.navigation.navigate('Home')
+            //    onPress=  {() => {
+            //     this.props.navigation.navigate('Home')
 
-              //  } }
+            //  } }
             >
               {" "}
               Finish
             </Button>
+            
           </Card>
         </Modal>
       </Layout>

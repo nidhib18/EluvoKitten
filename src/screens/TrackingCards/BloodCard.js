@@ -32,7 +32,7 @@ export default class BloodCard extends React.Component {
             selectedTags: [],
             bloodValue: 0,
             minValue: 0,
-            maxValue: 10
+            maxValue: 5
         };
            
     }

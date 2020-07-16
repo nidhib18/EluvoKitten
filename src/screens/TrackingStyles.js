@@ -105,6 +105,27 @@ export const TrackingStyles = {
     resizeMode: "contain",
 
   },
+  appointmentButton: {
+    position: "absolute",
+    top: hp('-80%'),
+    width: wp('22%'),
+    height: hp('20.81%'),
+    right: wp('-9%'),
+    resizeMode: "contain",
+
+  },
+  appointmentText: {
+    position: "absolute",
+    top: hp('24%'),
+    right: wp('43.5%'),
+    resizeMode: "contain",
+    fontWeight: 'bold',
+    color: '#96969a',
+    textAlign: 'left',
+    fontSize: wp('2.7%'),
+
+
+  },
   sexText: {
     color: '#96969a',
     textAlign: 'left',
@@ -217,12 +238,48 @@ tagSelected: {
     backgroundColor: "#fbfbfb",
   },
 
+  doctorContainer: {
+    flex: 1,
+    position: "absolute",
+    width: wp('105%'),
+    height: hp('50%'),
+    top: hp('30%'),
+    alignItems: "center",
+    resizeMode: "contain",
+  },
+
   xContainer: {
     position: "absolute",
     right: wp('0%'),
     top: hp('-5%'),
     width: wp('5%'),
     height: hp('5%'),
+    resizeMode: "contain",
+  },
+  docContainer: {
+    position: "absolute",
+    right: wp('75%'),
+    top: hp('10%'),
+    width: wp('9%'),
+    height: hp('9%'),
+    resizeMode: "contain",
+  },
+
+  clinicContainer: {
+    position: "absolute",
+    right: wp('75%'),
+    top: hp('30%'),
+    width: wp('8%'),
+    height: hp('8%'),
+    resizeMode: "contain",
+  },
+
+  timeContainer: {
+    position: "absolute",
+    right: wp('75%'),
+    top: hp('20%'),
+    width: wp('8%'),
+    height: hp('8%'),
     resizeMode: "contain",
   },
 };

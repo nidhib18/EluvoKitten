@@ -1,52 +1,89 @@
-import React from "react";
-import { SafeAreaView, Image, StyleSheet, Dimensions } from "react-native";
-import { Button, Divider, Layout, TopNavigation } from "@ui-kitten/components";
-import { TrackingStyles } from "./TrackingStyles";
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-const { width, height } = Dimensions.get("window");
+import React, { Component } from 'react';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { Image, Dimensions, TouchableOpacity, Slider, StyleSheet, View } from 'react-native';
+import { Layout, Card, Modal, Text, Button } from '@ui-kitten/components';
+import { TrackingStyles } from "../TrackingStyles";
+import TagSelector from 'react-native-tag-selector';
 
-export const SettingScreen = ({ navigation }) => {
-  return (
-    <Layout style={TrackingStyles.container}>
-      <TopNavigation position="absolute"
-        top={0}
-        style={{ height:hp('9%'), width: width }} />
-        <Button
-        style={{ left: wp('40%'), top: wp('5.5%'), height:hp('5%') }}
-        s
-        appearance="outline"
-        onPress={() => navigation.navigate("Home")}
-      >
-        Done
-      </Button>
-      <Divider />
+const { width } = Dimensions.get('window');
 
-    </Layout>
-  );
-};
+export default class MoodCard extends React.Component {
+    
+    moodTags = [
+        {
+            id: 'Calm',
+            name: 'Calm'
+        },
+        {
+            id: 'Happy',
+            name: 'Happy'
+        },
+        {
+            id: 'Greatful',
+            name: 'Greatful'
+        },
+        {
+            id: 'Excited',
+            name: 'Excited'
+        },
+        {
+            id: 'Irritable',
+            name: 'Irritable'
+        },
+        {
+            id: 'Sad',
+            name: 'Sad'
+        },
+        {
+            id: ' Stressed',
+            name: 'Stressed'
+        },
+        {
+            id: 'Overwhelmed',
+            name: 'Overwhelmed'
+        },
+        {
+            id: 'Anxious',
+            name: 'Anxious'
+        },
+        {
+            id: 'Depressed',
+            name: 'Depressed'
+        },
 
-const styles = StyleSheet.create({
-  signBtnContainer: {
-    position: "absolute",
-    width: wp('95%') ,
-    height: hp('7%'),
-    borderRadius: 24,
-    top: hp('85%'),
-    backgroundColor: "#fff",
-    includeFontPadding: true,
-    paddingVertical: 5,
-  },
-
-  loginBtnContainer: {
-    position: "absolute",
-    width:wp('95%'),
-    height: hp('7%'),
-    borderRadius: 24,
-    top: hp('75%'),
-    backgroundColor: "white",
-    includeFontPadding: true,
-    paddingVertical: 5,
-  },
-});
+    
+    ]
+    constructor(props) {
+        super(props);
+        this.state = { moodVisible: false };
+        this.state = {
+            selectedTags: [],
+            moodValue: 0,
+            minValue: 0,
+            maxValue: 10
+        };
+    }
+    setMoodVisible(visible) {
+        this.setState({ moodVisible: visible });
+    }
 
 
+    render() {
+
+        return (
+            <Layout style={TrackingStyles.container}>
+               
+                <Modal visible={this.state.moodVisible}>
+                    <Card disabled={true}
+                        style={TrackingStyles.cardStyle}>
+                        <Text style={TrackingStyles.symptomText}>Mood </Text>
+                        
+                  
+                    </Card>
+                </Modal>
+            </Layout>
+
+
+        );
+    };
+}

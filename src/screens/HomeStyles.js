@@ -9,6 +9,7 @@ export const HomeStyles = {
     backgroundColor: "#fbfbfb",
   },
 
+  
   girlContainer: {
     flex: 1,
     position: "absolute",

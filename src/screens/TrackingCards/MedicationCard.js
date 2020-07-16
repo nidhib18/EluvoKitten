@@ -6,6 +6,7 @@ import { TrackingStyles } from "../TrackingStyles";
 import DropDownPicker from 'react-native-dropdown-picker';
 import TimePicker from "react-native-24h-timepicker";
 import TagSelector from 'react-native-tag-selector';
+import { color } from 'react-native-reanimated';
 
 const { width } = Dimensions.get('window');
 
@@ -80,9 +81,9 @@ export default class MedicationCard extends React.Component {
                         <Text style={{ color: '#B3B3B3', textAlign: 'left', top: hp('3%'), fontSize: wp('4%') }}>What Medication are you taking?</Text>
 
                         <Input
-                            style={{ borderColor: '#ffffff', borderRadius: 15, backgroundColor: 'rgba(240, 152, 116, 0.48)', top: hp('5%'), left: wp('-1%') }}
+                            style={{ borderColor: '#ffffff', borderRadius: 25, backgroundColor: 'rgba(240, 152, 116, 0.48)', top: hp('5%'), left: wp('-1%') }}
                             value={this.state.text}
-                            color={'#000'}
+                            color={'#FFF'}
                             onChangeText={(text) => this.setState({ text })}
                         />
 
@@ -102,6 +103,7 @@ export default class MedicationCard extends React.Component {
                             style={styles.dropStyle}
                             dropDownStyle={styles.downStyle}
                             placeholder="Quantity"
+    
                             onChangeItem={item => this.setState({
                                 quantity: item.value
                             })}
@@ -164,7 +166,7 @@ const styles = StyleSheet.create({
     text: {
         fontSize: wp('4%'),
         marginTop:hp('3%'),
-        color: '#000',
+        color: '#FFF',
         left: wp('52%'),
         top: hp('-23%'),
         alignContent: 'center',
@@ -175,14 +177,14 @@ const styles = StyleSheet.create({
         backgroundColor: "rgba(240, 152, 116, 0.48)",
         paddingVertical: hp('2%'),
         paddingHorizontal: hp('1%'),
-        borderRadius: 15,
+        borderRadius: 25,
         marginVertical: wp('15%'),
         left: wp('41%'),
         top: hp('-7.2%'),
         height:hp('6%')
     },
     buttonText: {
-        color: "#000",
+        color: "#FFF",
         fontSize: wp('3.5%'),
 
     },
@@ -191,15 +193,16 @@ const styles = StyleSheet.create({
         fontSize: wp('3.5%'),
         borderColor: '#ffffff',
         backgroundColor: 'rgba(240, 152, 116, 0.48)',
-        borderTopLeftRadius: 15,
-        borderTopRightRadius: 15,
-        borderBottomLeftRadius: 15,
-        borderBottomRightRadius: 15
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
+        borderBottomLeftRadius: 25,
+        borderBottomRightRadius: 25
     },
     downStyle: {
         backgroundColor: '#fafafa',
-        borderBottomLeftRadius: 15,
-        borderBottomRightRadius: 15
+        borderBottomLeftRadius: 25,
+        borderBottomRightRadius: 25,
+        
 
     }
 });

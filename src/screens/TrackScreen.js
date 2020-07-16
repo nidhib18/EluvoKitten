@@ -14,6 +14,7 @@ import { HomeStyles } from "./HomeStyles";
 
 import { Divider, Layout, TopNavigation, Button } from "@ui-kitten/components";
 import { ScrollView, Dimensions, Image, Text } from "react-native";
+import AppointmentCard from "./TrackingCards/AppointmentCard";
 
 
 const { width } = Dimensions.get("window");
@@ -37,11 +38,12 @@ export const TrackScreen = ({ route,navigation }) => {
       </Button>
       
       <Image
-        style={HomeStyles.girlContainer}
-        source={require("../../assets/girl.png")}
+        style={TrackingStyles.doctorContainer}
+        source={require("../../assets/doctor.png")}
       />
 
       <Divider />
+      
       <ScrollView
         horizontal={true}
         contentContainerStyle={{
@@ -65,11 +67,14 @@ export const TrackScreen = ({ route,navigation }) => {
         <ExerciseCard />
         <DietCard />
         <SexCard />
+        
         <SaveCard navigation={navigation} />
         <Text style={TrackingStyles.dietText}>Diet</Text>
         <Text style={TrackingStyles.sexText}>Sex</Text>
         <Text style={TrackingStyles.painText}>Pain</Text>
       </ScrollView>
+      <AppointmentCard/>
+      <Text style={TrackingStyles.appointmentText}>Appointment</Text>
     </Layout>
   );
 };
