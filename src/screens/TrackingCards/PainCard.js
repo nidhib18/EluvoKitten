@@ -11,7 +11,6 @@ import { initPainDetails } from "../../models/PainDetails";
 import { utcToLocal, localToUtcDate, localToUtcDateTime } from "../../helpers/DateHelpers";
 import { mapListItemsToTags } from "../../helpers/TagHelpers"
 const { width } = Dimensions.get('window');
-
 export default class PainCard extends React.Component {
     painTags = [
         {
@@ -38,9 +37,7 @@ export default class PainCard extends React.Component {
             id: 'Back',
             name: 'Back'
         },
-
     ];
-
     painTypeTags = [
         {
             id: 'Sharp',
@@ -54,35 +51,31 @@ export default class PainCard extends React.Component {
             id: 'Throbbing',
             name: 'Throbbing'
         },
-
     ]
-
     constructor(props) {
         super(props);
         this.state = { painVisible: false };
         //const { currentDate } = this.props.route.params;
         //console.log("Navigation", this.props.route);
         this.state = {
-            selectedTags: [],
+            selectedTags: [], //user selected pain locations
             painValue: 0,
+            selectedPainTypes: [],  //user selected pain type value 
             minValue: 0,
             maxValue: 10,
             userDetails: {},
             painDetails: initPainDetails(0, moment().format('YYYY-MM-DD')),
-            painLocations: [],
+            painTypes: [],  //all possible pain types from list item
+            painLocations: [], // all possible pain locations from list item
             isPainDataAvailable: false,
             currentDate: moment().format('YYYY-MM-DD')// / this.props.route.params.CurrentDate    
         };
         this.savePainDetails = this.savePainDetails.bind(this);
-
     }
-
     setPainVisible(visible) {
         this.setState({ painVisible: visible });
     }
-
     getPainLocations() {
-
         let url = constants.PAINLOCATIONS_DEV_URL;
         console.log("Url is", url);
         getData(constants.JWTKEY).then((jwt) =>
@@ -94,7 +87,6 @@ export default class PainCard extends React.Component {
                 },
             })
                 .then((response) => response.json())
-
                 .then((responseData) => {
                     let painLocations = [];
                     painLocations = mapListItemsToTags(responseData);
@@ -104,11 +96,30 @@ export default class PainCard extends React.Component {
                 .catch((err) => console.log(err))
         );
     };
+    getPainTypes() {
+        let url = constants.PAINTYPE_DEV_URL;
+        console.log("Url is", url);
+        getData(constants.JWTKEY).then((jwt) =>
+            fetch(url, {
+                //calling API
+                method: "GET",
+                headers: {
+                    Authorization: "Bearer " + jwt, //Passing this will authorize the user
+                },
+            })
+                .then((response) => response.json())
+                .then((responseData) => {
+                    let painTypes = [];//getting all possible paintype tags from the database  //{} is an object [] an array a value
+                    painTypes = mapListItemsToTags(responseData);
+                    console.log("Pain Type", painTypes);
+                    this.setState({ painTypes: painTypes });
+                })
+                .catch((err) => console.log(err))
+        );
+    };
     getUserPain = (route) => {
-
         let userId = this.state.userDetails.user_id;
         let currentDate = this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD');
-
         let url = constants.USERPAIN_DEV_URL.replace("[userId]", userId).replace(
             "[occurredDate]",
             localToUtcDateTime(currentDate)
@@ -123,11 +134,11 @@ export default class PainCard extends React.Component {
                 },
             })
                 .then((response) => response.json())
-
                 .then((responseData) => {
                     // If responseData is not empty, then isPainDataAvailable = true
                     console.log("PAIN CARD Get User Pain Respnse", responseData);
                     if (Object.keys(responseData).length) {
+                        console.log ("In GET USER PAIN! ",responseData)
                         this.setState({
                             isPainDataAvailable: true,
                             painDetails: responseData,
@@ -148,20 +159,30 @@ export default class PainCard extends React.Component {
         );
     };
     savePainDetails() {
+        console.log ("Save");
+        console.log(this.state.isPainDataAvailable);
         if (!this.state.isPainDataAvailable) {
             // Add the saved pain level
             let userId = this.state.userDetails.user_id;
             let occurredDate = moment(this.state.currentDate).add(moment().hour(), 'hour').add(moment().minute(), 'minute');
             // Add pain locations
             let locations = [];
+            let painType = null;
             console.log("selected tags", this.state.selectedTags);
             this.state.selectedTags.map(tag => {
-                let location = { location_id: tag };
+                let location = {location_id: tag };
                 locations.push(location);
             });
-            let pain = {
+            console.log("selected pain types", this.state.selectedPainTypes); //this 
+            console.log("pain type length", this.state.selectedPainTypes.length);
+            if (this.state.selectedPainTypes.length > 0)
+                painType = this.state.selectedPainTypes[0]; 
+            console.log("selected pain type value", painType); // or this
+
+            let pain = { //sending to the database,if pian type value = 0 then don't send it to the database as it means the user didnt select any tags
                 user_id: userId,
                 pain_level: this.state.painValue,
+                pain_type : painType, 
                 occurred_date: localToUtcDateTime(occurredDate),
                 locations: locations
             };
@@ -182,15 +203,15 @@ export default class PainCard extends React.Component {
                         console.log(response.json());
                         return response.json();
                     })
-
             );
         }
         else {
+            console.log("In the else of savepain details");
             alert("Update not implemented yet.");
         }
     }
-    componentDidMount() {
-
+    componentDidMount() //after Ui has been uploaded 
+     {
         getData(constants.USERDETAILS).then((data) => {
             // Read back the user details from storage and convert to object
             this.state.userDetails = JSON.parse(data);
@@ -198,18 +219,29 @@ export default class PainCard extends React.Component {
                 userDetails: JSON.parse(data),
             });
             this.getUserPain();
+            this.getPainTypes();
             this.getPainLocations();
         });
     }
     render() {
+        console.log("IN RENDER PAIN!!",this.state.painDetails.pain)
         let painLevel = this.state.painDetails && this.state.painDetails.pain && this.state.painDetails.pain.pain_level || 0;
+
         let painLocations = this.state.painLocations || [];
         let selectedPainLocations = [];
         if (this.state.painDetails && this.state.painDetails.pain && this.state.painDetails.pain.locations) {
             selectedPainLocations = mapListItemsToTags(this.state.painDetails.pain.locations);
             console.log(selectedPainLocations)
         }
+        let painTypes = this.state.painTypes || [] ; // get all the possible value from the list item , if not then empty array .
+        let selectedPainTypes = [];
+        console.log("IN RENDER PAIN TYPE",this.state.painDetails.pain.pain_type)
+        if (this.state.painDetails && this.state.painDetails.pain && this.state.painDetails.pain.pain_type) {
+            selectedPainTypes = mapListItemsToTags([{list_item_id: this.state.painDetails.pain.pain_type,list_item_name:"Sharp"}]);
+            console.log("In Render selected ", selectedPainTypes)
 
+        }
+        
         return (
             <Layout style={TrackingStyles.container}>
                 <TouchableOpacity onPress={() => {
@@ -220,13 +252,11 @@ export default class PainCard extends React.Component {
                         source={require('../../../assets/pain.png')}
                     />
                 </TouchableOpacity>
-
                 <Modal visible={this.state.painVisible}>
                     <Card disabled={true}
                         style={TrackingStyles.cardStyle}>
                         <Text style={TrackingStyles.symptomText}>Pain </Text>
                         <Text style={{ color: '#B3B3B3', textAlign: 'left', top:hp('2%'), fontSize: wp('4%') }}>How much pain did you have today? </Text>
-
                         <Slider
                             style={TrackingStyles.slider}
                             step={1}
@@ -246,45 +276,42 @@ export default class PainCard extends React.Component {
                         </View>
                         <Text style={{ color: '#B3B3B3', textAlign: 'left', top:hp('11%'), fontSize: wp('4%') }}>Where is your pain located?</Text>
                         <View style={{ top:hp('10%'), left: wp('5%') }}>
-                            <Text> Selected: {selectedPainLocations.map(tag => `${tag} `)} </Text>
+                        <Text> Selected: {this.state.selectedTags.map(tag => `${tag} `)} </Text>
                             <TagSelector
                                 selectedTagStyle={TrackingStyles.tagStyle}
                                 maxHeight={70}
                                 tags={painLocations}
+                                selectedTags = {selectedPainLocations}
                                 onChange={(selected) => this.setState({ selectedTags: selected })}
                             />
                         </View>
                         <Text style={{ color: '#B3B3B3', textAlign: 'left', top:hp('12%'), fontSize: wp('4%') }}>What type of pain did you experience?</Text>
                         <View style={{ top: hp('14%'), left: wp('5%')}}>
+                        <Text> Selected: {selectedPainTypes.map(tag => `${tag} `)} </Text> 
+                        
                             <TagSelector
-
                                 selectedTagStyle={TrackingStyles.tagStyle}
                                 maxHeight={hp('20%')}
-                                tags={this.painTypeTags}
-                                onChange={(selected) => this.setState({ selectedTags: selected })}
+                                tags={painTypes} //source
+                                onChange={(selected) => this.setState({ selectedPainTypes: selected })}
                             />
                         </View>
                         <Button
                             style={TrackingStyles.trackButton}
                             appearance='outline'
-
                             onPress={() => {
                                 this.setPainVisible(!this.state.painVisible);
                                 this.savePainDetails();
                             }}> Track!
                             </Button>
-
                     </Card>
                 </Modal>
 
-
             </Layout>
-
 
         );
     };
 }
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -304,6 +331,5 @@ const styles = StyleSheet.create({
     colorPeach: {
         color: '#f09874',
         top: hp('9%')
-
     }
 });

@@ -220,6 +220,7 @@ export default class Home extends React.Component {
                 Pain Level: {this.state.painDetails.pain_level}
               </Text>
 
+
               <Image
                 style={styles.painIcon}
                 source={require("../../assets/painia.png")}
@@ -245,6 +246,16 @@ export default class Home extends React.Component {
                       : "");
                   return locationText;
                 })}
+              </Text>
+              <Text
+                style={{
+                  left: wp('-10%'),
+                  paddingTop: hp('10%'),
+                  color: "#8A8A8E",
+                }}
+              >
+                Pain Type: {this.state.painDetails.pain_type_name}
+                
               </Text>
             </Card>
           </>

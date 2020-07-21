@@ -14,6 +14,8 @@ export const constants = {
   PAINLOCATIONS_DEV_URL:
     "https://dv4tzoya4d.execute-api.ap-southeast-2.amazonaws.com/DEV/listitems?listId=5",
   ADDUSERPAIN_DEV_URL:
-  "https://kkm5v5hx80.execute-api.ap-southeast-2.amazonaws.com/DEV/pain"
+  "https://kkm5v5hx80.execute-api.ap-southeast-2.amazonaws.com/DEV/pain",
+  PAINTYPE_DEV_URL:
+  "https://dv4tzoya4d.execute-api.ap-southeast-2.amazonaws.com/DEV/listitems?listId=6"
 
 };
