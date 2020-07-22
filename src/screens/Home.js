@@ -25,7 +25,7 @@ import { HomeStyles } from "./HomeStyles";
 import { storeData, getData } from "../helpers/StorageHelpers";
 import { constants } from "../resources/Constants";
 import { utcToLocal,localToUtcDate,localToUtcDateTime } from "../helpers/DateHelpers";
-
+import {getUserMood} from "../helpers/MoodHelpers";
 //import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
 
 const { Width } = Dimensions.get("window");
@@ -52,6 +52,7 @@ export default class Home extends React.Component {
       currentDate: moment().format("YYYY-MM-DD"),
       painDetails: { locations: [] },
       isPainDataAvailable: false,
+      isMoodDataAvailable:false,
     };
     this.setDate = this.setDate.bind(this);
     this.getUserPain = this.getUserPain.bind(this);
@@ -110,7 +111,13 @@ export default class Home extends React.Component {
         userDetails: JSON.parse(data),
       });
       this.getUserPain();
+      this.getUserMoodHelper();
     });
+  }
+
+  getUserMoodHelper()
+  {
+    getUserMood();
   }
 
   
