@@ -27,7 +27,7 @@ import { constants } from "../resources/Constants";
 import { utcToLocal,localToUtcDate,localToUtcDateTime } from "../helpers/DateHelpers";
 import {getUserMood} from "../helpers/MoodHelpers";
 //import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
-
+import {initMoodDetails} from "../models/MoodDetails";
 const { Width } = Dimensions.get("window");
 let datesWhitelist = [
   {
@@ -51,12 +51,13 @@ export default class Home extends React.Component {
       userDetails: {},
       currentDate: moment().format("YYYY-MM-DD"),
       painDetails: { locations: [] },
+      moodDetails: {},
       isPainDataAvailable: false,
       isMoodDataAvailable:false,
     };
     this.setDate = this.setDate.bind(this);
     this.getUserPain = this.getUserPain.bind(this);
-   
+   this.getUserMood = this.getUserMood.bind(this); 
   }
 
   
@@ -66,6 +67,7 @@ export default class Home extends React.Component {
     this.state.currentDate = utcToLocal(newDate);
     console.log("Current Date", this.state.currentDate);
     this.getUserPain();
+    this.getUserMood();
   }
 
   getUserPain() {
@@ -74,7 +76,6 @@ export default class Home extends React.Component {
       "[occurredDate]",
       localToUtcDateTime(this.state.currentDate)
     );
-    console.log("Url is", url);
     getData(constants.JWTKEY).then((jwt) =>
       fetch(url, {
         //calling API
@@ -103,6 +104,43 @@ export default class Home extends React.Component {
         .catch((err) => console.log(err))
     );
   }
+  getUserMood  ()  {
+    let userId = this.state.userDetails.user_id;
+    let url = constants.USERMOOD_DEV_URL.replace("[userId]", userId).replace(
+      "[occurredDate]",
+      localToUtcDateTime(this.state.currentDate)
+    );
+    getData(constants.JWTKEY).then((jwt) =>
+      fetch(url, {
+        //calling API
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + jwt, //Passing this will authorize the user
+        },
+      })
+        .then((response) => response.json())
+
+        .then((responseData) => {
+          // If responseData is not empty, then isMoodDataAvailable = true
+          console.log("Home screen - In Get user mood - Response data is", responseData);
+          if (Object.keys(responseData).length) {
+            this.setState({
+              isMoodDataAvailable: true,
+              moodDetails: responseData.mood,
+            });
+            console.log("Home screen - In Get user mood - added to state");
+          } else {
+            this.setState({
+              isMoodDataAvailable: false,
+              moodDetails:{},
+             });
+             console.log("Home screen - In Get user mood - no mood data");
+          }
+        })
+        .catch((err) => console.log(err))
+        
+    );
+  }
   componentDidMount() {
     getData(constants.USERDETAILS).then((data) => {
       // Read back the user details from storage and convert to object
@@ -110,15 +148,12 @@ export default class Home extends React.Component {
       this.setState({
         userDetails: JSON.parse(data),
       });
-      this.getUserPain();
-      this.getUserMoodHelper();
+      //this.getUserPain();
+      this.getUserMood();
     });
   }
 
-  getUserMoodHelper()
-  {
-    getUserMood();
-  }
+  
 
   
   render() {
@@ -186,7 +221,8 @@ export default class Home extends React.Component {
           iconContainer={{ flex: 0.13 }}
         />
 
-        {this.state.isPainDataAvailable ? (
+        {this.state.isMoodDataAvailable ? (
+         
           <>
             <Card style={styles.cardSmallContainer}>
               <Text style={styles.medicationText}>Take Ginet</Text>
@@ -216,7 +252,70 @@ export default class Home extends React.Component {
             </Card>
             <Card style={styles.cardContainer}>
               <Text style={styles.cardText}>Today you experienced...</Text>
-              <Text style={styles.painText}>Pain</Text>
+
+
+            <Text style={styles.painText}>Mood</Text>
+              <Text
+                style={{
+                  left: wp('-10%'),
+                  paddingTop: hp('10%'),
+                  color: "#8A8A8E",
+                }}
+              >
+               
+                Mood Level: {this.state.moodDetails.mood_level} 
+              </Text>
+
+
+              <Image
+                style={styles.painIcon}
+                source={require("../../assets/painia.png")}
+              />
+
+              <Text style={{ left: wp('35%'), top: hp('-5%'), color: "#8A8A8E" }}>
+                {moment(this.state.moodDetails.occurred_date).format("hh:mm A")}
+              </Text>
+
+              {/* <Text
+                style={{
+                  left: wp('-4%'),
+                  position: "absolute",
+                  paddingTop:hp('15%'),
+                  color: "#8A8A8E",
+                }}
+              >
+                {this.state.painDetails.locations.map((location, index) => {
+                  let locationText =
+                    location.list_item_name +
+                    (index < this.state.painDetails.locations.length - 1
+                      ? ", "
+                      : "");
+                  return locationText;
+                })}
+              </Text> */}
+              <Text
+                style={{
+                  left: wp('-10%'),
+                  paddingTop: hp('10%'),
+                  color: "#8A8A8E",
+                }}
+              >
+                Mood Type: {this.state.moodDetails.mood_description_name}
+                
+              </Text>
+
+
+
+
+
+
+
+
+
+
+
+
+              {/* <Text style={styles.painText}>Pain</Text>
               <Text
                 style={{
                   left: wp('-10%'),
@@ -263,7 +362,7 @@ export default class Home extends React.Component {
               >
                 Pain Type: {this.state.painDetails.pain_type_name}
                 
-              </Text>
+              </Text> */}
             </Card>
           </>
         ) : (

@@ -5,7 +5,7 @@ export const initMoodDetails = (userId, occurredDate) => {
             mood_id: 0,
             mood_level: 0,
             mood_description:0, 
-            mood_type_name:"",
+            mood_description_name:"",
             occurred_date: occurredDate,
             
         }

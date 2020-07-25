@@ -90,7 +90,7 @@ export default class PainCard extends React.Component {
                 .then((responseData) => {
                     let painLocations = [];
                     painLocations = mapListItemsToTags(responseData);
-                    console.log("Locations", painLocations);
+                    
                     this.setState({ painLocations: painLocations });
                 })
                 .catch((err) => console.log(err))
@@ -111,7 +111,7 @@ export default class PainCard extends React.Component {
                 .then((responseData) => {
                     let painTypes = [];//getting all possible paintype tags from the database  //{} is an object [] an array a value
                     painTypes = mapListItemsToTags(responseData);
-                    console.log("Pain Type", painTypes);
+                    
                     this.setState({ painTypes: painTypes });
                 })
                 .catch((err) => console.log(err))
@@ -136,9 +136,9 @@ export default class PainCard extends React.Component {
                 .then((response) => response.json())
                 .then((responseData) => {
                     // If responseData is not empty, then isPainDataAvailable = true
-                    console.log("PAIN CARD Get User Pain Respnse", responseData);
+                   
                     if (Object.keys(responseData).length) {
-                        console.log ("In GET USER PAIN! ",responseData)
+                      
                         this.setState({
                             isPainDataAvailable: true,
                             painDetails: responseData,
@@ -159,8 +159,8 @@ export default class PainCard extends React.Component {
         );
     };
     savePainDetails() {
-        console.log ("Save");
-        console.log(this.state.isPainDataAvailable);
+      //  console.log ("Save");
+       // console.log(this.state.isPainDataAvailable);
         if (!this.state.isPainDataAvailable) {
             // Add the saved pain level
             let userId = this.state.userDetails.user_id;
@@ -168,16 +168,15 @@ export default class PainCard extends React.Component {
             // Add pain locations
             let locations = [];
             let painType = null;
-            console.log("selected tags", this.state.selectedTags);
+           // console.log("selected tags", this.state.selectedTags);
             this.state.selectedTags.map(tag => {
                 let location = {location_id: tag };
                 locations.push(location);
             });
-            console.log("selected pain types", this.state.selectedPainTypes); //this 
-            console.log("pain type length", this.state.selectedPainTypes.length);
+          
             if (this.state.selectedPainTypes.length > 0)
                 painType = this.state.selectedPainTypes[0]; 
-            console.log("selected pain type value", painType); // or this
+          
 
             let pain = { //sending to the database,if pian type value = 0 then don't send it to the database as it means the user didnt select any tags
                 user_id: userId,
@@ -186,7 +185,7 @@ export default class PainCard extends React.Component {
                 occurred_date: localToUtcDateTime(occurredDate),
                 locations: locations
             };
-            console.log("Saving", pain);
+           
             let url = constants.ADDUSERPAIN_DEV_URL;
             getData(constants.JWTKEY).then((jwt) =>
                 fetch(url, {
@@ -224,21 +223,21 @@ export default class PainCard extends React.Component {
         });
     }
     render() {
-        console.log("IN RENDER PAIN!!",this.state.painDetails.pain)
+      
         let painLevel = this.state.painDetails && this.state.painDetails.pain && this.state.painDetails.pain.pain_level || 0;
 
         let painLocations = this.state.painLocations || [];
         let selectedPainLocations = [];
         if (this.state.painDetails && this.state.painDetails.pain && this.state.painDetails.pain.locations) {
             selectedPainLocations = mapListItemsToTags(this.state.painDetails.pain.locations);
-            console.log(selectedPainLocations)
+            
         }
         let painTypes = this.state.painTypes || [] ; // get all the possible value from the list item , if not then empty array .
         let selectedPainTypes = [];
-        console.log("IN RENDER PAIN TYPE",this.state.painDetails.pain.pain_type)
+        
         if (this.state.painDetails && this.state.painDetails.pain && this.state.painDetails.pain.pain_type) {
             selectedPainTypes = mapListItemsToTags([{list_item_id: this.state.painDetails.pain.pain_type,list_item_name:"Sharp"}]);
-            console.log("In Render selected ", selectedPainTypes)
+          
 
         }
         

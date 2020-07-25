@@ -95,10 +95,10 @@ export default class MoodCard extends React.Component {
             })
                 .then((response) => response.json())
                 .then((responseData) => {
-                    let moodDesciptions = [];//getting all possible paintype tags from the database  //{} is an object [] an array a value
-                    moodDesciptions = mapListItemsToTags(responseData);
-                    console.log("Mood Type", moodDesciptions);
-                    this.setState({ moodDesciptions: moodDesciptions });
+                    let moodDescriptions = [];//getting all possible paintype tags from the database  //{} is an object [] an array a value
+                    moodDescriptions = mapListItemsToTags(responseData);
+                    
+                    this.setState({ moodDescriptions: moodDescriptions });
                 })
                 .catch((err) => console.log(err))
         );
@@ -123,9 +123,9 @@ export default class MoodCard extends React.Component {
                 .then((response) => response.json())
                 .then((responseData) => {
                     // If responseData is not empty, then isPainDataAvailable = true
-                    console.log("MOOD CARD Get User Mood Response", responseData);
+                    //("MOOD CARD Get User Mood Response", responseData);
                     if (Object.keys(responseData).length) {
-                        console.log ("In GET USER MOOD! ",responseData)
+                       // console.log ("In GET USER MOOD! ",responseData)
                         this.setState({
                             isMoodDataAvailable: true,
                             moodDetails: responseData,
@@ -136,7 +136,7 @@ export default class MoodCard extends React.Component {
                     else {
                         this.setState({
                             isMoodDataAvailable: false,
-                            MoodDetails: initMoodDetails(userId, currentDate),
+                            moodDetails: initMoodDetails(userId, currentDate),
                             moodValue: 0,
                             currentDate: currentDate
                         });
@@ -147,8 +147,8 @@ export default class MoodCard extends React.Component {
     };
 
     saveMoodDetails() {
-        console.log ("Save");
-        console.log(this.state.isMoodDataAvailable);
+        //console.log ("Save");
+        //console.log(this.state.isMoodDataAvailable);
         if (!this.state.isMoodDataAvailable) {
             // Add the saved mood level
             let userId = this.state.userDetails.user_id;
@@ -161,20 +161,20 @@ export default class MoodCard extends React.Component {
             //     let location = {location_id: tag };
             //     locations.push(location);
             // });
-            console.log("selected mood  description", this.state.selectedPainTypes); //this 
-            console.log("pain type length", this.state.selectedPainTypes.length);
+            //console.log("selected mood  description", this.state.selectedPainTypes); //this 
+            //console.log("Mood description length", this.state.selectedMoodDescription.length);
             if (this.state.selectedMoodDescription.length > 0)
                 moodDescription = this.state.selectedMoodDescription[0]; 
-            console.log("selected mood type value", moodDescription); // or this
+           // console.log("selected mood type value", moodDescription); // or this
 
             let mood = { //sending to the database,if pian type value = 0 then don't send it to the database as it means the user didnt select any tags
                 user_id: userId,
                 mood_level: this.state.moodValue,
-                mood_description : moodDesciptions, 
+                mood_description :  moodDescription, 
                 occurred_date: localToUtcDateTime(occurredDate),
                 
             };
-            console.log("Saving", mood);
+           // console.log("Saving", mood);
             let url = constants.ADDUSERMOOD_DEV_URL;
             getData(constants.JWTKEY).then((jwt) =>
                 fetch(url, {
@@ -215,16 +215,16 @@ export default class MoodCard extends React.Component {
 
     render() {
 
-       // console.log("IN RENDER PAIN!!",this.state.painDetails.pain)
+        console.log("MoodDetails is not printing",this.state.moodDetails)
         let moodLevel = this.state.moodDetails && this.state.moodDetails.mood && this.state.moodDetails.mood.mood_level || 0;
 
         
-        let moodDesciptions = this.state.moodDescriptions || [] ; // get all the possible value from the list item , if not then empty array .
+        let moodDescriptions = this.state.moodDescriptions || [] ; // get all the possible value from the list item , if not then empty array .
         let selectedmoodDescriptions = [];
        // console.log("IN RENDER PAIN TYPE",this.state.painDetails.pain.pain_type)
         if (this.state.moodDetails && this.state.moodDetails.mood && this.state.moodDetails.mood.mood_description) {
             selectedmoodDescriptions = mapListItemsToTags([{list_item_id: this.state.moodDetails.mood.mood_description,list_item_name:"Depressed"}]);
-            console.log("In Render selected ", selectedmoodDescriptions)
+          
 
         }
 
@@ -245,8 +245,8 @@ export default class MoodCard extends React.Component {
                             this.setMoodVisible(!this.state.moodVisible);
                         }}>
                             <Image
-                                style={TrackingStyles.xContainer}
-                                source={require('../../../assets/x.png')}
+                                style={TrackingStyles.moodButton}
+                                source={require('../../../assets/mood.png')}
                             />
                         </TouchableOpacity>
                         <Text style={{ color: '#B3B3B3', textAlign: 'left', top: hp('3%'), fontSize: wp('4%') }}>How do you feel today? </Text>
@@ -269,13 +269,13 @@ export default class MoodCard extends React.Component {
                         </View>
                         <Text style={{ color: '#B3B3B3', textAlign: 'left', top: hp('9%'), fontSize: wp('4%') }}>Which of the following best describes your mood today?? </Text>
                         <View style={{top: hp('13%'), left: wp('4%') }}>
-                        <Text> Selected: {selectedPainTypes.map(tag => `${tag} `)} </Text>
+                        <Text> Selected: {selectedmoodDescriptions.map(tag => `${tag} `)} </Text>
                             <TagSelector
 
                                 selectedTagStyle={TrackingStyles.tagStyle}
                                 maxHeight={70}
-                                tags={moodDesciptions}
-                                onChange={(selected) => this.setState({ selectedmoodDescriptions: selected })}
+                                tags={moodDescriptions}
+                                onChange={(selected) => this.setState({ selectedmoodDescription: selected })}
                             />
                         </View>
                         <Button
