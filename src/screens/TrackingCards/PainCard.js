@@ -55,8 +55,7 @@ export default class PainCard extends React.Component {
     constructor(props) {
         super(props);
         this.state = { painVisible: false };
-        //const { currentDate } = this.props.route.params;
-        //console.log("Navigation", this.props.route);
+    
         this.state = {
             selectedTags: [], //user selected pain locations
             painValue: 0,
@@ -77,7 +76,7 @@ export default class PainCard extends React.Component {
     }
     getPainLocations() {
         let url = constants.PAINLOCATIONS_DEV_URL;
-        console.log("Url is", url);
+      
         getData(constants.JWTKEY).then((jwt) =>
             fetch(url, {
                 //calling API
@@ -98,7 +97,7 @@ export default class PainCard extends React.Component {
     };
     getPainTypes() {
         let url = constants.PAINTYPE_DEV_URL;
-        console.log("Url is", url);
+       
         getData(constants.JWTKEY).then((jwt) =>
             fetch(url, {
                 //calling API
@@ -124,7 +123,7 @@ export default class PainCard extends React.Component {
             "[occurredDate]",
             localToUtcDateTime(currentDate)
         );
-        console.log("Url is", url);
+       
         getData(constants.JWTKEY).then((jwt) =>
             fetch(url, {
                 //calling API
@@ -159,8 +158,7 @@ export default class PainCard extends React.Component {
         );
     };
     savePainDetails() {
-      //  console.log ("Save");
-       // console.log(this.state.isPainDataAvailable);
+     
         if (!this.state.isPainDataAvailable) {
             // Add the saved pain level
             let userId = this.state.userDetails.user_id;
@@ -168,7 +166,7 @@ export default class PainCard extends React.Component {
             // Add pain locations
             let locations = [];
             let painType = null;
-           // console.log("selected tags", this.state.selectedTags);
+      
             this.state.selectedTags.map(tag => {
                 let location = {location_id: tag };
                 locations.push(location);
@@ -199,13 +197,13 @@ export default class PainCard extends React.Component {
                     body: JSON.stringify(pain)
                 })
                     .then((response) => {
-                        console.log(response.json());
+                       // console.log(response.json());
                         return response.json();
                     })
             );
         }
         else {
-            console.log("In the else of savepain details");
+            
             alert("Update not implemented yet.");
         }
     }

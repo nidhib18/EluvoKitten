@@ -84,7 +84,6 @@ export default class MoodCard extends React.Component {
 
     getMoodDescriptions() {
         let url = constants.MOODDESCRIPTION_DEV_URL;
-        console.log("Url is", url);
         getData(constants.JWTKEY).then((jwt) =>
             fetch(url, {
                 //calling API
@@ -111,7 +110,7 @@ export default class MoodCard extends React.Component {
             "[occurredDate]",
             localToUtcDateTime(currentDate)
         );
-        console.log("Url is", url);
+        
         getData(constants.JWTKEY).then((jwt) =>
             fetch(url, {
                 //calling API
@@ -125,7 +124,7 @@ export default class MoodCard extends React.Component {
                     // If responseData is not empty, then isPainDataAvailable = true
                     //("MOOD CARD Get User Mood Response", responseData);
                     if (Object.keys(responseData).length) {
-                       // console.log ("In GET USER MOOD! ",responseData)
+                       
                         this.setState({
                             isMoodDataAvailable: true,
                             moodDetails: responseData,
@@ -147,8 +146,7 @@ export default class MoodCard extends React.Component {
     };
 
     saveMoodDetails() {
-        //console.log ("Save");
-        //console.log(this.state.isMoodDataAvailable);
+      
         if (!this.state.isMoodDataAvailable) {
             // Add the saved mood level
             let userId = this.state.userDetails.user_id;
@@ -156,25 +154,26 @@ export default class MoodCard extends React.Component {
             // Add pain locations
             let moodDescription = null ;
             
-            // console.log("selected tags", this.state.selectedTags);
+            
             // this.state.selectedTags.map(tag => {
             //     let location = {location_id: tag };
             //     locations.push(location);
             // });
-            //console.log("selected mood  description", this.state.selectedPainTypes); //this 
-            //console.log("Mood description length", this.state.selectedMoodDescription.length);
+            
+            
             if (this.state.selectedMoodDescription.length > 0)
                 moodDescription = this.state.selectedMoodDescription[0]; 
-           // console.log("selected mood type value", moodDescription); // or this
+       
 
             let mood = { //sending to the database,if pian type value = 0 then don't send it to the database as it means the user didnt select any tags
                 user_id: userId,
                 mood_level: this.state.moodValue,
-                mood_description :  moodDescription, 
+                mood_description :moodDescription, 
                 occurred_date: localToUtcDateTime(occurredDate),
                 
             };
-           // console.log("Saving", mood);
+           
+           
             let url = constants.ADDUSERMOOD_DEV_URL;
             getData(constants.JWTKEY).then((jwt) =>
                 fetch(url, {
@@ -185,16 +184,16 @@ export default class MoodCard extends React.Component {
                         Accept: 'application/json',
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(pain)
+                    body: JSON.stringify(mood)
                 })
                     .then((response) => {
-                        console.log(response.json());
+                        //console.log(response.json());
                         return response.json();
                     })
             );
         }
         else {
-            console.log("In the else of save mood details");
+           
             alert("Update not implemented yet.");
         }
     }
@@ -215,15 +214,15 @@ export default class MoodCard extends React.Component {
 
     render() {
 
-        console.log("MoodDetails is not printing",this.state.moodDetails)
+       
         let moodLevel = this.state.moodDetails && this.state.moodDetails.mood && this.state.moodDetails.mood.mood_level || 0;
 
         
         let moodDescriptions = this.state.moodDescriptions || [] ; // get all the possible value from the list item , if not then empty array .
-        let selectedmoodDescriptions = [];
-       // console.log("IN RENDER PAIN TYPE",this.state.painDetails.pain.pain_type)
+        let selectedMoodDescriptions = [];
+      
         if (this.state.moodDetails && this.state.moodDetails.mood && this.state.moodDetails.mood.mood_description) {
-            selectedmoodDescriptions = mapListItemsToTags([{list_item_id: this.state.moodDetails.mood.mood_description,list_item_name:"Depressed"}]);
+            selectedMoodDescriptions = mapListItemsToTags([{list_item_id: this.state.moodDetails.mood.mood_description,list_item_name:"Depressed"}]);
           
 
         }
@@ -269,13 +268,13 @@ export default class MoodCard extends React.Component {
                         </View>
                         <Text style={{ color: '#B3B3B3', textAlign: 'left', top: hp('9%'), fontSize: wp('4%') }}>Which of the following best describes your mood today?? </Text>
                         <View style={{top: hp('13%'), left: wp('4%') }}>
-                        <Text> Selected: {selectedmoodDescriptions.map(tag => `${tag} `)} </Text>
+                        <Text> Selected: {selectedMoodDescriptions.map(tag => `${tag} `)} </Text>
                             <TagSelector
 
                                 selectedTagStyle={TrackingStyles.tagStyle}
                                 maxHeight={70}
                                 tags={moodDescriptions}
-                                onChange={(selected) => this.setState({ selectedmoodDescription: selected })}
+                                onChange={(selected) => this.setState({ selectedMoodDescription: selected })}
                             />
                         </View>
                         <Button

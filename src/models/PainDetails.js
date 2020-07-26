@@ -7,7 +7,7 @@ export const initPainDetails = (userId, occurredDate) => {
             pain_type:0,
             pain_type_name:"",
             occurred_date: occurredDate,
-            locations: []
+            locations: [] 
         }
       }
 }

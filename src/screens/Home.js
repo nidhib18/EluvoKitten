@@ -57,7 +57,7 @@ export default class Home extends React.Component {
     };
     this.setDate = this.setDate.bind(this);
     this.getUserPain = this.getUserPain.bind(this);
-   this.getUserMood = this.getUserMood.bind(this); 
+    this.getUserMood = this.getUserMood.bind(this); 
   }
 
   
@@ -88,12 +88,13 @@ export default class Home extends React.Component {
 
         .then((responseData) => {
           // If responseData is not empty, then isPainDataAvailable = true
-          console.log(responseData);
+         // console.log(responseData);
           if (Object.keys(responseData).length) {
             this.setState({
               isPainDataAvailable: true,
               painDetails: responseData.pain,
             });
+          
           } else {
             this.setState({
               isPainDataAvailable: false,
@@ -122,19 +123,19 @@ export default class Home extends React.Component {
 
         .then((responseData) => {
           // If responseData is not empty, then isMoodDataAvailable = true
-          console.log("Home screen - In Get user mood - Response data is", responseData);
+         
           if (Object.keys(responseData).length) {
             this.setState({
               isMoodDataAvailable: true,
               moodDetails: responseData.mood,
             });
-            console.log("Home screen - In Get user mood - added to state");
+        
           } else {
             this.setState({
               isMoodDataAvailable: false,
               moodDetails:{},
              });
-             console.log("Home screen - In Get user mood - no mood data");
+             
           }
         })
         .catch((err) => console.log(err))
@@ -148,7 +149,7 @@ export default class Home extends React.Component {
       this.setState({
         userDetails: JSON.parse(data),
       });
-      //this.getUserPain();
+      this.getUserPain();
       this.getUserMood();
     });
   }
@@ -221,9 +222,9 @@ export default class Home extends React.Component {
           iconContainer={{ flex: 0.13 }}
         />
 
-        {this.state.isMoodDataAvailable ? (
-         
+        {this.state.isMoodDataAvailable || this.state.isPainDataAvailable? (
           <>
+          {/* 
             <Card style={styles.cardSmallContainer}>
               <Text style={styles.medicationText}>Take Ginet</Text>
               <Text
@@ -249,7 +250,58 @@ export default class Home extends React.Component {
               >
                 Remind me at 9:00 am
               </Text>
-            </Card>
+            </Card> */}
+            <Card style={styles.cardPainContainer}>
+            <Text style={styles.cardText}>Today you experienced...</Text>
+             <Text style={styles.painText}>Pain</Text>
+              <Text
+                style={{
+                  left: wp('-10%'),
+                  paddingTop: hp('10%'),
+                  color: "#8A8A8E",
+                }}
+              >
+                Pain Level: {this.state.painDetails.pain_level}
+              </Text>
+
+
+              <Image
+                style={styles.painIcon}
+                source={require("../../assets/painia.png")}
+              />
+
+              <Text style={{ left: wp('35%'), top: hp('-5%'), color: "#8A8A8E" }}>
+                {moment(this.state.painDetails.occurred_date).format("hh:mm A")}
+              </Text>
+
+              <Text
+                style={{
+                  left: wp('-4%'),
+                  position: "absolute",
+                  paddingTop:hp('15%'),
+                  color: "#8A8A8E",
+                }}
+              >
+                {this.state.painDetails.locations.map((location, index) => {
+                  let locationText =
+                    location.list_item_name +
+                    (index < this.state.painDetails.locations.length - 1
+                      ? ", "
+                      : "");
+                  return locationText;
+                })}
+              </Text>
+              <Text
+                style={{
+                  left: wp('-10%'),
+                  paddingTop: hp('-10%'),
+                  color: "#8A8A8E",
+                }}
+              >
+                Pain Type: {this.state.painDetails.pain_type_name}
+                
+              </Text>  
+              </Card>
             <Card style={styles.cardContainer}>
               <Text style={styles.cardText}>Today you experienced...</Text>
 
@@ -296,7 +348,7 @@ export default class Home extends React.Component {
               <Text
                 style={{
                   left: wp('-10%'),
-                  paddingTop: hp('10%'),
+                  paddingTop: hp('-10%'),
                   color: "#8A8A8E",
                 }}
               >
@@ -312,10 +364,10 @@ export default class Home extends React.Component {
 
 
 
+              
 
 
-
-              {/* <Text style={styles.painText}>Pain</Text>
+               {/* <Text style={styles.painText}>Pain</Text>
               <Text
                 style={{
                   left: wp('-10%'),
@@ -362,7 +414,7 @@ export default class Home extends React.Component {
               >
                 Pain Type: {this.state.painDetails.pain_type_name}
                 
-              </Text> */}
+              </Text>  */}
             </Card>
           </>
         ) : (
@@ -415,13 +467,23 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: wp('95%'),
     borderRadius: 20,
-    height: hp('30%'),
-    top: hp('58%'),
+    height: hp('20%'),
+    top: hp('31%'),
     alignItems: "center",
     backgroundColor: "#ffff",
     // resizeMode: "contain"
   },
-
+  cardPainContainer: {
+    flex: 1,
+    position: "absolute",
+    width: wp('95%'),
+    borderRadius: 20,
+    height: hp('20%'),
+    top: hp('50%'),
+    alignItems: "center",
+    backgroundColor: "#ffff",
+    // resizeMode: "contain"
+  },
   cardSmallContainer: {
     flex: 1,
     position: "absolute",

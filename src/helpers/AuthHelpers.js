@@ -20,7 +20,7 @@ export const saveUserDetails = (username) => {
         return responseData;
       })
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         storeData(constants.USERDETAILS, JSON.stringify(data)); // Convert user details object returned by API to a string and add to storage so that user details can be accessed on any screen without calling API again
       })
       .catch((err) => console.log(err));
