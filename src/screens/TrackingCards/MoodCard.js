@@ -8,7 +8,7 @@ import TagSelector from 'react-native-tag-selector';
 const { width } = Dimensions.get('window');
 
 export default class MoodCard extends React.Component {
-    
+
     moodTags = [
         {
             id: 'Calm',
@@ -51,7 +51,7 @@ export default class MoodCard extends React.Component {
             name: 'Depressed'
         },
 
-    
+
     ]
     constructor(props) {
         super(props);
@@ -60,7 +60,7 @@ export default class MoodCard extends React.Component {
             selectedTags: [],
             moodValue: 0,
             minValue: 0,
-            maxValue: 10
+            maxValue: 5
         };
     }
     setMoodVisible(visible) {
@@ -79,7 +79,12 @@ export default class MoodCard extends React.Component {
                     />
                 </TouchableOpacity>
 
-                <Modal visible={this.state.moodVisible}>
+                <Modal style={{
+                    shadowColor: '#c8c8c8',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.8,
+                    shadowRadius: 30,
+                }} visible={this.state.moodVisible}>
                     <Card disabled={true}
                         style={TrackingStyles.cardStyle}>
                         <Text style={TrackingStyles.symptomText}>Mood </Text>
@@ -91,7 +96,7 @@ export default class MoodCard extends React.Component {
                                 source={require('../../../assets/x.png')}
                             />
                         </TouchableOpacity>
-                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: hp('3%'), fontSize: wp('4%') }}>How do you feel today? </Text>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('1%'), fontSize: wp('4%'), fontWeight:'500' }}>How do you feel today? </Text>
                         <Slider
                             style={styles.sliderStyle}
                             step={1}
@@ -103,17 +108,18 @@ export default class MoodCard extends React.Component {
                             minimumTrackTintColor='#f09874'
                         />
                         <View style={styles.textCon}>
-                            <Text style={styles.colorGrey}>{this.state.minValue} </Text>
+                            <Text style={styles.colorGrey}>No Change</Text>
                             <Text style={styles.colorPeach}>
                                 {this.state.moodValue + ''}
                             </Text>
-                            <Text style={styles.colorGrey}>{this.state.maxValue} </Text>
+                            <Text style={styles.colorGrey}>Worst Mood </Text>
                         </View>
-                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: hp('9%'), fontSize: wp('4%') }}>Which of the following best describes your mood today?? </Text>
-                        <View style={{top: hp('13%'), left: wp('4%') }}>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('13%'), fontSize: wp('4%'),fontWeight:'500' }}>Add more detail </Text>
+                        <View style={{ top: hp('17%'), left: wp('-2%') }}>
                             <TagSelector
 
-                                selectedTagStyle={TrackingStyles.tagStyle}
+                                tagStyle={TrackingStyles.tag}
+                                selectedTagStyle={TrackingStyles.tagSelected}
                                 maxHeight={70}
                                 tags={this.moodTags}
                                 onChange={(selected) => this.setState({ selectedTags: selected })}
@@ -152,13 +158,15 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     colorGrey: {
-        color: '#d3d3d3',
-        top: hp('6%'),
+        color: '#8A8A8E',
+        top: hp('8%'),
+        fontWeight:'500'
 
     },
     colorPeach: {
         color: '#f09874',
-        top: hp('6%'),
+        top: hp('8%'),
+        fontWeight:'500'
 
     }
 });

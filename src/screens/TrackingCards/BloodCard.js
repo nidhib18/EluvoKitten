@@ -8,6 +8,7 @@ import { TrackingStyles } from "../TrackingStyles";
 
 
 
+
 const { width } = Dimensions.get('window');
 
 export default class BloodCard extends React.Component {
@@ -34,7 +35,7 @@ export default class BloodCard extends React.Component {
             minValue: 0,
             maxValue: 5
         };
-           
+
     }
     setBloodVisible(visible) {
         this.setState({ bloodVisible: visible });
@@ -52,10 +53,16 @@ export default class BloodCard extends React.Component {
                     />
                 </TouchableOpacity>
 
-                <Modal visible={this.state.bloodVisible}>
+                <Modal style={{
+                    shadowColor: '#c8c8c8',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.8,
+                    shadowRadius: 30,
+                }} visible={this.state.bloodVisible}>
+                   
                     <Card disabled={true}
                         style={TrackingStyles.cardStyle}>
-                        <Text style={TrackingStyles.symptomText}>Blood</Text>
+                        <Text style={TrackingStyles.symptomText}>Bleeding</Text>
                         <TouchableOpacity onPress={() => {
                             this.setBloodVisible(!this.state.bloodVisible);
                         }}>
@@ -73,27 +80,30 @@ export default class BloodCard extends React.Component {
                             onValueChange={val => this.setState({ bloodValue: val })}
                             maximumTrackTintColor='#d3d3d3'
                             minimumTrackTintColor='#f09874'
+                            //thumbImage={require('../../../assets/slider.png')}
+                                                 
+                            
                         />
                         <View style={styles.textCon}>
-                            <Text style={styles.colorGrey}>{this.state.minValue} </Text>
+                            <Text style={styles.colorGrey}>No Bleeding </Text>
                             <Text style={styles.colorPeach}>
                                 {this.state.bloodValue + ''}
                             </Text>
-                            <Text style={styles.colorGrey}>{this.state.maxValue} </Text>
-                            </View>
-                        
-                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: hp('-4'), fontSize: wp('4%') }}>How much bleeding did you experience today?</Text>
-                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: hp('10'), fontSize: wp('4%') }}>What period products do you use?</Text>
-                        <View style={{top: hp('15%'), left: wp('4%') }}>
-                            <TagSelector
+                            <Text style={styles.colorGrey}>Heavy </Text>
+                        </View>
 
-                                selectedTagStyle={TrackingStyles.tagStyle}
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('-4'), fontSize: wp('4%'), fontWeight:'500' }}>Did you have any bleeding today?</Text>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('16'), fontSize: wp('4%'), fontWeight:'500' }}>Did you use any of the following?</Text>
+                        <View style={{ top: hp('20%'), left: wp('-2%') }}>
+                            <TagSelector
+                                tagStyle={TrackingStyles.tag}
+                                selectedTagStyle={TrackingStyles.tagSelected}
                                 maxHeight={70}
                                 tags={this.bloodTags}
                                 onChange={(selected) => this.setState({ selectedTags: selected })}
                             />
                         </View>
-                      
+
                         <Button
                             style={TrackingStyles.trackButton}
                             appearance='outline'
@@ -102,6 +112,7 @@ export default class BloodCard extends React.Component {
                             }} > Track!
                             </Button>
                     </Card>
+                  
                 </Modal>
             </Layout>
 
@@ -118,7 +129,7 @@ const styles = StyleSheet.create({
         flex: 1,
         width: wp('80%'),
         height: hp('20.81%'),
-        padding: wp('2.5%'),
+        padding: wp('5.5%'),
         backgroundColor: '#FFF'
 
     },
@@ -128,13 +139,15 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     colorGrey: {
-        color: '#d3d3d3',
+        color: '#8A8A8E',
         top: hp('11%'),
+        fontWeight:'500'
 
     },
     colorPeach: {
         color: '#f09874',
         top: hp('11%'),
+        fontWeight:'500'
 
     }
 });

@@ -28,16 +28,19 @@ export default class MedicationCard extends React.Component {
     ]
     constructor(props) {
         super(props);
+        this.state = {
+            medication: "",
+            time: "",
+            dosage: ""
+        };
         this.state = { medicationVisible: false };
         this.state = { checked: false }
         this.state = { text: 'Useless Placeholder' };
-        this.state = {
-            quantity: '1',
 
-        };
-        this.state = {
-            time: ""
-        };
+
+    }
+    setValue() {
+        this.setState({ value: '' })
     }
     setMedicationVisible(visible) {
         this.setState({ medicationVisible: visible });
@@ -66,7 +69,12 @@ export default class MedicationCard extends React.Component {
                     />
                 </TouchableOpacity>
 
-                <Modal visible={this.state.medicationVisible}>
+                <Modal style={{
+                    shadowColor: '#c8c8c8',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.8,
+                    shadowRadius: 30,
+                }} visible={this.state.medicationVisible}>
                     <Card disabled={true}
                         style={TrackingStyles.cardStyle}>
                         <Text style={TrackingStyles.symptomText}>Medication</Text>
@@ -78,63 +86,61 @@ export default class MedicationCard extends React.Component {
                                 source={require('../../../assets/x.png')}
                             />
                         </TouchableOpacity>
-                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: hp('3%'), fontSize: wp('4%') }}>What Medication are you taking?</Text>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('3%'), fontSize: wp('4%'), fontWeight: '500' }}>Did you take any medication today?</Text>
 
                         <Input
-                            style={{ borderColor: '#ffffff', borderRadius: 25, backgroundColor: 'rgba(240, 152, 116, 0.48)', top: hp('5%'), left: wp('-1%') }}
-                            value={this.state.text}
-                            color={'#FFF'}
-                            onChangeText={(text) => this.setState({ text })}
-                        />
-
-                        <DropDownPicker
-                            items={[
-                                { label: '0', value: '0' },
-                                { label: '1', value: '1' },
-                                { label: '2', value: '2' },
-                                { label: '3', value: '3' },
-
-                            ]}
-                            max={10}
-                            defaultValue={this.state.quantity}
-                            containerStyle={{
-                                paddingVertical: hp('0%'),paddingHorizontal: hp('0.5%'), height: hp('6%'), top: hp('7%'), width: wp('35%'), left: wp('-1%')
-                            }}
-                            style={styles.dropStyle}
-                            dropDownStyle={styles.downStyle}
-                            placeholder="Quantity"
-    
-                            onChangeItem={item => this.setState({
-                                quantity: item.value
-                            })}
+                            style={{ backgroundColor: '#FBFBFB', top: hp('5') }}
+                            placeholder='E.g Panadol'
+                            placeholderTextColor='#8A8A8E'
+                            color='#8A8A8E'
+                            //value={value}
+                            onChangeText={
+                                // Set this.state.email to the value in this Input box
+                                (value) => this.setState({ medication: value })
+                            }
 
                         />
-                        <TouchableOpacity
-                            onPress={() => this.TimePicker.open()}
-                            style={styles.button}
-                        >
-                            <Text style={styles.buttonText}>Time:</Text>
-                        </TouchableOpacity>
-                        <Text style={styles.text}>{this.state.time}</Text>
-                        <TimePicker
-                            ref={ref => {
-                                this.TimePicker = ref;
-                            }}
-                            onCancel={() => this.onCancel()}
-                            onConfirm={(hour, minute) => this.onConfirm(hour, minute)}
+
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('8%'), fontSize: wp('4%'), fontWeight: '500' }}>Time Taken</Text>
+                        <Input
+                            style={{ backgroundColor: '#FBFBFB', top: hp('10') }}
+                            placeholder='9:00 am'
+                            placeholderTextColor='#8A8A8E'
+                            //value={value}
+                            color='#8A8A8E'
+                            onChangeText={
+                                // Set this.state.email to the value in this Input box
+                                (value) => this.setState({ time: value })
+                            }
                         />
-                        {/* <Text style={{ color: '#B3B3B3', textAlign: 'left', top: -30, fontSize: 16 }}>Would you like a Reminder?</Text>
+
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('12%'), fontSize: wp('4%'), fontWeight: '500' }}>Dosage</Text>
+                        <Input
+                            style={{ backgroundColor: '#FBFBFB', top: hp('14') }}
+                            placeholder='2 tablets'
+                            placeholderTextColor='#8A8A8E'
+                            //value={value}
+                            color='#8A8A8E'
+                            onChangeText={
+                                // Set this.state.email to the value in this Input box
+                                (value) => this.setState({ dosage: value })
+                            }
+                        />
+
+
+                        {/* <Text style={{ color: '#8A8A8E', textAlign: 'left', top: -30, fontSize: 16 }}>Would you like a Reminder?</Text>
                         <Toggle
                             style={{ left: 180, top: -55 }}
                             checked={this.state.checked}
                             onChange={this.onCheckedChange}>
                             {`Checked: ${this.state.checked}`}
                         </Toggle> */}
-                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: hp('-15%'), fontSize: wp('4%') }}>Select any of the side effects if applicable</Text>
-                        <View style={{top: hp('-10%'), left: wp('4%') }}>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('17%'), fontSize: wp('4%'), fontWeight: '500' }}>Have you noticed any side effects?</Text>
+                        <View style={{ top: hp('20%'), left: wp('-2%') }}>
                             <TagSelector
 
-                                selectedTagStyle={TrackingStyles.tagStyle}
+                                tagStyle={TrackingStyles.tag}
+                                selectedTagStyle={TrackingStyles.tagSelected}
                                 maxHeight={70}
                                 tags={this.sideEffectTags}
                                 onChange={(selected) => this.setState({ selectedTags: selected })}
@@ -163,46 +169,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         paddingTop: 100
     },
-    text: {
-        fontSize: wp('4%'),
-        marginTop:hp('3%'),
-        color: '#FFF',
-        left: wp('52%'),
-        top: hp('-23%'),
-        alignContent: 'center',
-        
-    },
-    button: {
-        width: wp('35%'),
-        backgroundColor: "rgba(240, 152, 116, 0.48)",
-        paddingVertical: hp('2%'),
-        paddingHorizontal: hp('1%'),
-        borderRadius: 25,
-        marginVertical: wp('15%'),
-        left: wp('41%'),
-        top: hp('-7.2%'),
-        height:hp('6%')
-    },
-    buttonText: {
-        color: "#FFF",
-        fontSize: wp('3.5%'),
 
-    },
 
-    dropStyle: {
-        fontSize: wp('3.5%'),
-        borderColor: '#ffffff',
-        backgroundColor: 'rgba(240, 152, 116, 0.48)',
-        borderTopLeftRadius: 25,
-        borderTopRightRadius: 25,
-        borderBottomLeftRadius: 25,
-        borderBottomRightRadius: 25
-    },
-    downStyle: {
-        backgroundColor: '#fafafa',
-        borderBottomLeftRadius: 25,
-        borderBottomRightRadius: 25,
-        
 
-    }
 });

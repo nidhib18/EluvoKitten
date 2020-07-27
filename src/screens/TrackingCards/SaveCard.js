@@ -33,7 +33,12 @@ export default class SaveCard extends React.Component {
           />
           
         </TouchableOpacity>
-        <Modal visible={this.state.saveVisible}>
+        <Modal style={{
+                    shadowColor: '#c8c8c8',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.8,
+                    shadowRadius: 30,
+                }} visible={this.state.saveVisible}>
           <Card
             disabled={true}
             style={TrackingStyles.cardStyle}

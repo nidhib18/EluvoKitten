@@ -211,7 +211,9 @@ export default class PainCard extends React.Component {
         }
 
         return (
-            <Layout style={TrackingStyles.container}>
+
+            <Layout style={TrackingStyles.container}
+            >
                 <TouchableOpacity onPress={() => {
                     this.setPainVisible(true);
                 }}>
@@ -221,7 +223,12 @@ export default class PainCard extends React.Component {
                     />
                 </TouchableOpacity>
 
-                <Modal visible={this.state.painVisible}>
+                <Modal style={{
+                    shadowColor: '#c8c8c8',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.8,
+                    shadowRadius: 30,
+                }} visible={this.state.painVisible}>
                     <Card disabled={true}
                         style={TrackingStyles.cardStyle}>
                         <Text style={TrackingStyles.symptomText}>Pain </Text>
@@ -234,10 +241,10 @@ export default class PainCard extends React.Component {
                                 source={require('../../../assets/x.png')}
                             />
                         </TouchableOpacity>
-                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: hp('2%'), fontSize: wp('4%') }}>How much pain did you have today? </Text>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('2%'), fontSize: wp('4%'), fontWeight: '500' }}>How much pain did you have today? </Text>
 
                         <Slider
-                            style={TrackingStyles.slider}
+                            style={styles.sliderStyle}
                             step={1}
                             minimumValue={this.state.minValue}
                             maximumValue={this.state.maxValue}
@@ -247,27 +254,28 @@ export default class PainCard extends React.Component {
                             minimumTrackTintColor='#f09874'
                         />
                         <View style={styles.textCon}>
-                            <Text style={styles.colorGrey}>{this.state.minValue} </Text>
+                            <Text style={styles.colorGrey}>No Pain </Text>
                             <Text style={styles.colorPeach}>
                                 {this.state.painValue + ''}
                             </Text>
-                            <Text style={styles.colorGrey}>{this.state.maxValue} </Text>
+                            <Text style={styles.colorGrey}>The Worst Pain </Text>
                         </View>
-                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: hp('11%'), fontSize: wp('4%') }}>Where is your pain located?</Text>
-                        <View style={{ top: hp('10%'), left: wp('5%') }}>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('13%'), fontSize: wp('4%'), fontWeight: '500' }}>Where is your pain located?</Text>
+                        <View style={{ top: hp('14%'), left: wp('-2%') }}>
                             <Text> Selected: {selectedPainLocations.map(tag => `${tag} `)} </Text>
                             <TagSelector
-                                selectedTagStyle={TrackingStyles.tagStyle}
+                                tagStyle={TrackingStyles.tag}
+                                selectedTagStyle={TrackingStyles.tagSelected}
                                 maxHeight={70}
                                 tags={painLocations}
                                 onChange={(selected) => this.setState({ selectedTags: selected })}
                             />
                         </View>
-                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: hp('12%'), fontSize: wp('4%') }}>What type of pain did you experience?</Text>
-                        <View style={{ top: hp('14%'), left: wp('5%') }}>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('18%'), fontSize: wp('4%'), fontWeight: '500' }}>What type of pain was it?</Text>
+                        <View style={{ top: hp('21%'), left: wp('-2%') }}>
                             <TagSelector
-
-                                selectedTagStyle={TrackingStyles.tagStyle}
+                                tagStyle={TrackingStyles.tag}
+                                selectedTagStyle={TrackingStyles.tagSelected}
                                 maxHeight={hp('20%')}
                                 tags={this.painTypeTags}
                                 onChange={(selected) => this.setState({ selectedTags: selected })}
@@ -287,7 +295,7 @@ export default class PainCard extends React.Component {
                 </Modal>
 
 
-            </Layout>
+            </Layout >
 
 
         );
@@ -306,13 +314,24 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
+    sliderStyle: {
+
+        top: hp('5%'),
+        flex: 1,
+        width: wp('80%'),
+        height: hp('20.81%'),
+        padding: wp('3.5%'),
+        backgroundColor: '#FFF'
+    },
     colorGrey: {
-        color: '#d3d3d3',
-        top: hp('9%')
+        color: '#8A8A8E',
+        top: hp('9%'),
+        fontWeight: '500'
     },
     colorPeach: {
         color: '#f09874',
-        top: hp('9%')
+        top: hp('9%'),
+        fontWeight: '500'
 
     }
 });

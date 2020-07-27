@@ -51,8 +51,8 @@ export const TrackScreen = ({ route,navigation }) => {
           flex: 1,
           flexGrow: 1,
           flexDirection: "row",
-          marginLeft: "-63%",
-          marginRight: "-82%",
+          marginLeft: "-42%",
+          marginRight: "-63%",
           justifyContent: "center",
           bottom: hp('-45%'),
         }}
@@ -72,6 +72,7 @@ export const TrackScreen = ({ route,navigation }) => {
         <Text style={TrackingStyles.dietText}>Diet</Text>
         <Text style={TrackingStyles.sexText}>Sex</Text>
         <Text style={TrackingStyles.painText}>Pain</Text>
+        <Text style={TrackingStyles.smallSaveText}>Save</Text>
       </ScrollView>
       <AppointmentCard/>
       <Text style={TrackingStyles.appointmentText}>Appointment</Text>

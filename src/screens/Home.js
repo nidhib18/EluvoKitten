@@ -25,6 +25,7 @@ import { HomeStyles } from "./HomeStyles";
 import { storeData, getData } from "../helpers/StorageHelpers";
 import { constants } from "../resources/Constants";
 import { utcToLocal, localToUtcDate, localToUtcDateTime } from "../helpers/DateHelpers";
+import { FlatList } from "react-native-gesture-handler";
 
 //import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
 
@@ -121,145 +122,182 @@ export default class Home extends React.Component {
 
         <Divider />
 
-        <Text
-          style={{
-            color: "#FFFFFF",
-            fontSize: wp('7%'),
-            //lineHeight: 30,
-            letterSpacing: wp('0%'),
-            includeFontPadding: true,
-            textAlign: "left",
-            fontWeight: "bold",
-            left: wp('-10%'),
-            top: wp('5%'),
-          }}
-        >
-          How are you, {this.state.userDetails.first_name} ?{" "}
-        </Text>
+        <View style={{ top: 230 }}>
+          <Text
+            style={{
+              color: "#FFFFFF",
+              fontSize: wp('7%'),
+              //lineHeight: 30,
+              letterSpacing: wp('0%'),
+              includeFontPadding: true,
+              textAlign: "left",
+              fontWeight: "bold",
+              left: wp('17%'),
+              top: wp('10%'),
+            }}
+          >
+            How are you, {this.state.userDetails.first_name}?{" "}
+          </Text>
 
-        <CalendarStrip
-          onDateSelected={(date) => this.setDate(date)}
-          markedDates={[
-            {
-              date: moment().markedDates,
-              selectDate: moment().markedDates,
-              dots: [{ key: 0, color: "red", selectedDotColor: "blue" }],
-            },
-            {
-              onSelectDate: moment().markedDates,
+          <CalendarStrip
+            onDateSelected={(date) => this.setDate(date)}
+            markedDates={[
+              {
+                date: moment().markedDates,
+                selectDate: moment().markedDates,
+                dots: [{ key: 0, color: "white", selectedDotColor: "white" }],
+              },
+              {
+                onSelectDate: moment().markedDates,
 
-              dots: [{ key: 0, color: "red", selectedDotColor: "blue" }],
-            },
-          ]}
-          calendarAnimation={{ type: "sequence", duration: 30 }}
-          daySelectionAnimation={{
-            type: "background",
-            duration: 200,
-            borderWidth: 1,
-            highlightColor: "white",
-            borderHighlightColor: "white",
-          }}
-          scrollable
-          style={{
-            top: hp('5%'),
-            height: hp('20%'),
-            width: wp('130%'),
-            paddingTop: hp('2%'),
-            paddingBottom: hp('2.2%'),
-          }}
-          calendarHeaderStyle={{ color: "white" }}
-          calendarColor={"#f09874"}
-          dateNumberStyle={{ color: "white" }}
-          dateNameStyle={{ color: "white" }}
-          highlightDateNumberStyle={{ color: "#f09874" }}
-          highlightDateNameStyle={{ color: "#f09874" }}
-          borderHighlightColor={{ color: "white" }}
-          disabledDateNameStyle={{ color: "white" }}
-          disabledDateNumberStyle={{ color: "white" }}
-          iconContainer={{ flex: 0.13 }}
-        />
+                dots: [{ key: 0, color: "white", selectedDotColor: "white" }],
+              },
+            ]}
+            calendarAnimation={{ type: "sequence", duration: 30 }}
+            daySelectionAnimation={{
+              type: "background",
+              duration: 200,
+              borderWidth: 1,
+              highlightColor: "white",
+              borderHighlightColor: "white",
+            }}
+            scrollable
+            style={{
+              top: hp('8%'),
+              height: hp('15%'),
+              width: wp('130%'),
+              // paddingTop: hp('2%'),
+              paddingBottom: hp('5.2%'),
+            }}
+            calendarHeaderStyle={{ color: "white", top: hp('0'), fontWeight: '400' }}
+            calendarColor={"#f09874"}
+            dateNumberStyle={{ color: "white", fontSize: wp('3.4'), fontWeight: '400' }}
+            dateNameStyle={{ color: "white", fontSize: wp('3.4'), fontWeight: '400' }}
+            highlightDateNumberStyle={{ color: "#f09874", fontSize: wp('3.4'), fontWeight: '400' }}
+            highlightDateNameStyle={{ color: "#f09874", fontSize: wp('3.4'), fontWeight: '400' }}
+            borderHighlightColor={{ color: "white" }}
+            disabledDateNameStyle={{ color: "white" }}
+            disabledDateNumberStyle={{ color: "white" }}
+            iconContainer={{ flex: 0.13 }}
 
+          />
+        </View>
         {this.state.isPainDataAvailable ? (
           <>
-            <Card style={styles.cardSmallContainer}>
-              <Text style={styles.medicationText}>Take Ginet</Text>
-              <Text
-                style={{
-                  left: wp('-36%'),
-                  position: "absolute",
-                  paddingTop: wp('13%'),
-                  color: "#8A8A8E",
-                }}
-              >
-                Remind me at 7:30 am
+            <View style={{ width: wp('100'), height: 500, backgroundColor: '#f2f2f2', top: 262, alignContent: "center" }}>
+              <ScrollView contentContainerStyle={{
+                justifyContent: "space-around",
+                flex: 1,
+                flexGrow: 1,
+                flexDirection: "column",
+                marginTop: "-42%",
+                marginBottom: "-63%",
+                justifyContent: "center",
+                bottom: hp('-45%'),
+              }}>
+                <Card style={styles.cardSmallContainer}>
+                  <Text style={styles.medicationText}>Take Ginet</Text>
+                  <Text
+                    style={{
+                      left: wp('-36%'),
+                      position: "absolute",
+                      paddingTop: wp('13%'),
+                      color: "#8A8A8E",
+                    }}
+                  >
+                    Remind me at 7:30 am
               </Text>
-            </Card>
-            <Card style={styles.cardExercise}>
-              <Text style={styles.medicationText}>30 min Yoga</Text>
-              <Text
-                style={{
-                  left: wp('-36%'),
-                  position: "absolute",
-                  paddingTop: wp('13%'),
-                  color: "#8A8A8E",
-                }}
-              >
-                Remind me at 9:00 am
+                </Card>
+                <Card style={styles.cardExercise}>
+                  <Text style={styles.medicationText}>30 min Yoga</Text>
+                  <Text
+                    style={{
+                      left: wp('-36%'),
+                      position: "absolute",
+                      paddingTop: wp('13%'),
+                      color: "#8A8A8E",
+                    }}
+                  >
+                    Remind me at 9:00 am
               </Text>
-            </Card>
-            <Card style={styles.cardContainer}>
-              <Text style={styles.cardText}>Today you experienced...</Text>
-              <Text style={styles.painText}>Pain</Text>
-              <Text
-                style={{
-                  left: wp('-10%'),
-                  paddingTop: hp('10%'),
-                  color: "#8A8A8E",
-                }}
-              >
-                Pain Level: {this.state.painDetails.pain_level}
+                </Card>
+                <Card style={styles.cardContainer}>
+                  <ScrollView style={styles.ScrollContainer}>
+                    <Text style={styles.cardText}>Today you experienced...</Text>
+                    <Text style={styles.painText}>Pain</Text>
+                    <Text
+                      style={{
+                        left: wp('25.5%'),
+                        top: hp('9%'),
+                        color: "#8A8A8E",
+                        fontWeight: '500'
+                      }}
+                    >
+                      Pain Level: {this.state.painDetails.pain_level}
+                    </Text>
+
+                    <Text
+                      style={{
+                        left: wp('0%'),
+                        paddingTop: hp('50%'),
+                        color: "#8A8A8E",
+                        fontWeight: '500'
+                      }}
+                    >
+                      Pain Leveldakfjlsjfskrhfjkdhgudhfugufgufghfuhfuyhjuyruhdhesfhruihtguidrtuiakfjlsjfskrhfjkdhgudhfugufgufghfuhfuyhjuyruhdhesfhruihtguidrtuiakfjlsjfskrhfjkdhgudhfugufgufghfuhfuyhjuyruhdhesfhruihtguidrtuiakfjlsjfskrhfjkdhgudhfugufgufghfuhfuyhjuyruhdhesfhruihtguidrtuiakfjlsjfskrhfjkdhgudhfugufgufghfuhfuyhjuyruhdhesfhruihtguidrtuiakfjlsjfskrhfjkdhgudhfugufgufghfuhfuyhjuyruhdhesfhruihtguidrtui:
               </Text>
 
-              <Image
-                style={styles.painIcon}
-                source={require("../../assets/painia.png")}
-              />
 
-              <Text style={{ left: wp('35%'), top: hp('-5%'), color: "#8A8A8E" }}>
-                {moment(this.state.painDetails.occurred_date).format("hh:mm A")}
-              </Text>
+                    <Image
+                      style={styles.painIcon}
+                      source={require("../../assets/painia.png")}
+                    />
 
-              <Text
-                style={{
-                  left: wp('-4%'),
-                  position: "absolute",
-                  paddingTop: hp('15%'),
-                  color: "#8A8A8E",
-                }}
-              >
-                {this.state.painDetails.locations.map((location, index) => {
-                  let locationText =
-                    location.list_item_name +
-                    (index < this.state.painDetails.locations.length - 1
-                      ? ", "
-                      : "");
-                  return locationText;
-                })}
-              </Text>
-            </Card>
+                    <Text style={{ left: wp('70%'), top: hp('-62%'), color: "#8A8A8E", fontWeight: '500' }}>
+                      {moment(this.state.painDetails.occurred_date).format("hh:mm A")}
+                    </Text>
+
+                    <Text
+                      style={{
+                        left: wp('25.5%'),
+                        position: "absolute",
+                        top: hp('11.5%'),
+                        color: "#8A8A8E",
+                        fontWeight: '500'
+                      }}
+                    >
+                      {this.state.painDetails.locations.map((location, index) => {
+                        let locationText =
+                          location.list_item_name +
+                          (index < this.state.painDetails.locations.length - 1
+                            ? ", "
+                            : "");
+                        return locationText;
+                      })}
+                    </Text>
+                  </ScrollView>
+                </Card>
+                <Card style={styles.cardSContainer}>
+                  <Text>hello</Text>
+                </Card>
+              </ScrollView>
+            </View>
           </>
         ) : (
             <>
-              <Image
-                style={HomeStyles.girlContainer}
-                source={require("../../assets/girl.png")}
-              />
-              <Text style={HomeStyles.headerText}>
-                You haven't tracked anything today!
+              <View style={{ width: wp('100'), height: 500, backgroundColor: '#f2f2f2', top: -231, alignContent: "center", marginTop: 500, marginBottom: -500 }}>
+                <ScrollView>
+                  <Image
+                    style={HomeStyles.girlContainer}
+                    source={require("../../assets/girl.png")}
+                  />
+                  <Text style={HomeStyles.headerText}>
+                    You haven't tracked anything today!
             </Text>
+                </ScrollView>
+              </View>
             </>
           )}
-
 
 
         <Image
@@ -303,6 +341,7 @@ export default class Home extends React.Component {
             source={require("../../assets/oval.png")}
           />
         </TouchableOpacity>
+
       </Layout>
     );
   }
@@ -316,6 +355,13 @@ const styles = StyleSheet.create({
     height: hp('25%'),
     justifyContent: "center",
   },
+  ScrollContainer: {
+    //flex: 1,
+
+
+    width: wp('95%'),
+
+  },
 
   textContainer: {
     flex: 1,
@@ -327,48 +373,100 @@ const styles = StyleSheet.create({
   cardContainer: {
     flex: 1,
     position: "absolute",
-    width: wp('95%'),
+    width: wp('90%'),
     borderRadius: 20,
     height: hp('30%'),
-    top: hp('58%'),
+    top: hp('13%'),
     alignItems: "center",
+    left: wp('5'),
     backgroundColor: "#ffff",
+    borderBottomColor: '#ffffff',
+    borderTopColor: '#ffffff',
+    borderLeftColor: '#ffffff',
+    borderRightColor: '#ffffff',
+    backgroundColor: '#ffffff',
+    shadowColor: '#c8c8c8',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 30,
     // resizeMode: "contain"
   },
 
   cardSmallContainer: {
     flex: 1,
     position: "absolute",
-    width: wp('95%'),
+    width: wp('90%'),
     borderRadius: 20,
     height: hp('12%'),
-    top: hp('32%'),
+    top: hp('-18%'),
+    left: wp('5'),
     alignItems: "center",
     backgroundColor: "#ffff",
+    borderBottomColor: '#ffffff',
+    borderTopColor: '#ffffff',
+    borderLeftColor: '#ffffff',
+    borderRightColor: '#ffffff',
+    backgroundColor: '#ffffff',
+    shadowColor: '#c8c8c8',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 30,
+    // resizeMode: "contain"
+  },
+  cardSContainer: {
+    flex: 1,
+    position: "absolute",
+    width: wp('90%'),
+    borderRadius: 20,
+    height: hp('12%'),
+    top: hp('70%'),
+    left: wp('5'),
+    alignItems: "center",
+    backgroundColor: "#ffff",
+    borderBottomColor: '#ffffff',
+    borderTopColor: '#ffffff',
+    borderLeftColor: '#ffffff',
+    borderRightColor: '#ffffff',
+    backgroundColor: '#ffffff',
+    shadowColor: '#c8c8c8',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 30,
     // resizeMode: "contain"
   },
   cardExercise: {
     flex: 1,
+    left: wp('5'),
     position: "absolute",
-    width: wp('95%'),
+    width: wp('90%'),
     borderRadius: 20,
     height: hp('12%'),
-    top: hp('45%'),
+    top: hp('-3%'),
     alignItems: "center",
     backgroundColor: "#ffff",
+    borderBottomColor: '#ffffff',
+    borderTopColor: '#ffffff',
+    borderLeftColor: '#ffffff',
+    borderRightColor: '#ffffff',
+    backgroundColor: '#ffffff',
+    shadowColor: '#c8c8c8',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 30,
     // resizeMode: "contain"
   },
   cardText: {
     flex: 1,
+    left: wp('2'),
     position: "absolute",
-    fontSize: hp('3%'),
+    fontSize: hp('2.6%'),
     fontWeight: "bold",
     letterSpacing: wp('0%'),
     justifyContent: "center",
     alignItems: "center",
-    left: wp('-28%'),
+    
     paddingLeft: hp('2%'),
-    paddingTop: hp('3%'),
+    top: hp('1%'),
   },
   medicationText: {
     flex: 1,
@@ -390,16 +488,16 @@ const styles = StyleSheet.create({
     letterSpacing: wp('0%'),
     justifyContent: "center",
     alignItems: "center",
-    left: wp('-8%'),
+    left: wp('22%'),
     paddingLeft: hp('2%'),
-    paddingTop: hp('9%'),
+    top: hp('6%'),
   },
   painIcon: {
     position: "absolute",
-    top: hp('3.5%'),
+    top: hp('1%'),
     width: wp('20%'),
     height: hp('20%'),
-    left: wp('-28%'),
+    left: wp('4%'),
     resizeMode: "contain",
   },
 });

@@ -10,7 +10,7 @@ import TagSelector from 'react-native-tag-selector';
 const { width } = Dimensions.get('window');
 
 export default class DietCard extends React.Component {
-    
+
     dietTags = [
         {
             id: 'No change in diet',
@@ -33,12 +33,12 @@ export default class DietCard extends React.Component {
             name: 'Below Average'
         },
         {
-            id:  'Poor',
+            id: 'Poor',
             name: 'Poor'
         },
 
     ];
-    
+
     dietTypeTags = [
         {
             id: 'Dairy',
@@ -61,11 +61,11 @@ export default class DietCard extends React.Component {
             name: 'Fruit'
         },
         {
-            id:  'Carbs',
+            id: 'Carbs',
             name: 'Carbs'
         },
         {
-            id:  'Fatty food',
+            id: 'Fatty food',
             name: 'Fatty food'
         }
 
@@ -98,7 +98,12 @@ export default class DietCard extends React.Component {
                     />
                 </TouchableOpacity>
 
-                <Modal visible={this.state.dietVisible}>
+                <Modal style={{
+                    shadowColor: '#c8c8c8',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.8,
+                    shadowRadius: 30,
+                }} visible={this.state.dietVisible}>
                     <Card disabled={true}
                         style={TrackingStyles.cardStyle}>
                         <Text style={TrackingStyles.symptomText}>Diet </Text>
@@ -110,7 +115,7 @@ export default class DietCard extends React.Component {
                                 source={require('../../../assets/x.png')}
                             />
                         </TouchableOpacity>
-                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: hp('3%'), fontSize: wp('4%') }}>Rate your current diet </Text>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('3%'), fontSize: wp('4%'), fontWeight:'500' }}>How well did you eat today? </Text>
                         <Slider
                             style={styles.sliderStyle}
                             step={1}
@@ -122,27 +127,19 @@ export default class DietCard extends React.Component {
                             minimumTrackTintColor='#f09874'
                         />
                         <View style={styles.textCon}>
-                            <Text style={styles.colorGrey}>{this.state.minValue} </Text>
+                            <Text style={styles.colorGrey}>No Change </Text>
                             <Text style={styles.colorPeach}>
                                 {this.state.dietValue + ''}
                             </Text>
-                            <Text style={styles.colorGrey}>{this.state.maxValue} </Text>
+                            <Text style={styles.colorGrey}>Poor </Text>
                         </View>
-                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: hp('9%'), fontSize: wp('4%') }}>Which of the following best describes your diet? </Text>
-                        <View style={{top: hp('13%'), left: wp('1.5%')}}>
+                        
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('15%'), fontSize: wp('4%'),  fontWeight:'500' }}>What types of food did you consume today? </Text>
+                        <View style={{ top: hp('16%'), left: wp('-2') }}>
                             <TagSelector
 
-                                selectedTagStyle={TrackingStyles.tagStyle}
-                                maxHeight={70}
-                                tags={this.dietTags}
-                                onChange={(selected) => this.setState({ selectedTags: selected })}
-                            />
-                        </View>
-                        <Text style={{ color: '#B3B3B3', textAlign: 'left', top: hp('15%'), fontSize: wp('4%') }}>What types of food did you consume today? </Text>
-                        <View style={{top: hp('16%'), left: wp('1.5%')}}>
-                            <TagSelector
-
-                                selectedTagStyle={TrackingStyles.tagStyle}
+                                tagStyle={TrackingStyles.tag}
+                                selectedTagStyle={TrackingStyles.tagSelected}
                                 maxHeight={70}
                                 tags={this.dietTypeTags}
                                 onChange={(selected) => this.setState({ selectedTags: selected })}
@@ -173,7 +170,7 @@ const styles = StyleSheet.create({
         flex: 1,
         width: wp('80%'),
         height: hp('20.81%'),
-        padding: wp('2.5%'),
+        padding: wp('5.5%'),
         backgroundColor: '#FFF'
 
     },
@@ -183,13 +180,15 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     colorGrey: {
-        color: '#d3d3d3',
+        color: '#8A8A8E',
         top: hp('6%'),
+        fontWeight:'500'
 
     },
     colorPeach: {
         color: '#f09874',
         top: hp('6%'),
+        fontWeight:'500'
 
     }
 

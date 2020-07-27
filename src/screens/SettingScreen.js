@@ -1,89 +1,186 @@
-import React, { Component } from 'react';
+import React from "react";
+import { SafeAreaView, Image, StyleSheet, Dimensions } from "react-native";
+import { Button, Divider, Layout, TopNavigation, Card, Text } from "@ui-kitten/components";
+import { TrackingStyles } from "./TrackingStyles";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { Image, Dimensions, TouchableOpacity, Slider, StyleSheet, View } from 'react-native';
-import { Layout, Card, Modal, Text, Button } from '@ui-kitten/components';
-import { TrackingStyles } from "../TrackingStyles";
-import TagSelector from 'react-native-tag-selector';
+import { ScrollView } from "react-native-gesture-handler";
+const { width, height } = Dimensions.get("window");
 
-const { width } = Dimensions.get('window');
+export const SettingScreen = ({ navigation }) => {
+    return (
+        <Layout style={TrackingStyles.container}>
+            <TopNavigation position="absolute"
+                top={0}
+                style={{ height: hp('9%'), width: width }} />
+            <Button
+                style={{ left: wp('40%'), top: wp('5.5%'), height: hp('5%') }}
+                s
+                appearance="outline"
+                onPress={() => navigation.navigate("Home")}
+            >
+                Done
+      </Button>
+            <Divider />
+            
+                <Card style={styles.cardTrackingContainer}>
+                    <Text style={styles.medicationText}>Tracking</Text>
+                    <Text
+                        style={{
+                            fontSize: wp('6%'),
+                            left: wp('-30%'),
+                            position: "absolute",
+                            top: hp('2%'),
+                            color: "#000",
+                            fontWeight: 'bold'
+                        }}
+                    >
+                        Tracking
+              </Text>
+                </Card>
 
-export default class MoodCard extends React.Component {
-    
-    moodTags = [
-        {
-            id: 'Calm',
-            name: 'Calm'
-        },
-        {
-            id: 'Happy',
-            name: 'Happy'
-        },
-        {
-            id: 'Greatful',
-            name: 'Greatful'
-        },
-        {
-            id: 'Excited',
-            name: 'Excited'
-        },
-        {
-            id: 'Irritable',
-            name: 'Irritable'
-        },
-        {
-            id: 'Sad',
-            name: 'Sad'
-        },
-        {
-            id: ' Stressed',
-            name: 'Stressed'
-        },
-        {
-            id: 'Overwhelmed',
-            name: 'Overwhelmed'
-        },
-        {
-            id: 'Anxious',
-            name: 'Anxious'
-        },
-        {
-            id: 'Depressed',
-            name: 'Depressed'
-        },
+                <Card style={styles.cardNotificationContainer}>
+                    <Text style={styles.medicationText}>Tracking</Text>
+                    <Text
+                        style={{
+                            fontSize: wp('6%'),
+                            left: wp('-30%'),
+                            position: "absolute",
+                            top: hp('2%'),
+                            color: "#000",
+                            fontWeight: 'bold'
+                        }}
+                    >
+                        Notifications
+              </Text>
+                </Card>
 
-    
-    ]
-    constructor(props) {
-        super(props);
-        this.state = { moodVisible: false };
-        this.state = {
-            selectedTags: [],
-            moodValue: 0,
-            minValue: 0,
-            maxValue: 10
-        };
-    }
-    setMoodVisible(visible) {
-        this.setState({ moodVisible: visible });
-    }
+                <Card style={styles.cardDetailsContainer}>
+                    <Text style={styles.medicationText}>Tracking</Text>
+                    <Text
+                        style={{
+                            fontSize: wp('6%'),
+                            left: wp('-30%'),
+                            position: "absolute",
+                            top: hp('2%'),
+                            color: "#000",
+                            fontWeight: 'bold'
+                        }}
+                    >
+                        Personal Details
+              </Text>
+                </Card>
+           
 
+        </Layout>
+    );
+};
 
-    render() {
+const styles = StyleSheet.create({
+    container: {
+        //flex: 1,
+        backgroundColor: "#f09874",
+        alignItems: "center",
+        height: hp('25%'),
+        justifyContent: "center",
+    },
 
-        return (
-            <Layout style={TrackingStyles.container}>
-               
-                <Modal visible={this.state.moodVisible}>
-                    <Card disabled={true}
-                        style={TrackingStyles.cardStyle}>
-                        <Text style={TrackingStyles.symptomText}>Mood </Text>
-                        
-                  
-                    </Card>
-                </Modal>
-            </Layout>
+    textContainer: {
+        flex: 1,
+        position: "absolute",
+        top: hp('88%'),
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    cardContainer: {
+        flex: 1,
+        position: "absolute",
+        width: wp('95%'),
+        borderRadius: 20,
+        height: hp('30%'),
+        top: hp('58%'),
+        alignItems: "center",
+        backgroundColor: "#ffff",
+        // resizeMode: "contain"
+    },
 
+    cardTrackingContainer: {
+        flex: 1,
+        position: "absolute",
+        width: wp('95%'),
+        borderRadius: 20,
+        height: hp('32%'),
+        top: hp('10%'),
+        alignItems: "center",
+        backgroundColor: "#ffff",
+        // resizeMode: "contain"
+    },
 
-        );
-    };
-}
+    cardNotificationContainer: {
+        flex: 1,
+        position: "absolute",
+        width: wp('95%'),
+        borderRadius: 20,
+        height: hp('32%'),
+        top: hp('43%'),
+        alignItems: "center",
+        backgroundColor: "#ffff",
+        // resizeMode: "contain"
+    },
+
+    cardDetailsContainer: {
+        flex: 1,
+        position: "absolute",
+        width: wp('95%'),
+        borderRadius: 20,
+        height: hp('32%'),
+        top: hp('76%'),
+        alignItems: "center",
+        backgroundColor: "#ffff",
+        // resizeMode: "contain"
+    },
+
+    cardExercise: {
+        flex: 1,
+        position: "absolute",
+        width: wp('95%'),
+        borderRadius: 20,
+        height: hp('12%'),
+        top: hp('45%'),
+        alignItems: "center",
+        backgroundColor: "#ffff",
+        // resizeMode: "contain"
+    },
+    cardText: {
+        flex: 1,
+        position: "absolute",
+        fontSize: hp('3%'),
+        fontWeight: "bold",
+        letterSpacing: wp('0%'),
+        justifyContent: "center",
+        alignItems: "center",
+        left: wp('-28%'),
+        paddingLeft: hp('2%'),
+        paddingTop: hp('3%'),
+    },
+
+    painText: {
+        flex: 1,
+        position: "absolute",
+        fontSize: hp('2.5%'),
+        fontWeight: "bold",
+        letterSpacing: wp('0%'),
+        justifyContent: "center",
+        alignItems: "center",
+        left: wp('-8%'),
+        paddingLeft: hp('2%'),
+        paddingTop: hp('9%'),
+    },
+    painIcon: {
+        position: "absolute",
+        top: hp('3.5%'),
+        width: wp('20%'),
+        height: hp('20%'),
+        left: wp('-28%'),
+        resizeMode: "contain",
+    },
+});
