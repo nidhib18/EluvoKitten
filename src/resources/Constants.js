@@ -23,6 +23,13 @@ export const constants = {
   ADDUSERMOOD_DEV_URL:
   "https://ztc18x9jg8.execute-api.ap-southeast-2.amazonaws.com/DEV/addusermood",
   MOODDESCRIPTION_DEV_URL:
-  "https://dv4tzoya4d.execute-api.ap-southeast-2.amazonaws.com/DEV/listitems?listId=7"
+  "https://dv4tzoya4d.execute-api.ap-southeast-2.amazonaws.com/DEV/listitems?listId=7",
+
+  USERBLOOD_DEV_URL:
+  "https://32okmj248c.execute-api.ap-southeast-2.amazonaws.com/DEV/blood?userId=[userId]&occurredDate=[occurredDate]",
+  ADDUSERBLOOD_DEV_URL:
+ " https://p8wk7sinql.execute-api.ap-southeast-2.amazonaws.com/DEV/blood",
+  PERIODPRODUCT_DEV_URL:
+  "https://dv4tzoya4d.execute-api.ap-southeast-2.amazonaws.com/DEV/listitems?listId=8"
 
 };

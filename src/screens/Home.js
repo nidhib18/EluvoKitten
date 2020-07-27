@@ -52,12 +52,15 @@ export default class Home extends React.Component {
       currentDate: moment().format("YYYY-MM-DD"),
       painDetails: { locations: [] },
       moodDetails: {},
+      bloodDetails:{},
       isPainDataAvailable: false,
       isMoodDataAvailable:false,
+      isBloodDataAvailable:false,
     };
     this.setDate = this.setDate.bind(this);
     this.getUserPain = this.getUserPain.bind(this);
     this.getUserMood = this.getUserMood.bind(this); 
+    this.getUserBlood = this.getUserBlood.bind(this); 
   }
 
   
@@ -68,6 +71,7 @@ export default class Home extends React.Component {
     console.log("Current Date", this.state.currentDate);
     this.getUserPain();
     this.getUserMood();
+    this.getUserBlood();
   }
 
   getUserPain() {
@@ -142,6 +146,45 @@ export default class Home extends React.Component {
         
     );
   }
+
+  getUserBlood  ()  {
+    let userId = this.state.userDetails.user_id;
+    let url = constants.USERBLOOD_DEV_URL.replace("[userId]", userId).replace(
+      "[occurredDate]",
+      localToUtcDateTime(this.state.currentDate)
+    );
+    getData(constants.JWTKEY).then((jwt) =>
+      fetch(url, {
+        //calling API
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + jwt, //Passing this will authorize the user
+        },
+      })
+        .then((response) => response.json())
+
+        .then((responseData) => {
+          // If responseData is not empty, then isMoodDataAvailable = true
+         
+          if (Object.keys(responseData).length) {
+            this.setState({
+              isBloodDataAvailable: true,
+              bloodDetails: responseData.blood,
+            });
+        
+          } else {
+            this.setState({
+              isBloodDataAvailable: false,
+              bloodDetails:{},
+             });
+             
+          }
+        })
+        .catch((err) => console.log(err))
+        
+    );
+  }
+  
   componentDidMount() {
     getData(constants.USERDETAILS).then((data) => {
       // Read back the user details from storage and convert to object
@@ -150,6 +193,7 @@ export default class Home extends React.Component {
         userDetails: JSON.parse(data),
       });
       this.getUserPain();
+      this.getUserBlood(); 
       this.getUserMood();
     });
   }
@@ -222,7 +266,7 @@ export default class Home extends React.Component {
           iconContainer={{ flex: 0.13 }}
         />
 
-        {this.state.isMoodDataAvailable || this.state.isPainDataAvailable? (
+        {this.state.isBloodDataAvailable ? (
           <>
           {/* 
             <Card style={styles.cardSmallContainer}>
@@ -251,7 +295,7 @@ export default class Home extends React.Component {
                 Remind me at 9:00 am
               </Text>
             </Card> */}
-            <Card style={styles.cardPainContainer}>
+            {/* <Card style={styles.cardPainContainer}>
             <Text style={styles.cardText}>Today you experienced...</Text>
              <Text style={styles.painText}>Pain</Text>
               <Text
@@ -301,7 +345,7 @@ export default class Home extends React.Component {
                 Pain Type: {this.state.painDetails.pain_type_name}
                 
               </Text>  
-              </Card>
+              </Card> */}
             <Card style={styles.cardContainer}>
               <Text style={styles.cardText}>Today you experienced...</Text>
 
@@ -315,7 +359,7 @@ export default class Home extends React.Component {
                 }}
               >
                
-                Mood Level: {this.state.moodDetails.mood_level} 
+                Mood Level: {this.state.bloodDetails.bleeding_level} 
               </Text>
 
 
@@ -325,7 +369,7 @@ export default class Home extends React.Component {
               />
 
               <Text style={{ left: wp('35%'), top: hp('-5%'), color: "#8A8A8E" }}>
-                {moment(this.state.moodDetails.occurred_date).format("hh:mm A")}
+                {moment(this.state.bloodDetails.occurred_date).format("hh:mm A")}
               </Text>
 
               {/* <Text
@@ -352,7 +396,7 @@ export default class Home extends React.Component {
                   color: "#8A8A8E",
                 }}
               >
-                Mood Type: {this.state.moodDetails.mood_description_name}
+                Mood Type: {this.state.bloodDetails.period_product_name}
                 
               </Text>
 
