@@ -110,7 +110,7 @@ export default class MoodCard extends React.Component {
             "[occurredDate]",
             localToUtcDateTime(currentDate)
         );
-        
+        console.log ("URL FOR GETMOOD",url);
         getData(constants.JWTKEY).then((jwt) =>
             fetch(url, {
                 //calling API
@@ -124,7 +124,7 @@ export default class MoodCard extends React.Component {
                     // If responseData is not empty, then isPainDataAvailable = true
                     //("MOOD CARD Get User Mood Response", responseData);
                     if (Object.keys(responseData).length) {
-                       
+                        console.log ("*YES data*",responseData);
                         this.setState({
                             isMoodDataAvailable: true,
                             moodDetails: responseData,
@@ -133,6 +133,7 @@ export default class MoodCard extends React.Component {
                         });
                     }
                     else {
+                        console.log ("*No data*");
                         this.setState({
                             isMoodDataAvailable: false,
                             moodDetails: initMoodDetails(userId, currentDate),
@@ -143,6 +144,7 @@ export default class MoodCard extends React.Component {
                 })
                 .catch((err) => console.log(err))
         );
+        console.log ("Chechi discussed",this.state.isMoodDataAvailable);
     };
 
     saveMoodDetails() {
@@ -216,7 +218,7 @@ export default class MoodCard extends React.Component {
 
        
         let moodLevel = this.state.moodDetails && this.state.moodDetails.mood && this.state.moodDetails.mood.mood_level || 0;
-
+        console.log("***RENDER MOOD LEVEL***",moodLevel)
         
         let moodDescriptions = this.state.moodDescriptions || [] ; // get all the possible value from the list item , if not then empty array .
         let selectedMoodDescriptions = [];

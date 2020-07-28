@@ -202,6 +202,7 @@ export default class Home extends React.Component {
 
   
   render() {
+    var isAnyDataAvailable = this.state.isMoodDataAvailable || this.state.isPainDataAvailable;
     return (
       <Layout style={styles.container}>
         <TopNavigation position="absolute" />
@@ -266,36 +267,10 @@ export default class Home extends React.Component {
           iconContainer={{ flex: 0.13 }}
         />
 
-        {this.state.isBloodDataAvailable ? (
+      {isAnyDataAvailable ? (
           <>
-          {/* 
-            <Card style={styles.cardSmallContainer}>
-              <Text style={styles.medicationText}>Take Ginet</Text>
-              <Text
-                style={{
-                  left: wp('-36%'),
-                  position: "absolute",        
-                  paddingTop: wp('13%'),
-                  color: "#8A8A8E",
-                }}
-              >
-                Remind me at 7:30 am
-              </Text>
-            </Card>
-            <Card style={styles.cardExercise}>
-              <Text style={styles.medicationText}>30 min Yoga</Text>
-              <Text
-                style={{
-                  left: wp('-36%'),
-                  position: "absolute",
-                  paddingTop: wp('13%'),
-                  color: "#8A8A8E",
-                }}
-              >
-                Remind me at 9:00 am
-              </Text>
-            </Card> */}
-            {/* <Card style={styles.cardPainContainer}>
+            { this.state.isPainDataAvailable ? (
+            <Card style={styles.cardPainContainer}>
             <Text style={styles.cardText}>Today you experienced...</Text>
              <Text style={styles.painText}>Pain</Text>
               <Text
@@ -345,7 +320,10 @@ export default class Home extends React.Component {
                 Pain Type: {this.state.painDetails.pain_type_name}
                 
               </Text>  
-              </Card> */}
+            </Card>
+            ) : (<></>)}
+
+            { this.state.isMoodDataAvailable ? (
             <Card style={styles.cardContainer}>
               <Text style={styles.cardText}>Today you experienced...</Text>
 
@@ -359,7 +337,48 @@ export default class Home extends React.Component {
                 }}
               >
                
-                Mood Level: {this.state.bloodDetails.bleeding_level} 
+                Mood Level: {this.state.moodDetails.mood_level} 
+              </Text>
+
+
+              <Image
+                style={styles.painIcon}
+                source={require("../../assets/painia.png")}
+              />
+
+              <Text style={{ left: wp('35%'), top: hp('-5%'), color: "#8A8A8E" }}>
+                {moment(this.state.moodDetails.occurred_date).format("hh:mm A")}
+              </Text>
+
+            
+              <Text
+                style={{
+                  left: wp('-10%'),
+                  paddingTop: hp('-10%'),
+                  color: "#8A8A8E",
+                }}
+              >
+                Mood Type: {this.state.moodDetails.mood_description_name}
+                
+              </Text>
+
+            </Card>
+            ) : (<></>)}
+            { this.state.isBloodDataAvailable ? (
+            <Card style={styles.cardContainer}>
+              <Text style={styles.cardText}>Today you experienced...</Text>
+
+
+            <Text style={styles.painText}>Blood</Text>
+              <Text
+                style={{
+                  left: wp('-10%'),
+                  paddingTop: hp('10%'),
+                  color: "#8A8A8E",
+                }}
+              >
+               
+                Blood Level: {this.state.bloodDetails.bleeding_level} 
               </Text>
 
 
@@ -372,23 +391,7 @@ export default class Home extends React.Component {
                 {moment(this.state.bloodDetails.occurred_date).format("hh:mm A")}
               </Text>
 
-              {/* <Text
-                style={{
-                  left: wp('-4%'),
-                  position: "absolute",
-                  paddingTop:hp('15%'),
-                  color: "#8A8A8E",
-                }}
-              >
-                {this.state.painDetails.locations.map((location, index) => {
-                  let locationText =
-                    location.list_item_name +
-                    (index < this.state.painDetails.locations.length - 1
-                      ? ", "
-                      : "");
-                  return locationText;
-                })}
-              </Text> */}
+            
               <Text
                 style={{
                   left: wp('-10%'),
@@ -400,66 +403,10 @@ export default class Home extends React.Component {
                 
               </Text>
 
-
-
-
-
-
-
-
-
-              
-
-
-               {/* <Text style={styles.painText}>Pain</Text>
-              <Text
-                style={{
-                  left: wp('-10%'),
-                  paddingTop: hp('10%'),
-                  color: "#8A8A8E",
-                }}
-              >
-                Pain Level: {this.state.painDetails.pain_level}
-              </Text>
-
-
-              <Image
-                style={styles.painIcon}
-                source={require("../../assets/painia.png")}
-              />
-
-              <Text style={{ left: wp('35%'), top: hp('-5%'), color: "#8A8A8E" }}>
-                {moment(this.state.painDetails.occurred_date).format("hh:mm A")}
-              </Text>
-
-              <Text
-                style={{
-                  left: wp('-4%'),
-                  position: "absolute",
-                  paddingTop:hp('15%'),
-                  color: "#8A8A8E",
-                }}
-              >
-                {this.state.painDetails.locations.map((location, index) => {
-                  let locationText =
-                    location.list_item_name +
-                    (index < this.state.painDetails.locations.length - 1
-                      ? ", "
-                      : "");
-                  return locationText;
-                })}
-              </Text>
-              <Text
-                style={{
-                  left: wp('-10%'),
-                  paddingTop: hp('10%'),
-                  color: "#8A8A8E",
-                }}
-              >
-                Pain Type: {this.state.painDetails.pain_type_name}
-                
-              </Text>  */}
             </Card>
+            ) : (<></>)}
+
+          
           </>
         ) : (
           <>
@@ -472,6 +419,7 @@ export default class Home extends React.Component {
             </Text>
           </>
         )}
+
 
         <TouchableOpacity
           onPress={() =>

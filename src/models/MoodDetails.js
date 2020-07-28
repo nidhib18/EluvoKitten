@@ -1,4 +1,5 @@
 export const initMoodDetails = (userId, occurredDate) => {
+    console.log("InitMOOD");
     return  { 
         user_id: userId,
         mood: { 
