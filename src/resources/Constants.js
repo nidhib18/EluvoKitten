@@ -28,8 +28,16 @@ export const constants = {
   USERBLOOD_DEV_URL:
   "https://32okmj248c.execute-api.ap-southeast-2.amazonaws.com/DEV/blood?userId=[userId]&occurredDate=[occurredDate]",
   ADDUSERBLOOD_DEV_URL:
- " https://p8wk7sinql.execute-api.ap-southeast-2.amazonaws.com/DEV/blood",
+ "https://g08zgmf516.execute-api.ap-southeast-2.amazonaws.com/DEV/blood",
   PERIODPRODUCT_DEV_URL:
-  "https://dv4tzoya4d.execute-api.ap-southeast-2.amazonaws.com/DEV/listitems?listId=8"
+  "https://dv4tzoya4d.execute-api.ap-southeast-2.amazonaws.com/DEV/listitems?listId=8",
+
+  
+  ADDUSERDIGESTION_DEV_URL:
+  "https://tuibhqyk4b.execute-api.ap-southeast-2.amazonaws.com/DEV/digestion",
+  USERDIGESTION_DEV_URL:
+  "https://hdqpvu1gs6.execute-api.ap-southeast-2.amazonaws.com/DEV/digestion?userId=[userId]&occurredDate=[occurredDate]",
+  BOWELSYMPTOM_DEV_URL:
+  "https://dv4tzoya4d.execute-api.ap-southeast-2.amazonaws.com/DEV/listitems?listId=9"
 
 };

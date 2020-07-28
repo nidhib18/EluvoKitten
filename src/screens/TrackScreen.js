@@ -65,7 +65,8 @@ export const TrackScreen = ({ route,navigation }) => {
          route= {route}/>
         <BloodCard navigation={navigation}
          route= {route}/>
-        <DigestionCard />
+        <DigestionCard navigation={navigation}
+         route= {route} />
         <ExerciseCard />
         <SaveCard navigation={navigation} />
       </ScrollView>

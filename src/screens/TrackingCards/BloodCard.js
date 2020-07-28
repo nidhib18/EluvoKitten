@@ -41,7 +41,7 @@ export default class BloodCard extends React.Component {
             bloodValue: 0,
             minValue: 0,
             maxValue: 5,
-            selectedBloodDescriptions: [], 
+            selectedPeriodProduct: [], 
             periodProducts:[], // moodDescriptions:[],
             userDetails:{}, 
             bloodDetails: initBloodDetails(0,  moment().format('YYYY-MM-DD')) ,
@@ -54,7 +54,7 @@ export default class BloodCard extends React.Component {
         this.setState({ bloodVisible: visible });
     }
     getPeriodProducts() {
-        let url = constants. PERIODPRODUCT_DEV_URL;
+        let url = constants.PERIODPRODUCT_DEV_URL;
         getData(constants.JWTKEY).then((jwt) =>
             fetch(url, {
                 //calling API
@@ -116,7 +116,7 @@ export default class BloodCard extends React.Component {
         );
     };
     saveBloodDetails() {
-      
+console.log("***BLOOD SAVE**",this.state.isBloodDataAvailable)
         if (!this.state. isBloodDataAvailable) {
             // Add the saved mood level
             let userId = this.state.userDetails.user_id;
@@ -131,20 +131,22 @@ export default class BloodCard extends React.Component {
             // });
             
             
-            if (this.state. selectedBloodDescriptions.length > 0)
-            periodProduct = this.state.selectedBloodDescriptions[0]; 
+            if (this.state.selectedPeriodProduct.length > 0)
+                periodProduct = this.state.selectedPeriodProduct[0]; 
        
 
-            let blood = { //sending to the database,if pian type value = 0 then don't send it to the database as it means the user didnt select any tags
+            let blood = { //sending to the database,if pain type value = 0 then don't send it to the database as it means the user didnt select any tags
                 user_id: userId,
                 bleeding_level: this.state.bloodValue,
                 period_product :periodProduct, 
                 occurred_date: localToUtcDateTime(occurredDate),
                 
             };
-           
+           console.log("OBJECT!!",blood);
            
             let url = constants.ADDUSERBLOOD_DEV_URL;
+            
+        console.log ("***ANYTHING***",url);
             getData(constants.JWTKEY).then((jwt) =>
                 fetch(url, {
                     //calling API
@@ -157,7 +159,7 @@ export default class BloodCard extends React.Component {
                     body: JSON.stringify(blood)
                 })
                     .then((response) => {
-                        //console.log(response.json());
+                        console.log("Response!!***tuesday**",response);
                         return response.json();
                     })
             );
@@ -166,6 +168,7 @@ export default class BloodCard extends React.Component {
            
             alert("Update not implemented yet.");
         }
+        console.log ("***ANYTHING available ***",this.state.isBloodDataAvailable);
     }
     componentDidMount() //after Ui has been uploaded 
     {
@@ -183,7 +186,7 @@ export default class BloodCard extends React.Component {
 
     render() {
         let bloodLevel = this.state.bloodDetails && this.state.bloodDetails.blood && this.state.bloodDetails.blood.bleeding_level || 0;
-
+        console.log("***RENDER BLOOD LEVEL***",bloodLevel)
         
         let periodProducts = this.state.periodProducts || [] ; // get all the possible value from the list item , if not then empty array .
         let selectedPeriodProduct = [];

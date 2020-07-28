@@ -53,14 +53,17 @@ export default class Home extends React.Component {
       painDetails: { locations: [] },
       moodDetails: {},
       bloodDetails:{},
+      digestionDetails:{},
       isPainDataAvailable: false,
       isMoodDataAvailable:false,
       isBloodDataAvailable:false,
+      isDigestionDataAvailable:false
     };
     this.setDate = this.setDate.bind(this);
     this.getUserPain = this.getUserPain.bind(this);
     this.getUserMood = this.getUserMood.bind(this); 
     this.getUserBlood = this.getUserBlood.bind(this); 
+    this.getUserDigestion = this.getUserDigestion.bind(this);
   }
 
   
@@ -72,6 +75,7 @@ export default class Home extends React.Component {
     this.getUserPain();
     this.getUserMood();
     this.getUserBlood();
+    this.getUserDigestion();
   }
 
   getUserPain() {
@@ -184,6 +188,43 @@ export default class Home extends React.Component {
         
     );
   }
+  getUserDigestion  ()  {
+    let userId = this.state.userDetails.user_id;
+    let url = constants.USERDIGESTION_DEV_URL.replace("[userId]", userId).replace(
+      "[occurredDate]",
+      localToUtcDateTime(this.state.currentDate)
+    );
+    getData(constants.JWTKEY).then((jwt) =>
+      fetch(url, {
+        //calling API
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + jwt, //Passing this will authorize the user
+        },
+      })
+        .then((response) => response.json())
+
+        .then((responseData) => {
+          // If responseData is not empty, then isMoodDataAvailable = true
+         
+          if (Object.keys(responseData).length) {
+            this.setState({
+              isDigestionDataAvailable: true,
+              digestionDetails: responseData.digestion,
+            });
+        
+          } else {
+            this.setState({
+              isDigestionDataAvailable: false,
+              digestionDetails:{},
+             });
+             
+          }
+        })
+        .catch((err) => console.log(err))
+        
+    );
+  }
   
   componentDidMount() {
     getData(constants.USERDETAILS).then((data) => {
@@ -195,6 +236,7 @@ export default class Home extends React.Component {
       this.getUserPain();
       this.getUserBlood(); 
       this.getUserMood();
+      this.getUserDigestion();
     });
   }
 
@@ -202,7 +244,7 @@ export default class Home extends React.Component {
 
   
   render() {
-    var isAnyDataAvailable = this.state.isMoodDataAvailable || this.state.isPainDataAvailable;
+    var isAnyDataAvailable = this.state.isMoodDataAvailable || this.state.isPainDataAvailable||this.state.isBloodDataAvailable||this.state.isDigestionDataAvailable;
     return (
       <Layout style={styles.container}>
         <TopNavigation position="absolute" />
@@ -405,8 +447,48 @@ export default class Home extends React.Component {
 
             </Card>
             ) : (<></>)}
+            { this.state.isDigestionDataAvailable ? (
+            <Card style={styles.cardContainer}>
+              <Text style={styles.cardText}>Today you experienced...</Text>
 
-          
+
+            <Text style={styles.painText}>Digestion</Text>
+              <Text
+                style={{
+                  left: wp('-10%'),
+                  paddingTop: hp('10%'),
+                  color: "#8A8A8E",
+                }}
+              >
+               
+                Digestion Level: {this.state.digestionDetails.digestion_level} 
+              </Text>
+
+
+              <Image
+                style={styles.painIcon}
+                source={require("../../assets/painia.png")}
+              />
+
+              <Text style={{ left: wp('35%'), top: hp('-5%'), color: "#8A8A8E" }}>
+                {moment(this.state.digestionDetails.occurred_date).format("hh:mm A")}
+              </Text>
+
+            
+              <Text
+                style={{
+                  left: wp('-10%'),
+                  paddingTop: hp('-10%'),
+                  color: "#8A8A8E",
+                }}
+              >
+                Bowel Symptom: {this.state.digestionDetails.bowel_symptom_name}
+                
+              </Text>
+
+            </Card>
+            ) : (<></>)}
+           
           </>
         ) : (
           <>
