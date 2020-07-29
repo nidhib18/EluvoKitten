@@ -56,6 +56,7 @@ export default class Home extends React.Component {
       painDetails: { locations: [] },
       moodDetails: {},
       bloodDetails: {},
+      dietDetails: {},
       digestionDetails: {},
       exerciseDetails: {},
       sexDetails: {},
@@ -339,7 +340,7 @@ export default class Home extends React.Component {
           if (Object.keys(responseData).length) {
             this.setState({
               isDietDataAvailable: true,
-              dietDetails: responseData.digestion,
+              dietDetails: responseData.diet,
             });
 
           } else {
@@ -374,7 +375,7 @@ export default class Home extends React.Component {
 
   render() {
     console.log("**find this", this.state.exerciseDetails.exercise_level);
-    var isAnyDataAvailable = this.state.isMoodDataAvailable || this.state.isPainDataAvailable || this.state.isBloodDataAvailable || this.state.isDigestionDataAvailable || this.state.isExerciseDataAvailable || this.state.isSexDataAvailable|| this.state.isDietDataAvailable;
+    var isAnyDataAvailable = this.state.isMoodDataAvailable || this.state.isPainDataAvailable || this.state.isBloodDataAvailable || this.state.isDigestionDataAvailable || this.state.isExerciseDataAvailable || this.state.isSexDataAvailable || this.state.isDietDataAvailable;
     return (
       <Layout style={styles.container}>
         <TopNavigation position="absolute" />
@@ -450,7 +451,7 @@ export default class Home extends React.Component {
                 flexGrow: 1,
                 flexDirection: "column",
                 marginTop: "-42%",
-                marginBottom: "-63%",
+                marginBottom: "-267%",
                 justifyContent: "center",
                 bottom: hp('-45%'),
               }}>
@@ -460,8 +461,8 @@ export default class Home extends React.Component {
                     <Text style={styles.painText}>Pain</Text>
                     <Text
                       style={{
-                        left: wp('-10%'),
-                        paddingTop: hp('10%'),
+                        left: wp('0%'),
+                        paddingTop: hp('7%'),
                         color: "#8A8A8E",
                       }}
                     >
@@ -480,9 +481,9 @@ export default class Home extends React.Component {
 
                     <Text
                       style={{
-                        left: wp('-4%'),
+                        left: wp('5.8%'),
                         position: "absolute",
-                        paddingTop: hp('15%'),
+                        paddingTop: hp('14.5%'),
                         color: "#8A8A8E",
                       }}
                     >
@@ -497,8 +498,8 @@ export default class Home extends React.Component {
                     </Text>
                     <Text
                       style={{
-                        left: wp('-10%'),
-                        paddingTop: hp('-10%'),
+                        left: wp('0%'),
+                        top: hp('-2%'),
                         color: "#8A8A8E",
                       }}
                     >
@@ -509,15 +510,15 @@ export default class Home extends React.Component {
                 ) : (<></>)}
 
                 {this.state.isMoodDataAvailable ? (
-                  <Card style={styles.cardContainer}>
+                  <Card style={styles.cardMoodContainer}>
                     <Text style={styles.cardText}>Today you experienced...</Text>
 
 
                     <Text style={styles.painText}>Mood</Text>
                     <Text
                       style={{
-                        left: wp('-10%'),
-                        paddingTop: hp('10%'),
+                        left: wp('0%'),
+                        paddingTop: hp('7%'),
                         color: "#8A8A8E",
                       }}
                     >
@@ -531,15 +532,15 @@ export default class Home extends React.Component {
                       source={require("../../assets/painia.png")}
                     />
 
-                    <Text style={{ left: wp('35%'), top: hp('-5%'), color: "#8A8A8E" }}>
+                    <Text style={{  left: wp('45%'), top: hp('-5%'), color: "#8A8A8E" }}>
                       {moment(this.state.moodDetails.occurred_date).format("hh:mm A")}
                     </Text>
 
 
                     <Text
                       style={{
-                        left: wp('-10%'),
-                        paddingTop: hp('-10%'),
+                        left: wp('0%'),
+                        top: hp('-2%'),
                         color: "#8A8A8E",
                       }}
                     >
@@ -550,7 +551,7 @@ export default class Home extends React.Component {
                   </Card>
                 ) : (<></>)}
                 {this.state.isBloodDataAvailable ? (
-                  <Card style={styles.cardContainer}>
+                  <Card style={styles.cardBloodContainer}>
                     <Text style={styles.cardText}>Today you experienced...</Text>
 
 
@@ -558,7 +559,7 @@ export default class Home extends React.Component {
                     <Text
                       style={{
                         left: wp('-10%'),
-                        paddingTop: hp('10%'),
+                        top: hp('7%'),
                         color: "#8A8A8E",
                       }}
                     >
@@ -572,34 +573,34 @@ export default class Home extends React.Component {
                       source={require("../../assets/painia.png")}
                     />
 
-                    <Text style={{ left: wp('35%'), top: hp('-5%'), color: "#8A8A8E" }}>
+                    <Text style={{ left: wp('40%'), top: hp('3%'), color: "#8A8A8E" }}>
                       {moment(this.state.bloodDetails.occurred_date).format("hh:mm A")}
                     </Text>
 
 
                     <Text
                       style={{
-                        left: wp('-10%'),
-                        paddingTop: hp('-10%'),
+                        left: wp('0%'),
+                        top: hp('5%'),
                         color: "#8A8A8E",
                       }}
                     >
-                      Mood Type: {this.state.bloodDetails.period_product_name}
+                      Period Product: {this.state.bloodDetails.period_product_name}
 
                     </Text>
 
                   </Card>
                 ) : (<></>)}
                 {this.state.isDigestionDataAvailable ? (
-                  <Card style={styles.cardContainer}>
+                  <Card style={styles.cardDigestionContainer}>
                     <Text style={styles.cardText}>Today you experienced...</Text>
 
 
-                    <Text style={styles.painText}>Blood</Text>
+                    <Text style={styles.painText}>Digestion</Text>
                     <Text
                       style={{
-                        left: wp('-10%'),
-                        paddingTop: hp('10%'),
+                        left: wp('0%'),
+                        paddingTop: hp('7%'),
                         color: "#8A8A8E",
                       }}
                     >
@@ -613,15 +614,15 @@ export default class Home extends React.Component {
                       source={require("../../assets/painia.png")}
                     />
 
-                    <Text style={{ left: wp('35%'), top: hp('-5%'), color: "#8A8A8E" }}>
+                    <Text style={{ left: wp('48%'), top: hp('-5%'), color: "#8A8A8E" }}>
                       {moment(this.state.digestionDetails.occurred_date).format("hh:mm A")}
                     </Text>
 
 
                     <Text
                       style={{
-                        left: wp('-10%'),
-                        paddingTop: hp('-10%'),
+                        left: wp('0%'),
+                        top: hp('-2%'),
                         color: "#8A8A8E",
                       }}
                     >
@@ -632,20 +633,20 @@ export default class Home extends React.Component {
                   </Card>
                 ) : (<></>)}
                 {this.state.isExerciseDataAvailable ? (
-                  <Card style={styles.cardContainer}>
+                  <Card style={styles.cardExerciseContainer}>
                     <Text style={styles.cardText}>Today you experienced...</Text>
 
 
-                    <Text style={styles.painText}>Blood</Text>
+                    <Text style={styles.painText}>Exercise</Text>
                     <Text
                       style={{
-                        left: wp('-10%'),
-                        paddingTop: hp('10%'),
+                        left: wp('0%'),
+                        top: hp('7%'),
                         color: "#8A8A8E",
                       }}
                     >
 
-                      Digestion Level: {this.state.exerciseDetails.exercise_level}
+                      Exercise Level: {this.state.exerciseDetails.exercise_level}
                     </Text>
 
 
@@ -654,34 +655,34 @@ export default class Home extends React.Component {
                       source={require("../../assets/painia.png")}
                     />
 
-                    <Text style={{ left: wp('35%'), top: hp('-5%'), color: "#8A8A8E" }}>
+                    <Text style={{ left: wp('45%'), top: hp('3%'), color: "#8A8A8E" }}>
                       {moment(this.state.exerciseDetails.occurred_date).format("hh:mm A")}
                     </Text>
 
 
                     <Text
                       style={{
-                        left: wp('-10%'),
-                        paddingTop: hp('-10%'),
+                        left: wp('0%'),
+                        top: hp('5%'),
                         color: "#8A8A8E",
                       }}
                     >
-                      Bowel Symptom: {this.state.exerciseDetails.exercise_type_name}
+                      Exercise Type: {this.state.exerciseDetails.exercise_type_name}
 
                     </Text>
 
                   </Card>
                 ) : (<></>)}
                 {this.state.isSexDataAvailable ? (
-                  <Card style={styles.cardContainer}>
+                  <Card style={styles.cardSexContainer}>
                     <Text style={styles.cardText}>Today you experienced...</Text>
 
 
                     <Text style={styles.painText}>Sex</Text>
                     <Text
                       style={{
-                        left: wp('-10%'),
-                        paddingTop: hp('10%'),
+                        left: wp('0%'),
+                        paddingTop: hp('7%'),
                         color: "#8A8A8E",
                       }}
                     >
@@ -695,39 +696,39 @@ export default class Home extends React.Component {
                       source={require("../../assets/painia.png")}
                     />
 
-                    <Text style={{ left: wp('35%'), top: hp('-5%'), color: "#8A8A8E" }}>
+                    <Text style={{ left: wp('45%'), top: hp('-5%'), color: "#8A8A8E" }}>
                       {moment(this.state.sexDetails.occurred_date).format("hh:mm A")}
                     </Text>
 
 
                     <Text
                       style={{
-                        left: wp('-10%'),
-                        paddingTop: hp('-10%'),
+                        left: wp('0%'),
+                        top: hp('-2%'),
                         color: "#8A8A8E",
                       }}
                     >
-                      Mood Type: {this.state.sexDetails.sexual_activity_name}
+                      Sex Detail: {this.state.sexDetails.sexual_activity_name}
 
                     </Text>
 
                   </Card>
                 ) : (<></>)}
                 {this.state.isDietDataAvailable ? (
-                  <Card style={styles.cardContainer}>
+                  <Card style={styles.cardDietContainer}>
                     <Text style={styles.cardText}>Today you experienced...</Text>
 
 
-                    <Text style={styles.painText}>Sex</Text>
+                    <Text style={styles.painText}>Diet</Text>
                     <Text
                       style={{
-                        left: wp('-10%'),
-                        paddingTop: hp('10%'),
+                        left: wp('0%'),
+                        top: hp('7%'),
                         color: "#8A8A8E",
                       }}
                     >
 
-                      Sex Level: {this.state.dietDetails.diet_level}
+                      Diet Level: {this.state.dietDetails.diet_level}
                     </Text>
 
 
@@ -736,19 +737,19 @@ export default class Home extends React.Component {
                       source={require("../../assets/painia.png")}
                     />
 
-                    <Text style={{ left: wp('35%'), top: hp('-5%'), color: "#8A8A8E" }}>
+                    <Text style={{ left: wp('40%'), top: hp('4%'), color: "#8A8A8E" }}>
                       {moment(this.state.dietDetails.occurred_date).format("hh:mm A")}
                     </Text>
 
 
                     <Text
                       style={{
-                        left: wp('-10%'),
-                        paddingTop: hp('-10%'),
+                        left: wp('0%'),
+                        top: hp('5%'),
                         color: "#8A8A8E",
                       }}
                     >
-                      Mood Type: {this.state.dietDetails.food_type_name}
+                      Diet Type: {this.state.dietDetails.food_type_name}
 
                     </Text>
 
@@ -866,6 +867,48 @@ const styles = StyleSheet.create({
     shadowRadius: 30,
     // resizeMode: "contain"
   },
+  cardMoodContainer: {
+    flex: 1,
+    position: "absolute",
+    width: wp('90%'),
+    borderRadius: 20,
+    height: hp('30%'),
+    top: hp('15%'),
+    alignItems: "center",
+    left: wp('5'),
+    backgroundColor: "#ffff",
+    borderBottomColor: '#ffffff',
+    borderTopColor: '#ffffff',
+    borderLeftColor: '#ffffff',
+    borderRightColor: '#ffffff',
+    backgroundColor: '#ffffff',
+    shadowColor: '#c8c8c8',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 30,
+    // resizeMode: "contain"
+  },
+  cardPainContainer: {
+    flex: 1,
+    position: "absolute",
+    width: wp('90%'),
+    borderRadius: 20,
+    height: hp('30%'),
+    top: hp('-18%'),
+    alignItems: "center",
+    left: wp('5'),
+    backgroundColor: "#ffff",
+    borderBottomColor: '#ffffff',
+    borderTopColor: '#ffffff',
+    borderLeftColor: '#ffffff',
+    borderRightColor: '#ffffff',
+    backgroundColor: '#ffffff',
+    shadowColor: '#c8c8c8',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 30,
+    // resizeMode: "contain"
+  },
 
   cardBloodContainer: {
     flex: 1,
@@ -873,7 +916,95 @@ const styles = StyleSheet.create({
     width: wp('90%'),
     borderRadius: 20,
     height: hp('30%'),
-    top: hp('43%'),
+    top: hp('48%'),
+    alignItems: "center",
+    left: wp('5'),
+    backgroundColor: "#ffff",
+    borderBottomColor: '#ffffff',
+    borderTopColor: '#ffffff',
+    borderLeftColor: '#ffffff',
+    borderRightColor: '#ffffff',
+    backgroundColor: '#ffffff',
+    shadowColor: '#c8c8c8',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 30,
+    // resizeMode: "contain"
+  },
+
+  cardSexContainer: {
+    flex: 1,
+    position: "absolute",
+    width: wp('90%'),
+    borderRadius: 20,
+    height: hp('30%'),
+    top: hp('150%'),
+    alignItems: "center",
+    left: wp('5'),
+    backgroundColor: "#ffff",
+    borderBottomColor: '#ffffff',
+    borderTopColor: '#ffffff',
+    borderLeftColor: '#ffffff',
+    borderRightColor: '#ffffff',
+    backgroundColor: '#ffffff',
+    shadowColor: '#c8c8c8',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 30,
+    // resizeMode: "contain"
+  },
+
+  cardDigestionContainer: {
+    flex: 1,
+    position: "absolute",
+    width: wp('90%'),
+    borderRadius: 20,
+    height: hp('30%'),
+    top: hp('82%'),
+    alignItems: "center",
+    left: wp('5'),
+    backgroundColor: "#ffff",
+    borderBottomColor: '#ffffff',
+    borderTopColor: '#ffffff',
+    borderLeftColor: '#ffffff',
+    borderRightColor: '#ffffff',
+    backgroundColor: '#ffffff',
+    shadowColor: '#c8c8c8',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 30,
+    // resizeMode: "contain"
+  },
+
+  cardExerciseContainer: {
+    flex: 1,
+    position: "absolute",
+    width: wp('90%'),
+    borderRadius: 20,
+    height: hp('30%'),
+    top: hp('116%'),
+    alignItems: "center",
+    left: wp('5'),
+    backgroundColor: "#ffff",
+    borderBottomColor: '#ffffff',
+    borderTopColor: '#ffffff',
+    borderLeftColor: '#ffffff',
+    borderRightColor: '#ffffff',
+    backgroundColor: '#ffffff',
+    shadowColor: '#c8c8c8',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 30,
+    // resizeMode: "contain"
+  },
+
+  cardDietContainer: {
+    flex: 1,
+    position: "absolute",
+    width: wp('90%'),
+    borderRadius: 20,
+    height: hp('30%'),
+    top: hp('184%'),
     alignItems: "center",
     left: wp('5'),
     backgroundColor: "#ffff",
@@ -953,17 +1084,38 @@ const styles = StyleSheet.create({
     shadowRadius: 30,
     // resizeMode: "contain"
   },
+  // cardBloodExercise: {
+  //   flex: 1,
+  //   left: wp('5'),
+  //   position: "absolute",
+  //   width: wp('90%'),
+  //   borderRadius: 20,
+  //   height: hp('12%'),
+  //   top: hp('-3%'),
+  //   alignItems: "center",
+  //   backgroundColor: "#ffff",
+  //   borderBottomColor: '#ffffff',
+  //   borderTopColor: '#ffffff',
+  //   borderLeftColor: '#ffffff',
+  //   borderRightColor: '#ffffff',
+  //   backgroundColor: '#ffffff',
+  //   shadowColor: '#c8c8c8',
+  //   shadowOffset: { width: 0, height: 2 },
+  //   shadowOpacity: 0.8,
+  //   shadowRadius: 30,
+  //   // resizeMode: "contain"
+  // },
   cardText: {
     flex: 1,
-    left: wp('2'),
+    left: wp('-12'),
     position: "absolute",
     fontSize: hp('2.6%'),
     fontWeight: "bold",
     letterSpacing: wp('0%'),
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center", 
 
-    paddingLeft: hp('2%'),
+    paddingLeft: hp('0%'),
     top: hp('1%'),
   },
   medicationText: {
@@ -986,7 +1138,7 @@ const styles = StyleSheet.create({
     letterSpacing: wp('0%'),
     justifyContent: "center",
     alignItems: "center",
-    left: wp('22%'),
+    left: wp('2%'),
     paddingLeft: hp('2%'),
     top: hp('6%'),
   },
@@ -995,7 +1147,7 @@ const styles = StyleSheet.create({
     top: hp('1%'),
     width: wp('20%'),
     height: hp('20%'),
-    left: wp('4%'),
+    left: wp('-15%'),
     resizeMode: "contain",
   },
 });
