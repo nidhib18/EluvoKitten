@@ -227,6 +227,7 @@ export const TrackingStyles = {
     color: '#8A8A8E',
     fontWeight:'500',
     backgroundColor: 'rgba(118, 118, 128, 0.12)',
+    
      
   },
   tagSelected: {
@@ -235,7 +236,8 @@ export const TrackingStyles = {
     paddingTop: 8,
     paddingLeft: 16,
     paddingRight: 16,
-    margin: 2,
+    marginLeft: 8,
+    marginBottom: 8,
     color: 'white',
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -244,8 +246,7 @@ export const TrackingStyles = {
     borderRadius: 18,
     fontWeight:'500',
     backgroundColor: '#f09874',
-    
-
+   
   },
   container: {
     justifyContent: "center",

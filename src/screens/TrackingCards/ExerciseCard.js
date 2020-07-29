@@ -1,15 +1,21 @@
 import React from 'react';
-import { Image, Dimensions, TouchableOpacity, View, StyleSheet ,Slider} from 'react-native';
+import { Image, Dimensions, TouchableOpacity, View, StyleSheet, Slider } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Layout, Card, Modal, Text, Button, Input, Toggle } from '@ui-kitten/components';
 import { TrackingStyles } from "../TrackingStyles";
 import TagSelector from 'react-native-tag-selector';
-import TimePicker from "react-native-24h-timepicker";
+import moment from "moment";
+import { storeData, getData } from "../../helpers/StorageHelpers";
+import { constants } from "../../resources/Constants";
+import { utcToLocal, localToUtcDate, localToUtcDateTime } from "../../helpers/DateHelpers";
+import { mapListItemsToTags } from "../../helpers/TagHelpers"
+import { initExerciseDetails } from '../../models/ExerciseDetails';
+
 
 const { width } = Dimensions.get('window');
 
 export default class ExerciseCard extends React.Component {
-    
+
     exerciseTags = [
         {
             id: ' Yoga',
@@ -43,7 +49,7 @@ export default class ExerciseCard extends React.Component {
             id: 'Weights',
             name: 'Weights'
         },
-        
+
 
     ];
     state = {
@@ -55,30 +61,175 @@ export default class ExerciseCard extends React.Component {
     constructor(props) {
         super(props);
         this.state = { exerciseVisible: false };
-        this.state = {
-            time: ""
-        };
+        // this.state = {
+        //     time: ""
+        // };
         this.state = {
             selectedTags: [],
             exerciseValue: 0,
             minValue: 0,
-            maxValue: 5
+            maxValue: 5,
+            selectedExerciseType: [],
+            exerciseTypes: [], // moodDescriptions:[],
+            userDetails: {},
+            exerciseDetails: initExerciseDetails(0, moment().format('YYYY-MM-DD')),
+            isExerciseDataAvailable: false,
+            currentDate: moment().format('YYYY-MM-DD')// / this.props.route.params.CurrentDate    
         };
-        
-        
+        this.saveExerciseDetails = this.saveExerciseDetails.bind(this);
     }
     setExerciseVisible(visible) {
         this.setState({ exerciseVisible: visible });
     }
-    onCheckedChange = (isChecked) => {
-        this.setState({ checked: isChecked });
+    // onCheckedChange = (isChecked) => {
+    //     this.setState({ checked: isChecked });
+    // };
+    // onConfirm(hour, minute) {
+    //     this.setState({ time: `${hour}:${minute}` });
+    //     this.TimePicker.close();
+    // }
+    getExerciseTypes() {
+        let url = constants.EXERCISETYPE_DEV_URL;
+        getData(constants.JWTKEY).then((jwt) =>
+            fetch(url, {
+                //calling API
+                method: "GET",
+                headers: {
+                    Authorization: "Bearer " + jwt, //Passing this will authorize the user
+                },
+            })
+                .then((response) => response.json())
+                .then((responseData) => {
+                    let exerciseTypes = [];//getting all possible paintype tags from the database  //{} is an object [] an array a value
+                    exerciseTypes = mapListItemsToTags(responseData);
+
+                    this.setState({ exerciseTypes: exerciseTypes });
+                })
+                .catch((err) => console.log(err))
+        );
     };
-    onConfirm(hour, minute) {
-        this.setState({ time: `${hour}:${minute}` });
-        this.TimePicker.close();
+    getUserExercise = (route) => {
+        let userId = this.state.userDetails.user_id;
+        let currentDate = this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD');
+        let url = constants.USEREXERCISE_DEV_URL.replace("[userId]", userId).replace(
+            "[occurredDate]",
+            localToUtcDateTime(currentDate)
+        );
+
+        getData(constants.JWTKEY).then((jwt) =>
+            fetch(url, {
+                //calling API
+                method: "GET",
+                headers: {
+                    Authorization: "Bearer " + jwt, //Passing this will authorize the user
+                },
+            })
+                .then((response) => response.json())
+                .then((responseData) => {
+                    // If responseData is not empty, then isPainDataAvailable = true
+                    //("MOOD CARD Get User Mood Response", responseData);
+                    if (Object.keys(responseData).length) {
+
+                        this.setState({
+                            isExerciseDataAvailable: true,
+                            exerciseDetails: responseData,
+                            exerciseValue: responseData.exercise.exercise_level,
+                            currentDate: currentDate
+                        });
+                    }
+                    else {
+                        this.setState({
+                            isExerciseDataAvailable: false,
+                            exerciseDetails: initExerciseDetails(userId, currentDate),
+                            exerciseValue: 0,
+                            currentDate: currentDate
+                        });
+                    }
+                })
+                .catch((err) => console.log(err))
+        );
+    };
+    saveExerciseDetails() {
+        console.log("***BLOOD SAVE**", this.state.isExerciseDataAvailable)
+        if (!this.state.isExerciseDataAvailable) {
+            // Add the saved mood level
+            let userId = this.state.userDetails.user_id;
+            let occurredDate = moment(this.state.currentDate).add(moment().hour(), 'hour').add(moment().minute(), 'minute');
+            // Add pain locations
+            let exerciseType = null;
+
+
+            // this.state.selectedTags.map(tag => {
+            //     let location = {location_id: tag };
+            //     locations.push(location);
+            // });
+
+
+            if (this.state.selectedExerciseType.length > 0)
+                exerciseType = this.state.selectedExerciseType[0];
+
+
+            let exercise = { //sending to the database,if pain type value = 0 then don't send it to the database as it means the user didnt select any tags
+                user_id: userId,
+                exercise_level: this.state.exerciseValue,
+                exercise_type: exerciseType,
+                occurred_date: localToUtcDateTime(occurredDate),
+
+            };
+            // console.log("OBJECT!!", blood);
+
+            let url = constants.ADDUSEREXERCISE_DEV_URL;
+
+            console.log("***ANYTHING***", url);
+            getData(constants.JWTKEY).then((jwt) =>
+                fetch(url, {
+                    //calling API
+                    method: "POST",
+                    headers: {
+                        Authorization: "Bearer " + jwt, //Passing this will authorize the user
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(exercise)
+                })
+                    .then((response) => {
+                        console.log("Response!!***tuesday**", response);
+                        return response.json();
+                    })
+            );
+        }
+        else {
+
+            alert("Update not implemented yet.");
+        }
+        // console.log("***ANYTHING available ***", this.state.isBloodDataAvailable);
+    }
+    componentDidMount() //after Ui has been uploaded 
+    {
+        getData(constants.USERDETAILS).then((data) => {
+            // Read back the user details from storage and convert to object
+            this.state.userDetails = JSON.parse(data);
+            this.setState({
+                userDetails: JSON.parse(data),
+            });
+            this.getUserExercise();
+            this.getExerciseTypes();
+
+        });
     }
 
     render() {
+        let exerciseLevel = this.state.exerciseDetails && this.state.exerciseDetails.exercise && this.state.exerciseDetails.exercise.exercise_level || 0;
+        // console.log("***RENDER BLOOD LEVEL***", bloodLevel)
+
+        let exerciseTypes = this.state.exerciseTypes || []; // get all the possible value from the list item , if not then empty array .
+        let selectedExerciseType = [];
+
+        if (this.state.exerciseDetails && this.state.exerciseDetails.exercise && this.state.exerciseDetails.exercise.exercise_type) {
+            selectedExerciseType = mapListItemsToTags([{ list_item_id: this.state.exerciseDetails.exercise.exercise_type, list_item_name: "Yoga" }]);
+
+
+        }
         const { selectedHours, selectedMinutes } = this.state;
         return (
             <Layout style={TrackingStyles.container}>
@@ -105,13 +256,13 @@ export default class ExerciseCard extends React.Component {
                                 source={require('../../../assets/x.png')}
                             />
                         </TouchableOpacity>
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('2%'), fontSize: wp('4%'), fontWeight:'500' }}>Did you do any exercise today?</Text>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('2%'), fontSize: wp('4%'), fontWeight: '500' }}>Did you do any exercise today?</Text>
                         <Slider
                             style={styles.sliderStyle}
                             step={1}
                             minimumValue={this.state.minValue}
                             maximumValue={this.state.maxValue}
-                            value={this.state.value}
+                            value={exerciseLevel}
                             onValueChange={val => this.setState({ exerciseValue: val })}
                             maximumTrackTintColor='#d3d3d3'
                             minimumTrackTintColor='#f09874'
@@ -123,22 +274,26 @@ export default class ExerciseCard extends React.Component {
                             </Text>
                             <Text style={styles.colorGrey}>Heaps </Text>
                         </View>
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top:hp('9%'), fontSize: wp('4%'), fontWeight:'500' }}>Add more detail  </Text>
-                        <View style={{top: hp('12%'), left: wp('-2%')}}>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('9%'), fontSize: wp('4%'), fontWeight: '500' }}>Add more detail:  </Text>
+                        <View style={{ top: hp('12%'), left: wp('-2%') }}>
                             <TagSelector
                                 tagStyle={TrackingStyles.tag}
                                 selectedTagStyle={TrackingStyles.tagSelected}
                                 maxHeight={70}
-                                tags={this.exerciseTags}
-                                onChange={(selected) => this.setState({ selectedTags: selected })}
+                                tags={exerciseTypes}
+                                onChange={(selected) => this.setState({ selectedExerciseType: selected })}
                             />
                         </View>
-                       
-                        
+
+
                         <Button
                             style={TrackingStyles.trackButton}
                             appearance='outline'
-                            onPress={() => { this.setExerciseVisible(!this.state.exerciseVisible); }}> Track!
+                            onPress={() => {
+                                this.setExerciseVisible(!this.state.exerciseVisible);
+                                this.saveExerciseDetails();
+                            }}
+                        > Track!
                         </Button>
                     </Card>
                 </Modal>
@@ -169,23 +324,23 @@ const styles = StyleSheet.create({
     colorGrey: {
         color: '#8A8A8E',
         top: hp('6%'),
-        fontWeight:'500'
+        fontWeight: '500'
 
     },
     colorPeach: {
         color: '#f09874',
         top: hp('6%'),
-        fontWeight:'500'
+        fontWeight: '500'
 
     },
     text: {
         fontSize: wp('3%'),
-        marginTop:hp('3%'),
+        marginTop: hp('3%'),
         color: '#000',
         left: wp('20%'),
         top: hp('-10.5%'),
         alignContent: 'center',
-        
+
     },
     button: {
         width: wp('75%'),
@@ -196,7 +351,7 @@ const styles = StyleSheet.create({
         marginVertical: wp('15%'),
         left: wp('2%'),
         top: hp('5%'),
-        height:hp('5.7%')
+        height: hp('5.7%')
     },
     buttonText: {
         color: "#000",

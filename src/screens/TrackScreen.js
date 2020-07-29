@@ -61,13 +61,18 @@ export const TrackScreen = ({ route,navigation }) => {
         <MedicationCard />
         <PainCard navigation={navigation}
          route= {route} />
-        <MoodCard />
-        <BloodCard />
-        <DigestionCard />
-        <ExerciseCard />
-        <DietCard />
-        <SexCard />
-        
+        <MoodCard navigation={navigation}
+         route= {route}/>
+        <BloodCard navigation={navigation}
+         route= {route}/>
+        <DigestionCard navigation={navigation}
+         route= {route}/>
+        <ExerciseCard navigation={navigation}
+         route= {route}/>
+        <DietCard navigation={navigation}
+         route= {route}/>
+        <SexCard navigation={navigation}
+         route= {route}/>      
         <SaveCard navigation={navigation} />
         <Text style={TrackingStyles.dietText}>Diet</Text>
         <Text style={TrackingStyles.sexText}>Sex</Text>

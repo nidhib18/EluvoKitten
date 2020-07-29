@@ -26,6 +26,8 @@ import { storeData, getData } from "../helpers/StorageHelpers";
 import { constants } from "../resources/Constants";
 import { utcToLocal, localToUtcDate, localToUtcDateTime } from "../helpers/DateHelpers";
 import { FlatList } from "react-native-gesture-handler";
+import {initMoodDetails} from "../models/MoodDetails";
+
 
 //import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
 
@@ -52,12 +54,28 @@ export default class Home extends React.Component {
       userDetails: {},
       currentDate: moment().format("YYYY-MM-DD"),
       painDetails: { locations: [] },
+      moodDetails: {},
+      bloodDetails: {},
+      digestionDetails: {},
+      exerciseDetails: {},
+      sexDetails:{},
       isPainDataAvailable: false,
+      isMoodDataAvailable: false,
+      isBloodDataAvailable: false,
+      isDigestionDataAvailable:false,
+      isExerciseDataAvailable:false,
+      isSexDataAvailable:false,
+
     };
     this.setDate = this.setDate.bind(this);
     this.getUserPain = this.getUserPain.bind(this);
-
+    this.getUserMood = this.getUserMood.bind(this);
+    this.getUserBlood = this.getUserBlood.bind(this);
+    this.getUserDigestion = this.getUserDigestion.bind(this);
+    this.getUserExercise = this.getUserExercise.bind(this);
+    this.getUserSex = this.getUserSex.bind(this); 
   }
+
 
 
 
@@ -66,9 +84,15 @@ export default class Home extends React.Component {
     this.state.currentDate = utcToLocal(newDate);
     console.log("Current Date", this.state.currentDate);
     this.getUserPain();
+    this.getUserMood();
+    this.getUserBlood();
+    this.getUserDigestion();
+    this.getUserExercise();
+    this.getUserSex();
   }
 
   getUserPain() {
+
     let userId = this.state.userDetails.user_id;
     let url = constants.USERPAIN_DEV_URL.replace("[userId]", userId).replace(
       "[occurredDate]",
@@ -103,6 +127,195 @@ export default class Home extends React.Component {
         .catch((err) => console.log(err))
     );
   }
+  getUserMood() {
+    let userId = this.state.userDetails.user_id;
+    let url = constants.USERMOOD_DEV_URL.replace("[userId]", userId).replace(
+      "[occurredDate]",
+      localToUtcDateTime(this.state.currentDate)
+    );
+    getData(constants.JWTKEY).then((jwt) =>
+      fetch(url, {
+        //calling API
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + jwt, //Passing this will authorize the user
+        },
+      })
+        .then((response) => response.json())
+
+        .then((responseData) => {
+          // If responseData is not empty, then isMoodDataAvailable = true
+
+          if (Object.keys(responseData).length) {
+            this.setState({
+              isMoodDataAvailable: true,
+              moodDetails: responseData.mood,
+            });
+
+          } else {
+            this.setState({
+              isMoodDataAvailable: false,
+              moodDetails: {},
+            });
+
+          }
+        })
+        .catch((err) => console.log(err))
+
+    );
+  }
+
+  getUserBlood() {
+    let userId = this.state.userDetails.user_id;
+    let url = constants.USERBLOOD_DEV_URL.replace("[userId]", userId).replace(
+      "[occurredDate]",
+      localToUtcDateTime(this.state.currentDate)
+    );
+    getData(constants.JWTKEY).then((jwt) =>
+      fetch(url, {
+        //calling API
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + jwt, //Passing this will authorize the user
+        },
+      })
+        .then((response) => response.json())
+
+        .then((responseData) => {
+          // If responseData is not empty, then isMoodDataAvailable = true
+
+          if (Object.keys(responseData).length) {
+            this.setState({
+              isBloodDataAvailable: true,
+              bloodDetails: responseData.blood,
+            });
+
+          } else {
+            this.setState({
+              isBloodDataAvailable: false,
+              bloodDetails: {},
+            });
+
+          }
+        })
+        .catch((err) => console.log(err))
+
+    );
+  }
+  getUserDigestion  ()  {
+    let userId = this.state.userDetails.user_id;
+    let url = constants.USERDIGESTION_DEV_URL.replace("[userId]", userId).replace(
+      "[occurredDate]",
+      localToUtcDateTime(this.state.currentDate)
+    );
+    getData(constants.JWTKEY).then((jwt) =>
+      fetch(url, {
+        //calling API
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + jwt, //Passing this will authorize the user
+        },
+      })
+        .then((response) => response.json())
+
+        .then((responseData) => {
+          // If responseData is not empty, then isMoodDataAvailable = true
+         
+          if (Object.keys(responseData).length) {
+            this.setState({
+              isDigestionDataAvailable: true,
+              digestionDetails: responseData.digestion,
+            });
+        
+          } else {
+            this.setState({
+              isDigestionDataAvailable: false,
+              digestionDetails:{},
+             });
+             
+          }
+        })
+        .catch((err) => console.log(err))
+        
+    );
+  }
+  getUserExercise  ()  {
+    let userId = this.state.userDetails.user_id;
+    let url = constants.USEREXERCISE_DEV_URL.replace("[userId]", userId).replace(
+      "[occurredDate]",
+      localToUtcDateTime(this.state.currentDate)
+    );
+    getData(constants.JWTKEY).then((jwt) =>
+      fetch(url, {
+        //calling API
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + jwt, //Passing this will authorize the user
+        },
+      })
+        .then((response) => response.json())
+
+        .then((responseData) => {
+          // If responseData is not empty, then isMoodDataAvailable = true
+         
+          if (Object.keys(responseData).length) {
+            this.setState({
+              isExerciseDataAvailable: true,
+              exerciseDetails: responseData.exercise,
+            });
+        
+          } else {
+            this.setState({
+              isExerciseDataAvailable: false,
+              exerciseDetails:{},
+             });
+             
+          }
+        })
+        .catch((err) => console.log(err))
+        
+    );
+  }
+
+  getUserSex  ()  {
+    let userId = this.state.userDetails.user_id;
+    let url = constants.USERSEX_DEV_URL.replace("[userId]", userId).replace(
+      "[occurredDate]",
+      localToUtcDateTime(this.state.currentDate)
+    );
+    getData(constants.JWTKEY).then((jwt) =>
+      fetch(url, {
+        //calling API
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + jwt, //Passing this will authorize the user
+        },
+      })
+        .then((response) => response.json())
+
+        .then((responseData) => {
+          // If responseData is not empty, then isMoodDataAvailable = true
+         
+          if (Object.keys(responseData).length) {
+            this.setState({
+              isSexDataAvailable: true,
+              sexDetails: responseData.sex,
+            });
+        
+          } else {
+            this.setState({
+              isSexDataAvailable: false,
+              sexDetails:{},
+             });
+             
+          }
+        })
+        .catch((err) => console.log(err))
+        
+    );
+  }
+  
+
   componentDidMount() {
     getData(constants.USERDETAILS).then((data) => {
       // Read back the user details from storage and convert to object
@@ -111,11 +324,17 @@ export default class Home extends React.Component {
         userDetails: JSON.parse(data),
       });
       this.getUserPain();
+      this.getUserBlood();
+      this.getUserMood();
+      this.getUserSex(); 
+      this.getUserDigestion();
+      this.getUserExercise();
     });
   }
 
-
   render() {
+    console.log("**find this",this.state.exerciseDetails.exercise_level);
+    var isAnyDataAvailable = this.state.isMoodDataAvailable || this.state.isPainDataAvailable || this.state.isBloodDataAvailable||this.state.isDigestionDataAvailable||this.state.isExerciseDataAvailable||this.state.isSexDataAvailable;
     return (
       <Layout style={styles.container}>
         <TopNavigation position="absolute" />
@@ -182,9 +401,9 @@ export default class Home extends React.Component {
 
           />
         </View>
-        {this.state.isPainDataAvailable ? (
+        {isAnyDataAvailable ? (
           <>
-            <View style={{ width: wp('100'), height: 500, backgroundColor: '#f2f2f2', top: 262, alignContent: "center" }}>
+          <View style={{ width: wp('100'), height: 500, backgroundColor: '#f2f2f2', top: 262, alignContent: "center" }}>
               <ScrollView contentContainerStyle={{
                 justifyContent: "space-around",
                 flex: 1,
@@ -195,92 +414,267 @@ export default class Home extends React.Component {
                 justifyContent: "center",
                 bottom: hp('-45%'),
               }}>
-                <Card style={styles.cardSmallContainer}>
-                  <Text style={styles.medicationText}>Take Ginet</Text>
-                  <Text
-                    style={{
-                      left: wp('-36%'),
-                      position: "absolute",
-                      paddingTop: wp('13%'),
-                      color: "#8A8A8E",
-                    }}
-                  >
-                    Remind me at 7:30 am
-              </Text>
-                </Card>
-                <Card style={styles.cardExercise}>
-                  <Text style={styles.medicationText}>30 min Yoga</Text>
-                  <Text
-                    style={{
-                      left: wp('-36%'),
-                      position: "absolute",
-                      paddingTop: wp('13%'),
-                      color: "#8A8A8E",
-                    }}
-                  >
-                    Remind me at 9:00 am
-              </Text>
-                </Card>
-                <Card style={styles.cardContainer}>
-                  <ScrollView style={styles.ScrollContainer}>
-                    <Text style={styles.cardText}>Today you experienced...</Text>
-                    <Text style={styles.painText}>Pain</Text>
-                    <Text
-                      style={{
-                        left: wp('25.5%'),
-                        top: hp('9%'),
-                        color: "#8A8A8E",
-                        fontWeight: '500'
-                      }}
-                    >
-                      Pain Level: {this.state.painDetails.pain_level}
-                    </Text>
-
-                    <Text
-                      style={{
-                        left: wp('0%'),
-                        paddingTop: hp('50%'),
-                        color: "#8A8A8E",
-                        fontWeight: '500'
-                      }}
-                    >
-                      Pain Leveldakfjlsjfskrhfjkdhgudhfugufgufghfuhfuyhjuyruhdhesfhruihtguidrtuiakfjlsjfskrhfjkdhgudhfugufgufghfuhfuyhjuyruhdhesfhruihtguidrtuiakfjlsjfskrhfjkdhgudhfugufgufghfuhfuyhjuyruhdhesfhruihtguidrtuiakfjlsjfskrhfjkdhgudhfugufgufghfuhfuyhjuyruhdhesfhruihtguidrtuiakfjlsjfskrhfjkdhgudhfugufgufghfuhfuyhjuyruhdhesfhruihtguidrtuiakfjlsjfskrhfjkdhgudhfugufgufghfuhfuyhjuyruhdhesfhruihtguidrtui:
+            { this.state.isPainDataAvailable ? (
+            <Card style={styles.cardPainContainer}>
+            <Text style={styles.cardText}>Today you experienced...</Text>
+             <Text style={styles.painText}>Pain</Text>
+              <Text
+                style={{
+                  left: wp('-10%'),
+                  paddingTop: hp('10%'),
+                  color: "#8A8A8E",
+                }}
+              >
+                Pain Level: {this.state.painDetails.pain_level}
               </Text>
 
 
-                    <Image
-                      style={styles.painIcon}
-                      source={require("../../assets/painia.png")}
-                    />
+              <Image
+                style={styles.painIcon}
+                source={require("../../assets/painia.png")}
+              />
 
-                    <Text style={{ left: wp('70%'), top: hp('-62%'), color: "#8A8A8E", fontWeight: '500' }}>
-                      {moment(this.state.painDetails.occurred_date).format("hh:mm A")}
-                    </Text>
+              <Text style={{ left: wp('35%'), top: hp('-5%'), color: "#8A8A8E" }}>
+                {moment(this.state.painDetails.occurred_date).format("hh:mm A")}
+              </Text>
 
-                    <Text
-                      style={{
-                        left: wp('25.5%'),
-                        position: "absolute",
-                        top: hp('11.5%'),
-                        color: "#8A8A8E",
-                        fontWeight: '500'
-                      }}
-                    >
-                      {this.state.painDetails.locations.map((location, index) => {
-                        let locationText =
-                          location.list_item_name +
-                          (index < this.state.painDetails.locations.length - 1
-                            ? ", "
-                            : "");
-                        return locationText;
-                      })}
-                    </Text>
-                  </ScrollView>
-                </Card>
-                <Card style={styles.cardSContainer}>
-                  <Text>hello</Text>
-                </Card>
-              </ScrollView>
+              <Text
+                style={{
+                  left: wp('-4%'),
+                  position: "absolute",
+                  paddingTop:hp('15%'),
+                  color: "#8A8A8E",
+                }}
+              >
+                {this.state.painDetails.locations.map((location, index) => {
+                  let locationText =
+                    location.list_item_name +
+                    (index < this.state.painDetails.locations.length - 1
+                      ? ", "
+                      : "");
+                  return locationText;
+                })}
+              </Text>
+              <Text
+                style={{
+                  left: wp('-10%'),
+                  paddingTop: hp('-10%'),
+                  color: "#8A8A8E",
+                }}
+              >
+                Pain Type: {this.state.painDetails.pain_type_name}
+                
+              </Text>  
+            </Card>
+            ) : (<></>)}
+
+            { this.state.isMoodDataAvailable ? (
+            <Card style={styles.cardContainer}>
+              <Text style={styles.cardText}>Today you experienced...</Text>
+
+
+            <Text style={styles.painText}>Mood</Text>
+              <Text
+                style={{
+                  left: wp('-10%'),
+                  paddingTop: hp('10%'),
+                  color: "#8A8A8E",
+                }}
+              >
+               
+                Mood Level: {this.state.moodDetails.mood_level} 
+              </Text>
+
+
+              <Image
+                style={styles.painIcon}
+                source={require("../../assets/painia.png")}
+              />
+
+              <Text style={{ left: wp('35%'), top: hp('-5%'), color: "#8A8A8E" }}>
+                {moment(this.state.moodDetails.occurred_date).format("hh:mm A")}
+              </Text>
+
+            
+              <Text
+                style={{
+                  left: wp('-10%'),
+                  paddingTop: hp('-10%'),
+                  color: "#8A8A8E",
+                }}
+              >
+                Mood Type: {this.state.moodDetails.mood_description_name}
+                
+              </Text>
+
+            </Card>
+            ) : (<></>)}
+            { this.state.isBloodDataAvailable ? (
+            <Card style={styles.cardContainer}>
+              <Text style={styles.cardText}>Today you experienced...</Text>
+
+
+            <Text style={styles.painText}>Blood</Text>
+              <Text
+                style={{
+                  left: wp('-10%'),
+                  paddingTop: hp('10%'),
+                  color: "#8A8A8E",
+                }}
+              >
+               
+                Blood Level: {this.state.bloodDetails.bleeding_level} 
+              </Text>
+
+
+              <Image
+                style={styles.painIcon}
+                source={require("../../assets/painia.png")}
+              />
+
+              <Text style={{ left: wp('35%'), top: hp('-5%'), color: "#8A8A8E" }}>
+                {moment(this.state.bloodDetails.occurred_date).format("hh:mm A")}
+              </Text>
+
+            
+              <Text
+                style={{
+                  left: wp('-10%'),
+                  paddingTop: hp('-10%'),
+                  color: "#8A8A8E",
+                }}
+              >
+                Mood Type: {this.state.bloodDetails.period_product_name}
+                
+              </Text>
+
+            </Card>
+            ) : (<></>)}
+            { this.state.isDigestionDataAvailable ? (
+            <Card style={styles.cardContainer}>
+              <Text style={styles.cardText}>Today you experienced...</Text>
+
+
+            <Text style={styles.painText}>Blood</Text>
+              <Text
+                style={{
+                  left: wp('-10%'),
+                  paddingTop: hp('10%'),
+                  color: "#8A8A8E",
+                }}
+              >
+               
+               Digestion Level: {this.state.digestionDetails.digestion_level}
+              </Text>
+
+
+              <Image
+                style={styles.painIcon}
+                source={require("../../assets/painia.png")}
+              />
+
+              <Text style={{ left: wp('35%'), top: hp('-5%'), color: "#8A8A8E" }}>
+              {moment(this.state.digestionDetails.occurred_date).format("hh:mm A")}
+              </Text>
+
+            
+              <Text
+                style={{
+                  left: wp('-10%'),
+                  paddingTop: hp('-10%'),
+                  color: "#8A8A8E",
+                }}
+              >
+               Bowel Symptom: {this.state.digestionDetails.bowel_symptom_name}
+                
+              </Text>
+
+            </Card>
+            ) : (<></>)}
+            { this.state.isExerciseDataAvailable ? (
+            <Card style={styles.cardContainer}>
+              <Text style={styles.cardText}>Today you experienced...</Text>
+
+
+            <Text style={styles.painText}>Blood</Text>
+              <Text
+                style={{
+                  left: wp('-10%'),
+                  paddingTop: hp('10%'),
+                  color: "#8A8A8E",
+                }}
+              >
+               
+               Digestion Level: {this.state.exerciseDetails.exercise_level}
+              </Text>
+
+
+              <Image
+                style={styles.painIcon}
+                source={require("../../assets/painia.png")}
+              />
+
+              <Text style={{ left: wp('35%'), top: hp('-5%'), color: "#8A8A8E" }}>
+              {moment(this.state.exerciseDetails.occurred_date).format("hh:mm A")}
+              </Text>
+
+            
+              <Text
+                style={{
+                  left: wp('-10%'),
+                  paddingTop: hp('-10%'),
+                  color: "#8A8A8E",
+                }}
+              >
+               Bowel Symptom: {this.state.exerciseDetails.exercise_type_name}
+                
+              </Text>
+
+            </Card>
+            ) : (<></>)}
+            { this.state.isSexDataAvailable ? (
+            <Card style={styles.cardContainer}>
+              <Text style={styles.cardText}>Today you experienced...</Text>
+
+
+            <Text style={styles.painText}>Sex</Text>
+              <Text
+                style={{
+                  left: wp('-10%'),
+                  paddingTop: hp('10%'),
+                  color: "#8A8A8E",
+                }}
+              >
+               
+                Sex Level: {this.state.sexDetails.sex_level} 
+              </Text>
+
+
+              <Image
+                style={styles.painIcon}
+                source={require("../../assets/painia.png")}
+              />
+
+              <Text style={{ left: wp('35%'), top: hp('-5%'), color: "#8A8A8E" }}>
+                {moment(this.state.sexDetails.occurred_date).format("hh:mm A")}
+              </Text>
+
+            
+              <Text
+                style={{
+                  left: wp('-10%'),
+                  paddingTop: hp('-10%'),
+                  color: "#8A8A8E",
+                }}
+              >
+                Mood Type: {this.state.sexDetails.sexual_activity_name}
+                
+              </Text>
+
+            </Card>
+            ) : (<></>)}
+
+            </ScrollView>
             </View>
           </>
         ) : (
@@ -392,6 +786,29 @@ const styles = StyleSheet.create({
     // resizeMode: "contain"
   },
 
+  cardBloodContainer: {
+    flex: 1,
+    position: "absolute",
+    width: wp('90%'),
+    borderRadius: 20,
+    height: hp('30%'),
+    top: hp('43%'),
+    alignItems: "center",
+    left: wp('5'),
+    backgroundColor: "#ffff",
+    borderBottomColor: '#ffffff',
+    borderTopColor: '#ffffff',
+    borderLeftColor: '#ffffff',
+    borderRightColor: '#ffffff',
+    backgroundColor: '#ffffff',
+    shadowColor: '#c8c8c8',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 30,
+    // resizeMode: "contain"
+  },
+
+
   cardSmallContainer: {
     flex: 1,
     position: "absolute",
@@ -464,7 +881,7 @@ const styles = StyleSheet.create({
     letterSpacing: wp('0%'),
     justifyContent: "center",
     alignItems: "center",
-    
+
     paddingLeft: hp('2%'),
     top: hp('1%'),
   },

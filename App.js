@@ -11,7 +11,7 @@ import { default as theme } from './theme.json'
 import { AppNavigator } from './src/screens/NavigationComponent';
 
 console.disableYellowBox = true;
-//console.reportErrorsAsExceptions = false;
+console.reportErrorsAsExceptions = false;
 
 export default () => (
   
