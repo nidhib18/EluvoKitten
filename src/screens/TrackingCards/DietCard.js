@@ -4,8 +4,13 @@ import { Image, Dimensions, TouchableOpacity, Slider, StyleSheet, View } from 'r
 import { Layout, Card, Modal, Text, Button } from '@ui-kitten/components';
 import { TrackingStyles } from "../TrackingStyles";
 import TagSelector from 'react-native-tag-selector';
-
-
+import moment from "moment";
+import { storeData, getData } from "../../helpers/StorageHelpers";
+import { constants } from "../../resources/Constants";
+import { initPainDetails } from "../../models/PainDetails";
+import { utcToLocal, localToUtcDate, localToUtcDateTime } from "../../helpers/DateHelpers";
+import { mapListItemsToTags } from "../../helpers/TagHelpers"
+import { initDietDetails } from '../../models/DietDetails';
 
 const { width } = Dimensions.get('window');
 
@@ -79,15 +84,167 @@ export default class DietCard extends React.Component {
             selectedTags: [],
             dietValue: 0,
             minValue: 0,
-            maxValue: 5
+            maxValue: 5,
+            selectedFoodType: [], 
+            foodTypes:[],
+            userDetails: {},            
+            dietDetails: initDietDetails (0,  moment().format('YYYY-MM-DD')) ,
+            isDietDataAvailable: false, 
+            currentDate:moment().format('YYYY-MM-DD')  
         };
+        this.saveDietDetails = this.saveDietDetails.bind(this);
     }
     setDietVisible(visible) {
         this.setState({ dietVisible: visible });
     }
 
 
+    getFoodTypes() {
+        let url = constants.FOODTYPE_DEV_URL;
+        getData(constants.JWTKEY).then((jwt) =>
+            fetch(url, {
+                //calling API
+                method: "GET",
+                headers: {
+                    Authorization: "Bearer " + jwt, //Passing this will authorize the user
+                },
+            })
+                .then((response) => response.json())
+                .then((responseData) => {
+                    let foodTypes = [];//getting all possible paintype tags from the database  //{} is an object [] an array a value
+                    foodTypes = mapListItemsToTags(responseData);
+                    
+                    this.setState({ foodTypes: foodTypes });
+                })
+                .catch((err) => console.log(err))
+        );
+    };
+
+    getUserDiet = (route) => {
+        let userId = this.state.userDetails.user_id;
+        let currentDate = this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD');
+        let url = constants.USERDIET_DEV_URL.replace("[userId]", userId).replace(
+            "[occurredDate]",
+            localToUtcDateTime(currentDate)
+        );
+        console.log ("URL FOR GETMOOD",url);
+        getData(constants.JWTKEY).then((jwt) =>
+            fetch(url, {
+                //calling API
+                method: "GET",
+                headers: {
+                    Authorization: "Bearer " + jwt, //Passing this will authorize the user
+                },
+            })
+                .then((response) => response.json())
+                .then((responseData) => {
+                    // If responseData is not empty, then isPainDataAvailable = true
+                    //("MOOD CARD Get User Mood Response", responseData);
+                    if (Object.keys(responseData).length) {
+                        console.log ("*YES data*",responseData);
+                        this.setState({
+                            isDietDataAvailable: true,
+                            dietDetails: responseData,
+                            dietValue: responseData.diet.diet_level,
+                            currentDate: currentDate
+                        });
+                    }
+                    else {
+                        console.log ("*No data*");
+                        this.setState({
+                            isDietDataAvailable: false,
+                            dietDetails: initDietDetails(userId, currentDate),
+                            dietValue: 0,
+                            currentDate: currentDate
+                        });
+                    }
+                })
+                .catch((err) => console.log(err))
+        );
+        // console.log ("Chechi discussed",this.state.isDietDataAvailable);
+    };
+
+    saveDietDetails() {
+      
+        if (!this.state.isDietDataAvailable) {
+            // Add the saved mood level
+            let userId = this.state.userDetails.user_id;
+            let occurredDate = moment(this.state.currentDate).add(moment().hour(), 'hour').add(moment().minute(), 'minute');
+            // Add pain locations
+            let foodType = null ;
+            
+            
+            // this.state.selectedTags.map(tag => {
+            //     let location = {location_id: tag };
+            //     locations.push(location);
+            // });
+            
+            
+            if (this.state.selectedFoodType.length > 0)
+            foodType = this.state.selectedFoodType[0]; 
+       
+
+            let diet = { //sending to the database,if pian type value = 0 then don't send it to the database as it means the user didnt select any tags
+                user_id: userId,
+                diet_level: this.state.dietValue,
+                food_type :foodType, 
+                occurred_date: localToUtcDateTime(occurredDate),
+                
+            };
+           
+           
+            let url = constants.ADDUSERDIET_DEV_URL;
+            getData(constants.JWTKEY).then((jwt) =>
+                fetch(url, {
+                    //calling API
+                    method: "POST",
+                    headers: {
+                        Authorization: "Bearer " + jwt, //Passing this will authorize the user
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(diet)
+                })
+                    .then((response) => {
+                        //console.log(response.json());
+                        return response.json();
+                    })
+            );
+        }
+        else {
+           
+            alert("Update not implemented yet.");
+        }
+    }
+
+    componentDidMount() //after Ui has been uploaded 
+     {
+        getData(constants.USERDETAILS).then((data) => {
+            // Read back the user details from storage and convert to object
+            this.state.userDetails = JSON.parse(data);
+            this.setState({
+                userDetails: JSON.parse(data),
+            });
+            this.getUserDiet();
+            this.getFoodTypes();
+            
+        });
+    }
+
     render() {
+
+       
+        let dietLevel = this.state.dietDetails && this.state.dietDetails.diet && this.state.dietDetails.diet.diet_level || 0;
+        // console.log("***RENDER MOOD LEVEL***",Level)
+        
+        let foodTypes = this.state.foodTypes || [] ; // get all the possible value from the list item , if not then empty array .
+        let selectedFoodTypes = [];
+      
+        if (this.state.dietDetails && this.state.dietDetails.diet && this.state.dietDetails.diet.food_type) {
+            selectedFoodTypes = mapListItemsToTags([{list_item_id: this.state.dietDetails.diet.food_type,list_item_name:"Sugar"}]);
+          
+
+        }
 
         return (
             <Layout style={TrackingStyles.container}>
@@ -121,7 +278,7 @@ export default class DietCard extends React.Component {
                             step={1}
                             minimumValue={this.state.minValue}
                             maximumValue={this.state.maxValue}
-                            value={this.state.value}
+                            value={dietLevel}
                             onValueChange={val => this.setState({ dietValue: val })}
                             maximumTrackTintColor='#d3d3d3'
                             minimumTrackTintColor='#f09874'
@@ -141,8 +298,8 @@ export default class DietCard extends React.Component {
                                 tagStyle={TrackingStyles.tag}
                                 selectedTagStyle={TrackingStyles.tagSelected}
                                 maxHeight={70}
-                                tags={this.dietTypeTags}
-                                onChange={(selected) => this.setState({ selectedTags: selected })}
+                                tags={foodTypes}
+                                onChange={(selected) => this.setState({ selectedFoodType: selected })}
                             />
                         </View>
 
@@ -151,6 +308,7 @@ export default class DietCard extends React.Component {
                             appearance='outline'
                             onPress={() => {
                                 this.setDietVisible(!this.state.dietVisible);
+                                this.saveDietDetails(); 
                             }} > Track!
                             </Button>
                     </Card>

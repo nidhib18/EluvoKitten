@@ -55,5 +55,14 @@ export const constants = {
   SEXUALACTIVITY_DEV_URL:
   "https://dv4tzoya4d.execute-api.ap-southeast-2.amazonaws.com/DEV/listitems?listId=11",
 
+  
+  ADDUSERDIET_DEV_URL: 
+  "https://lwi59gn6j6.execute-api.ap-southeast-2.amazonaws.com/DEV/diet",
+  USERDIET_DEV_URL: 
+  "https://4u2yruqepb.execute-api.ap-southeast-2.amazonaws.com/DEV/diet?userId=[userId]&occurredDate=[occurredDate]",
+  FOODTYPE_DEV_URL:
+  "https://dv4tzoya4d.execute-api.ap-southeast-2.amazonaws.com/DEV/listitems?listId=12",
+
+
 
 };
