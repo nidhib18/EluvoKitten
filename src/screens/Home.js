@@ -25,8 +25,10 @@ import { HomeStyles } from "./HomeStyles";
 import { storeData, getData } from "../helpers/StorageHelpers";
 import { constants } from "../resources/Constants";
 import { utcToLocal, localToUtcDate, localToUtcDateTime } from "../helpers/DateHelpers";
+
 import { FlatList } from "react-native-gesture-handler";
 import { initMoodDetails } from "../models/MoodDetails";
+
 
 
 //import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
@@ -71,6 +73,7 @@ export default class Home extends React.Component {
     };
     this.setDate = this.setDate.bind(this);
     this.getUserPain = this.getUserPain.bind(this);
+
     this.getUserMood = this.getUserMood.bind(this);
     this.getUserBlood = this.getUserBlood.bind(this);
     this.getUserDigestion = this.getUserDigestion.bind(this);
@@ -79,6 +82,11 @@ export default class Home extends React.Component {
     this.getUserDiet = this.getUserDiet.bind(this);
   }
 
+
+
+
+
+  }
 
 
 
@@ -372,6 +380,7 @@ export default class Home extends React.Component {
       this.getUserDiet();
     });
   }
+
 
   render() {
     console.log("**find this", this.state.exerciseDetails.exercise_level);
@@ -761,6 +770,7 @@ export default class Home extends React.Component {
           </>
         ) : (
             <>
+
               <View style={{ width: wp('100'), height: 500, backgroundColor: '#f2f2f2', top: -231, alignContent: "center", marginTop: 500, marginBottom: -500 }}>
                 <ScrollView>
                   <Image
@@ -804,6 +814,16 @@ export default class Home extends React.Component {
             source={require("../../assets/settings.png")}
           />
         </TouchableOpacity>
+              <Image
+                style={HomeStyles.girlContainer}
+                source={require("../../assets/girl.png")}
+              />
+              <Text style={HomeStyles.headerText}>
+                You haven't tracked anything today!
+            </Text>
+            </>
+          )}
+
 
         <TouchableOpacity
           onPress={() =>
