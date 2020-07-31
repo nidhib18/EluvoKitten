@@ -13,7 +13,9 @@ import {
   evaProps,
   Button,
 } from "@ui-kitten/components";
-
+import {Alert} from 'react-native';
+import RNRestart from 'react-native-restart';
+import {setJSExceptionHandler} from 'react-native-exception-handler';
 import { ImageStyles } from "./ImageStyles";
 import { LoginStyles } from "./LoginStyles";
 import {
@@ -23,6 +25,7 @@ import {
 } from "react-native";
 import { saveUserDetails } from "../helpers/AuthHelpers";
 import { constants } from "../resources/Constants";
+
 
 export default class LoginScreen extends Component {
   constructor(props) {
@@ -55,10 +58,12 @@ export default class LoginScreen extends Component {
 
   render() {
     return (
+      
       <KeyboardAvoidingView
         style={{ flex: 1, backgroundColor: "#f09874" }}
         behavior="position"
         enabled
+       
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <Layout style={ImageStyles.mainContainer}>
