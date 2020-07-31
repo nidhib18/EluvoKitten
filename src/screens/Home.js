@@ -23,7 +23,7 @@ import { HomeStyles } from "./HomeStyles";
 //import { ScrollView } from 'react-native-gesture-handler';
 import { storeData, getData } from "../helpers/StorageHelpers";
 import { constants } from "../resources/Constants";
-import { utcToLocal,localToUtcDate,localToUtcDateTime } from "../helpers/DateHelpers";
+import { utcToLocal, localToUtcDate, localToUtcDateTime } from "../helpers/DateHelpers";
 
 //import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
 
@@ -54,10 +54,10 @@ export default class Home extends React.Component {
     };
     this.setDate = this.setDate.bind(this);
     this.getUserPain = this.getUserPain.bind(this);
-   
+
   }
 
-  
+
 
   setDate(newDate) {
     // CalendarStrip converts the selected date to UTC format for e.g. 2020-06-15T12:00:00Z
@@ -112,7 +112,7 @@ export default class Home extends React.Component {
     });
   }
 
-  
+
   render() {
     return (
       <Layout style={styles.container}>
@@ -252,16 +252,16 @@ export default class Home extends React.Component {
             </Card>
           </>
         ) : (
-          <>
-            <Image
-              style={HomeStyles.girlContainer}
-              source={require("../../assets/girl.png")}
-            />
-            <Text style={HomeStyles.headerText}>
-              You haven't tracked anything today!
+            <>
+              <Image
+                style={HomeStyles.girlContainer}
+                source={require("../../assets/girl.png")}
+              />
+              <Text style={HomeStyles.headerText}>
+                You haven't tracked anything today!
             </Text>
-          </>
-        )}
+            </>
+          )}
 
         <TouchableOpacity
           onPress={() =>
