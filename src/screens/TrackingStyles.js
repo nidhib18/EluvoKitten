@@ -1,4 +1,5 @@
 import { Dimensions } from "react-native";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 const { width, height } = Dimensions.get("window");
 export const TrackingStyles = {
   mainContainer: {
@@ -8,63 +9,139 @@ export const TrackingStyles = {
 
   painButton: {
     position: "absolute",
-    top: 200,
-    width: 100,
-    height: 100,
-    right: 100,
+    top: hp('28%'),
+    width: wp('20%'),
+    height: hp('20.81%'),
+    right: wp('25%'),
     resizeMode: "contain",
   },
 
   moodButton: {
     position: "absolute",
-    top: 200,
-    width: 100,
-    height: 100,
-    right: -5,
+    top: hp('30%'),
+    width: wp('20%'),
+    height: hp('20.81%'),
+    right: wp('3%'),
     resizeMode: "contain",
   },
-
+  
   bloodButton: {
     position: "absolute",
-    top: 200,
-    width: 100,
-    height: 100,
-    right: -100,
+    top: hp('30.5%'),
+    width: wp('22%'),
+    height: hp('20.81%'),
+    right: wp('-18%'),
     resizeMode: "contain",
   },
 
   digestionButton: {
     position: "absolute",
-    top: 195,
-    width: 100,
-    height: 100,
-    right: -200,
+    top: hp('30%'),
+    width: wp('22%'),
+    height: hp('20.81%'),
+    right: wp('-39%'),
     resizeMode: "contain",
   },
 
   exerciseButton: {
     position: "absolute",
-    top: 200,
-    width: 100,
-    height: 100,
-    right: -300,
+    top: hp('30%'),
+    width: wp('22%'),
+    height: hp('20.81%'),
+    right: wp('-60.5%'),
     resizeMode: "contain",
   },
 
   medicationButton: {
     position: "absolute",
-    top: 200,
-    width: 100,
-    height: 100,
-    right: -400,
+    top: hp('30%'),
+    width: wp('22%'),
+    height: hp('20.81%'),
+    right: wp('-82.5%'),
     resizeMode: "contain",
   },
+
+  dietButton: {
+    position: "absolute",
+    top: hp('28.5%'),
+    width: wp('24.5%'),
+    height: hp('20.81%'),
+    right: wp('-106%'),
+    resizeMode: "contain",
+
+  },
+  dietText: {
+    color: '#96969a',
+    textAlign: 'left',
+    top: hp('45.5%'),
+    left: wp('92%'),
+    fontSize: wp('2.7%'),
+    fontWeight: 'bold'
+  },
+
+  painText: {
+    color: '#96969a',
+    textAlign: 'left',
+    top: hp('45.3%'),
+    right: wp('47.5%'),
+    fontSize: wp('2.9%'),
+    fontWeight: 'bold'
+  },
+
+  sexButton: {
+    position: "absolute",
+    top: hp('28.5%'),
+    width: wp('23%'),
+    height: hp('20.81%'),
+    right: wp('-128.5%'),
+    resizeMode: "contain",
+
+  },
+  appointmentButton: {
+    position: "absolute",
+    top: hp('-80%'),
+    width: wp('22%'),
+    height: hp('20.81%'),
+    right: wp('-9%'),
+    resizeMode: "contain",
+
+  },
+  appointmentText: {
+    position: "absolute",
+    top: hp('24%'),
+    right: wp('43.5%'),
+    resizeMode: "contain",
+    fontWeight: 'bold',
+    color: '#96969a',
+    textAlign: 'left',
+    fontSize: wp('2.7%'),
+
+
+  },
+  sexText: {
+    color: '#96969a',
+    textAlign: 'left',
+    top: hp('45.5%'),
+    left: wp('109.6%'),
+    fontSize: wp('2.7%'),
+    fontWeight: 'bold'
+  },
+
+  smallSaveText: {
+    color: '#96969a',
+    textAlign: 'left',
+    top: hp('45.5%'),
+    left: wp('118.5%'),
+    fontSize: wp('2.7%'),
+    fontWeight: 'bold'
+  },
+
   saveButton: {
     position: "absolute",
-    top: 195,
-    width: 90,
-    height: 90,
-    right: -500,
+    top: hp('28.5%'),
+    width: wp('20%'),
+    height: hp('20.81%'),
+    right: wp('-149%'),
     resizeMode: "contain",
   },
 
@@ -72,24 +149,26 @@ export const TrackingStyles = {
     position: "absolute",
     alignItems: "center",
     justifyContent: "center",
-    top: 470,
-    left: 15,
+    top: hp('62.5'),
+    left: wp('5%'),
     backgroundColor: "#f09874",
     borderRadius: 25,
-    width: width - 90,
+    width: wp('80%'),
+
   },
 
   doneButton: {
     position: "absolute",
     alignItems: "center",
     justifyContent: "center",
-    top: -400,
-    left: 290,
+    top: hp('70'),
+    left: wp('5%'),
+    width: wp('80%'),
   },
   girlSaveContainer: {
-    left: 10,
-    height: 253,
-    width: 289,
+    left: wp('-3.5%'),
+    height: hp('40%'),
+    width: wp('85%'),
     top: -80,
   },
 
@@ -97,57 +176,126 @@ export const TrackingStyles = {
     color: "black",
     textAlign: "center",
     fontWeight: "bold",
-    fontSize: 28,
-    top: 300,
+    fontSize: wp('8%'),
+    top: hp('45%'),
   },
   saveLogText: {
     color: "black",
     textAlign: "center",
-    fontSize: 18,
-    top: 330,
+    fontSize: wp('3.5%'),
+    top: hp('45%'),
     color: "#B3B3B3",
   },
 
   cardStyle: {
-    width: width - 55,
-    height: 529,
+    top: hp('-4%'),
+    width: wp('90%'),
+    height: hp('71'),
     borderRadius: 20,
-    top: -30,
-    backgroundColor: "#ffffff",
+    borderBottomColor: '#ffffff',
+    borderTopColor: '#ffffff',
+    borderLeftColor: '#ffffff',
+    borderRightColor: '#ffffff',
+    backgroundColor: '#ffffff',
+    shadowColor: '#c8c8c8',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 30,
   },
+   
+  
   symptomText: {
-    color: "black",
-    textAlign: "center",
-    fontWeight: "bold",
+    color: 'black',
+    textAlign: 'left',
+    fontWeight: 'bold',
+    fontSize: wp('6.5%')
   },
-  tagStyle: {
-    alignSelf: "center",
-    fontSize: 12,
-    paddingBottom: 8,
-    paddingTop: 8,
-    paddingLeft: 16,
-    paddingRight: 16,
-    height: 32,
-    margin: 2,
-    color: "white",
-    backgroundColor: "#f09874",
-    borderRadius: 25,
-  },
+  
   tag: {
-    alignSelf: "center",
-    borderRadius: 25,
-    fontSize: 12,
+    justifyContent: "left",
     paddingBottom: 8,
     paddingTop: 8,
     paddingLeft: 16,
     paddingRight: 16,
-    height: 32,
-    margin: 2,
-    backgroundColor: "#EBF1FD",
+    marginLeft: 8,
+    marginBottom: 8,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    overflow: 'hidden',
+    borderRadius: 18,
+    height: 35,
+    color: '#8A8A8E',
+    fontWeight:'500',
+    backgroundColor: 'rgba(118, 118, 128, 0.12)',
+    
+     
+  },
+  tagSelected: {
+    justifyContent: "left",
+    paddingBottom: 8,
+    paddingTop: 8,
+    paddingLeft: 16,
+    paddingRight: 16,
+    marginLeft: 8,
+    marginBottom: 8,
+    color: 'white',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    overflow: 'hidden',
+    height: 35,
+    borderRadius: 18,
+    fontWeight:'500',
+    backgroundColor: '#f09874',
+   
   },
   container: {
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#fbfbfb",
+  },
+
+  doctorContainer: {
+    flex: 1,
+    position: "absolute",
+    width: wp('105%'),
+    height: hp('50%'),
+    top: hp('30%'),
+    alignItems: "center",
+    resizeMode: "contain",
+  },
+
+  xContainer: {
+    position: "absolute",
+    right: wp('0%'),
+    top: hp('-5%'),
+    width: wp('5%'),
+    height: hp('5%'),
+    resizeMode: "contain",
+  },
+  docContainer: {
+    position: "absolute",
+    right: wp('75%'),
+    top: hp('10%'),
+    width: wp('9%'),
+    height: hp('9%'),
+    resizeMode: "contain",
+  },
+
+  clinicContainer: {
+    position: "absolute",
+    right: wp('75%'),
+    top: hp('30%'),
+    width: wp('8%'),
+    height: hp('8%'),
+    resizeMode: "contain",
+  },
+
+  timeContainer: {
+    position: "absolute",
+    right: wp('75%'),
+    top: hp('20%'),
+    width: wp('8%'),
+    height: hp('8%'),
+    resizeMode: "contain",
   },
 };

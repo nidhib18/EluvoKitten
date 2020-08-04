@@ -1,7 +1,7 @@
-import React from 'react';
-import { Image, Dimensions, TouchableOpacity, Slider, View, StyleSheet } from 'react-native';
+import React, { Component } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { Layout, Card, Modal, Text, Button, Input } from '@ui-kitten/components';
+import { Image, Dimensions, TouchableOpacity, Slider, StyleSheet, View } from 'react-native';
+import { Layout, Card, Modal, Text, Button } from '@ui-kitten/components';
 import { TrackingStyles } from "../TrackingStyles";
 import TagSelector from 'react-native-tag-selector';
 import moment from "moment";
@@ -10,54 +10,62 @@ import { constants } from "../../resources/Constants";
 import { initPainDetails } from "../../models/PainDetails";
 import { utcToLocal, localToUtcDate, localToUtcDateTime } from "../../helpers/DateHelpers";
 import { mapListItemsToTags } from "../../helpers/TagHelpers"
-import { initDigestionDetails } from '../../models/DigestionDetails';
+import { initSexDetails } from '../../models/SexDetails';
+
+
 const { width } = Dimensions.get('window');
 
-export default class DigestionCard extends React.Component {
-    bloatTypeTags = [
+export default class SexCard extends React.Component {
+   
+    sexTags = [
         {
-            id: 'Bloating',
-            name: 'Bloating'
+            id: ' Orgasm',
+            name: ' Orgasm'
         },
         {
-            id: 'Diarrhea',
-            name: 'Diarrhea'
+            id: 'Masturbation',
+            name: 'Masturbation'
         },
         {
-            id: 'Constipation',
-            name: 'Constipation'
+            id: 'Pain',
+            name: 'Pain'
         },
         {
-            id: 'Gassy',
-            name: 'Gassy'
-        }
+            id: 'Protection used',
+            name: 'Protection used'
+        },
+        {
+            id: 'No protection',
+            name: 'No protection'
+        },
+        
 
-    ]
+    ];
     constructor(props) {
         super(props);
-        this.state = { digestionVisible: false };
+        this.state = { sexVisible: false };
         this.state = {
             selectedTags: [],
-            bloatValue: 0,
+            sexValue: 0,
+            selectedSexualActivity: [],
+            sexualActivity:[],
             minValue: 0,
             maxValue: 5,
-            selectedBowelSymptom: [],
-            bowelSymptoms: [],
-            userDetails: {},
-            digestionDetails: initDigestionDetails(0, moment().format('YYYY-MM-DD')),
-            isDigestionDataAvailable: false,
-            currentDate: moment().format('YYYY-MM-DD')
+            userDetails:{}, 
+            sexDetails: initSexDetails(0,  moment().format('YYYY-MM-DD')) ,
+            isSexDataAvailable: false,
+            currentDate: moment().format('YYYY-MM-DD')// / this.props.route.params.CurrentDate 
         };
-        this.saveDigestionDetails = this.saveDigestionDetails.bind(this);
+        this.saveSexDetails = this.saveSexDetails.bind(this);
+    }
+    setSexVisible(visible) {
+        this.setState({ sexVisible: visible });
+         
     }
 
-    setDigestionVisible(visible) {
-        this.setState({ digestionVisible: visible });
-    }
 
-
-    getBowelSymptoms() {
-        let url = constants.BOWELSYMPTOM_DEV_URL;
+    getSexualActivity() {
+        let url = constants.SEXUALACTIVITY_DEV_URL;
         getData(constants.JWTKEY).then((jwt) =>
             fetch(url, {
                 //calling API
@@ -68,23 +76,23 @@ export default class DigestionCard extends React.Component {
             })
                 .then((response) => response.json())
                 .then((responseData) => {
-                    let bowelSymptoms = [];//getting all possible paintype tags from the database  //{} is an object [] an array a value
-                    bowelSymptoms = mapListItemsToTags(responseData);
-
-                    this.setState({ bowelSymptoms: bowelSymptoms });
+                    let sexualActivity = [];//getting all possible sexual activity tags from the database  //{} is an object [] an array a value
+                    sexualActivity = mapListItemsToTags(responseData);
+                    
+                    this.setState({ sexualActivity: sexualActivity });
                 })
                 .catch((err) => console.log(err))
         );
     };
-
-    getUserDigestion = (route) => {
+ 
+    getUserSex = (route) => {
         let userId = this.state.userDetails.user_id;
         let currentDate = this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD');
-        let url = constants.USERDIGESTION_DEV_URL.replace("[userId]", userId).replace(
+        let url = constants.USERSEX_DEV_URL.replace("[userId]", userId).replace(
             "[occurredDate]",
             localToUtcDateTime(currentDate)
         );
-        //console.log ("URL FOR GETMOOD",url);
+        
         getData(constants.JWTKEY).then((jwt) =>
             fetch(url, {
                 //calling API
@@ -95,56 +103,60 @@ export default class DigestionCard extends React.Component {
             })
                 .then((response) => response.json())
                 .then((responseData) => {
-                    // If responseData is not empty, then isPainDataAvailable = true
-                    //("MOOD CARD Get User Mood Response", responseData);
+                    // If responseData is not empty, then isSexDataAvailable = true
+                    //("Sex CARD Get User sex Response", responseData);
                     if (Object.keys(responseData).length) {
-                        console.log("*YES data*", responseData);
+                       
                         this.setState({
-                            isDigestionDataAvailable: true,
-                            digestionDetails: responseData,
-                            bloatValue: responseData.digestion.digestion_level,
+                            isSexDataAvailable: true,
+                            sexDetails: responseData,
+                            sexValue: responseData.sex.sex_level,
                             currentDate: currentDate
                         });
                     }
                     else {
-                        console.log("*No data*");
                         this.setState({
-                            isMoodDataAvailable: false,
-                            digestionDetails: initDigestionDetails(userId, currentDate),
-                            bloatValue: 0,
+                            isSexDataAvailable: false,
+                            sexDetails: initSexDetails(userId, currentDate),
+                            sexValue: 0,
                             currentDate: currentDate
                         });
                     }
                 })
                 .catch((err) => console.log(err))
         );
-        //console.log ("Chechi discussed",this.state.isMoodDataAvailable);
     };
 
-    saveDigestionDetails() {
-
-        if (!this.state.isDigestionDataAvailable) {
-            // Add the saved mood level
+    saveSexDetails() {
+      
+        if (!this.state.isSexDataAvailable) {
+            // Add the saved sex level
             let userId = this.state.userDetails.user_id;
             let occurredDate = moment(this.state.currentDate).add(moment().hour(), 'hour').add(moment().minute(), 'minute');
-            // Add pain locations
-            let bowelSymptom = null;
+            // Add sexual activity
+            let sexualActivity = null ;
+            
+            
+            // this.state.selectedTags.map(tag => {
+            //     let location = {location_id: tag };
+            //     locations.push(location);
+            // });
+            
+            
+            if (this.state.selectedSexualActivity.length > 0)
+                sexualActivity = this.state.selectedSexualActivity[0]; 
+       
 
-
-            if (this.state.selectedBowelSymptom.length > 0)
-                bowelSymptom = this.state.selectedBowelSymptom[0];
-
-
-            let digestion = { //sending to the database,if pain type value = 0 then don't send it to the database as it means the user didnt select any tags
+            let sex = { //sending to the database,if sex type value = 0 then don't send it to the database as it means the user didnt select any tags
                 user_id: userId,
-                digestion_level: this.state.bloatValue,
-                bowel_symptom: bowelSymptom,
+                sex_level: this.state.sexValue,
+                sexual_activity :sexualActivity, 
                 occurred_date: localToUtcDateTime(occurredDate),
-
+                
             };
-
-
-            let url = constants.ADDUSERDIGESTION_DEV_URL;
+           
+           
+            let url = constants.ADDUSERSEX_DEV_URL;
             getData(constants.JWTKEY).then((jwt) =>
                 fetch(url, {
                     //calling API
@@ -154,7 +166,7 @@ export default class DigestionCard extends React.Component {
                         Accept: 'application/json',
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(digestion)
+                    body: JSON.stringify(sex)
                 })
                     .then((response) => {
                         //console.log(response.json());
@@ -163,46 +175,46 @@ export default class DigestionCard extends React.Component {
             );
         }
         else {
-
+           
             alert("Update not implemented yet.");
         }
     }
 
     componentDidMount() //after Ui has been uploaded 
-    {
+     {
         getData(constants.USERDETAILS).then((data) => {
             // Read back the user details from storage and convert to object
             this.state.userDetails = JSON.parse(data);
             this.setState({
                 userDetails: JSON.parse(data),
             });
-            this.getUserDigestion();
-            this.getBowelSymptoms();
-
+            this.getUserSex();
+            this.getSexualActivity();
+            
         });
     }
 
+
     render() {
 
+        let sexLevel = this.state.sexDetails && this.state.sexDetails.sex && this.state.sexDetails.sex.sex_level || 0;
 
-        let digestionLevel = this.state.digestionDetails && this.state.digestionDetails.digestion && this.state.digestionDetails.digestion.digestion_level || 0;
-        //console.log("***RENDER MOOD LEVEL***",moodLevel)
-
-        let bowelSymptoms = this.state.bowelSymptoms || []; // get all the possible value from the list item , if not then empty array .
-        let selectedBowelSymptoms = [];
-
-        if (this.state.digestionDetails && this.state.digestionDetails.digestion && this.state.digestionDetails.digestion.bowel_symptom) {
-            selectedBowelSymptoms = mapListItemsToTags([{ list_item_id: this.state.digestionDetails.digestion.bowel_symptom, list_item_name: "Bloated" }]);
-
+        
+        let sexualActivity = this.state.sexualActivity || [] ; // get all the possible value from the list item , if not then empty array .
+        let selectedSexualActivity = [];
+      
+        if (this.state.sexDetails && this.state.sexDetails.sex && this.state.sexDetails.sex.sexual_activity) {
+            selectedSexualActivity = mapListItemsToTags([{list_item_id: this.state.sexDetails.sex.sexual_activity,list_item_name:"Protected"}]);
+          
 
         }
 
         return (
             <Layout style={TrackingStyles.container}>
-                <TouchableOpacity onPress={() => { this.setDigestionVisible(true); }}>
+                <TouchableOpacity onPress={() => { this.setSexVisible(true); }}>
                     <Image
-                        style={TrackingStyles.digestionButton}
-                        source={require('../../../assets/digestion.png')}
+                        style={TrackingStyles.sexButton}
+                        source={require('../../../assets/sex.png')}
                     />
                 </TouchableOpacity>
 
@@ -211,60 +223,57 @@ export default class DigestionCard extends React.Component {
                     shadowOffset: { width: 0, height: 2 },
                     shadowOpacity: 0.8,
                     shadowRadius: 30,
-                }} visible={this.state.digestionVisible}>
+                }} visible={this.state.sexVisible}>
                     <Card disabled={true}
-                        style={TrackingStyles.cardStyle}>
-                        <Text style={TrackingStyles.symptomText}>Digestion</Text>
+                        style={ TrackingStyles.cardStyle }>
+                        <Text style={TrackingStyles.symptomText}>Sex </Text>
                         <TouchableOpacity onPress={() => {
-                            this.setDigestionVisible(!this.state.digestionVisible);
+                            this.setSexVisible(!this.state.sexVisible);
                         }}>
                             <Image
                                 style={TrackingStyles.xContainer}
                                 source={require('../../../assets/x.png')}
                             />
                         </TouchableOpacity>
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('3%'), fontSize: wp('4%'), fontWeight: '500' }}>How is your digestion today?</Text>
-
-
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top:hp('3%'), fontSize: wp('4%'),fontWeight:'500' }}>Did you do any sexual activities today </Text>
                         <Slider
                             style={styles.sliderStyle}
-                            step={1}
+                            step={5}
                             minimumValue={this.state.minValue}
                             maximumValue={this.state.maxValue}
-                            value={digestionLevel}
-                            onValueChange={val => this.setState({ bloatValue: val })}
+                            value={sexLevel}
+                            onValueChange={val => this.setState({ sexValue: val })}
                             maximumTrackTintColor='#d3d3d3'
                             minimumTrackTintColor='#f09874'
                         />
                         <View style={styles.textCon}>
-                            <Text style={styles.colorGrey}>No Change </Text>
+                            <Text style={styles.colorGrey}>Didn't Have Sex </Text>
                             <Text style={styles.colorPeach}>
-                                {this.state.bloatValue + ''}
+                                {this.state.sexValue + ''}
                             </Text>
-                            <Text style={styles.colorGrey}>Poor </Text>
+                            <Text style={styles.colorGrey}>Had Sex </Text>
                         </View>
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('15%'), fontSize: wp('4%'), fontWeight: '500' }}>Add more detail:</Text>
-                        <View style={{ top: hp('18%'), left: wp('-2%') }}>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top:hp('15%'), fontSize: wp('4%'), fontWeight:'500' }}>Add more detail: </Text>
+                        <View style={{top: hp('18%'), left: wp('-2%')}}>
                             <TagSelector
-
                                 tagStyle={TrackingStyles.tag}
                                 selectedTagStyle={TrackingStyles.tagSelected}
                                 maxHeight={70}
-                                tags={bowelSymptoms}
-                                onChange={(selected) => this.setState({ selectedBowelSymptom: selected })}
+                                tags={sexualActivity}
+                                onChange={(selected) => this.setState({  selectedSexualActivity: selected })}
                             />
                         </View>
+
                         <Button
                             style={TrackingStyles.trackButton}
                             appearance='outline'
                             onPress={() => {
-                                this.setDigestionVisible(!this.state.digestionVisible);
-                                this.saveDigestionDetails();
-                            }}
-                        > Track!
-
+                                this.setSexVisible(!this.state.sexVisible);
+                                this.saveSexDetails(); 
+                            }} > Track!
                             </Button>
                     </Card>
+                    
                 </Modal>
             </Layout>
 
@@ -272,17 +281,15 @@ export default class DigestionCard extends React.Component {
         );
     };
 }
-
 const styles = StyleSheet.create({
 
     sliderStyle: {
 
-        top: hp('7%'),
-        alignSelf: 'center',
+        top: hp('5%'),
         flex: 1,
-        width: wp('75%'),
+        width: wp('80%'),
         height: hp('20.81%'),
-        padding: wp('2.5%'),
+        padding: wp('5.5%'),
         backgroundColor: '#FFF'
 
     },
@@ -293,14 +300,16 @@ const styles = StyleSheet.create({
     },
     colorGrey: {
         color: '#8A8A8E',
-        top: hp('9%'),
-        fontWeight: '500'
+        top: hp('6%'),
+        fontWeight:'500'
 
     },
     colorPeach: {
         color: '#f09874',
-        top: hp('9%'),
-        fontWeight: '500'
+        top: hp('6%'),
+        fontWeight:'500'
 
     }
+
+
 });

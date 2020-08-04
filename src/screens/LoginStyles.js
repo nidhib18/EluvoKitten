@@ -24,7 +24,7 @@ export const LoginStyles = {
   keyboardAvoidContainer: {
     flex: 1,
     backgroundColor: "#f09874",
-    paddingBottom: 300,
+    paddingBottom: hp('40%'),
   },
   submitBtnContainer: {
     position: "absolute",

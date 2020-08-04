@@ -4,7 +4,6 @@ export const ImageStyles = {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-
     padding: 24,
   },
 
