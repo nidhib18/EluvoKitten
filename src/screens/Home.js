@@ -7,6 +7,7 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
+  ImageBackground,
 } from "react-native";
 import {
   TopNavigation,
@@ -44,7 +45,7 @@ let datesWhitelist = [
 let datesBlacklist = [{ start: moment.vacationStart, end: moment.vacationEnd }];
 
 
-
+const extractKey = ({ id }) => id.toString()
 export default class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -69,6 +70,8 @@ export default class Home extends React.Component {
       isDietDataAvailable: false,
 
     };
+
+
     this.setDate = this.setDate.bind(this);
     this.getUserPain = this.getUserPain.bind(this);
     this.getUserMood = this.getUserMood.bind(this);
@@ -79,7 +82,37 @@ export default class Home extends React.Component {
     this.getUserDiet = this.getUserDiet.bind(this);
   }
 
+  renderItem = ({ item }) => {
+    return (
+      <View >
+        {item.available ? (
+          <View style={styles.symptomView}>
+            <Image style={styles.painIcon} source={item.image}></Image>
+            <Text style={styles.symptomText}>{item.name}</Text>
+            <Text style={{ left: wp('18%'), top: hp('3%'), color: "#8A8A8E", fontWeight: '500' }}>{item.levelText} {item.level}</Text>
+            <Text style={styles.logText}> {item.logTime}</Text>
+            <Text style={{ left: wp('18%'), top: hp('1%'), color: "#8A8A8E", fontWeight: '500' }}>{item.tagText} {item.tags}</Text>
+            {item.PainTag ? (
+              <Text style={{
+                left: wp('18%'), top: hp('1.5%'), color: "#8A8A8E", fontWeight: '500', alignSelf: "flex-start",
+                flexDirection: "row",
+              }}>{item.tagText} {this.state.painDetails.locations.map((location, index) => {
+                let locationText =
+                  location.list_item_name +
+                  (index < this.state.painDetails.locations.length - 1
+                    ? ", "
+                    : "");
+                return locationText;
+              })}
+              </Text>
+            ) : (<></>)}
+          </View>
 
+        ) : (<></>)}
+      </View>
+
+    )
+  }
 
 
   setDate(newDate) {
@@ -374,6 +407,96 @@ export default class Home extends React.Component {
   }
 
   render() {
+    const Symptoms = [
+      {
+        id: '1',
+        name: 'Pain',
+        level: this.state.painDetails.pain_level,
+        levelText: 'Pain level:',
+        logTime: moment(this.state.painDetails.occurred_date).format("hh:mm A"),
+        tagText: 'Pain Type:',
+        image: require("../../assets/painia.png"),
+        PainTag: this.state.painDetails.locations,
+        available: this.state.isPainDataAvailable,
+        tags: this.state.painDetails.pain_type_name,
+      },
+      {
+        id: '2',
+        name: 'Mood',
+        level: this.state.moodDetails.mood_level,
+        levelText: 'Mood level:',
+        logTime: moment(this.state.moodDetails.occurred_date).format("hh:mm A"),
+        tags: this.state.moodDetails.mood_description_name,
+        available: this.state.isMoodDataAvailable,
+        tagText: 'Mood Type:',
+        image: require("../../assets/moodia.png")
+      },
+      {
+        id: '3',
+        name: 'Blood',
+        level: this.state.bloodDetails.bleeding_level,
+        levelText: 'Blood level:',
+        logTime: moment(this.state.bloodDetails.occurred_date).format("hh:mm A"),
+        tags: this.state.bloodDetails.period_product_name,
+        available: this.state.isBloodDataAvailable,
+        tagText: 'Period Product:',
+        image: require("../../assets/bloodia.png")
+      },
+      {
+        id: '4',
+        name: 'Digestion',
+        level: this.state.digestionDetails.digestion_level,
+        levelText: 'Digestion level:',
+        logTime: moment(this.state.bloodDetails.occurred_date).format("hh:mm A"),
+        tags: this.state.digestionDetails.bowel_symptom_name,
+        available: this.state.isDigestionDataAvailable,
+        tagText: 'Details:',
+        image: require("../../assets/digestionia.png")
+      },
+      {
+        id: '5',
+        name: 'Exercise',
+        level: this.state.exerciseDetails.exercise_level,
+        levelText: 'Exercise level:',
+        logTime: moment(this.state.exerciseDetails.occurred_date).format("hh:mm A"),
+        tags: this.state.exerciseDetails.exercise_type_name,
+        available: this.state.isExerciseDataAvailable,
+        tagText: 'Exercise:',
+        image: require("../../assets/exerciseia.png")
+      },
+      {
+        id: '6',
+        name: 'Medication',
+        // level:this.state.exerciseDetails.exercise_level,
+        // levelText: 'Exercise level:',
+        // logTime:moment(this.state.exerciseDetails.occurred_date).format("hh:mm A"),
+        // tags:this.state.exerciseDetails.exercise_type_name,
+        // tagText:'Exercise:'
+      },
+
+      {
+        id: '7',
+        name: 'Diet',
+        level: this.state.dietDetails.diet_level,
+        levelText: 'Diet Level:',
+        logTime: moment(this.state.dietDetails.occurred_date).format("hh:mm A"),
+        tags: this.state.dietDetails.food_type_name,
+        available: this.state.isDietDataAvailable,
+        tagText: 'Diet Type:',
+        image: require("../../assets/dietia.png")
+      },
+      {
+        id: '8',
+        name: 'Sex',
+        level: this.state.sexDetails.sex_level,
+        levelText: 'Sex Level:',
+        logTime: moment(this.state.sexDetails.occurred_date).format("hh:mm A"),
+        tags: this.state.sexDetails.sexual_activity_name,
+        available: this.state.isSexDataAvailable,
+        tagText: 'Details:',
+        image: require("../../assets/sexia.png")
+      },
+    ];
     console.log("**find this", this.state.exerciseDetails.exercise_level);
     var isAnyDataAvailable = this.state.isMoodDataAvailable || this.state.isPainDataAvailable || this.state.isBloodDataAvailable || this.state.isDigestionDataAvailable || this.state.isExerciseDataAvailable || this.state.isSexDataAvailable || this.state.isDietDataAvailable;
     return (
@@ -455,307 +578,17 @@ export default class Home extends React.Component {
                 justifyContent: "center",
                 bottom: hp('-45%'),
               }}>
-                {this.state.isPainDataAvailable ? (
-                  <Card style={styles.cardPainContainer}>
-                    <Text style={styles.cardText}>Today you experienced...</Text>
-                    <Text style={styles.painText}>Pain</Text>
-                    <Text
-                      style={{
-                        left: wp('0%'),
-                        paddingTop: hp('7%'),
-                        color: "#8A8A8E",
-                      }}
-                    >
-                      Pain Level: {this.state.painDetails.pain_level}
-                    </Text>
 
-
-                    <Image
-                      style={styles.painIcon}
-                      source={require("../../assets/painia.png")}
-                    />
-
-                    <Text style={{ left: wp('35%'), top: hp('-5%'), color: "#8A8A8E" }}>
-                      {moment(this.state.painDetails.occurred_date).format("hh:mm A")}
-                    </Text>
-
-                    <Text
-                      style={{
-                        left: wp('5.8%'),
-                        position: "absolute",
-                        paddingTop: hp('14.5%'),
-                        color: "#8A8A8E",
-                      }}
-                    >
-                      {this.state.painDetails.locations.map((location, index) => {
-                        let locationText =
-                          location.list_item_name +
-                          (index < this.state.painDetails.locations.length - 1
-                            ? ", "
-                            : "");
-                        return locationText;
-                      })}
-                    </Text>
-                    <Text
-                      style={{
-                        left: wp('0%'),
-                        top: hp('-2%'),
-                        color: "#8A8A8E",
-                      }}
-                    >
-                      Pain Type: {this.state.painDetails.pain_type_name}
-
-                    </Text>
-                  </Card>
-                ) : (<></>)}
-
-                {this.state.isMoodDataAvailable ? (
-                  <Card style={styles.cardMoodContainer}>
-                    <Text style={styles.cardText}>Today you experienced...</Text>
-
-
-                    <Text style={styles.painText}>Mood</Text>
-                    <Text
-                      style={{
-                        left: wp('0%'),
-                        paddingTop: hp('7%'),
-                        color: "#8A8A8E",
-                      }}
-                    >
-
-                      Mood Level: {this.state.moodDetails.mood_level}
-                    </Text>
-
-
-                    <Image
-                      style={styles.painIcon}
-                      source={require("../../assets/painia.png")}
-                    />
-
-                    <Text style={{  left: wp('45%'), top: hp('-5%'), color: "#8A8A8E" }}>
-                      {moment(this.state.moodDetails.occurred_date).format("hh:mm A")}
-                    </Text>
-
-
-                    <Text
-                      style={{
-                        left: wp('0%'),
-                        top: hp('-2%'),
-                        color: "#8A8A8E",
-                      }}
-                    >
-                      Mood Type: {this.state.moodDetails.mood_description_name}
-
-                    </Text>
-
-                  </Card>
-                ) : (<></>)}
-                {this.state.isBloodDataAvailable ? (
-                  <Card style={styles.cardBloodContainer}>
-                    <Text style={styles.cardText}>Today you experienced...</Text>
-
-
-                    <Text style={styles.painText}>Blood</Text>
-                    <Text
-                      style={{
-                        left: wp('-10%'),
-                        top: hp('7%'),
-                        color: "#8A8A8E",
-                      }}
-                    >
-
-                      Blood Level: {this.state.bloodDetails.bleeding_level}
-                    </Text>
-
-
-                    <Image
-                      style={styles.painIcon}
-                      source={require("../../assets/painia.png")}
-                    />
-
-                    <Text style={{ left: wp('40%'), top: hp('3%'), color: "#8A8A8E" }}>
-                      {moment(this.state.bloodDetails.occurred_date).format("hh:mm A")}
-                    </Text>
-
-
-                    <Text
-                      style={{
-                        left: wp('0%'),
-                        top: hp('5%'),
-                        color: "#8A8A8E",
-                      }}
-                    >
-                      Period Product: {this.state.bloodDetails.period_product_name}
-
-                    </Text>
-
-                  </Card>
-                ) : (<></>)}
-                {this.state.isDigestionDataAvailable ? (
-                  <Card style={styles.cardDigestionContainer}>
-                    <Text style={styles.cardText}>Today you experienced...</Text>
-
-
-                    <Text style={styles.painText}>Digestion</Text>
-                    <Text
-                      style={{
-                        left: wp('0%'),
-                        paddingTop: hp('7%'),
-                        color: "#8A8A8E",
-                      }}
-                    >
-
-                      Digestion Level: {this.state.digestionDetails.digestion_level}
-                    </Text>
-
-
-                    <Image
-                      style={styles.painIcon}
-                      source={require("../../assets/painia.png")}
-                    />
-
-                    <Text style={{ left: wp('48%'), top: hp('-5%'), color: "#8A8A8E" }}>
-                      {moment(this.state.digestionDetails.occurred_date).format("hh:mm A")}
-                    </Text>
-
-
-                    <Text
-                      style={{
-                        left: wp('0%'),
-                        top: hp('-2%'),
-                        color: "#8A8A8E",
-                      }}
-                    >
-                      Bowel Symptom: {this.state.digestionDetails.bowel_symptom_name}
-
-                    </Text>
-
-                  </Card>
-                ) : (<></>)}
-                {this.state.isExerciseDataAvailable ? (
-                  <Card style={styles.cardExerciseContainer}>
-                    <Text style={styles.cardText}>Today you experienced...</Text>
-
-
-                    <Text style={styles.painText}>Exercise</Text>
-                    <Text
-                      style={{
-                        left: wp('0%'),
-                        top: hp('7%'),
-                        color: "#8A8A8E",
-                      }}
-                    >
-
-                      Exercise Level: {this.state.exerciseDetails.exercise_level}
-                    </Text>
-
-
-                    <Image
-                      style={styles.painIcon}
-                      source={require("../../assets/painia.png")}
-                    />
-
-                    <Text style={{ left: wp('45%'), top: hp('3%'), color: "#8A8A8E" }}>
-                      {moment(this.state.exerciseDetails.occurred_date).format("hh:mm A")}
-                    </Text>
-
-
-                    <Text
-                      style={{
-                        left: wp('0%'),
-                        top: hp('5%'),
-                        color: "#8A8A8E",
-                      }}
-                    >
-                      Exercise Type: {this.state.exerciseDetails.exercise_type_name}
-
-                    </Text>
-
-                  </Card>
-                ) : (<></>)}
-                {this.state.isSexDataAvailable ? (
-                  <Card style={styles.cardSexContainer}>
-                    <Text style={styles.cardText}>Today you experienced...</Text>
-
-
-                    <Text style={styles.painText}>Sex</Text>
-                    <Text
-                      style={{
-                        left: wp('0%'),
-                        paddingTop: hp('7%'),
-                        color: "#8A8A8E",
-                      }}
-                    >
-
-                      Sex Level: {this.state.sexDetails.sex_level}
-                    </Text>
-
-
-                    <Image
-                      style={styles.painIcon}
-                      source={require("../../assets/painia.png")}
-                    />
-
-                    <Text style={{ left: wp('45%'), top: hp('-5%'), color: "#8A8A8E" }}>
-                      {moment(this.state.sexDetails.occurred_date).format("hh:mm A")}
-                    </Text>
-
-
-                    <Text
-                      style={{
-                        left: wp('0%'),
-                        top: hp('-2%'),
-                        color: "#8A8A8E",
-                      }}
-                    >
-                      Sex Detail: {this.state.sexDetails.sexual_activity_name}
-
-                    </Text>
-
-                  </Card>
-                ) : (<></>)}
-                {this.state.isDietDataAvailable ? (
-                  <Card style={styles.cardDietContainer}>
-                    <Text style={styles.cardText}>Today you experienced...</Text>
-
-
-                    <Text style={styles.painText}>Diet</Text>
-                    <Text
-                      style={{
-                        left: wp('0%'),
-                        top: hp('7%'),
-                        color: "#8A8A8E",
-                      }}
-                    >
-
-                      Diet Level: {this.state.dietDetails.diet_level}
-                    </Text>
-
-
-                    <Image
-                      style={styles.painIcon}
-                      source={require("../../assets/painia.png")}
-                    />
-
-                    <Text style={{ left: wp('40%'), top: hp('4%'), color: "#8A8A8E" }}>
-                      {moment(this.state.dietDetails.occurred_date).format("hh:mm A")}
-                    </Text>
-
-
-                    <Text
-                      style={{
-                        left: wp('0%'),
-                        top: hp('5%'),
-                        color: "#8A8A8E",
-                      }}
-                    >
-                      Diet Type: {this.state.dietDetails.food_type_name}
-
-                    </Text>
-
-                  </Card>
-                ) : (<></>)}
-
+                <Card style={styles.cardContainer}>
+                  <Text style={styles.cardText}>Today you experienced...</Text>
+                  <FlatList
+                    style={{ width: 400, top: 25, left: -37 }}
+                    data={Symptoms}
+                    renderItem={this.renderItem}
+                    keyExtractor={extractKey}
+                  />
+
+                </Card>
               </ScrollView>
             </View>
           </>
@@ -774,8 +607,6 @@ export default class Home extends React.Component {
               </View>
             </>
           )}
-
-
         <Image
           style={HomeStyles.tabContainer}
           source={require("../../assets/bottomtab.png")}
@@ -825,18 +656,13 @@ export default class Home extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    //flex: 1,
     backgroundColor: "#f09874",
     alignItems: "center",
     height: hp('25%'),
     justifyContent: "center",
   },
   ScrollContainer: {
-    //flex: 1,
-
-
     width: wp('95%'),
-
   },
 
   textContainer: {
@@ -851,8 +677,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: wp('90%'),
     borderRadius: 20,
-    height: hp('30%'),
-    top: hp('13%'),
+    flexDirection: "row",
+    // height: hp('40%'),
+    alignSelf: "flex-start",
+    top: hp('-20%'),
     alignItems: "center",
     left: wp('5'),
     backgroundColor: "#ffff",
@@ -865,162 +693,24 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
     shadowRadius: 30,
-    // resizeMode: "contain"
   },
-  cardMoodContainer: {
-    flex: 1,
-    position: "absolute",
-    width: wp('90%'),
-    borderRadius: 20,
-    height: hp('30%'),
-    top: hp('15%'),
-    alignItems: "center",
-    left: wp('5'),
+  symptomView: {
+    
+    padding: 15,
+    marginBottom: 5,
+    color: "#8A8A8E",
     backgroundColor: "#ffff",
-    borderBottomColor: '#ffffff',
-    borderTopColor: '#ffffff',
-    borderLeftColor: '#ffffff',
-    borderRightColor: '#ffffff',
-    backgroundColor: '#ffffff',
-    shadowColor: '#c8c8c8',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 30,
-    // resizeMode: "contain"
+    fontWeight: 'bold',
+    fontFamily: "French Script MT",
+    marginRight: 20,
+    marginLeft: 20,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#ffff',
+    textAlign: 'center',
+    fontSize: 10,
+    height: 100
   },
-  cardPainContainer: {
-    flex: 1,
-    position: "absolute",
-    width: wp('90%'),
-    borderRadius: 20,
-    height: hp('30%'),
-    top: hp('-18%'),
-    alignItems: "center",
-    left: wp('5'),
-    backgroundColor: "#ffff",
-    borderBottomColor: '#ffffff',
-    borderTopColor: '#ffffff',
-    borderLeftColor: '#ffffff',
-    borderRightColor: '#ffffff',
-    backgroundColor: '#ffffff',
-    shadowColor: '#c8c8c8',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 30,
-    // resizeMode: "contain"
-  },
-
-  cardBloodContainer: {
-    flex: 1,
-    position: "absolute",
-    width: wp('90%'),
-    borderRadius: 20,
-    height: hp('30%'),
-    top: hp('48%'),
-    alignItems: "center",
-    left: wp('5'),
-    backgroundColor: "#ffff",
-    borderBottomColor: '#ffffff',
-    borderTopColor: '#ffffff',
-    borderLeftColor: '#ffffff',
-    borderRightColor: '#ffffff',
-    backgroundColor: '#ffffff',
-    shadowColor: '#c8c8c8',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 30,
-    // resizeMode: "contain"
-  },
-
-  cardSexContainer: {
-    flex: 1,
-    position: "absolute",
-    width: wp('90%'),
-    borderRadius: 20,
-    height: hp('30%'),
-    top: hp('150%'),
-    alignItems: "center",
-    left: wp('5'),
-    backgroundColor: "#ffff",
-    borderBottomColor: '#ffffff',
-    borderTopColor: '#ffffff',
-    borderLeftColor: '#ffffff',
-    borderRightColor: '#ffffff',
-    backgroundColor: '#ffffff',
-    shadowColor: '#c8c8c8',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 30,
-    // resizeMode: "contain"
-  },
-
-  cardDigestionContainer: {
-    flex: 1,
-    position: "absolute",
-    width: wp('90%'),
-    borderRadius: 20,
-    height: hp('30%'),
-    top: hp('82%'),
-    alignItems: "center",
-    left: wp('5'),
-    backgroundColor: "#ffff",
-    borderBottomColor: '#ffffff',
-    borderTopColor: '#ffffff',
-    borderLeftColor: '#ffffff',
-    borderRightColor: '#ffffff',
-    backgroundColor: '#ffffff',
-    shadowColor: '#c8c8c8',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 30,
-    // resizeMode: "contain"
-  },
-
-  cardExerciseContainer: {
-    flex: 1,
-    position: "absolute",
-    width: wp('90%'),
-    borderRadius: 20,
-    height: hp('30%'),
-    top: hp('116%'),
-    alignItems: "center",
-    left: wp('5'),
-    backgroundColor: "#ffff",
-    borderBottomColor: '#ffffff',
-    borderTopColor: '#ffffff',
-    borderLeftColor: '#ffffff',
-    borderRightColor: '#ffffff',
-    backgroundColor: '#ffffff',
-    shadowColor: '#c8c8c8',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 30,
-    // resizeMode: "contain"
-  },
-
-  cardDietContainer: {
-    flex: 1,
-    position: "absolute",
-    width: wp('90%'),
-    borderRadius: 20,
-    height: hp('30%'),
-    top: hp('184%'),
-    alignItems: "center",
-    left: wp('5'),
-    backgroundColor: "#ffff",
-    borderBottomColor: '#ffffff',
-    borderTopColor: '#ffffff',
-    borderLeftColor: '#ffffff',
-    borderRightColor: '#ffffff',
-    backgroundColor: '#ffffff',
-    shadowColor: '#c8c8c8',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 30,
-    // resizeMode: "contain"
-  },
-
-
   cardSmallContainer: {
     flex: 1,
     position: "absolute",
@@ -1040,7 +730,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
     shadowRadius: 30,
-    // resizeMode: "contain"
   },
   cardSContainer: {
     flex: 1,
@@ -1061,59 +750,17 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
     shadowRadius: 30,
-    // resizeMode: "contain"
   },
-  cardExercise: {
-    flex: 1,
-    left: wp('5'),
-    position: "absolute",
-    width: wp('90%'),
-    borderRadius: 20,
-    height: hp('12%'),
-    top: hp('-3%'),
-    alignItems: "center",
-    backgroundColor: "#ffff",
-    borderBottomColor: '#ffffff',
-    borderTopColor: '#ffffff',
-    borderLeftColor: '#ffffff',
-    borderRightColor: '#ffffff',
-    backgroundColor: '#ffffff',
-    shadowColor: '#c8c8c8',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 30,
-    // resizeMode: "contain"
-  },
-  // cardBloodExercise: {
-  //   flex: 1,
-  //   left: wp('5'),
-  //   position: "absolute",
-  //   width: wp('90%'),
-  //   borderRadius: 20,
-  //   height: hp('12%'),
-  //   top: hp('-3%'),
-  //   alignItems: "center",
-  //   backgroundColor: "#ffff",
-  //   borderBottomColor: '#ffffff',
-  //   borderTopColor: '#ffffff',
-  //   borderLeftColor: '#ffffff',
-  //   borderRightColor: '#ffffff',
-  //   backgroundColor: '#ffffff',
-  //   shadowColor: '#c8c8c8',
-  //   shadowOffset: { width: 0, height: 2 },
-  //   shadowOpacity: 0.8,
-  //   shadowRadius: 30,
-  //   // resizeMode: "contain"
-  // },
+
   cardText: {
     flex: 1,
-    left: wp('-12'),
+    left: wp('5'),
     position: "absolute",
     fontSize: hp('2.6%'),
     fontWeight: "bold",
     letterSpacing: wp('0%'),
     justifyContent: "center",
-    alignItems: "center", 
+    alignItems: "center",
 
     paddingLeft: hp('0%'),
     top: hp('1%'),
@@ -1130,7 +777,7 @@ const styles = StyleSheet.create({
     paddingLeft: hp('2%'),
     paddingTop: hp('3%'),
   },
-  painText: {
+  symptomText: {
     flex: 1,
     position: "absolute",
     fontSize: hp('2.5%'),
@@ -1138,16 +785,24 @@ const styles = StyleSheet.create({
     letterSpacing: wp('0%'),
     justifyContent: "center",
     alignItems: "center",
-    left: wp('2%'),
+    left: wp('18%'),
     paddingLeft: hp('2%'),
-    top: hp('6%'),
+    top: hp('1%'),
+  },
+
+  logText:
+  {
+    left: wp('63%'),
+    top: hp('1%'),
+    color: "#8A8A8E",
+    fontWeight: '500'
   },
   painIcon: {
     position: "absolute",
-    top: hp('1%'),
+    top: hp('-3.5%'),
     width: wp('20%'),
     height: hp('20%'),
-    left: wp('-15%'),
+    left: wp('0%'),
     resizeMode: "contain",
   },
 });
