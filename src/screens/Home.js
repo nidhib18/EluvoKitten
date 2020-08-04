@@ -44,7 +44,6 @@ let datesWhitelist = [
 ];
 let datesBlacklist = [{ start: moment.vacationStart, end: moment.vacationEnd }];
 
-
 const extractKey = ({ id }) => id.toString()
 export default class Home extends React.Component {
   constructor(props) {
@@ -70,8 +69,6 @@ export default class Home extends React.Component {
       isDietDataAvailable: false,
 
     };
-
-
     this.setDate = this.setDate.bind(this);
     this.getUserPain = this.getUserPain.bind(this);
     this.getUserMood = this.getUserMood.bind(this);
@@ -113,8 +110,6 @@ export default class Home extends React.Component {
 
     )
   }
-
-
   setDate(newDate) {
     // CalendarStrip converts the selected date to UTC format for e.g. 2020-06-15T12:00:00Z
     this.state.currentDate = utcToLocal(newDate);
