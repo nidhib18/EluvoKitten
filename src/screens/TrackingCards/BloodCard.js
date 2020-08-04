@@ -12,8 +12,6 @@ import { utcToLocal, localToUtcDate, localToUtcDateTime } from "../../helpers/Da
 import { mapListItemsToTags } from "../../helpers/TagHelpers"
 import { initBloodDetails } from '../../models/BloodDetails';
 
-
-
 const { width } = Dimensions.get('window');
 
 export default class BloodCard extends React.Component {
