@@ -1,58 +1,48 @@
-//Blood tracking card
 import React, { Component } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Image, Dimensions, TouchableOpacity, Slider, StyleSheet, View } from 'react-native';
 import { Layout, Card, Modal, Text, Button } from '@ui-kitten/components';
-import TagSelector from 'react-native-tag-selector';
 import { TrackingStyles } from "../TrackingStyles";
+import TagSelector from 'react-native-tag-selector';
 import moment from "moment";
 import { storeData, getData } from "../../helpers/StorageHelpers";
 import { constants } from "../../resources/Constants";
+import { initPainDetails } from "../../models/PainDetails";
 import { utcToLocal, localToUtcDate, localToUtcDateTime } from "../../helpers/DateHelpers";
 import { mapListItemsToTags } from "../../helpers/TagHelpers"
-import { initBloodDetails } from '../../models/BloodDetails';
-
-
+import { initDietDetails } from '../../models/DietDetails';
 
 const { width } = Dimensions.get('window');
 
-export default class BloodCard extends React.Component {
-    bloodTags = [
-        {
-            id: 'Pad',
-            name: 'Pad'
-        },
-        {
-            id: 'Tampon',
-            name: 'Tampon'
-        },
-        {
-            id: 'MoonCup',
-            name: 'Moon Cup'
-        }
-    ]
+export default class DietCard extends React.Component {
+
+    
+
+
     constructor(props) {
         super(props);
-        this.state = { bloodVisible: false };
+        this.state = { dietVisible: false };
         this.state = {
             selectedTags: [],
-            bloodValue: 0,
+            dietValue: 0,
             minValue: 0,
             maxValue: 5,
-            selectedPeriodProduct: [],
-            periodProducts: [], // moodDescriptions:[],
-            userDetails: {},
-            bloodDetails: initBloodDetails(0, moment().format('YYYY-MM-DD')),
-            isBloodDataAvailable: false,
-            currentDate: moment().format('YYYY-MM-DD')// / this.props.route.params.CurrentDate    
+            selectedFoodType: [], 
+            foodTypes:[],
+            userDetails: {},            
+            dietDetails: initDietDetails (0,  moment().format('YYYY-MM-DD')) ,
+            isDietDataAvailable: false, 
+            currentDate:moment().format('YYYY-MM-DD')  
         };
-        this.saveBloodDetails = this.saveBloodDetails.bind(this);
+        this.saveDietDetails = this.saveDietDetails.bind(this);
     }
-    setBloodVisible(visible) {
-        this.setState({ bloodVisible: visible });
+    setDietVisible(visible) {
+        this.setState({ dietVisible: visible });
     }
-    getPeriodProducts() {
-        let url = constants.PERIODPRODUCT_DEV_URL;
+
+
+    getFoodTypes() {
+        let url = constants.FOODTYPE_DEV_URL;
         getData(constants.JWTKEY).then((jwt) =>
             fetch(url, {
                 //calling API
@@ -63,21 +53,23 @@ export default class BloodCard extends React.Component {
             })
                 .then((response) => response.json())
                 .then((responseData) => {
-                    let periodProducts = [];//getting all possible paintype tags from the database  //{} is an object [] an array a value
-                    periodProducts = mapListItemsToTags(responseData);
-                    this.setState({ periodProducts: periodProducts });
+                    let foodTypes = [];//getting all possible paintype tags from the database  //{} is an object [] an array a value
+                    foodTypes = mapListItemsToTags(responseData);
+                    
+                    this.setState({ foodTypes: foodTypes });
                 })
                 .catch((err) => console.log(err))
         );
     };
 
-    getUserBlood = (route) => {
+    getUserDiet = (route) => {
         let userId = this.state.userDetails.user_id;
         let currentDate = this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD');
-        let url = constants.USERBLOOD_DEV_URL.replace("[userId]", userId).replace(
+        let url = constants.USERDIET_DEV_URL.replace("[userId]", userId).replace(
             "[occurredDate]",
             localToUtcDateTime(currentDate)
         );
+        console.log ("URL FOR GETMOOD",url);
         getData(constants.JWTKEY).then((jwt) =>
             fetch(url, {
                 //calling API
@@ -93,66 +85,57 @@ export default class BloodCard extends React.Component {
                     if (Object.keys(responseData).length) {
                         console.log ("*YES data*",responseData);
                         this.setState({
-                            isBloodDataAvailable: true,
-                            bloodDetails: responseData,
-                            bloodValue: responseData.blood.bleeding_level,
+                            isDietDataAvailable: true,
+                            dietDetails: responseData,
+                            dietValue: responseData.diet.diet_level,
                             currentDate: currentDate
                         });
                     }
                     else {
                         console.log ("*No data*");
                         this.setState({
-                            isBloodDataAvailable: false,
-                            bloodDetails: initBloodDetails(userId, currentDate),
-                            bloodValue: 0,
+                            isDietDataAvailable: false,
+                            dietDetails: initDietDetails(userId, currentDate),
+                            dietValue: 0,
                             currentDate: currentDate
                         });
                     }
                 })
                 .catch((err) => console.log(err))
         );
-        console.log ("Chechi discussed",this.state.isBloodDataAvailable);
+        // console.log ("Chechi discussed",this.state.isDietDataAvailable);
     };
-    saveBloodDetails() {
 
-        if (!this.state.isBloodDataAvailable) {
+    saveDietDetails() {
+      
+        if (!this.state.isDietDataAvailable) {
             // Add the saved mood level
             let userId = this.state.userDetails.user_id;
             let occurredDate = moment(this.state.currentDate).add(moment().hour(), 'hour').add(moment().minute(), 'minute');
             // Add pain locations
-            let periodProduct = null;
-
-
+            let foodType = null ;
+            
+            
             // this.state.selectedTags.map(tag => {
             //     let location = {location_id: tag };
             //     locations.push(location);
             // });
+            
+            
+            if (this.state.selectedFoodType.length > 0)
+            foodType = this.state.selectedFoodType[0]; 
+       
 
-
-            if (this.state.selectedPeriodProduct.length > 0)
-                periodProduct = this.state.selectedPeriodProduct[0];
-
-
-            let blood = { //sending to the database,if pian type value = 0 then don't send it to the database as it means the user didnt select any tags
+            let diet = { //sending to the database,if pian type value = 0 then don't send it to the database as it means the user didnt select any tags
                 user_id: userId,
-                bleeding_level: this.state.bloodValue,
-                period_product: periodProduct,
-                occurred_date: localToUtcDateTime(occurredDate),
-
-            };
-
-            let blood = { //sending to the database,if pain type value = 0 then don't send it to the database as it means the user didnt select any tags
-                user_id: userId,
-                bleeding_level: this.state.bloodValue,
-                period_product :periodProduct, 
+                diet_level: this.state.dietValue,
+                food_type :foodType, 
                 occurred_date: localToUtcDateTime(occurredDate),
                 
             };
-           console.log("OBJECT!!",blood);
            
-            let url = constants.ADDUSERBLOOD_DEV_URL;
-            
-        console.log ("***ANYTHING***",url);
+           
+            let url = constants.ADDUSERDIET_DEV_URL;
             getData(constants.JWTKEY).then((jwt) =>
                 fetch(url, {
                     //calling API
@@ -162,10 +145,10 @@ export default class BloodCard extends React.Component {
                         Accept: 'application/json',
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(blood)
+                    body: JSON.stringify(diet)
                 })
                     .then((response) => {
-                        console.log("Response!!***tuesday**",response);
+                        //console.log(response.json());
                         return response.json();
                     })
             );
@@ -174,42 +157,43 @@ export default class BloodCard extends React.Component {
            
             alert("Update not implemented yet.");
         }
-        console.log ("***ANYTHING available ***",this.state.isBloodDataAvailable);
     }
-  
-          
+
     componentDidMount() //after Ui has been uploaded 
-    {
+     {
         getData(constants.USERDETAILS).then((data) => {
             // Read back the user details from storage and convert to object
             this.state.userDetails = JSON.parse(data);
             this.setState({
                 userDetails: JSON.parse(data),
             });
-            this.getUserBlood();
-            this.getPeriodProducts();
+            this.getUserDiet();
+            this.getFoodTypes();
+            
         });
     }
 
     render() {
-        let bloodLevel = this.state.bloodDetails && this.state.bloodDetails.blood && this.state.bloodDetails.blood.bleeding_level || 0;
 
-
-        let periodProducts = this.state.periodProducts || []; // get all the possible value from the list item , if not then empty array .
-        let selectedPeriodProduct = [];
-
-        if (this.state.bloodDetails && this.state.bloodDetails.blood && this.state.bloodDetails.blood.period_product) {
-            selectedPeriodProduct = mapListItemsToTags([{ list_item_id: this.state.bloodDetails.blood.period_product, list_item_name: "Pad" }]);
-
+       
+        let dietLevel = this.state.dietDetails && this.state.dietDetails.diet && this.state.dietDetails.diet.diet_level || 0;
+        // console.log("***RENDER MOOD LEVEL***",Level)
+        
+        let foodTypes = this.state.foodTypes || [] ; // get all the possible value from the list item , if not then empty array .
+        let selectedFoodTypes = [];
+      
+        if (this.state.dietDetails && this.state.dietDetails.diet && this.state.dietDetails.diet.food_type) {
+            selectedFoodTypes = mapListItemsToTags([{list_item_id: this.state.dietDetails.diet.food_type,list_item_name:"Sugar"}]);
+          
 
         }
 
         return (
             <Layout style={TrackingStyles.container}>
-                <TouchableOpacity onPress={() => { this.setBloodVisible(true); }}>
+                <TouchableOpacity onPress={() => { this.setDietVisible(true); }}>
                     <Image
-                        style={TrackingStyles.bloodButton}
-                        source={require('../../../assets/blood.png')}
+                        style={TrackingStyles.dietButton}
+                        source={require('../../../assets/diet.png')}
                     />
                 </TouchableOpacity>
 
@@ -218,48 +202,46 @@ export default class BloodCard extends React.Component {
                     shadowOffset: { width: 0, height: 2 },
                     shadowOpacity: 0.8,
                     shadowRadius: 30,
-                }} visible={this.state.bloodVisible}>
+                }} visible={this.state.dietVisible}>
                     <Card disabled={true}
                         style={TrackingStyles.cardStyle}>
-                        <Text style={TrackingStyles.symptomText}>Bleeding</Text>
+                        <Text style={TrackingStyles.symptomText}>Diet </Text>
                         <TouchableOpacity onPress={() => {
-                            this.setBloodVisible(!this.state.bloodVisible);
+                            this.setDietVisible(!this.state.dietVisible);
                         }}>
                             <Image
                                 style={TrackingStyles.xContainer}
                                 source={require('../../../assets/x.png')}
                             />
                         </TouchableOpacity>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('3%'), fontSize: wp('4%'), fontWeight:'500' }}>How well did you eat today? </Text>
                         <Slider
                             style={styles.sliderStyle}
                             step={1}
                             minimumValue={this.state.minValue}
                             maximumValue={this.state.maxValue}
-                            value={this.state.value}
-                            onValueChange={val => this.setState({ bloodValue: val })}
+                            value={dietLevel}
+                            onValueChange={val => this.setState({ dietValue: val })}
                             maximumTrackTintColor='#d3d3d3'
                             minimumTrackTintColor='#f09874'
-                        //thumbImage={require('../../../assets/slider.png')}
-
-
                         />
                         <View style={styles.textCon}>
-                            <Text style={styles.colorGrey}>No Bleeding </Text>
+                            <Text style={styles.colorGrey}>No Change </Text>
                             <Text style={styles.colorPeach}>
-                                {this.state.bloodValue + ''}
+                                {this.state.dietValue + ''}
                             </Text>
-                            <Text style={styles.colorGrey}>Heavy </Text>
+                            <Text style={styles.colorGrey}>Poor </Text>
                         </View>
-
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('-4'), fontSize: wp('4%'), fontWeight: '500' }}>Did you have any bleeding today?</Text>
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('16'), fontSize: wp('4%'), fontWeight: '500' }}>Did you use any of the following?</Text>
-                        <View style={{ top: hp('20%'), left: wp('-2%') }}>
+                        
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('15%'), fontSize: wp('4%'),  fontWeight:'500' }}>What types of food did you consume today? </Text>
+                        <View style={{ top: hp('16%'), left: wp('-2') }}>
                             <TagSelector
+
                                 tagStyle={TrackingStyles.tag}
                                 selectedTagStyle={TrackingStyles.tagSelected}
                                 maxHeight={70}
-                                tags={periodProducts}
-                                onChange={(selected) => this.setState({ selectedPeriodProduct: selected })}
+                                tags={foodTypes}
+                                onChange={(selected) => this.setState({ selectedFoodType: selected })}
                             />
                         </View>
 
@@ -267,11 +249,12 @@ export default class BloodCard extends React.Component {
                             style={TrackingStyles.trackButton}
                             appearance='outline'
                             onPress={() => {
-                                this.setBloodVisible(!this.state.bloodVisible);
-                                this.saveBloodDetails();   
+                                this.setDietVisible(!this.state.dietVisible);
+                                this.saveDietDetails(); 
                             }} > Track!
                             </Button>
                     </Card>
+
                 </Modal>
             </Layout>
 
@@ -279,12 +262,11 @@ export default class BloodCard extends React.Component {
         );
     };
 }
-
 const styles = StyleSheet.create({
 
     sliderStyle: {
 
-        top: hp('10%'),
+        top: hp('5%'),
         flex: 1,
         width: wp('80%'),
         height: hp('20.81%'),
@@ -299,14 +281,16 @@ const styles = StyleSheet.create({
     },
     colorGrey: {
         color: '#8A8A8E',
-        top: hp('11%'),
-        fontWeight: '500'
+        top: hp('6%'),
+        fontWeight:'500'
 
     },
     colorPeach: {
         color: '#f09874',
-        top: hp('11%'),
-        fontWeight: '500'
+        top: hp('6%'),
+        fontWeight:'500'
 
     }
+
+
 });

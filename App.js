@@ -1,8 +1,9 @@
 import Amplify from 'aws-amplify'
 import config from './aws-exports'
+
 Amplify.configure(config)
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import React from 'react';
+import React, {Component} from 'react';
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
@@ -10,11 +11,15 @@ import { default as theme } from './theme.json'
 import { AppNavigator } from './src/screens/NavigationComponent';
 
 console.disableYellowBox = true;
+<<<<<<< HEAD
 
 // import {Alert} from 'react-native';
 // import RNRestart from 'react-native-restart';
 // import {setJSExceptionHandler} from 'react-native-exception-handler';
 // import { setNativeExceptionHandler } from "react-native-exception-handler";
+=======
+console.reportErrorsAsExceptions = false;
+>>>>>>> 27534208997c9cac15c22ebee3665c210b45e5cf
 
 // const errorHandler = (e, isFatal) => {
 //   if (isFatal) {
