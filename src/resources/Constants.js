@@ -17,31 +17,6 @@ export const constants = {
   "https://kkm5v5hx80.execute-api.ap-southeast-2.amazonaws.com/DEV/pain",
   PAINTYPE_DEV_URL:
   "https://dv4tzoya4d.execute-api.ap-southeast-2.amazonaws.com/DEV/listitems?listId=6",
-<<<<<<< HEAD
-
-  USERMOOD_DEV_URL: 
-  "https://rove497t6i.execute-api.ap-southeast-2.amazonaws.com/DEV/getusermood?userId=[userId]&occurredDate=[occurredDate]",
-  ADDUSERMOOD_DEV_URL:
-  "https://ztc18x9jg8.execute-api.ap-southeast-2.amazonaws.com/DEV/addusermood",
-  MOODDESCRIPTION_DEV_URL:
-  "https://dv4tzoya4d.execute-api.ap-southeast-2.amazonaws.com/DEV/listitems?listId=7",
-
-  USERBLOOD_DEV_URL:
-  "https://32okmj248c.execute-api.ap-southeast-2.amazonaws.com/DEV/blood?userId=[userId]&occurredDate=[occurredDate]",
-  ADDUSERBLOOD_DEV_URL:
- "https://g08zgmf516.execute-api.ap-southeast-2.amazonaws.com/DEV/blood",
-  PERIODPRODUCT_DEV_URL:
-  "https://dv4tzoya4d.execute-api.ap-southeast-2.amazonaws.com/DEV/listitems?listId=8",
-
-  
-  ADDUSERDIGESTION_DEV_URL:
-  "https://tuibhqyk4b.execute-api.ap-southeast-2.amazonaws.com/DEV/digestion",
-  USERDIGESTION_DEV_URL:
-  "https://hdqpvu1gs6.execute-api.ap-southeast-2.amazonaws.com/DEV/digestion?userId=[userId]&occurredDate=[occurredDate]",
-  BOWELSYMPTOM_DEV_URL:
-  "https://dv4tzoya4d.execute-api.ap-southeast-2.amazonaws.com/DEV/listitems?listId=9"
-=======
->>>>>>> 27534208997c9cac15c22ebee3665c210b45e5cf
 
   USERMOOD_DEV_URL: 
   "https://rove497t6i.execute-api.ap-southeast-2.amazonaws.com/DEV/getusermood?userId=[userId]&occurredDate=[occurredDate]",
@@ -88,6 +63,13 @@ export const constants = {
   FOODTYPE_DEV_URL:
   "https://dv4tzoya4d.execute-api.ap-southeast-2.amazonaws.com/DEV/listitems?listId=12",
 
+  
+  ADDUSERMEDICATION_DEV_URL: 
+  "https://dj280krk8i.execute-api.ap-southeast-2.amazonaws.com/DEV/addusermedication",
+  USERMEDICATION_DEV_URL:
+  "https://0qkeudkka9.execute-api.ap-southeast-2.amazonaws.com/DEV/getusermedication?userId=[userId]&occuredDate=[occuredDate]",
+  MEDICATIONSIDEEFFECTS_DEV_URL:
+  "https://dv4tzoya4d.execute-api.ap-southeast-2.amazonaws.com/DEV/listitems?listId=13"
 
 
 };

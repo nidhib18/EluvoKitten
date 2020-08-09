@@ -11,45 +11,8 @@ import { default as theme } from './theme.json'
 import { AppNavigator } from './src/screens/NavigationComponent';
 
 console.disableYellowBox = true;
-<<<<<<< HEAD
-
-// import {Alert} from 'react-native';
-// import RNRestart from 'react-native-restart';
-// import {setJSExceptionHandler} from 'react-native-exception-handler';
-// import { setNativeExceptionHandler } from "react-native-exception-handler";
-=======
 console.reportErrorsAsExceptions = false;
->>>>>>> 27534208997c9cac15c22ebee3665c210b45e5cf
 
-// const errorHandler = (e, isFatal) => {
-//   if (isFatal) {
-//     Alert.alert(
-//         'Unexpected error occurred',
-//         `
-//         Error: ${(isFatal) ? 'Fatal:' : ''} ${e.name} ${e.message}
-
-//         We will need to restart the app.
-//         `,
-//       [{
-//         text: 'Restart',
-//         onPress: () => {
-//           RNRestart.Restart();
-//         }
-//       }]
-      
-//     );
-//   } else {
-//     console.log(e); // So that we can see it in the ADB logs in case of Android if needed
-//   }
-// };
-
-// setJSExceptionHandler(errorHandler);
-
-// setNativeExceptionHandler(
-//   exceptionhandler,
-//   forceAppQuit,
-//   executeDefaultHandler
-// );
 export default () => (
   
   <>
@@ -59,4 +22,3 @@ export default () => (
     </ApplicationProvider>
   </>
 );
-

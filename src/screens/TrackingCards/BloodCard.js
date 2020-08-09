@@ -1,4 +1,3 @@
-//Blood tracking card
 import React, { Component } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Image, Dimensions, TouchableOpacity, Slider, StyleSheet, View } from 'react-native';
@@ -65,6 +64,7 @@ export default class BloodCard extends React.Component {
                 .then((responseData) => {
                     let periodProducts = [];//getting all possible paintype tags from the database  //{} is an object [] an array a value
                     periodProducts = mapListItemsToTags(responseData);
+
                     this.setState({ periodProducts: periodProducts });
                 })
                 .catch((err) => console.log(err))
@@ -78,6 +78,7 @@ export default class BloodCard extends React.Component {
             "[occurredDate]",
             localToUtcDateTime(currentDate)
         );
+
         getData(constants.JWTKEY).then((jwt) =>
             fetch(url, {
                 //calling API
@@ -141,18 +142,8 @@ export default class BloodCard extends React.Component {
 
             };
 
-            let blood = { //sending to the database,if pain type value = 0 then don't send it to the database as it means the user didnt select any tags
-                user_id: userId,
-                bleeding_level: this.state.bloodValue,
-                period_product :periodProduct, 
-                occurred_date: localToUtcDateTime(occurredDate),
-                
-            };
-           console.log("OBJECT!!",blood);
-           
+
             let url = constants.ADDUSERBLOOD_DEV_URL;
-            
-        console.log ("***ANYTHING***",url);
             getData(constants.JWTKEY).then((jwt) =>
                 fetch(url, {
                     //calling API
@@ -165,19 +156,16 @@ export default class BloodCard extends React.Component {
                     body: JSON.stringify(blood)
                 })
                     .then((response) => {
-                        console.log("Response!!***tuesday**",response);
+                        //console.log(response.json());
                         return response.json();
                     })
             );
         }
         else {
-           
+
             alert("Update not implemented yet.");
         }
-        console.log ("***ANYTHING available ***",this.state.isBloodDataAvailable);
     }
-  
-          
     componentDidMount() //after Ui has been uploaded 
     {
         getData(constants.USERDETAILS).then((data) => {
@@ -219,6 +207,7 @@ export default class BloodCard extends React.Component {
                     shadowOpacity: 0.8,
                     shadowRadius: 30,
                 }} visible={this.state.bloodVisible}>
+
                     <Card disabled={true}
                         style={TrackingStyles.cardStyle}>
                         <Text style={TrackingStyles.symptomText}>Bleeding</Text>
@@ -272,6 +261,7 @@ export default class BloodCard extends React.Component {
                             }} > Track!
                             </Button>
                     </Card>
+
                 </Modal>
             </Layout>
 

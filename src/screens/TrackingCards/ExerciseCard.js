@@ -302,9 +302,6 @@ export default class ExerciseCard extends React.Component {
 
         );
     };
-<<<<<<< HEAD
-}
-=======
 }
 
 const styles = StyleSheet.create({
@@ -363,4 +360,3 @@ const styles = StyleSheet.create({
 
 
 });
->>>>>>> 27534208997c9cac15c22ebee3665c210b45e5cf

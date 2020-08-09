@@ -31,7 +31,7 @@ import { initMoodDetails } from "../models/MoodDetails";
 
 
 //import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
-import {initMoodDetails} from "../models/MoodDetails";
+
 const { Width } = Dimensions.get("window");
 let datesWhitelist = [
   {
@@ -45,6 +45,7 @@ let datesWhitelist = [
 let datesBlacklist = [{ start: moment.vacationStart, end: moment.vacationEnd }];
 
 const extractKey = ({ id }) => id.toString()
+var Symptoms = [];
 export default class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -53,8 +54,24 @@ export default class Home extends React.Component {
       backgroundImagePath: require("../../assets/girl.png"),
       userDetails: {},
       currentDate: moment().format("YYYY-MM-DD"),
-      painDetails: { locations: [] },
-      moodDetails: {},
+      painDetails: [{ locations: [] }],
+      moodDetails: [{}],
+      bloodDetails: {},
+      dietDetails: {},
+      digestionDetails: {},
+      exerciseDetails: {},
+      sexDetails: {},
+      medicationDetails:{}, 
+      isPainDataAvailable: false,
+      isMoodDataAvailable: false,
+      isBloodDataAvailable: false,
+      isDigestionDataAvailable: false,
+      isExerciseDataAvailable: false,
+      isSexDataAvailable: false,
+      isDietDataAvailable: false,
+      isMedicationDataAvailable: false, 
+
+    };
     this.setDate = this.setDate.bind(this);
     this.getUserPain = this.getUserPain.bind(this);
     this.getUserMood = this.getUserMood.bind(this);
@@ -63,34 +80,42 @@ export default class Home extends React.Component {
     this.getUserExercise = this.getUserExercise.bind(this);
     this.getUserSex = this.getUserSex.bind(this);
     this.getUserDiet = this.getUserDiet.bind(this);
+    this.loadPainSymptomData = this.loadPainSymptomData.bind(this);
+    this.loadMoodSymptomData = this.loadMoodSymptomData.bind(this);
+    this.loadBloodSymptomData = this.loadBloodSymptomData.bind(this);
+    this.loadMedicationData = this.loadMedicationData.bind(this);
+    this.getUserMedication = this.getUserMedication.bind(this);
   }
-  }
+
   renderItem = ({ item }) => {
+    // console.log("Child Id", item.childId);
     return (
       <View >
         {item.available ? (
-          <View style={styles.symptomView}>
+          <View>
+            {item.childId == 0 ? (<View style={styles.symptomView}>
             <Image style={styles.painIcon} source={item.image}></Image>
-            <Text style={styles.symptomText}>{item.name}</Text>
+            <Text style={styles.symptomText}>{item.name}</Text></View>) : (<></>)} 
+          
             <Text style={{ left: wp('18%'), top: hp('3%'), color: "#8A8A8E", fontWeight: '500' }}>{item.levelText} {item.level}</Text>
             <Text style={styles.logText}> {item.logTime}</Text>
             <Text style={{ left: wp('18%'), top: hp('1%'), color: "#8A8A8E", fontWeight: '500' }}>{item.tagText} {item.tags}</Text>
+           
             {item.PainTag ? (
               <Text style={{
+                left: wp('18%'), top: hp('1.5%'), color: "#8A8A8E", fontWeight: '500', alignSelf: "flex-start",
                 flexDirection: "row",
-              }}>{item.tagText} {this.state.painDetails.locations.map((location, index) => {
+              }}>{item.tagText} {item.PainTag.map((location, index) => {
                 let locationText =
                   location.list_item_name +
-                  (index < this.state.painDetails.locations.length - 1
+                  (index < item.PainTag.length - 1
                     ? ", "
                     : "");
                 return locationText;
               })}
               </Text>
-            ) : (<></>)}
-          </View>
-
-        ) : (<></>)}
+            ) : (<></>)}</View>
+       ) : (<></>)}
       </View>
 
     )
@@ -98,7 +123,7 @@ export default class Home extends React.Component {
   setDate(newDate) {
     // CalendarStrip converts the selected date to UTC format for e.g. 2020-06-15T12:00:00Z
     this.state.currentDate = utcToLocal(newDate);
-    console.log("Current Date", this.state.currentDate);
+    // console.log("Current Date", this.state.currentDate);
     this.getUserPain();
     this.getUserMood();
     this.getUserBlood();
@@ -106,12 +131,150 @@ export default class Home extends React.Component {
     this.getUserExercise();
     this.getUserSex();
     this.getUserDiet();
+    this.getUserMedication(); 
   }
+
+  loadPainSymptomData() {
+    console.log("In Load Symptom Data", Symptoms);
+    console.log("Symptoms length", Symptoms.length);
+    var id = Symptoms.length;
+    this.state.painDetails.forEach((painData, index) => {
+      console.log("For each id", id);
+      console.log("For eac childid", index);
+      var symptom =  {
+                id: id + 1,
+                childId: index,
+                name: 'Pain',
+                level: painData.pain.pain_level,
+                levelText: 'Pain level:',
+                logTime: moment(painData.pain.occurred_date).format("hh:mm A"),
+                tagText: 'Pain Type:',
+                image: require("../../assets/painia.png"),
+                PainTag: painData.pain.locations,
+                available: this.state.isPainDataAvailable,
+                tags: painData.pain.pain_type_name,
+                // locations: painData.locations
+            };
+    Symptoms.push(symptom);
+    id = id + 1;
+    });
+    // console.log("Symptoms", Symptoms);
+  }
+
+  loadMoodSymptomData()
+  {
+    var id = Symptoms.length;
+    this.state.moodDetails.forEach((moodData, index) => {
+      // console.log("For each id", id);
+      // console.log("For eac childid", index);
+      var symptom =  {
+    
+          id: id + 1,
+          childId: index,
+          name: 'Mood',
+          level: moodData.mood.mood_level,
+          levelText: 'Mood level:',
+          logTime: moment(moodData.mood.occurred_date).format("hh:mm A"),
+          tags: moodData.mood.mood_description_name,
+          available: this.state.isMoodDataAvailable,
+          tagText: 'Mood Type:',
+          image: require("../../assets/moodia.png")
+        };
+        Symptoms.push(symptom);
+        id = id + 1;
+  });
+}
+
+loadBloodSymptomData()
+  {
+    var id = Symptoms.length;
+    this.state.bloodDetails.forEach((bloodData, index) => {
+      // console.log("For each id", id);
+      // console.log("For eac childid", index);
+      var symptom =  {
+            id: id + 1,
+            childId: index,
+            name: 'Blood',
+            level: bloodData.blood.bleeding_level,
+            levelText: 'Blood level:',
+            logTime: moment(bloodData.blood.occurred_date).format("hh:mm A"),
+            tags: bloodData.blood.period_product_name,
+            available: this.state.isBloodDataAvailable,
+            tagText: 'Period Product:',
+            image: require("../../assets/bloodia.png")
+          };
+        Symptoms.push(symptom);
+        id = id + 1;
+  });
+}
+
+loadMedicationData () 
+{
+  var id = Symptoms.length;
+  this.state.bloodDetails.forEach((bloodData, index) => {
+    // console.log("For each id", id);
+    // console.log("For eac childid", index);
+    var symptom =  {
+          id: id + 1,
+          childId: index,
+  
+      name: 'Medication',
+      //level:this.state.medicationDetails.exercise_level,
+      levelText: 'Exercise level:',
+      logTime:moment(this.state.medicationDetails.occured_date).format("hh:mm A"),
+      tags:this.state.medicationDetails.medication_side_effects,
+      tagText:'Exercise:'
+    };
+    Symptoms.push(symptom);
+    id = id + 1;
+});
+}
 
   getUserPain() {
 
     let userId = this.state.userDetails.user_id;
-    let url = constants.USERPAIN_DEV_URL.replace("[userId]", userId).replace(
+    let url = constants.USERPAIN_DEV_URL.replace("[userId]", userId).replace( 
+      "[occurredDate]",
+      localToUtcDateTime(this.state.currentDate)
+    );
+    
+    getData(constants.JWTKEY).then((jwt) =>
+      fetch(url, {
+        //calling API
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + jwt, //Passing this will authorize the user
+          
+        },
+        
+      })
+       
+        .then((response) => response.json())
+
+        .then((responseData) => {
+          // If responseData is not empty, then isPainDataAvailable = true
+           console.log(responseData);
+          if (Object.keys(responseData).length) {
+            this.setState({
+              isPainDataAvailable: true,
+              painDetails: responseData,
+            });
+            console.log("In Get user pain", responseData);
+            console.log("*****Pain URL is********", url);
+            this.loadPainSymptomData();
+         } else {
+            this.setState({
+              isPainDataAvailable: false,
+              painDetails: [{ locations: [] }],
+            });
+          }
+        })
+        .catch((err) => console.log(err))
+    );
+  }
+  getUserMood() {
+    let userId = this.state.userDetails.user_id;
+    let url = constants.USERMOOD_DEV_URL.replace("[userId]", userId).replace(
       "[occurredDate]",
       localToUtcDateTime(this.state.currentDate)
     );
@@ -126,48 +289,20 @@ export default class Home extends React.Component {
         .then((response) => response.json())
 
         .then((responseData) => {
-          // If responseData is not empty, then isPainDataAvailable = true
-         // console.log(responseData);
-          if (Object.keys(responseData).length) {
-            this.setState({
-              isPainDataAvailable: true,
-              painDetails: responseData.pain,
-            });
-          
-          } else {
-            this.setState({
-              isPainDataAvailable: false,
-              painDetails: { locations: [] },
-            });
-          }
-        })
-        .catch((err) => console.log(err))
-    );
-  }
-      "[occurredDate]",
-    );
-    getData(constants.JWTKEY).then((jwt) =>
-      fetch(url, {
-        //calling API
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + jwt, //Passing this will authorize the user
-        },
-      })
-        .then((response) => response.json())
-
-        .then((responseData) => {
           // If responseData is not empty, then isMoodDataAvailable = true
+
+          
           if (Object.keys(responseData).length) {
             this.setState({
               isMoodDataAvailable: true,
-              moodDetails: responseData.mood,
+              moodDetails: responseData,
             });
+            this.loadMoodSymptomData();
 
-        
           } else {
             this.setState({
               isMoodDataAvailable: false,
+              moodDetails: [{}],
             });
 
           }
@@ -178,11 +313,11 @@ export default class Home extends React.Component {
   }
 
   getUserBlood() {
-
     let userId = this.state.userDetails.user_id;
     let url = constants.USERBLOOD_DEV_URL.replace("[userId]", userId).replace(
       "[occurredDate]",
       localToUtcDateTime(this.state.currentDate)
+    );
     getData(constants.JWTKEY).then((jwt) =>
       fetch(url, {
         //calling API
@@ -195,16 +330,17 @@ export default class Home extends React.Component {
 
         .then((responseData) => {
           // If responseData is not empty, then isMoodDataAvailable = true
+
           if (Object.keys(responseData).length) {
             this.setState({
               isBloodDataAvailable: true,
-              bloodDetails: responseData.blood,
+              bloodDetails: responseData,
             });
-
+            this.loadBloodSymptomData()
           } else {
             this.setState({
               isBloodDataAvailable: false,
-              bloodDetails: {},
+              bloodDetails: [{}],
             });
 
           }
@@ -231,6 +367,7 @@ export default class Home extends React.Component {
 
         .then((responseData) => {
           // If responseData is not empty, then isMoodDataAvailable = true
+
           if (Object.keys(responseData).length) {
             this.setState({
               isDigestionDataAvailable: true,
@@ -362,6 +499,44 @@ export default class Home extends React.Component {
     );
   }
 
+  getUserMedication() {
+    let userId = this.state.userDetails.user_id;
+    let url = constants.USERMEDICATION_DEV_URL.replace("[userId]", userId).replace(
+      "[occuredDate]",
+      localToUtcDateTime(this.state.currentDate)
+    );
+    getData(constants.JWTKEY).then((jwt) =>
+      fetch(url, {
+        //calling API
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + jwt, //Passing this will authorize the user
+        },
+      })
+        .then((response) => response.json())
+
+        .then((responseData) => {
+          // If responseData is not empty, then isMedicationDataAvailable = true
+
+          if (Object.keys(responseData).length) {
+            this.setState({
+              isMedicationDataAvailable: true,
+              MedicationDetails: responseData.medication,
+            });
+
+          } else {
+            this.setState({
+              isMedicationDataAvailable: false,
+              medicationDetails: {},
+            });
+
+          }
+        })
+        .catch((err) => console.log(err))
+
+    );
+  }
+
   componentDidMount() {
     getData(constants.USERDETAILS).then((data) => {
       // Read back the user details from storage and convert to object
@@ -370,95 +545,115 @@ export default class Home extends React.Component {
         userDetails: JSON.parse(data),
       });
       this.getUserPain();
-        name: 'Pain',
-        level: this.state.painDetails.pain_level,
-        levelText: 'Pain level:',
-        logTime: moment(this.state.painDetails.occurred_date).format("hh:mm A"),
-        tagText: 'Pain Type:',
-        image: require("../../assets/painia.png"),
-        PainTag: this.state.painDetails.locations,
-        available: this.state.isPainDataAvailable,
-        tags: this.state.painDetails.pain_type_name,
-      },
-      {
-        id: '2',
-        name: 'Mood',
-        level: this.state.moodDetails.mood_level,
-        levelText: 'Mood level:',
-        logTime: moment(this.state.moodDetails.occurred_date).format("hh:mm A"),
-        tags: this.state.moodDetails.mood_description_name,
-        available: this.state.isMoodDataAvailable,
-        tagText: 'Mood Type:',
-        image: require("../../assets/moodia.png")
-      },
-      {
-        id: '3',
-        name: 'Blood',
-        level: this.state.bloodDetails.bleeding_level,
-        levelText: 'Blood level:',
-        logTime: moment(this.state.bloodDetails.occurred_date).format("hh:mm A"),
-        tags: this.state.bloodDetails.period_product_name,
-        available: this.state.isBloodDataAvailable,
-        tagText: 'Period Product:',
-        image: require("../../assets/bloodia.png")
-      },
-      {
-        id: '4',
-        name: 'Digestion',
-        level: this.state.digestionDetails.digestion_level,
-        levelText: 'Digestion level:',
-        logTime: moment(this.state.bloodDetails.occurred_date).format("hh:mm A"),
-        tags: this.state.digestionDetails.bowel_symptom_name,
-        available: this.state.isDigestionDataAvailable,
-        tagText: 'Details:',
-        image: require("../../assets/digestionia.png")
-      },
-      {
-        id: '5',
-        name: 'Exercise',
-        level: this.state.exerciseDetails.exercise_level,
-        levelText: 'Exercise level:',
-        logTime: moment(this.state.exerciseDetails.occurred_date).format("hh:mm A"),
-        tags: this.state.exerciseDetails.exercise_type_name,
-        available: this.state.isExerciseDataAvailable,
-        tagText: 'Exercise:',
-        image: require("../../assets/exerciseia.png")
-      },
-      {
-        id: '6',
-        name: 'Medication',
-        // level:this.state.exerciseDetails.exercise_level,
-        // levelText: 'Exercise level:',
-        // logTime:moment(this.state.exerciseDetails.occurred_date).format("hh:mm A"),
-        // tags:this.state.exerciseDetails.exercise_type_name,
-        // tagText:'Exercise:'
-      },
+      this.getUserBlood();
+      this.getUserMood();
+      this.getUserSex();
+      this.getUserDigestion();
+      this.getUserExercise();
+      this.getUserDiet();
+      this.getUserMedication(); 
 
-      {
-        id: '7',
-        name: 'Diet',
-        level: this.state.dietDetails.diet_level,
-        levelText: 'Diet Level:',
-        logTime: moment(this.state.dietDetails.occurred_date).format("hh:mm A"),
-        tags: this.state.dietDetails.food_type_name,
-        available: this.state.isDietDataAvailable,
-        tagText: 'Diet Type:',
-        image: require("../../assets/dietia.png")
-      },
-      {
-        id: '8',
-        name: 'Sex',
-        level: this.state.sexDetails.sex_level,
-        levelText: 'Sex Level:',
-        logTime: moment(this.state.sexDetails.occurred_date).format("hh:mm A"),
-        tags: this.state.sexDetails.sexual_activity_name,
-        available: this.state.isSexDataAvailable,
-        tagText: 'Details:',
-        image: require("../../assets/sexia.png")
-      },
-    ];
-    console.log("**find this", this.state.exerciseDetails.exercise_level);
-    var isAnyDataAvailable = this.state.isMoodDataAvailable || this.state.isPainDataAvailable || this.state.isBloodDataAvailable || this.state.isDigestionDataAvailable || this.state.isExerciseDataAvailable || this.state.isSexDataAvailable || this.state.isDietDataAvailable;
+           
+  })
+}
+
+  render() {
+   
+      // map
+      // console.log ("pain details",this.state.painDetails);
+      
+    // Symptoms.push(
+    //   {
+    //     id: 2,
+    //     childId: 0,
+    //     name: 'Mood',
+    //     level: this.state.moodDetails.mood_level,
+    //     levelText: 'Mood level:',
+    //     logTime: moment(this.state.moodDetails.occurred_date).format("hh:mm A"),
+    //     tags: this.state.moodDetails.mood_description_name,
+    //     available: this.state.isMoodDataAvailable,
+    //     tagText: 'Mood Type:',
+    //     image: require("../../assets/moodia.png")
+    //   });
+    //   Symptoms.push(
+    //   {
+    //     id: 3,
+    //     childId: 0,
+    //     name: 'Blood',
+    //     level: this.state.bloodDetails.bleeding_level,
+    //     levelText: 'Blood level:',
+    //     logTime: moment(this.state.bloodDetails.occurred_date).format("hh:mm A"),
+    //     tags: this.state.bloodDetails.period_product_name,
+    //     available: this.state.isBloodDataAvailable,
+    //     tagText: 'Period Product:',
+    //     image: require("../../assets/bloodia.png")
+    //   });
+    //   Symptoms.push(
+    //   {
+    //     id: 4,
+    //     childId: 0,
+    //     name: 'Digestion',
+    //     level: this.state.digestionDetails.digestion_level,
+    //     levelText: 'Digestion level:',
+    //     logTime: moment(this.state.digestionDetails.occurred_date).format("hh:mm A"),
+    //     tags: this.state.digestionDetails.bowel_symptom_name,
+    //     available: this.state.isDigestionDataAvailable,
+    //     tagText: 'Details:',
+    //     image: require("../../assets/digestionia.png")
+    //   });
+    //   Symptoms.push(
+    //   {
+    //     id: 5,
+    //     childId: 0,
+    //     name: 'Exercise',
+    //    // level: this.state.exerciseDetails.exercise_level,
+    //     levelText: 'Exercise level:',
+    //     logTime: moment(this.state.exerciseDetails.occurred_date).format("hh:mm A"),
+    //     tags: this.state.exerciseDetails.exercise_type_name,
+    //     available: this.state.isExerciseDataAvailable,
+    //     tagText: 'Exercise:',
+    //     image: require("../../assets/exerciseia.png")
+    //   });
+    //   Symptoms.push(
+    //   {
+    //     id: 6,
+    //     childId: 0,
+    //     name: 'Medication',
+    //     // level:this.state.exerciseDetails.exercise_level,
+    //     // levelText: 'Exercise level:',
+    //     // logTime:moment(this.state.exerciseDetails.occurred_date).format("hh:mm A"),
+    //     // tags:this.state.exerciseDetails.exercise_type_name,
+    //     // tagText:'Exercise:'
+    //   });
+    //   Symptoms.push(
+    //   {
+    //     id: 7,
+    //     childId: 0,
+    //     name: 'Diet',
+    //     level: this.state.dietDetails.diet_level,
+    //     levelText: 'Diet Level:',
+    //     logTime: moment(this.state.dietDetails.occurred_date).format("hh:mm A"),
+    //     tags: this.state.dietDetails.food_type_name,
+    //     available: this.state.isDietDataAvailable,
+    //     tagText: 'Diet Type:',
+    //     image: require("../../assets/dietia.png")
+    //   });
+    //   Symptoms.push(
+    //   {
+    //     id: 8,
+    //     childId: 0,
+    //     name: 'Sex',
+    //     level: this.state.sexDetails.sex_level,
+    //     levelText: 'Sex Level:',
+    //     logTime: moment(this.state.sexDetails.occurred_date).format("hh:mm A"),
+    //     tags: this.state.sexDetails.sexual_activity_name,
+    //     available: this.state.isSexDataAvailable,
+    //     tagText: 'Details:',
+    //     image: require("../../assets/sexia.png")
+    //   });
+
+    // console.log("**find this", this.state.exerciseDetails.exercise_level);
+    var isAnyDataAvailable = this.state.isMoodDataAvailable || this.state.isPainDataAvailable || this.state.isBloodDataAvailable || this.state.isDigestionDataAvailable || this.state.isExerciseDataAvailable || this.state.isSexDataAvailable || this.state.isDietDataAvailable|| this.state.isMedicationDataAvailable;
     return (
       <Layout style={styles.container}>
         <TopNavigation position="absolute" />
@@ -472,6 +667,7 @@ export default class Home extends React.Component {
               fontSize: wp('7%'),
               //lineHeight: 30,
               letterSpacing: wp('0%'),
+              includeFontPadding: true,
               textAlign: "left",
               fontWeight: "bold",
               left: wp('17%'),
@@ -481,6 +677,171 @@ export default class Home extends React.Component {
             How are you, {this.state.userDetails.first_name}?{" "}
           </Text>
 
+          <CalendarStrip
+            onDateSelected={(date) => this.setDate(date)}
+            markedDates={[
+              {
+                date: moment().markedDates,
+                selectDate: moment().markedDates,
+                dots: [{ key: 0, color: "white", selectedDotColor: "white" }],
+              },
+              {
+                onSelectDate: moment().markedDates,
+
+                dots: [{ key: 0, color: "white", selectedDotColor: "white" }],
+              },
+            ]}
+            calendarAnimation={{ type: "sequence", duration: 30 }}
+            daySelectionAnimation={{
+              type: "background",
+              duration: 200,
+              borderWidth: 1,
+              highlightColor: "white",
+              borderHighlightColor: "white",
+            }}
+            scrollable
+            style={{
+              top: hp('8%'),
+              height: hp('15%'),
+              width: wp('130%'),
+              // paddingTop: hp('2%'),
+              paddingBottom: hp('5.2%'),
+            }}
+            calendarHeaderStyle={{ color: "white", top: hp('0'), fontWeight: '400' }}
+            calendarColor={"#f09874"}
+            dateNumberStyle={{ color: "white", fontSize: wp('3.4'), fontWeight: '400' }}
+            dateNameStyle={{ color: "white", fontSize: wp('3.4'), fontWeight: '400' }}
+            highlightDateNumberStyle={{ color: "#f09874", fontSize: wp('3.4'), fontWeight: '400' }}
+            highlightDateNameStyle={{ color: "#f09874", fontSize: wp('3.4'), fontWeight: '400' }}
+            borderHighlightColor={{ color: "white" }}
+            disabledDateNameStyle={{ color: "white" }}
+            disabledDateNumberStyle={{ color: "white" }}
+            iconContainer={{ flex: 0.13 }}
+
+          />
+        </View>
+        {isAnyDataAvailable ? (
+          <>
+            <View style={{ width: wp('100'), height: 500, backgroundColor: '#f2f2f2', top: 262, alignContent: "center" }}>
+              <ScrollView contentContainerStyle={{
+                justifyContent: "space-around",
+                flex: 1,
+                flexGrow: 1,
+                flexDirection: "column",
+                marginTop: "-42%",
+                marginBottom: "-267%",
+                justifyContent: "center",
+                bottom: hp('-45%'),
+              }}>
+
+                <Card style={styles.cardContainer}>
+                  <Text style={styles.cardText}>Today you experienced...</Text>
+                  <FlatList
+                    style={{ width: 400, top: 25, left: -37 }}
+                    data={Symptoms}
+                    renderItem={this.renderItem}
+                    keyExtractor={extractKey}
+                  />
+
+                </Card>
+              </ScrollView>
+            </View>
+          </>
+        ) : (
+            <>
+              <View style={{ width: wp('100'), height: 500, backgroundColor: '#f2f2f2', top: -231, alignContent: "center", marginTop: 500, marginBottom: -500 }}>
+                <ScrollView>
+                  <Image
+                    style={HomeStyles.girlContainer}
+                    source={require("../../assets/girl.png")}
+                  />
+                  <Text style={HomeStyles.headerText}>
+                    You haven't tracked anything today!
+            </Text>
+                </ScrollView>
+              </View>
+            </>
+          )}
+        <Image
+          style={HomeStyles.tabContainer}
+          source={require("../../assets/bottomtab.png")}
+        />
+        <TouchableOpacity >
+          <Image
+            style={HomeStyles.careplan}
+            source={require("../../assets/careplan.png")}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('Insights')}>
+          <Image
+            style={HomeStyles.insights}
+            source={require("../../assets/insights.png")}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity >
+          <Image
+            style={HomeStyles.learn}
+            source={require("../../assets/learn.png")}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('Settings')}>
+          <Image
+            style={HomeStyles.settings}
+            source={require("../../assets/settings.png")}
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() =>
+            this.props.navigation.navigate("Track", {
+              currentDate: this.state.currentDate,
+            })
+          }
+        >
+          <Image
+            style={HomeStyles.ovalContainer}
+            source={require("../../assets/oval.png")}
+          />
+        </TouchableOpacity>
+
+      </Layout>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#f09874",
+    alignItems: "center",
+    height: hp('25%'),
+    justifyContent: "center",
+  },
+  ScrollContainer: {
+    width: wp('95%'),
+  },
+
+  textContainer: {
+    flex: 1,
+    position: "absolute",
+    top: hp('88%'),
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  cardContainer: {
+    flex: 1,
+    position: "absolute",
+    width: wp('90%'),
+    borderRadius: 20,
+    flexDirection: "row",
+    // height: hp('40%'),
+    alignSelf: "flex-start",
+    top: hp('-20%'),
+    alignItems: "center",
+    left: wp('5'),
+    backgroundColor: "#ffff",
+    borderBottomColor: '#ffffff',
+    borderTopColor: '#ffffff',
+    borderLeftColor: '#ffffff',
     borderRightColor: '#ffffff',
     backgroundColor: '#ffffff',
     shadowColor: '#c8c8c8',
@@ -491,7 +852,7 @@ export default class Home extends React.Component {
   symptomView: {
     
     padding: 15,
-    marginBottom: 5,
+    marginBottom:25,
     color: "#8A8A8E",
     backgroundColor: "#ffff",
     fontWeight: 'bold',
@@ -550,6 +911,7 @@ export default class Home extends React.Component {
     flex: 1,
     left: wp('5'),
     position: "absolute",
+    fontSize: hp('2.6%'),
     fontWeight: "bold",
     letterSpacing: wp('0%'),
     justifyContent: "center",

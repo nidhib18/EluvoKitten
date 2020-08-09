@@ -16,7 +16,7 @@ const { width } = Dimensions.get('window');
 
 export default class DietCard extends React.Component {
 
-    
+
 
 
     constructor(props) {
