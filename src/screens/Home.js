@@ -31,7 +31,10 @@ import { initMoodDetails } from "../models/MoodDetails";
 
 
 //import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
-
+var painSymptoms= [];
+var moodSymptoms= [];
+var bloodSymptoms=[]; 
+var medicationSymptoms = [];
 const { Width } = Dimensions.get("window");
 let datesWhitelist = [
   {
@@ -45,7 +48,7 @@ let datesWhitelist = [
 let datesBlacklist = [{ start: moment.vacationStart, end: moment.vacationEnd }];
 
 const extractKey = ({ id }) => id.toString()
-var Symptoms = [];
+
 export default class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -56,56 +59,41 @@ export default class Home extends React.Component {
       currentDate: moment().format("YYYY-MM-DD"),
       painDetails: [{ locations: [] }],
       moodDetails: [{}],
-      bloodDetails: {},
-      dietDetails: {},
-      digestionDetails: {},
-      exerciseDetails: {},
-      sexDetails: {},
-      medicationDetails:{}, 
-      isPainDataAvailable: false,
-      isMoodDataAvailable: false,
-      isBloodDataAvailable: false,
-      isDigestionDataAvailable: false,
-      isExerciseDataAvailable: false,
-      isSexDataAvailable: false,
-      isDietDataAvailable: false,
-      isMedicationDataAvailable: false, 
-
+      medicationDetails:[{}], 
+      bloodDetails:[{}],
+      isAnyDataAvailable: false,
+      isAllDataLoaded: false
     };
     this.setDate = this.setDate.bind(this);
     this.getUserPain = this.getUserPain.bind(this);
-    this.getUserMood = this.getUserMood.bind(this);
-    this.getUserBlood = this.getUserBlood.bind(this);
-    this.getUserDigestion = this.getUserDigestion.bind(this);
-    this.getUserExercise = this.getUserExercise.bind(this);
-    this.getUserSex = this.getUserSex.bind(this);
-    this.getUserDiet = this.getUserDiet.bind(this);
+
     this.loadPainSymptomData = this.loadPainSymptomData.bind(this);
     this.loadMoodSymptomData = this.loadMoodSymptomData.bind(this);
-    this.loadBloodSymptomData = this.loadBloodSymptomData.bind(this);
     this.loadMedicationData = this.loadMedicationData.bind(this);
-    this.getUserMedication = this.getUserMedication.bind(this);
+    this.loadBloodSymptomData=this.loadBloodSymptomData.bind(this);
+
+    this.resetState = this.resetState.bind(this);
+   
   }
 
   renderItem = ({ item }) => {
-    // console.log("Child Id", item.childId);
     return (
       <View >
         {item.available ? (
-          <View>
-            {item.childId == 0 ? (<View style={styles.symptomView}>
+          <View >
+            {item.id == 0 ? (<View style={styles.symptomView}>
             <Image style={styles.painIcon} source={item.image}></Image>
             <Text style={styles.symptomText}>{item.name}</Text></View>) : (<></>)} 
           
-            <Text style={{ left: wp('18%'), top: hp('3%'), color: "#8A8A8E", fontWeight: '500' }}>{item.levelText} {item.level}</Text>
+            <Text style={{ left: wp('27%'), top: hp('-12%'), color: "#8A8A8E", fontWeight: '500' }}>{item.levelText} {item.level}</Text>
             <Text style={styles.logText}> {item.logTime}</Text>
-            <Text style={{ left: wp('18%'), top: hp('1%'), color: "#8A8A8E", fontWeight: '500' }}>{item.tagText} {item.tags}</Text>
+            <Text style={{ left: wp('27%'), top: hp('-14%'), color: "#8A8A8E", fontWeight: '500' }}>{item.tagText} {item.tags}</Text>
            
             {item.PainTag ? (
               <Text style={{
-                left: wp('18%'), top: hp('1.5%'), color: "#8A8A8E", fontWeight: '500', alignSelf: "flex-start",
+                left: wp('27%'), top: hp('-14%'), color: "#8A8A8E", fontWeight: '500', alignSelf: "flex-start",
                 flexDirection: "row",
-              }}>{item.tagText} {item.PainTag.map((location, index) => {
+              }}>{item.tagLocText} {item.PainTag.map((location, index) => {
                 let locationText =
                   location.list_item_name +
                   (index < item.PainTag.length - 1
@@ -114,36 +102,128 @@ export default class Home extends React.Component {
                 return locationText;
               })}
               </Text>
-            ) : (<></>)}</View>
+            ) : (<></>)}
+            {item.medicationTypeText ? 
+              ( <>
+                <Text style={{ left: wp('27%'), top: hp('-14%'), color: "#8A8A8E", fontWeight: '500' }}>{item.medicationTypeText} {item.medicationType}</Text>
+                <Text style={{ left: wp('27%'), top: hp('-14%'), color: "#8A8A8E", fontWeight: '500' }}>{item.medicationTimeText} {item.medicationTime}</Text>
+                </>
+              ) 
+              : (<></>)}
+
+
+            </View>
        ) : (<></>)}
       </View>
 
     )
   }
-  setDate(newDate) {
+  setDate(newDate) 
+  {
+    this.resetState();
     // CalendarStrip converts the selected date to UTC format for e.g. 2020-06-15T12:00:00Z
-    this.state.currentDate = utcToLocal(newDate);
-    // console.log("Current Date", this.state.currentDate);
-    this.getUserPain();
-    this.getUserMood();
-    this.getUserBlood();
-    this.getUserDigestion();
-    this.getUserExercise();
-    this.getUserSex();
-    this.getUserDiet();
-    this.getUserMedication(); 
+    console.log("SELECTED DATE", newDate);
+    console.log(localToUtcDateTime(newDate));
+    let userId = this.state.userDetails.user_id;
+    let url = constants.USERPAIN_DEV_URL.replace("[userId]", userId).replace( 
+      "[occurredDate]",
+      localToUtcDateTime(newDate)
+    );
+    console.log("Url is", url);
+    var isAnyDataAvailable = false;
+    var painDetails = [];
+    var moodDetails = [];
+    var bloodDetails =[];
+    var medicationDetails = [];
+
+    getData(constants.JWTKEY).then((jwt) =>
+      fetch(url, {
+        //calling API
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + jwt, //Passing this will authorize the user
+        },
+        })
+        .then((response) => response.json())
+        .then((responseData) => {
+          console.log("Completed API call");
+          if (Object.keys(responseData.painRecords).length) 
+          {
+            isAnyDataAvailable = true;
+            painDetails = responseData.painRecords;
+          } 
+          else {
+            painDetails = [{ locations: []}];
+          }
+
+          if (Object.keys(responseData.moodRecords).length) 
+          {
+            isAnyDataAvailable = true;
+            moodDetails = responseData.moodRecords;
+          } 
+          else 
+          {
+            moodDetails = [];
+          }
+
+          if (Object.keys(responseData.medicationRecords).length) {
+            isAnyDataAvailable = true;
+            medicationDetails = responseData.medicationRecords;
+            } 
+            else 
+            {
+              medicationDetails = [];
+            }
+          if (Object.keys(responseData.bloodRecords).length) 
+            {
+              isAnyDataAvailable = true;
+              bloodDetails = responseData.bloodRecords;
+            } 
+          else 
+          {
+              bloodDetails = [];
+          }
+
+          this.setState({
+            isAnyDataAvailable: isAnyDataAvailable,
+            painDetails: painDetails,
+            moodDetails: moodDetails,
+            medicationDetails: medicationDetails,
+            bloodDetails:bloodDetails
+          });
+
+          if (painDetails.length) this.loadPainSymptomData();
+          if (moodDetails.length) this.loadMoodSymptomData();
+          if (medicationDetails.length) this.loadMedicationData();
+          if  (bloodDetails.length)this.loadBloodSymptomData();
+          this.setState({
+            isAllDataLoaded: true,
+            currentDate: (newDate)
+          });
+        })
+        .catch((err) => console.log(err))
+    );
+  }
+
+  resetState()
+  {
+    this.setState({
+        painDetails: [{ locations: [] }],
+        moodDetails: [{}],
+        medicationDetails:[{}], 
+        bloodDetails:[{}],
+        isAnyDataAvailable: false,
+        isAllDataLoaded: false
+      });
   }
 
   loadPainSymptomData() {
-    console.log("In Load Symptom Data", Symptoms);
-    console.log("Symptoms length", Symptoms.length);
-    var id = Symptoms.length;
+    console.log("Loading Pain Data...");
+    var id = 0;
+    painSymptoms = [];
     this.state.painDetails.forEach((painData, index) => {
-      console.log("For each id", id);
-      console.log("For eac childid", index);
       var symptom =  {
-                id: id + 1,
-                childId: index,
+                id: id,
                 name: 'Pain',
                 level: painData.pain.pain_level,
                 levelText: 'Pain level:',
@@ -151,509 +231,112 @@ export default class Home extends React.Component {
                 tagText: 'Pain Type:',
                 image: require("../../assets/painia.png"),
                 PainTag: painData.pain.locations,
-                available: this.state.isPainDataAvailable,
+                available: true,
                 tags: painData.pain.pain_type_name,
-                // locations: painData.locations
             };
-    Symptoms.push(symptom);
-    id = id + 1;
+      painSymptoms.push(symptom);
+      id = id + 1;
     });
-    // console.log("Symptoms", Symptoms);
+    console.log("Completed loading pain symptom data");
   }
 
   loadMoodSymptomData()
   {
-    var id = Symptoms.length;
+    var id = 0;
+    moodSymptoms = [];
+    console.log("Loading Mood Data...");
     this.state.moodDetails.forEach((moodData, index) => {
-      // console.log("For each id", id);
-      // console.log("For eac childid", index);
       var symptom =  {
-    
-          id: id + 1,
-          childId: index,
+          id: id,
           name: 'Mood',
           level: moodData.mood.mood_level,
           levelText: 'Mood level:',
           logTime: moment(moodData.mood.occurred_date).format("hh:mm A"),
           tags: moodData.mood.mood_description_name,
-          available: this.state.isMoodDataAvailable,
+          available: true,
           tagText: 'Mood Type:',
           image: require("../../assets/moodia.png")
         };
-        Symptoms.push(symptom);
+        moodSymptoms.push(symptom);
         id = id + 1;
-  });
-}
+    });
+    console.log("Completed loading mood symptom data");
+    }
 
-loadBloodSymptomData()
-  {
-    var id = Symptoms.length;
-    this.state.bloodDetails.forEach((bloodData, index) => {
-      // console.log("For each id", id);
-      // console.log("For eac childid", index);
-      var symptom =  {
-            id: id + 1,
-            childId: index,
+    loadMedicationData () 
+    {
+        var id = 0;
+        medicationSymptoms = [];
+        console.log("Loading Meds Data...");
+        this.state.medicationDetails.forEach((medicationData, index) => {
+            var symptom =  {
+                id: id,
+                name: 'Medication',
+                logTime:moment(medicationData.medication.occured_date).format("hh:mm A"),
+                tags:medicationData.medication.medication_side_effects,
+                tagText:'Side Effect:',
+                medicationTypeText: 'Medication Type:',
+	              medicationType:medicationData.medication.medication_type,
+	              medicationTimeText: 'Time Taken:',
+	              medicationTime: medicationData.medication.medication_time_taken,
+	              levelText: 'Quantity:',
+                level: medicationData.medication.medication_quantity,
+                image: require("../../assets/medication.png"),
+                available: true
+                
+                };
+            medicationSymptoms.push(symptom);
+            id = id + 1;
+        });
+        console.log("Completed loading meds symptom data");
+    }
+    loadBloodSymptomData()
+    {
+      var id = 0;
+      bloodSymptoms = [];
+      console.log("Loading Blood Data...");
+      this.state.bloodDetails.forEach((bloodData, index) => {
+        var symptom =  {
+            id: id,
             name: 'Blood',
             level: bloodData.blood.bleeding_level,
             levelText: 'Blood level:',
-            logTime: moment(bloodData.blood.occurred_date).format("hh:mm A"),
-            tags: bloodData.blood.period_product_name,
-            available: this.state.isBloodDataAvailable,
-            tagText: 'Period Product:',
+            logTime: moment( bloodData.blood.occurred_date).format("hh:mm A"),
+            tags:  bloodData.blood.period_product_name,
+            available: true,
+            tagText: 'Period product:',
             image: require("../../assets/bloodia.png")
           };
-        Symptoms.push(symptom);
-        id = id + 1;
-  });
-}
+          bloodSymptoms.push(symptom);
+          id = id + 1;
+    });
+    console.log("Completed loading blood symptom data");
+    }
 
-loadMedicationData () 
-{
-  var id = Symptoms.length;
-  this.state.bloodDetails.forEach((bloodData, index) => {
-    // console.log("For each id", id);
-    // console.log("For eac childid", index);
-    var symptom =  {
-          id: id + 1,
-          childId: index,
-  
-      name: 'Medication',
-      //level:this.state.medicationDetails.exercise_level,
-      levelText: 'Exercise level:',
-      logTime:moment(this.state.medicationDetails.occured_date).format("hh:mm A"),
-      tags:this.state.medicationDetails.medication_side_effects,
-      tagText:'Exercise:'
-    };
-    Symptoms.push(symptom);
-    id = id + 1;
-});
-}
 
   getUserPain() {
-
-    let userId = this.state.userDetails.user_id;
-    let url = constants.USERPAIN_DEV_URL.replace("[userId]", userId).replace( 
-      "[occurredDate]",
-      localToUtcDateTime(this.state.currentDate)
-    );
-    
-    getData(constants.JWTKEY).then((jwt) =>
-      fetch(url, {
-        //calling API
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + jwt, //Passing this will authorize the user
-          
-        },
-        
-      })
-       
-        .then((response) => response.json())
-
-        .then((responseData) => {
-          // If responseData is not empty, then isPainDataAvailable = true
-           console.log(responseData);
-          if (Object.keys(responseData).length) {
-            this.setState({
-              isPainDataAvailable: true,
-              painDetails: responseData,
-            });
-            console.log("In Get user pain", responseData);
-            console.log("*****Pain URL is********", url);
-            this.loadPainSymptomData();
-         } else {
-            this.setState({
-              isPainDataAvailable: false,
-              painDetails: [{ locations: [] }],
-            });
-          }
-        })
-        .catch((err) => console.log(err))
-    );
+ 
   }
-  getUserMood() {
-    let userId = this.state.userDetails.user_id;
-    let url = constants.USERMOOD_DEV_URL.replace("[userId]", userId).replace(
-      "[occurredDate]",
-      localToUtcDateTime(this.state.currentDate)
-    );
-    getData(constants.JWTKEY).then((jwt) =>
-      fetch(url, {
-        //calling API
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + jwt, //Passing this will authorize the user
-        },
-      })
-        .then((response) => response.json())
-
-        .then((responseData) => {
-          // If responseData is not empty, then isMoodDataAvailable = true
-
-          
-          if (Object.keys(responseData).length) {
-            this.setState({
-              isMoodDataAvailable: true,
-              moodDetails: responseData,
-            });
-            this.loadMoodSymptomData();
-
-          } else {
-            this.setState({
-              isMoodDataAvailable: false,
-              moodDetails: [{}],
-            });
-
-          }
-        })
-        .catch((err) => console.log(err))
-
-    );
-  }
-
-  getUserBlood() {
-    let userId = this.state.userDetails.user_id;
-    let url = constants.USERBLOOD_DEV_URL.replace("[userId]", userId).replace(
-      "[occurredDate]",
-      localToUtcDateTime(this.state.currentDate)
-    );
-    getData(constants.JWTKEY).then((jwt) =>
-      fetch(url, {
-        //calling API
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + jwt, //Passing this will authorize the user
-        },
-      })
-        .then((response) => response.json())
-
-        .then((responseData) => {
-          // If responseData is not empty, then isMoodDataAvailable = true
-
-          if (Object.keys(responseData).length) {
-            this.setState({
-              isBloodDataAvailable: true,
-              bloodDetails: responseData,
-            });
-            this.loadBloodSymptomData()
-          } else {
-            this.setState({
-              isBloodDataAvailable: false,
-              bloodDetails: [{}],
-            });
-
-          }
-        })
-        .catch((err) => console.log(err))
-
-    );
-  }
-  getUserDigestion() {
-    let userId = this.state.userDetails.user_id;
-    let url = constants.USERDIGESTION_DEV_URL.replace("[userId]", userId).replace(
-      "[occurredDate]",
-      localToUtcDateTime(this.state.currentDate)
-    );
-    getData(constants.JWTKEY).then((jwt) =>
-      fetch(url, {
-        //calling API
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + jwt, //Passing this will authorize the user
-        },
-      })
-        .then((response) => response.json())
-
-        .then((responseData) => {
-          // If responseData is not empty, then isMoodDataAvailable = true
-
-          if (Object.keys(responseData).length) {
-            this.setState({
-              isDigestionDataAvailable: true,
-              digestionDetails: responseData.digestion,
-            });
-
-          } else {
-            this.setState({
-              isDigestionDataAvailable: false,
-              digestionDetails: {},
-            });
-
-          }
-        })
-        .catch((err) => console.log(err))
-
-    );
-  }
-  getUserExercise() {
-    let userId = this.state.userDetails.user_id;
-    let url = constants.USEREXERCISE_DEV_URL.replace("[userId]", userId).replace(
-      "[occurredDate]",
-      localToUtcDateTime(this.state.currentDate)
-    );
-    getData(constants.JWTKEY).then((jwt) =>
-      fetch(url, {
-        //calling API
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + jwt, //Passing this will authorize the user
-        },
-      })
-        .then((response) => response.json())
-
-        .then((responseData) => {
-          // If responseData is not empty, then isMoodDataAvailable = true
-
-          if (Object.keys(responseData).length) {
-            this.setState({
-              isExerciseDataAvailable: true,
-              exerciseDetails: responseData.exercise,
-            });
-
-          } else {
-            this.setState({
-              isExerciseDataAvailable: false,
-              exerciseDetails: {},
-            });
-
-          }
-        })
-        .catch((err) => console.log(err))
-
-    );
-  }
-
-  getUserSex() {
-    let userId = this.state.userDetails.user_id;
-    let url = constants.USERSEX_DEV_URL.replace("[userId]", userId).replace(
-      "[occurredDate]",
-      localToUtcDateTime(this.state.currentDate)
-    );
-    getData(constants.JWTKEY).then((jwt) =>
-      fetch(url, {
-        //calling API
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + jwt, //Passing this will authorize the user
-        },
-      })
-        .then((response) => response.json())
-
-        .then((responseData) => {
-          // If responseData is not empty, then isMoodDataAvailable = true
-
-          if (Object.keys(responseData).length) {
-            this.setState({
-              isSexDataAvailable: true,
-              sexDetails: responseData.sex,
-            });
-
-          } else {
-            this.setState({
-              isSexDataAvailable: false,
-              sexDetails: {},
-            });
-
-          }
-        })
-        .catch((err) => console.log(err))
-
-    );
-  }
-  getUserDiet() {
-    let userId = this.state.userDetails.user_id;
-    let url = constants.USERDIET_DEV_URL.replace("[userId]", userId).replace(
-      "[occurredDate]",
-      localToUtcDateTime(this.state.currentDate)
-    );
-    getData(constants.JWTKEY).then((jwt) =>
-      fetch(url, {
-        //calling API
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + jwt, //Passing this will authorize the user
-        },
-      })
-        .then((response) => response.json())
-
-        .then((responseData) => {
-          // If responseData is not empty, then isMoodDataAvailable = true
-
-          if (Object.keys(responseData).length) {
-            this.setState({
-              isDietDataAvailable: true,
-              dietDetails: responseData.diet,
-            });
-
-          } else {
-            this.setState({
-              isDietDataAvailable: false,
-              dietDetails: {},
-            });
-
-          }
-        })
-        .catch((err) => console.log(err))
-
-    );
-  }
-
-  getUserMedication() {
-    let userId = this.state.userDetails.user_id;
-    let url = constants.USERMEDICATION_DEV_URL.replace("[userId]", userId).replace(
-      "[occuredDate]",
-      localToUtcDateTime(this.state.currentDate)
-    );
-    getData(constants.JWTKEY).then((jwt) =>
-      fetch(url, {
-        //calling API
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + jwt, //Passing this will authorize the user
-        },
-      })
-        .then((response) => response.json())
-
-        .then((responseData) => {
-          // If responseData is not empty, then isMedicationDataAvailable = true
-
-          if (Object.keys(responseData).length) {
-            this.setState({
-              isMedicationDataAvailable: true,
-              MedicationDetails: responseData.medication,
-            });
-
-          } else {
-            this.setState({
-              isMedicationDataAvailable: false,
-              medicationDetails: {},
-            });
-
-          }
-        })
-        .catch((err) => console.log(err))
-
-    );
-  }
-
-  componentDidMount() {
+  
+  componentWillMount() {
     getData(constants.USERDETAILS).then((data) => {
       // Read back the user details from storage and convert to object
       this.state.userDetails = JSON.parse(data);
       this.setState({
         userDetails: JSON.parse(data),
       });
-      this.getUserPain();
-      this.getUserBlood();
-      this.getUserMood();
-      this.getUserSex();
-      this.getUserDigestion();
-      this.getUserExercise();
-      this.getUserDiet();
-      this.getUserMedication(); 
-
-           
+      //this.getUserPain();
   })
 }
 
   render() {
-   
-      // map
-      // console.log ("pain details",this.state.painDetails);
-      
-    // Symptoms.push(
-    //   {
-    //     id: 2,
-    //     childId: 0,
-    //     name: 'Mood',
-    //     level: this.state.moodDetails.mood_level,
-    //     levelText: 'Mood level:',
-    //     logTime: moment(this.state.moodDetails.occurred_date).format("hh:mm A"),
-    //     tags: this.state.moodDetails.mood_description_name,
-    //     available: this.state.isMoodDataAvailable,
-    //     tagText: 'Mood Type:',
-    //     image: require("../../assets/moodia.png")
-    //   });
-    //   Symptoms.push(
-    //   {
-    //     id: 3,
-    //     childId: 0,
-    //     name: 'Blood',
-    //     level: this.state.bloodDetails.bleeding_level,
-    //     levelText: 'Blood level:',
-    //     logTime: moment(this.state.bloodDetails.occurred_date).format("hh:mm A"),
-    //     tags: this.state.bloodDetails.period_product_name,
-    //     available: this.state.isBloodDataAvailable,
-    //     tagText: 'Period Product:',
-    //     image: require("../../assets/bloodia.png")
-    //   });
-    //   Symptoms.push(
-    //   {
-    //     id: 4,
-    //     childId: 0,
-    //     name: 'Digestion',
-    //     level: this.state.digestionDetails.digestion_level,
-    //     levelText: 'Digestion level:',
-    //     logTime: moment(this.state.digestionDetails.occurred_date).format("hh:mm A"),
-    //     tags: this.state.digestionDetails.bowel_symptom_name,
-    //     available: this.state.isDigestionDataAvailable,
-    //     tagText: 'Details:',
-    //     image: require("../../assets/digestionia.png")
-    //   });
-    //   Symptoms.push(
-    //   {
-    //     id: 5,
-    //     childId: 0,
-    //     name: 'Exercise',
-    //    // level: this.state.exerciseDetails.exercise_level,
-    //     levelText: 'Exercise level:',
-    //     logTime: moment(this.state.exerciseDetails.occurred_date).format("hh:mm A"),
-    //     tags: this.state.exerciseDetails.exercise_type_name,
-    //     available: this.state.isExerciseDataAvailable,
-    //     tagText: 'Exercise:',
-    //     image: require("../../assets/exerciseia.png")
-    //   });
-    //   Symptoms.push(
-    //   {
-    //     id: 6,
-    //     childId: 0,
-    //     name: 'Medication',
-    //     // level:this.state.exerciseDetails.exercise_level,
-    //     // levelText: 'Exercise level:',
-    //     // logTime:moment(this.state.exerciseDetails.occurred_date).format("hh:mm A"),
-    //     // tags:this.state.exerciseDetails.exercise_type_name,
-    //     // tagText:'Exercise:'
-    //   });
-    //   Symptoms.push(
-    //   {
-    //     id: 7,
-    //     childId: 0,
-    //     name: 'Diet',
-    //     level: this.state.dietDetails.diet_level,
-    //     levelText: 'Diet Level:',
-    //     logTime: moment(this.state.dietDetails.occurred_date).format("hh:mm A"),
-    //     tags: this.state.dietDetails.food_type_name,
-    //     available: this.state.isDietDataAvailable,
-    //     tagText: 'Diet Type:',
-    //     image: require("../../assets/dietia.png")
-    //   });
-    //   Symptoms.push(
-    //   {
-    //     id: 8,
-    //     childId: 0,
-    //     name: 'Sex',
-    //     level: this.state.sexDetails.sex_level,
-    //     levelText: 'Sex Level:',
-    //     logTime: moment(this.state.sexDetails.occurred_date).format("hh:mm A"),
-    //     tags: this.state.sexDetails.sexual_activity_name,
-    //     available: this.state.isSexDataAvailable,
-    //     tagText: 'Details:',
-    //     image: require("../../assets/sexia.png")
-    //   });
-
-    // console.log("**find this", this.state.exerciseDetails.exercise_level);
-    var isAnyDataAvailable = this.state.isMoodDataAvailable || this.state.isPainDataAvailable || this.state.isBloodDataAvailable || this.state.isDigestionDataAvailable || this.state.isExerciseDataAvailable || this.state.isSexDataAvailable || this.state.isDietDataAvailable|| this.state.isMedicationDataAvailable;
+    //var isAnyDataAvailable = this.state.isMoodDataAvailable || this.state.isPainDataAvailable || this.state.isBloodDataAvailable || this.state.isDigestionDataAvailable || this.state.isExerciseDataAvailable || this.state.isSexDataAvailable || this.state.isDietDataAvailable|| this.state.isMedicationDataAvailable;
+    //var isAllDataLoaded = this.state.isMoodDataLoaded && this.state.isPainDataLoaded && this.state.isMedicationDataLoaded;
+    console.log("RENDER ALL DATA LOADED?", this.state.isAllDataLoaded);
+    console.log("RENDER PAIN SMPTOMS", painSymptoms);
+    console.log("RENDER MOOD SMPTOMS", moodSymptoms);
+    console.log("RENDER MEDS SMPTOMS", medicationSymptoms);
+    console.log("RENDER MEDS SMPTOMS", bloodSymptoms);
     return (
       <Layout style={styles.container}>
         <TopNavigation position="absolute" />
@@ -720,7 +403,7 @@ loadMedicationData ()
 
           />
         </View>
-        {isAnyDataAvailable ? (
+        {this.state.isAnyDataAvailable ? (
           <>
             <View style={{ width: wp('100'), height: 500, backgroundColor: '#f2f2f2', top: 262, alignContent: "center" }}>
               <ScrollView contentContainerStyle={{
@@ -735,14 +418,40 @@ loadMedicationData ()
               }}>
 
                 <Card style={styles.cardContainer}>
-                  <Text style={styles.cardText}>Today you experienced...</Text>
-                  <FlatList
-                    style={{ width: 400, top: 25, left: -37 }}
-                    data={Symptoms}
-                    renderItem={this.renderItem}
-                    keyExtractor={extractKey}
-                  />
+                  {true ?  
+                    (
+                        <>
+                        <Text style={styles.cardText}>Today you experienced...</Text>
+                        
+                        <FlatList
+                            style={{ width: 400, top: 25, left: -37 }}
+                            data={painSymptoms}
+                            renderItem={this.renderItem}
+                            keyExtractor={extractKey}
+                        />
+                        <FlatList
+                            style={{ width: 400, top: 25, left: -37 }}
+                            data={moodSymptoms}
+                            renderItem={this.renderItem}
+                            keyExtractor={extractKey}
+                        />
+                        <FlatList
+                            style={{ width: 400, top: 25, left: -37 }}
+                            data={medicationSymptoms}
+                            renderItem={this.renderItem}
+                            keyExtractor={extractKey}
+                        />
 
+                        <FlatList
+                            style={{ width: 400, top: 25, left: -37 }}
+                            data={bloodSymptoms}
+                            renderItem={this.renderItem}
+                            keyExtractor={extractKey}
+                        />    
+                        </>
+                    ) : 
+                    (<><Text style={styles.cardText}>Loading...</Text></>)}
+                  
                 </Card>
               </ScrollView>
             </View>
@@ -946,12 +655,14 @@ const styles = StyleSheet.create({
   },
 
   logText:
-  {
-    left: wp('63%'),
-    top: hp('1%'),
-    color: "#8A8A8E",
-    fontWeight: '500'
-  },
+  
+    {
+      left: wp('73%'),
+      top: hp('-13%'),
+      color: "#8A8A8E",
+      fontWeight: '500'
+    },
+  
   painIcon: {
     position: "absolute",
     top: hp('-3.5%'),

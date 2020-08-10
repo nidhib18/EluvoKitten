@@ -108,11 +108,9 @@ export default class MoodCard extends React.Component {
             let userId = this.state.userDetails.user_id;
             let occurredDate = moment(this.state.currentDate).add(moment().hour(), 'hour').add(moment().minute(), 'minute');
             // Add pain locations
-            let moodDescription = null ;
-        
-            
-            
+            let moodDescription = null;
             if (this.state.selectedMoodDescription.length > 0)
+            
                 moodDescription = this.state.selectedMoodDescription[0]; 
        
 

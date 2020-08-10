@@ -45,7 +45,7 @@ export default class MedicationCard extends React.Component {
             medicationTimeTaken:" ",
             userDetails:{}, 
             medicationDetails: initMedicationDetails(0,  moment().format('YYYY-MM-DD')) ,
-            isMedicationDataAvailable: false,
+            //isMedicationDataAvailable: false,
             currentDate: moment().format('YYYY-MM-DD')// / this.props.route.params.CurrentDate    
         };
         this.saveMedicationDetails = this.saveMedicationDetails.bind(this);
@@ -75,60 +75,63 @@ export default class MedicationCard extends React.Component {
         );
     };
 
-    getUserMedication = (route) => {
-        let userId = this.state.userDetails.user_id;
-        let currentDate = this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD');
-        let url = constants.USERMEDICATION_DEV_URL.replace("[userId]", userId).replace(
-            "[occuredDate]",
-            localToUtcDateTime(currentDate)
-        );
-        console.log ("URL FOR GETMEDICATION",url);
-        getData(constants.JWTKEY).then((jwt) =>
-            fetch(url, {
-                //calling API
-                method: "GET",
-                headers: {
-                    Authorization: "Bearer " + jwt, //Passing this will authorize the user
-                },
-            })
-                .then((response) => response.json())
-                .then((responseData) => {
-                    // If responseData is not empty, then isPainDataAvailable = true
-                    //("Medication CARD Get User Medication Response", responseData);
-                    if (Object.keys(responseData).length) {
-                        console.log ("*YES data*",responseData);
-                        this.setState({
-                            isMedicationDataAvailable: true,
-                            medicationDetails: responseData,
-                            currentDate: currentDate
-                        });
-                    }
-                    else {
-                        console.log ("*No data*");
-                        this.setState({
-                            isMedicationDataAvailable: false,
-                            medicationDetails: initMedicationDetails(userId, currentDate),
+    // getUserMedication = (route) => {
+    //     let userId = this.state.userDetails.user_id;
+    //     let currentDate = this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD');
+    //     let url = constants.USERMEDICATION_DEV_URL.replace("[userId]", userId).replace(
+    //         "[occuredDate]",
+    //         localToUtcDateTime(currentDate)
+    //     );
+    //     console.log ("URL FOR GETMEDICATION",url);
+    //     getData(constants.JWTKEY).then((jwt) =>
+    //         fetch(url, {
+    //             //calling API
+    //             method: "GET",
+    //             headers: {
+    //                 Authorization: "Bearer " + jwt, //Passing this will authorize the user
+    //             },
+    //         })
+    //             .then((response) => response.json())
+    //             .then((responseData) => {
+    //                 // If responseData is not empty, then isPainDataAvailable = true
+    //                 //("Medication CARD Get User Medication Response", responseData);
+    //                 if (Object.keys(responseData).length) {
+    //                     console.log ("*YES data*",responseData);
+    //                     this.setState({
+    //                         isMedicationDataAvailable: true,
+    //                         medicationDetails: responseData,
+    //                         currentDate: currentDate
+    //                     });
+    //                 }
+    //                 else {
+    //                     console.log ("*No data*");
+    //                     this.setState({
+    //                         isMedicationDataAvailable: false,
+    //                         medicationDetails: initMedicationDetails(userId, currentDate),
                            
-                            currentDate: currentDate
-                        });
-                    }
-                })
-                .catch((err) => console.log(err))
-        );
-        console.log ("Chechi discussed",this.state.isMedicationDataAvailable);
-    };
+    //                         currentDate: currentDate
+    //                     });
+    //                 }
+    //             })
+    //             .catch((err) => console.log(err))
+    //     );
+    //     console.log (this.state.isMedicationDataAvailable);
+    // };
 
     saveMedicationDetails() {
       
-        if (!this.state.isMedicationDataAvailable) {
+        // if (!this.state.isMedicationDataAvailable) {
             // Add the saved med level
             let userId = this.state.userDetails.user_id;
             let occuredDate = moment(this.state.currentDate).add(moment().hour(), 'hour').add(moment().minute(), 'minute');
             // Add medication side effects 
             let medicationSideEffects = null ;
-            let medicationTimeTaken = "";
-            let medicationType ="";
-            let medicationQuantity ="";
+            if (this.state.selectedMedicationSideEffects.length > 0)
+            medicationSideEffects = this.state.selectedMedicationSideEffects[0]; 
+   
+            // let medicationTimeTaken = "";
+            // let medicationType ="";
+            // let medicationQuantity ="";
             
             
             // this.state.selectedTags.map(tag => {
@@ -137,15 +140,13 @@ export default class MedicationCard extends React.Component {
             // });
             
             
-            if (this.state.selectedMedicationSideEffects.length > 0)
-                medicationSideEffects = this.state.selectedMedicationSideEffects[0]; 
-       
+           
 
             let medication = { //sending to the database,if pian type value = 0 then don't send it to the database as it means the user didnt select any tags
                 user_id: userId,
-                medication_time_taken:medicationTimeTaken,
-                medication_type:medicationType,
-                medication_quantity:medicationQuantity,
+                medication_time_taken:this.state.medicationTimeTaken,
+                medication_type:this.state.medicationType,
+                medication_quantity:this.state.medicationQuantity,
                 medication_side_effects :medicationSideEffects, 
                 occured_date: localToUtcDateTime(occuredDate),
                 
@@ -169,11 +170,11 @@ export default class MedicationCard extends React.Component {
                         return response.json();
                     })
             );
-        }
-        else {
+        // }
+        // else {
            
-            alert("Update not implemented yet.");
-        }
+        //     alert("Update not implemented yet.");
+        // }
     }
 
     componentDidMount() //after Ui has been uploaded 
@@ -184,7 +185,7 @@ export default class MedicationCard extends React.Component {
             this.setState({
                 userDetails: JSON.parse(data),
             });
-            this.getUserMedication();
+            //this.getUserMedication();
             this.getMedicationSideEffects(); 
             
             
@@ -194,15 +195,19 @@ export default class MedicationCard extends React.Component {
 
 
     render() {
-
         
         
-        let medicationSideEffects = this.state.medicationSideEffects || [] ; // get all the possible value from the list item , if not then empty array .
-        let selectedMedicationSideEffects = [];
+        
+        let  medicationSideEffects = this.state.medicationSideEffects || [] ; // get all the possible value from the list item , if not then empty array .
+        let  medicationType = this.state.medicationType || "";
+        let  medicationQuantity = this.state.medicationQuantity || "";
+        let  medicationTimeTaken= this.state.medicationTimeTaken ||"";
+       
+        // let selectedMedicationSideEffects = [];
       
-        if (this.state.medicationDetails && this.state.medicationDetails.medication&&this.state.medicationDetails.medication.medication_side_effects) {
-            selectedMedicationSideEffects = mapListItemsToTags([{list_item_id: this.state.medicationDetails.medication.medication_side_effects,list_item_name:"Headache"}]);
-        }
+        // if (this.state.medicationDetails && this.state.medicationDetails.medication&&this.state.medicationDetails.medication.medication_side_effects) {
+        //     selectedMedicationSideEffects = mapListItemsToTags([{list_item_id: this.state.medicationDetails.medication.medication_side_effects,list_item_name:"Headache"}]);
+        // }
 
         return (
             <Layout style={TrackingStyles.container}>
@@ -237,7 +242,7 @@ export default class MedicationCard extends React.Component {
                             placeholder='E.g Panadol'
                             placeholderTextColor='#8A8A8E'
                             color='#8A8A8E'
-                            //value={value}
+                            value={medicationType}
                             onChangeText={
                                 // Set this.state.email to the value in this Input box
                                 (value) => this.setState({ medicationType: value })
@@ -250,7 +255,7 @@ export default class MedicationCard extends React.Component {
                             style={{ backgroundColor: '#FBFBFB', top: hp('10') }}
                             placeholder='9:00 am'
                             placeholderTextColor='#8A8A8E'
-                            //value={value}
+                            value={medicationTimeTaken}
                             color='#8A8A8E'
                             onChangeText={
                                 // Set this.state.email to the value in this Input box
@@ -263,7 +268,7 @@ export default class MedicationCard extends React.Component {
                             style={{ backgroundColor: '#FBFBFB', top: hp('14') }}
                             placeholder='2 tablets'
                             placeholderTextColor='#8A8A8E'
-                            //value={value}
+                            value={medicationQuantity}
                             color='#8A8A8E'
                             onChangeText={
                                 // Set this.state.email to the value in this Input box

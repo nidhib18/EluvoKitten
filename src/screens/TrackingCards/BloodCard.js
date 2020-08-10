@@ -16,20 +16,7 @@ import { initBloodDetails } from '../../models/BloodDetails';
 const { width } = Dimensions.get('window');
 
 export default class BloodCard extends React.Component {
-    bloodTags = [
-        {
-            id: 'Pad',
-            name: 'Pad'
-        },
-        {
-            id: 'Tampon',
-            name: 'Tampon'
-        },
-        {
-            id: 'MoonCup',
-            name: 'Moon Cup'
-        }
-    ]
+   
     constructor(props) {
         super(props);
         this.state = { bloodVisible: false };
@@ -42,7 +29,7 @@ export default class BloodCard extends React.Component {
             periodProducts: [], // moodDescriptions:[],
             userDetails: {},
             bloodDetails: initBloodDetails(0, moment().format('YYYY-MM-DD')),
-            isBloodDataAvailable: false,
+           // isBloodDataAvailable: false,
             currentDate: moment().format('YYYY-MM-DD')// / this.props.route.params.CurrentDate    
         };
         this.saveBloodDetails = this.saveBloodDetails.bind(this);
@@ -71,53 +58,53 @@ export default class BloodCard extends React.Component {
         );
     };
 
-    getUserBlood = (route) => {
-        let userId = this.state.userDetails.user_id;
-        let currentDate = this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD');
-        let url = constants.USERBLOOD_DEV_URL.replace("[userId]", userId).replace(
-            "[occurredDate]",
-            localToUtcDateTime(currentDate)
-        );
+    // getUserBlood = (route) => {
+    //     let userId = this.state.userDetails.user_id;
+    //     let currentDate = this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD');
+    //     let url = constants.USERBLOOD_DEV_URL.replace("[userId]", userId).replace(
+    //         "[occurredDate]",
+    //         localToUtcDateTime(currentDate)
+    //     );
 
-        getData(constants.JWTKEY).then((jwt) =>
-            fetch(url, {
-                //calling API
-                method: "GET",
-                headers: {
-                    Authorization: "Bearer " + jwt, //Passing this will authorize the user
-                },
-            })
-                .then((response) => response.json())
-                .then((responseData) => {
-                    // If responseData is not empty, then isPainDataAvailable = true
-                    //("MOOD CARD Get User Mood Response", responseData);
-                    if (Object.keys(responseData).length) {
-                        console.log ("*YES data*",responseData);
-                        this.setState({
-                            isBloodDataAvailable: true,
-                            bloodDetails: responseData,
-                            bloodValue: responseData.blood.bleeding_level,
-                            currentDate: currentDate
-                        });
-                    }
-                    else {
-                        console.log ("*No data*");
-                        this.setState({
-                            isBloodDataAvailable: false,
-                            bloodDetails: initBloodDetails(userId, currentDate),
-                            bloodValue: 0,
-                            currentDate: currentDate
-                        });
-                    }
-                })
-                .catch((err) => console.log(err))
-        );
-        console.log ("Chechi discussed",this.state.isBloodDataAvailable);
-    };
+    //     getData(constants.JWTKEY).then((jwt) =>
+    //         fetch(url, {
+    //             //calling API
+    //             method: "GET",
+    //             headers: {
+    //                 Authorization: "Bearer " + jwt, //Passing this will authorize the user
+    //             },
+    //         })
+    //             .then((response) => response.json())
+    //             .then((responseData) => {
+    //                 // If responseData is not empty, then isPainDataAvailable = true
+    //                 //("MOOD CARD Get User Mood Response", responseData);
+    //                 if (Object.keys(responseData).length) {
+    //                     console.log ("*YES data*",responseData);
+    //                     this.setState({
+    //                         isBloodDataAvailable: true,
+    //                         bloodDetails: responseData,
+    //                         bloodValue: responseData.blood.bleeding_level,
+    //                         currentDate: currentDate
+    //                     });
+    //                 }
+    //                 else {
+    //                     console.log ("*No data*");
+    //                     this.setState({
+    //                         isBloodDataAvailable: false,
+    //                         bloodDetails: initBloodDetails(userId, currentDate),
+    //                         bloodValue: 0,
+    //                         currentDate: currentDate
+    //                     });
+    //                 }
+    //             })
+    //             .catch((err) => console.log(err))
+    //     );
+    //     console.log ("Chechi discussed",this.state.isBloodDataAvailable);
+    // };
     saveBloodDetails() {
 
-        if (!this.state.isBloodDataAvailable) {
-            // Add the saved mood level
+        // if (!this.state.isBloodDataAvailable) {
+        //     // Add the saved mood level
             let userId = this.state.userDetails.user_id;
             let occurredDate = moment(this.state.currentDate).add(moment().hour(), 'hour').add(moment().minute(), 'minute');
             // Add pain locations
@@ -160,11 +147,11 @@ export default class BloodCard extends React.Component {
                         return response.json();
                     })
             );
-        }
-        else {
+        // }
+        // else {
 
-            alert("Update not implemented yet.");
-        }
+        //     alert("Update not implemented yet.");
+        // }
     }
     componentDidMount() //after Ui has been uploaded 
     {
@@ -174,23 +161,23 @@ export default class BloodCard extends React.Component {
             this.setState({
                 userDetails: JSON.parse(data),
             });
-            this.getUserBlood();
+            //this.getUserBlood();
             this.getPeriodProducts();
         });
     }
 
     render() {
-        let bloodLevel = this.state.bloodDetails && this.state.bloodDetails.blood && this.state.bloodDetails.blood.bleeding_level || 0;
+        let bloodLevel =  0;
 
 
         let periodProducts = this.state.periodProducts || []; // get all the possible value from the list item , if not then empty array .
-        let selectedPeriodProduct = [];
+        // let selectedPeriodProduct = [];
 
-        if (this.state.bloodDetails && this.state.bloodDetails.blood && this.state.bloodDetails.blood.period_product) {
-            selectedPeriodProduct = mapListItemsToTags([{ list_item_id: this.state.bloodDetails.blood.period_product, list_item_name: "Pad" }]);
+        // if (this.state.bloodDetails && this.state.bloodDetails.blood && this.state.bloodDetails.blood.period_product) {
+        //     selectedPeriodProduct = mapListItemsToTags([{ list_item_id: this.state.bloodDetails.blood.period_product, list_item_name: "Pad" }]);
 
 
-        }
+        // }
 
         return (
             <Layout style={TrackingStyles.container}>
@@ -224,7 +211,7 @@ export default class BloodCard extends React.Component {
                             step={1}
                             minimumValue={this.state.minValue}
                             maximumValue={this.state.maxValue}
-                            value={this.state.value}
+                            value={bloodLevel}
                             onValueChange={val => this.setState({ bloodValue: val })}
                             maximumTrackTintColor='#d3d3d3'
                             minimumTrackTintColor='#f09874'
