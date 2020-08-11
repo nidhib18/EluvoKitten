@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   KeyboardAvoidingView,
+  TouchableOpacity,
   ScrollView,
   Dimensions,
   Modal,
@@ -24,6 +25,7 @@ import {
   Datepicker,
   Button,
 } from "@ui-kitten/components";
+
 
 import { ImageStyles } from "./ImageStyles";
 import { SignUpStyles } from "./SignUpStyles";
@@ -50,6 +52,7 @@ export default class SignUpScreen extends Component {
       confirmationCode: "",
       secureTextEntry: false,
       modalVisible: false,
+      
       birthdate: new Date(),
 
       minDate: new Date(1960, 0, 1),
@@ -63,9 +66,9 @@ export default class SignUpScreen extends Component {
     let today = new Date();
     let birthDate = new Date(newDate);
     if (today.getFullYear() - birthDate.getFullYear() < 12) {
-      alert(
+      (
         "Eluvo is intended for users aged 12 and over. We recommend parental guidance for users under the age of 12."
-      );
+      );alert
     }
 
     this.setState({ birthdate: birthDate });
@@ -121,7 +124,7 @@ export default class SignUpScreen extends Component {
       alert("Password length is too short");
     }
   };
-
+  
   handleConfirmationCode = () => {
     const { username, confirmationCode } = this.state;
     Auth.confirmSignUp(username, confirmationCode, {})
@@ -129,12 +132,14 @@ export default class SignUpScreen extends Component {
       .then((user) => {
         this.setState({ modalVisible: false });
         saveUserDetails(username);
-        this.props.navigation.navigate("Home");
+        this.props.navigation.navigate("Home") 
+       
       })
 
       .catch((err) => console.log(err));
   };
-
+ 
+  
   render() {
     return (
       <ScrollView

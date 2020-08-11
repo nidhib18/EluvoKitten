@@ -19,22 +19,24 @@ import {
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import CalendarStrip from "react-native-calendar-strip";
 import moment from "moment";
-//import { Value } from 'react-native-reanimated';
 import { HomeStyles } from "./HomeStyles";
-// import { CardList } from 'react-native-card-list';
-//import { ScrollView } from 'react-native-gesture-handler';
 import { storeData, getData } from "../helpers/StorageHelpers";
 import { constants } from "../resources/Constants";
 import { utcToLocal, localToUtcDate, localToUtcDateTime } from "../helpers/DateHelpers";
 import { FlatList } from "react-native-gesture-handler";
 import { initMoodDetails } from "../models/MoodDetails";
+import { Root, Popup } from 'popup-ui'
 
 
-//import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
 var painSymptoms= [];
 var moodSymptoms= [];
 var bloodSymptoms=[]; 
 var medicationSymptoms = [];
+var dietSymptoms = [];
+var digestionSymptoms =[];
+var exerciseSymptoms = [];
+var sexSymptoms =[];
+
 const { Width } = Dimensions.get("window");
 let datesWhitelist = [
   {
@@ -61,17 +63,26 @@ export default class Home extends React.Component {
       moodDetails: [{}],
       medicationDetails:[{}], 
       bloodDetails:[{}],
+      dietDetails:[{}],
+      digestionDetails:[{}],
+      exerciseDetails:[{}],
+      sexDetails:[{}],
+      // If any data is available, then we need to display the card
       isAnyDataAvailable: false,
+      // The symptom data/ cards to be populated only after all symptom data has been loaded
       isAllDataLoaded: false
     };
-    this.setDate = this.setDate.bind(this);
-    this.getUserPain = this.getUserPain.bind(this);
+    this.setDate= this.setDate.bind(this);
+    this.getUserSymptoms= this.getUserSymptoms.bind(this);
 
     this.loadPainSymptomData = this.loadPainSymptomData.bind(this);
     this.loadMoodSymptomData = this.loadMoodSymptomData.bind(this);
     this.loadMedicationData = this.loadMedicationData.bind(this);
     this.loadBloodSymptomData=this.loadBloodSymptomData.bind(this);
-
+    this.loadDietData = this.loadDietData.bind(this);
+    this.loadDigestionData = this.loadDigestionData.bind(this);
+    this.loadExerciseData = this.loadExerciseData.bind(this);
+    this.loadSexData = this.loadSexData.bind(this);
     this.resetState = this.resetState.bind(this);
    
   }
@@ -121,90 +132,20 @@ export default class Home extends React.Component {
   setDate(newDate) 
   {
     this.resetState();
-    // CalendarStrip converts the selected date to UTC format for e.g. 2020-06-15T12:00:00Z
     console.log("SELECTED DATE", newDate);
-    console.log(localToUtcDateTime(newDate));
-    let userId = this.state.userDetails.user_id;
-    let url = constants.USERPAIN_DEV_URL.replace("[userId]", userId).replace( 
-      "[occurredDate]",
-      localToUtcDateTime(newDate)
-    );
-    console.log("Url is", url);
-    var isAnyDataAvailable = false;
-    var painDetails = [];
-    var moodDetails = [];
-    var bloodDetails =[];
-    var medicationDetails = [];
-
-    getData(constants.JWTKEY).then((jwt) =>
-      fetch(url, {
-        //calling API
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + jwt, //Passing this will authorize the user
-        },
-        })
-        .then((response) => response.json())
-        .then((responseData) => {
-          console.log("Completed API call");
-          if (Object.keys(responseData.painRecords).length) 
-          {
-            isAnyDataAvailable = true;
-            painDetails = responseData.painRecords;
-          } 
-          else {
-            painDetails = [{ locations: []}];
-          }
-
-          if (Object.keys(responseData.moodRecords).length) 
-          {
-            isAnyDataAvailable = true;
-            moodDetails = responseData.moodRecords;
-          } 
-          else 
-          {
-            moodDetails = [];
-          }
-
-          if (Object.keys(responseData.medicationRecords).length) {
-            isAnyDataAvailable = true;
-            medicationDetails = responseData.medicationRecords;
-            } 
-            else 
-            {
-              medicationDetails = [];
-            }
-          if (Object.keys(responseData.bloodRecords).length) 
-            {
-              isAnyDataAvailable = true;
-              bloodDetails = responseData.bloodRecords;
-            } 
-          else 
-          {
-              bloodDetails = [];
-          }
-
-          this.setState({
-            isAnyDataAvailable: isAnyDataAvailable,
-            painDetails: painDetails,
-            moodDetails: moodDetails,
-            medicationDetails: medicationDetails,
-            bloodDetails:bloodDetails
-          });
-
-          if (painDetails.length) this.loadPainSymptomData();
-          if (moodDetails.length) this.loadMoodSymptomData();
-          if (medicationDetails.length) this.loadMedicationData();
-          if  (bloodDetails.length)this.loadBloodSymptomData();
-          this.setState({
-            isAllDataLoaded: true,
-            currentDate: (newDate)
-          });
-        })
-        .catch((err) => console.log(err))
-    );
+    this.setState({
+      currentDate: newDate
+    }, () => this.getUserSymptoms());
   }
+  popUp = () => 
+  {
+    
+    
+         alert(
+        "Hello");
+    
 
+  }
   resetState()
   {
     this.setState({
@@ -212,9 +153,22 @@ export default class Home extends React.Component {
         moodDetails: [{}],
         medicationDetails:[{}], 
         bloodDetails:[{}],
+        dietDetails:[{}],
+        digestionDetails:[{}],
+        exerciseDetails:[{}],
+        sexDetails:[{}],
+
         isAnyDataAvailable: false,
         isAllDataLoaded: false
       });
+      painSymptoms= [];
+      moodSymptoms= [];
+      bloodSymptoms=[]; 
+      medicationSymptoms = [];
+      dietSymptoms = [];
+      digestionSymptoms =[];
+      exerciseSymptoms = [];
+      sexSymptoms =[];  
   }
 
   loadPainSymptomData() {
@@ -259,8 +213,8 @@ export default class Home extends React.Component {
         };
         moodSymptoms.push(symptom);
         id = id + 1;
-    });
-    console.log("Completed loading mood symptom data");
+      });
+      console.log("Completed loading mood symptom data");
     }
 
     loadMedicationData () 
@@ -272,9 +226,9 @@ export default class Home extends React.Component {
             var symptom =  {
                 id: id,
                 name: 'Medication',
-                logTime:moment(medicationData.medication.occured_date).format("hh:mm A"),
-                tags:medicationData.medication.medication_side_effects,
-                tagText:'Side Effect:',
+                logTime: moment(medicationData.medication.occured_date).format("hh:mm A"),
+                tags: medicationData.medication.medication_side_effects,
+                tagText: 'Side Effect:',
                 medicationTypeText: 'Medication Type:',
 	              medicationType:medicationData.medication.medication_type,
 	              medicationTimeText: 'Time Taken:',
@@ -313,30 +267,214 @@ export default class Home extends React.Component {
     console.log("Completed loading blood symptom data");
     }
 
+    loadDietData()
+    {
+      var id = 0;
+      dietSymptoms = [];
+      console.log("Loading Diet Data...");
+      this.state.dietDetails.forEach((dietData, index) => {
+        var symptom =  {
+            id: id,
+            name: 'Diet',
+            level: dietData.diet.diet_level,
+            levelText: 'Diet level:',
+            logTime: moment(dietData.diet.occurred_date).format("hh:mm A"),
+            tags: dietData.diet.food_type_name,
+            available: true,
+            tagText: 'Food:',
+            image: require("../../assets/dietia.png")
+          };
+          dietSymptoms.push(symptom);
+          id = id + 1;
+    });
+    console.log("Completed loading diet symptom data");
+    }
 
-  getUserPain() {
- 
+    loadExerciseData()
+    {
+      var id = 0;
+      exerciseSymptoms = [];
+      console.log("Loading Exercise Data...");
+      this.state.exerciseDetails.forEach((exerciseData, index) => {
+        var symptom =  {
+            id: id,
+            name: 'Exercise',
+            level: exerciseData.exercise.exercise_level,
+            levelText: 'Exercise level:',
+            logTime: moment( exerciseData.exercise.occurred_date).format("hh:mm A"),
+            tags:exerciseData.exercise.exercise_type_name,
+            available: true,
+            tagText: 'Exercise type:',
+            image: require("../../assets/exerciseia.png")
+          };
+          exerciseSymptoms.push(symptom);
+          id = id + 1;
+      });
+      console.log("Completed loading exercise symptom data");
+    }
+
+    loadDigestionData()
+    {
+      var id = 0;
+      digestionSymptoms = [];
+      console.log("Loading Digestion Data...");
+      this.state.digestionDetails.forEach((digestionData, index) => {
+        var symptom =  {
+            id: id,
+            name: 'Digestion',
+            level: digestionData.digestion.digestion_level,
+            levelText: 'Digestion level:',
+            logTime: moment( digestionData.digestion.occurred_date).format("hh:mm A"),
+            tags: digestionData.digestion.bowel_symptom_name,
+            available: true,
+            tagText: 'Bowel symptom:',
+            image: require("../../assets/digestionia.png")
+          };
+          digestionSymptoms.push(symptom);
+          id = id + 1;
+    });
+    console.log("Completed loading digestion symptom data");
+    }
+
+    loadSexData()
+    {
+      var id = 0;
+      sexSymptoms = [];
+      console.log("Loading Sex Data...");
+      this.state.sexDetails.forEach((sexData, index) => {
+        var symptom =  {
+            id: id,
+            name: 'Sex',
+            level: sexData.sex.sex_level,
+            levelText: 'Sex level:',
+            logTime: moment( sexData.sex.occurred_date).format("hh:mm A"),
+            tags:sexData.sex.sexual_activity_name,
+            available: true,
+            tagText: 'Sexual activity:',
+            image: require("../../assets/sexia.png")
+          };
+          sexSymptoms.push(symptom);
+          id = id + 1;
+    });
+    console.log("Completed loading sex symptom data");
+    }
+
+
+  getUserSymptoms() {
+    let userId = this.state.userDetails.user_id;
+    console.log("Get user symptoms from state", this.state.currentDate);
+    console.log("Date sent to API", localToUtcDateTime(this.state.currentDate));
+    let url = constants.USERPAIN_DEV_URL.replace("[userId]", userId).replace( 
+      "[occurredDate]",
+      localToUtcDateTime(this.state.currentDate)
+    );
+    console.log("Url is", url);
+    var isAnyDataAvailable = false;
+    var painDetails = [{ locations: []}];
+    var moodDetails = [];
+    var bloodDetails =[];
+    var dietDetails = [];
+    var digestionDetails=[];
+    var exerciseDetails =[];
+    var sexDetails = [];
+    var medicationDetails = [];
+
+    getData(constants.JWTKEY).then((jwt) =>
+      fetch(url, {
+        //calling API
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + jwt, //Passing this will authorize the user
+        },
+        })
+        .then((response) => response.json())
+        .then((responseData) => {
+          console.log("Completed API call");
+          if (Object.keys(responseData.painRecords).length) 
+          {
+            isAnyDataAvailable = true;
+            painDetails = responseData.painRecords;
+          } 
+          if (Object.keys(responseData.moodRecords).length) 
+          {
+            isAnyDataAvailable = true;
+            moodDetails = responseData.moodRecords;
+          } 
+          if (Object.keys(responseData.medicationRecords).length) {
+            isAnyDataAvailable = true;
+            medicationDetails = responseData.medicationRecords;
+          } 
+          if (Object.keys(responseData.bloodRecords).length) {
+            isAnyDataAvailable = true;
+            bloodDetails = responseData.bloodRecords;
+          } 
+          if (Object.keys(responseData.dietRecords).length) 
+          {
+            isAnyDataAvailable = true;
+            dietDetails = responseData.dietRecords;
+          } 
+          if (Object.keys(responseData.digestionRecords).length) 
+          {
+            isAnyDataAvailable = true;
+            digestionDetails = responseData.digestionRecords;
+          } 
+          if (Object.keys(responseData.exerciseRecords).length) 
+          {
+            isAnyDataAvailable = true;
+            exerciseDetails = responseData.exerciseRecords;
+          } 
+          if (Object.keys(responseData.sexRecords).length) 
+          {
+            isAnyDataAvailable = true;
+            sexDetails = responseData.sexRecords;
+          } 
+
+          this.setState({
+            isAnyDataAvailable: isAnyDataAvailable,
+            painDetails: painDetails,
+            moodDetails: moodDetails,
+            medicationDetails: medicationDetails,
+            bloodDetails: bloodDetails,
+            dietDetails: dietDetails,
+            digestionDetails: digestionDetails,
+            exerciseDetails: exerciseDetails,
+            sexDetails: sexDetails            
+          });
+
+          if (painDetails.length) this.loadPainSymptomData();
+          if (moodDetails.length) this.loadMoodSymptomData();
+          if (medicationDetails.length) this.loadMedicationData();
+          if (bloodDetails.length) this.loadBloodSymptomData();
+          if (dietDetails.length) this.loadDietData();
+          if (digestionDetails.length) this.loadDigestionData();
+          if (exerciseDetails.length) this.loadExerciseData();
+          if (sexDetails.length) this.loadSexData();
+
+          this.setState({
+            isAllDataLoaded: true,
+          });
+        })
+        .catch((err) => console.log(err))
+    );
   }
   
-  componentWillMount() {
+  componentDidMount() {
     getData(constants.USERDETAILS).then((data) => {
       // Read back the user details from storage and convert to object
       this.state.userDetails = JSON.parse(data);
       this.setState({
         userDetails: JSON.parse(data),
       });
-      //this.getUserPain();
+      this.getUserSymptoms();
   })
 }
 
   render() {
-    //var isAnyDataAvailable = this.state.isMoodDataAvailable || this.state.isPainDataAvailable || this.state.isBloodDataAvailable || this.state.isDigestionDataAvailable || this.state.isExerciseDataAvailable || this.state.isSexDataAvailable || this.state.isDietDataAvailable|| this.state.isMedicationDataAvailable;
-    //var isAllDataLoaded = this.state.isMoodDataLoaded && this.state.isPainDataLoaded && this.state.isMedicationDataLoaded;
     console.log("RENDER ALL DATA LOADED?", this.state.isAllDataLoaded);
     console.log("RENDER PAIN SMPTOMS", painSymptoms);
     console.log("RENDER MOOD SMPTOMS", moodSymptoms);
     console.log("RENDER MEDS SMPTOMS", medicationSymptoms);
-    console.log("RENDER MEDS SMPTOMS", bloodSymptoms);
+    console.log("RENDER Blood SMPTOMS", bloodSymptoms);
     return (
       <Layout style={styles.container}>
         <TopNavigation position="absolute" />
@@ -418,7 +556,7 @@ export default class Home extends React.Component {
               }}>
 
                 <Card style={styles.cardContainer}>
-                  {true ?  
+                  {this.state.isAllDataLoaded || true?  
                     (
                         <>
                         <Text style={styles.cardText}>Today you experienced...</Text>
@@ -448,9 +586,33 @@ export default class Home extends React.Component {
                             renderItem={this.renderItem}
                             keyExtractor={extractKey}
                         />    
+                        <FlatList
+                            style={{ width: 400, top: 25, left: -37 }}
+                            data={dietSymptoms}
+                            renderItem={this.renderItem}
+                            keyExtractor={extractKey}
+                        />    
+                        <FlatList
+                            style={{ width: 400, top: 25, left: -37 }}
+                            data={digestionSymptoms}
+                            renderItem={this.renderItem}
+                            keyExtractor={extractKey}
+                        />   
+                         <FlatList
+                            style={{ width: 400, top: 25, left: -37 }}
+                            data={exerciseSymptoms}
+                            renderItem={this.renderItem}
+                            keyExtractor={extractKey}
+                        />    
+                        <FlatList
+                            style={{ width: 400, top: 25, left: -37 }}
+                            data={sexSymptoms}
+                            renderItem={this.renderItem}
+                            keyExtractor={extractKey}
+                        />    
                         </>
                     ) : 
-                    (<><Text style={styles.cardText}>Loading...</Text></>)}
+                    (<Text style={styles.cardText}>Loading...</Text>)}
                   
                 </Card>
               </ScrollView>
@@ -505,6 +667,7 @@ export default class Home extends React.Component {
             this.props.navigation.navigate("Track", {
               currentDate: this.state.currentDate,
             })
+            //console.log("On Press", this.state.currentDate)
           }
         >
           <Image

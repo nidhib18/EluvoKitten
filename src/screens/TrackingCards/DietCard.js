@@ -31,8 +31,7 @@ export default class DietCard extends React.Component {
             foodTypes:[],
             userDetails: {},            
             dietDetails: initDietDetails (0,  moment().format('YYYY-MM-DD')) ,
-            isDietDataAvailable: false, 
-            currentDate:moment().format('YYYY-MM-DD')  
+            currentDate: this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD')    
         };
         this.saveDietDetails = this.saveDietDetails.bind(this);
     }
@@ -53,7 +52,7 @@ export default class DietCard extends React.Component {
             })
                 .then((response) => response.json())
                 .then((responseData) => {
-                    let foodTypes = [];//getting all possible paintype tags from the database  //{} is an object [] an array a value
+                    let foodTypes = [];//getting all possible food type tags from the database  //{} is an object [] an array a value
                     foodTypes = mapListItemsToTags(responseData);
                     
                     this.setState({ foodTypes: foodTypes });
@@ -62,65 +61,16 @@ export default class DietCard extends React.Component {
         );
     };
 
-    getUserDiet = (route) => {
-        let userId = this.state.userDetails.user_id;
-        let currentDate = this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD');
-        let url = constants.USERDIET_DEV_URL.replace("[userId]", userId).replace(
-            "[occurredDate]",
-            localToUtcDateTime(currentDate)
-        );
-        console.log ("URL FOR GETMOOD",url);
-        getData(constants.JWTKEY).then((jwt) =>
-            fetch(url, {
-                //calling API
-                method: "GET",
-                headers: {
-                    Authorization: "Bearer " + jwt, //Passing this will authorize the user
-                },
-            })
-                .then((response) => response.json())
-                .then((responseData) => {
-                    // If responseData is not empty, then isPainDataAvailable = true
-                    //("MOOD CARD Get User Mood Response", responseData);
-                    if (Object.keys(responseData).length) {
-                        console.log ("*YES data*",responseData);
-                        this.setState({
-                            isDietDataAvailable: true,
-                            dietDetails: responseData,
-                            dietValue: responseData.diet.diet_level,
-                            currentDate: currentDate
-                        });
-                    }
-                    else {
-                        console.log ("*No data*");
-                        this.setState({
-                            isDietDataAvailable: false,
-                            dietDetails: initDietDetails(userId, currentDate),
-                            dietValue: 0,
-                            currentDate: currentDate
-                        });
-                    }
-                })
-                .catch((err) => console.log(err))
-        );
-        // console.log ("Chechi discussed",this.state.isDietDataAvailable);
-    };
+    
 
     saveDietDetails() {
       
-        if (!this.state.isDietDataAvailable) {
-            // Add the saved mood level
+        // if (!this.state.isDietDataAvailable) {
+        //     // Add the saved mood level
             let userId = this.state.userDetails.user_id;
             let occurredDate = moment(this.state.currentDate).add(moment().hour(), 'hour').add(moment().minute(), 'minute');
             // Add pain locations
             let foodType = null ;
-            
-            
-            // this.state.selectedTags.map(tag => {
-            //     let location = {location_id: tag };
-            //     locations.push(location);
-            // });
-            
             
             if (this.state.selectedFoodType.length > 0)
             foodType = this.state.selectedFoodType[0]; 
@@ -152,11 +102,7 @@ export default class DietCard extends React.Component {
                         return response.json();
                     })
             );
-        }
-        else {
-           
-            alert("Update not implemented yet.");
-        }
+    
     }
 
     componentDidMount() //after Ui has been uploaded 
@@ -167,7 +113,6 @@ export default class DietCard extends React.Component {
             this.setState({
                 userDetails: JSON.parse(data),
             });
-            this.getUserDiet();
             this.getFoodTypes();
             
         });
@@ -176,17 +121,9 @@ export default class DietCard extends React.Component {
     render() {
 
        
-        let dietLevel = this.state.dietDetails && this.state.dietDetails.diet && this.state.dietDetails.diet.diet_level || 0;
-        // console.log("***RENDER MOOD LEVEL***",Level)
-        
-        let foodTypes = this.state.foodTypes || [] ; // get all the possible value from the list item , if not then empty array .
-        let selectedFoodTypes = [];
-      
-        if (this.state.dietDetails && this.state.dietDetails.diet && this.state.dietDetails.diet.food_type) {
-            selectedFoodTypes = mapListItemsToTags([{list_item_id: this.state.dietDetails.diet.food_type,list_item_name:"Sugar"}]);
-          
-
-        }
+        let dietLevel =  0;
+    
+        let foodTypes = this.state.foodTypes || [] ; 
 
         return (
             <Layout style={TrackingStyles.container}>

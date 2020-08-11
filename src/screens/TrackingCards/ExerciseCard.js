@@ -16,42 +16,7 @@ const { width } = Dimensions.get('window');
 
 export default class ExerciseCard extends React.Component {
 
-    exerciseTags = [
-        {
-            id: ' Yoga',
-            name: ' Yoga'
-        },
-        {
-            id: 'Cardio',
-            name: 'Cardio'
-        },
-        {
-            id: 'Walking',
-            name: 'Walking'
-        },
-        {
-            id: 'Biking',
-            name: 'Biking'
-        },
-        {
-            id: 'Swimming',
-            name: 'Swimming'
-        },
-        {
-            id: 'Running',
-            name: 'Running'
-        },
-        {
-            id: 'Standing',
-            name: 'Standing'
-        },
-        {
-            id: 'Weights',
-            name: 'Weights'
-        },
-
-
-    ];
+    
     state = {
         selectedHours: 0,
         //initial Hours
@@ -61,9 +26,6 @@ export default class ExerciseCard extends React.Component {
     constructor(props) {
         super(props);
         this.state = { exerciseVisible: false };
-        // this.state = {
-        //     time: ""
-        // };
         this.state = {
             selectedTags: [],
             exerciseValue: 0,
@@ -73,21 +35,13 @@ export default class ExerciseCard extends React.Component {
             exerciseTypes: [], // moodDescriptions:[],
             userDetails: {},
             exerciseDetails: initExerciseDetails(0, moment().format('YYYY-MM-DD')),
-            isExerciseDataAvailable: false,
-            currentDate: moment().format('YYYY-MM-DD')// / this.props.route.params.CurrentDate    
+           currentDate: this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD')     
         };
         this.saveExerciseDetails = this.saveExerciseDetails.bind(this);
     }
     setExerciseVisible(visible) {
         this.setState({ exerciseVisible: visible });
     }
-    // onCheckedChange = (isChecked) => {
-    //     this.setState({ checked: isChecked });
-    // };
-    // onConfirm(hour, minute) {
-    //     this.setState({ time: `${hour}:${minute}` });
-    //     this.TimePicker.close();
-    // }
     getExerciseTypes() {
         let url = constants.EXERCISETYPE_DEV_URL;
         getData(constants.JWTKEY).then((jwt) =>
@@ -108,75 +62,23 @@ export default class ExerciseCard extends React.Component {
                 .catch((err) => console.log(err))
         );
     };
-    getUserExercise = (route) => {
-        let userId = this.state.userDetails.user_id;
-        let currentDate = this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD');
-        let url = constants.USEREXERCISE_DEV_URL.replace("[userId]", userId).replace(
-            "[occurredDate]",
-            localToUtcDateTime(currentDate)
-        );
-
-        getData(constants.JWTKEY).then((jwt) =>
-            fetch(url, {
-                //calling API
-                method: "GET",
-                headers: {
-                    Authorization: "Bearer " + jwt, //Passing this will authorize the user
-                },
-            })
-                .then((response) => response.json())
-                .then((responseData) => {
-                    // If responseData is not empty, then isPainDataAvailable = true
-                    //("MOOD CARD Get User Mood Response", responseData);
-                    if (Object.keys(responseData).length) {
-
-                        this.setState({
-                            isExerciseDataAvailable: true,
-                            exerciseDetails: responseData,
-                            exerciseValue: responseData.exercise.exercise_level,
-                            currentDate: currentDate
-                        });
-                    }
-                    else {
-                        this.setState({
-                            isExerciseDataAvailable: false,
-                            exerciseDetails: initExerciseDetails(userId, currentDate),
-                            exerciseValue: 0,
-                            currentDate: currentDate
-                        });
-                    }
-                })
-                .catch((err) => console.log(err))
-        );
-    };
+   
     saveExerciseDetails() {
-        console.log("***BLOOD SAVE**", this.state.isExerciseDataAvailable)
-        if (!this.state.isExerciseDataAvailable) {
-            // Add the saved mood level
+    
             let userId = this.state.userDetails.user_id;
             let occurredDate = moment(this.state.currentDate).add(moment().hour(), 'hour').add(moment().minute(), 'minute');
-            // Add pain locations
             let exerciseType = null;
-
-
-            // this.state.selectedTags.map(tag => {
-            //     let location = {location_id: tag };
-            //     locations.push(location);
-            // });
-
-
             if (this.state.selectedExerciseType.length > 0)
                 exerciseType = this.state.selectedExerciseType[0];
 
 
-            let exercise = { //sending to the database,if pain type value = 0 then don't send it to the database as it means the user didnt select any tags
+            let exercise = { //sending to the database,if  value = 0 then don't send it to the database as it means the user didnt select any tags
                 user_id: userId,
                 exercise_level: this.state.exerciseValue,
                 exercise_type: exerciseType,
                 occurred_date: localToUtcDateTime(occurredDate),
 
             };
-            // console.log("OBJECT!!", blood);
 
             let url = constants.ADDUSEREXERCISE_DEV_URL;
 
@@ -197,12 +99,7 @@ export default class ExerciseCard extends React.Component {
                         return response.json();
                     })
             );
-        }
-        else {
-
-            alert("Update not implemented yet.");
-        }
-        // console.log("***ANYTHING available ***", this.state.isBloodDataAvailable);
+        
     }
     componentDidMount() //after Ui has been uploaded 
     {
@@ -212,24 +109,16 @@ export default class ExerciseCard extends React.Component {
             this.setState({
                 userDetails: JSON.parse(data),
             });
-            this.getUserExercise();
+           // this.getUserExercise();
             this.getExerciseTypes();
 
         });
     }
 
     render() {
-        let exerciseLevel = this.state.exerciseDetails && this.state.exerciseDetails.exercise && this.state.exerciseDetails.exercise.exercise_level || 0;
-        // console.log("***RENDER BLOOD LEVEL***", bloodLevel)
-
+        let exerciseLevel =  0;
         let exerciseTypes = this.state.exerciseTypes || []; // get all the possible value from the list item , if not then empty array .
-        let selectedExerciseType = [];
-
-        if (this.state.exerciseDetails && this.state.exerciseDetails.exercise && this.state.exerciseDetails.exercise.exercise_type) {
-            selectedExerciseType = mapListItemsToTags([{ list_item_id: this.state.exerciseDetails.exercise.exercise_type, list_item_name: "Yoga" }]);
-
-
-        }
+       
         const { selectedHours, selectedMinutes } = this.state;
         return (
             <Layout style={TrackingStyles.container}>

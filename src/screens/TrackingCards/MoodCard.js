@@ -27,8 +27,7 @@ export default class MoodCard extends React.Component {
             maxValue: 5,
             userDetails:{}, 
             moodDetails: initMoodDetails(0,  moment().format('YYYY-MM-DD')) ,
-            //isMoodDataAvailable: false,
-            currentDate: moment().format('YYYY-MM-DD')// / this.props.route.params.CurrentDate    
+            currentDate: this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD')     
 
         };
         this.saveMoodDetails = this.saveMoodDetails.bind(this);
@@ -48,7 +47,7 @@ export default class MoodCard extends React.Component {
             })
                 .then((response) => response.json())
                 .then((responseData) => {
-                    let moodDescriptions = [];//getting all possible paintype tags from the database  //{} is an object [] an array a value
+                    let moodDescriptions = [];//getting all possible tags from the database
                     moodDescriptions = mapListItemsToTags(responseData);
                     
                     this.setState({ moodDescriptions: moodDescriptions });
@@ -56,54 +55,9 @@ export default class MoodCard extends React.Component {
                 .catch((err) => console.log(err))
         );
     };
-
-    // getUserMood = (route) => {
-    //     let userId = this.state.userDetails.user_id;
-    //     let currentDate = this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD');
-    //     let url = constants.USERMOOD_DEV_URL.replace("[userId]", userId).replace(
-    //         "[occurredDate]",
-    //         localToUtcDateTime(currentDate)
-    //     );
-    //     console.log ("URL FOR GETMOOD",url);
-    //     getData(constants.JWTKEY).then((jwt) =>
-    //         fetch(url, {
-    //             //calling API
-    //             method: "GET",
-    //             headers: {
-    //                 Authorization: "Bearer " + jwt, //Passing this will authorize the user
-    //             },
-    //         })
-    //             .then((response) => response.json())
-    //             .then((responseData) => {
-    //                 // If responseData is not empty, then isPainDataAvailable = true
-    //                 //("MOOD CARD Get User Mood Response", responseData);
-    //                 if (Object.keys(responseData).length) {
-    //                     console.log ("*YES data*",responseData);
-    //                     this.setState({
-    //                         isMoodDataAvailable: true,
-    //                         moodDetails: responseData,
-    //                         moodValue: responseData.mood.mood_level,
-    //                         currentDate: currentDate
-    //                     });
-    //                 }
-    //                 else {
-    //                     console.log ("*No data*");
-    //                     this.setState({
-    //                         isMoodDataAvailable: false,
-    //                         moodDetails: initMoodDetails(userId, currentDate),
-    //                         moodValue: 0,
-    //                         currentDate: currentDate
-    //                     });
-    //                 }
-    //             })
-    //             .catch((err) => console.log(err))
-    //     );
-    //     console.log ("Chechi discussed",this.state.isMoodDataAvailable);
-    // };
-
     saveMoodDetails() {
       
-        // if (!this.state.isMoodDataAvailable) {
+    
             // Add the saved mood level
             let userId = this.state.userDetails.user_id;
             let occurredDate = moment(this.state.currentDate).add(moment().hour(), 'hour').add(moment().minute(), 'minute');
@@ -114,7 +68,7 @@ export default class MoodCard extends React.Component {
                 moodDescription = this.state.selectedMoodDescription[0]; 
        
 
-            let mood = { //sending to the database,if pian type value = 0 then don't send it to the database as it means the user didnt select any tags
+            let mood = { //sending to the database,if value = 0 then don't send it to the database as it means the user didnt select any tags
                 user_id: userId,
                 mood_level: this.state.moodValue,
                 mood_description :moodDescription, 
@@ -140,11 +94,7 @@ export default class MoodCard extends React.Component {
                         return response.json();
                     })
             );
-        // }
-        // else {
-           
-        //     alert("Update not implemented yet.");
-        // }
+    
     }
 
     componentDidMount() //after Ui has been uploaded 
@@ -155,7 +105,6 @@ export default class MoodCard extends React.Component {
             this.setState({
                 userDetails: JSON.parse(data),
             });
-           //this.getUserMood();
             this.getMoodDescriptions();
             
         });
@@ -165,15 +114,8 @@ export default class MoodCard extends React.Component {
 
     render() {
         let moodLevel =  0;
-        //this.state.moodDetails && this.state.moodDetails.mood && this.state.moodDetails.mood.mood_level ||
-        console.log("***RENDER MOOD LEVEL***",moodLevel)
-        
         let moodDescriptions = this.state.moodDescriptions || [] ; // get all the possible value from the list item , if not then empty array .
-        // let selectedMoodDescriptions = [];
-      
-        // if (this.state.moodDetails && this.state.moodDetails.mood && this.state.moodDetails.mood.mood_description) {
-        //     selectedMoodDescriptions = mapListItemsToTags([{list_item_id: this.state.moodDetails.mood.mood_description,list_item_name:"Depressed"}]);
-        // }
+    
         return (
             <Layout style={TrackingStyles.container}>
                 <TouchableOpacity onPress={() => { this.setMoodVisible(true); }}>

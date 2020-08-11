@@ -25,7 +25,7 @@ import {
 } from "react-native";
 import { saveUserDetails } from "../helpers/AuthHelpers";
 import { constants } from "../resources/Constants";
-
+import { popUp } from "./Home"
 
 export default class LoginScreen extends Component {
   constructor(props) {
@@ -33,6 +33,8 @@ export default class LoginScreen extends Component {
     this.state = {
       username: "",
       password: "",
+     //popUp:false,
+
     };
   }
 
@@ -45,6 +47,7 @@ export default class LoginScreen extends Component {
       .then((user) => {
         saveUserDetails(username);
         this.props.navigation.navigate("Home");
+        popUp();
       })
 
       // On failure, display error in console
