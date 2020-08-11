@@ -66,9 +66,9 @@ export default class SignUpScreen extends Component {
     let today = new Date();
     let birthDate = new Date(newDate);
     if (today.getFullYear() - birthDate.getFullYear() < 12) {
-      (
+      alert(
         "Eluvo is intended for users aged 12 and over. We recommend parental guidance for users under the age of 12."
-      );alert
+      );
     }
 
     this.setState({ birthdate: birthDate });
@@ -131,9 +131,7 @@ export default class SignUpScreen extends Component {
 
       .then((user) => {
         this.setState({ modalVisible: false });
-        saveUserDetails(username);
-        this.props.navigation.navigate("Home") 
-       
+        saveUserDetails(username, this.props.navigation);
       })
 
       .catch((err) => console.log(err));

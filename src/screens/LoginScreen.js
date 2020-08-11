@@ -45,8 +45,8 @@ export default class LoginScreen extends Component {
 
       // If we are successful, navigate to Home screen
       .then((user) => {
-        saveUserDetails(username);
-        this.props.navigation.navigate("Home");
+        // We need to pass this.props.navigation, so that navigation happens only after user details has completed saving
+        saveUserDetails(username, this.props.navigation);
         popUp();
       })
 

@@ -58,15 +58,8 @@ export default class Home extends React.Component {
       imageVisibility: true,
       backgroundImagePath: require("../../assets/girl.png"),
       userDetails: {},
-      currentDate: moment().format("YYYY-MM-DD"),
-      painDetails: [{ locations: [] }],
-      moodDetails: [{}],
-      medicationDetails:[{}], 
-      bloodDetails:[{}],
-      dietDetails:[{}],
-      digestionDetails:[{}],
-      exerciseDetails:[{}],
-      sexDetails:[{}],
+      currentDate: this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD'),
+
       // If any data is available, then we need to display the card
       isAnyDataAvailable: false,
       // The symptom data/ cards to be populated only after all symptom data has been loaded
@@ -149,15 +142,6 @@ export default class Home extends React.Component {
   resetState()
   {
     this.setState({
-        painDetails: [{ locations: [] }],
-        moodDetails: [{}],
-        medicationDetails:[{}], 
-        bloodDetails:[{}],
-        dietDetails:[{}],
-        digestionDetails:[{}],
-        exerciseDetails:[{}],
-        sexDetails:[{}],
-
         isAnyDataAvailable: false,
         isAllDataLoaded: false
       });
@@ -171,11 +155,11 @@ export default class Home extends React.Component {
       sexSymptoms =[];  
   }
 
-  loadPainSymptomData() {
+  loadPainSymptomData(painDetails) {
     console.log("Loading Pain Data...");
     var id = 0;
     painSymptoms = [];
-    this.state.painDetails.forEach((painData, index) => {
+    painDetails.forEach((painData, index) => {
       var symptom =  {
                 id: id,
                 name: 'Pain',
@@ -194,12 +178,12 @@ export default class Home extends React.Component {
     console.log("Completed loading pain symptom data");
   }
 
-  loadMoodSymptomData()
+  loadMoodSymptomData(moodDetails)
   {
     var id = 0;
     moodSymptoms = [];
     console.log("Loading Mood Data...");
-    this.state.moodDetails.forEach((moodData, index) => {
+    moodDetails.forEach((moodData, index) => {
       var symptom =  {
           id: id,
           name: 'Mood',
@@ -217,16 +201,16 @@ export default class Home extends React.Component {
       console.log("Completed loading mood symptom data");
     }
 
-    loadMedicationData () 
+    loadMedicationData(medicationDetails) 
     {
         var id = 0;
         medicationSymptoms = [];
         console.log("Loading Meds Data...");
-        this.state.medicationDetails.forEach((medicationData, index) => {
+        medicationDetails.forEach((medicationData, index) => {
             var symptom =  {
                 id: id,
                 name: 'Medication',
-                logTime: moment(medicationData.medication.occured_date).format("hh:mm A"),
+                logTime: moment(medicationData.medication.occurred_date).format("hh:mm A"),
                 tags: medicationData.medication.medication_side_effects,
                 tagText: 'Side Effect:',
                 medicationTypeText: 'Medication Type:',
@@ -235,7 +219,7 @@ export default class Home extends React.Component {
 	              medicationTime: medicationData.medication.medication_time_taken,
 	              levelText: 'Quantity:',
                 level: medicationData.medication.medication_quantity,
-                image: require("../../assets/medication.png"),
+                image: require("../../assets/medicationia.png"),
                 available: true
                 
                 };
@@ -244,12 +228,12 @@ export default class Home extends React.Component {
         });
         console.log("Completed loading meds symptom data");
     }
-    loadBloodSymptomData()
+    loadBloodSymptomData(bloodDetails)
     {
       var id = 0;
       bloodSymptoms = [];
       console.log("Loading Blood Data...");
-      this.state.bloodDetails.forEach((bloodData, index) => {
+      bloodDetails.forEach((bloodData, index) => {
         var symptom =  {
             id: id,
             name: 'Blood',
@@ -267,12 +251,12 @@ export default class Home extends React.Component {
     console.log("Completed loading blood symptom data");
     }
 
-    loadDietData()
+    loadDietData(dietDetails)
     {
       var id = 0;
       dietSymptoms = [];
       console.log("Loading Diet Data...");
-      this.state.dietDetails.forEach((dietData, index) => {
+      dietDetails.forEach((dietData, index) => {
         var symptom =  {
             id: id,
             name: 'Diet',
@@ -290,12 +274,12 @@ export default class Home extends React.Component {
     console.log("Completed loading diet symptom data");
     }
 
-    loadExerciseData()
+    loadExerciseData(exerciseDetails)
     {
       var id = 0;
       exerciseSymptoms = [];
       console.log("Loading Exercise Data...");
-      this.state.exerciseDetails.forEach((exerciseData, index) => {
+      exerciseDetails.forEach((exerciseData, index) => {
         var symptom =  {
             id: id,
             name: 'Exercise',
@@ -313,12 +297,12 @@ export default class Home extends React.Component {
       console.log("Completed loading exercise symptom data");
     }
 
-    loadDigestionData()
+    loadDigestionData(digestionDetails)
     {
       var id = 0;
       digestionSymptoms = [];
       console.log("Loading Digestion Data...");
-      this.state.digestionDetails.forEach((digestionData, index) => {
+      digestionDetails.forEach((digestionData, index) => {
         var symptom =  {
             id: id,
             name: 'Digestion',
@@ -336,12 +320,12 @@ export default class Home extends React.Component {
     console.log("Completed loading digestion symptom data");
     }
 
-    loadSexData()
+    loadSexData(sexDetails)
     {
       var id = 0;
       sexSymptoms = [];
       console.log("Loading Sex Data...");
-      this.state.sexDetails.forEach((sexData, index) => {
+      sexDetails.forEach((sexData, index) => {
         var symptom =  {
             id: id,
             name: 'Sex',
@@ -362,15 +346,13 @@ export default class Home extends React.Component {
 
   getUserSymptoms() {
     let userId = this.state.userDetails.user_id;
-    console.log("Get user symptoms from state", this.state.currentDate);
-    console.log("Date sent to API", localToUtcDateTime(this.state.currentDate));
     let url = constants.USERPAIN_DEV_URL.replace("[userId]", userId).replace( 
       "[occurredDate]",
       localToUtcDateTime(this.state.currentDate)
     );
     console.log("Url is", url);
     var isAnyDataAvailable = false;
-    var painDetails = [{ locations: []}];
+    var painDetails = [];
     var moodDetails = [];
     var bloodDetails =[];
     var dietDetails = [];
@@ -429,28 +411,29 @@ export default class Home extends React.Component {
             sexDetails = responseData.sexRecords;
           } 
 
+          // this.setState({
+          //   isAnyDataAvailable: isAnyDataAvailable,
+          //   painDetails: painDetails,
+          //   moodDetails: moodDetails,
+          //   medicationDetails: medicationDetails,
+          //   bloodDetails: bloodDetails,
+          //   dietDetails: dietDetails,
+          //   digestionDetails: digestionDetails,
+          //   exerciseDetails: exerciseDetails,
+          //   sexDetails: sexDetails            
+          // });
+
+          if (painDetails.length) this.loadPainSymptomData(painDetails);
+          if (moodDetails.length) this.loadMoodSymptomData(moodDetails);
+          if (medicationDetails.length) this.loadMedicationData(medicationDetails);
+          if (bloodDetails.length) this.loadBloodSymptomData(bloodDetails);
+          if (dietDetails.length) this.loadDietData(dietDetails);
+          if (digestionDetails.length) this.loadDigestionData(digestionDetails);
+          if (exerciseDetails.length) this.loadExerciseData(exerciseDetails);
+          if (sexDetails.length) this.loadSexData(sexDetails);
+
           this.setState({
             isAnyDataAvailable: isAnyDataAvailable,
-            painDetails: painDetails,
-            moodDetails: moodDetails,
-            medicationDetails: medicationDetails,
-            bloodDetails: bloodDetails,
-            dietDetails: dietDetails,
-            digestionDetails: digestionDetails,
-            exerciseDetails: exerciseDetails,
-            sexDetails: sexDetails            
-          });
-
-          if (painDetails.length) this.loadPainSymptomData();
-          if (moodDetails.length) this.loadMoodSymptomData();
-          if (medicationDetails.length) this.loadMedicationData();
-          if (bloodDetails.length) this.loadBloodSymptomData();
-          if (dietDetails.length) this.loadDietData();
-          if (digestionDetails.length) this.loadDigestionData();
-          if (exerciseDetails.length) this.loadExerciseData();
-          if (sexDetails.length) this.loadSexData();
-
-          this.setState({
             isAllDataLoaded: true,
           });
         })
@@ -459,9 +442,13 @@ export default class Home extends React.Component {
   }
   
   componentDidMount() {
+    this.props.navigation.addListener('focus', () => {
+      // To load symptoms for the selected date after tracking as the home screen is already mounted and only comes into focus
+      this.getUserSymptoms();
+    });
+    console.log("Component Date is", this.state.currentDate);
     getData(constants.USERDETAILS).then((data) => {
       // Read back the user details from storage and convert to object
-      this.state.userDetails = JSON.parse(data);
       this.setState({
         userDetails: JSON.parse(data),
       });
@@ -471,10 +458,6 @@ export default class Home extends React.Component {
 
   render() {
     console.log("RENDER ALL DATA LOADED?", this.state.isAllDataLoaded);
-    console.log("RENDER PAIN SMPTOMS", painSymptoms);
-    console.log("RENDER MOOD SMPTOMS", moodSymptoms);
-    console.log("RENDER MEDS SMPTOMS", medicationSymptoms);
-    console.log("RENDER Blood SMPTOMS", bloodSymptoms);
     return (
       <Layout style={styles.container}>
         <TopNavigation position="absolute" />
@@ -541,7 +524,9 @@ export default class Home extends React.Component {
 
           />
         </View>
-        {this.state.isAnyDataAvailable ? (
+        {this.state.isAllDataLoaded ? (
+          <>
+          {this.state.isAnyDataAvailable ? (
           <>
             <View style={{ width: wp('100'), height: 500, backgroundColor: '#f2f2f2', top: 262, alignContent: "center" }}>
               <ScrollView contentContainerStyle={{
@@ -556,9 +541,6 @@ export default class Home extends React.Component {
               }}>
 
                 <Card style={styles.cardContainer}>
-                  {this.state.isAllDataLoaded || true?  
-                    (
-                        <>
                         <Text style={styles.cardText}>Today you experienced...</Text>
                         
                         <FlatList
@@ -569,12 +551,14 @@ export default class Home extends React.Component {
                         />
                         <FlatList
                             style={{ width: 400, top: 25, left: -37 }}
+                            
                             data={moodSymptoms}
                             renderItem={this.renderItem}
                             keyExtractor={extractKey}
                         />
                         <FlatList
                             style={{ width: 400, top: 25, left: -37 }}
+                            
                             data={medicationSymptoms}
                             renderItem={this.renderItem}
                             keyExtractor={extractKey}
@@ -582,43 +566,45 @@ export default class Home extends React.Component {
 
                         <FlatList
                             style={{ width: 400, top: 25, left: -37 }}
+                            
                             data={bloodSymptoms}
                             renderItem={this.renderItem}
                             keyExtractor={extractKey}
                         />    
                         <FlatList
                             style={{ width: 400, top: 25, left: -37 }}
+                           
                             data={dietSymptoms}
                             renderItem={this.renderItem}
                             keyExtractor={extractKey}
                         />    
                         <FlatList
                             style={{ width: 400, top: 25, left: -37 }}
+                            
                             data={digestionSymptoms}
                             renderItem={this.renderItem}
                             keyExtractor={extractKey}
                         />   
                          <FlatList
                             style={{ width: 400, top: 25, left: -37 }}
+                           
                             data={exerciseSymptoms}
                             renderItem={this.renderItem}
                             keyExtractor={extractKey}
                         />    
                         <FlatList
                             style={{ width: 400, top: 25, left: -37 }}
+                           
                             data={sexSymptoms}
                             renderItem={this.renderItem}
                             keyExtractor={extractKey}
-                        />    
-                        </>
-                    ) : 
-                    (<Text style={styles.cardText}>Loading...</Text>)}
-                  
+                        />                   
                 </Card>
               </ScrollView>
             </View>
           </>
-        ) : (
+          )
+        : (
             <>
               <View style={{ width: wp('100'), height: 500, backgroundColor: '#f2f2f2', top: -231, alignContent: "center", marginTop: 500, marginBottom: -500 }}>
                 <ScrollView>
@@ -628,11 +614,24 @@ export default class Home extends React.Component {
                   />
                   <Text style={HomeStyles.headerText}>
                     You haven't tracked anything today!
-            </Text>
+                  </Text>
                 </ScrollView>
               </View>
             </>
           )}
+          </>
+        ): 
+        (
+          <View style={{ width: wp('100'), height: 500, backgroundColor: '#f2f2f2', top: 262, alignContent: "center" }}>
+            <ScrollView>
+              <Text style={styles.cardText}>
+                Loading...
+              </Text>
+            </ScrollView>
+          </View>
+        )
+        }
+
         <Image
           style={HomeStyles.tabContainer}
           source={require("../../assets/bottomtab.png")}
