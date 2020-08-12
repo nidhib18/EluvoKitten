@@ -97,11 +97,4 @@ export const HomeStyles = {
     resizeMode: "contain",
     
   },
-
-
-
-
-  
-
- 
 };

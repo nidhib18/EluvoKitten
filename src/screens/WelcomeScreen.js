@@ -5,17 +5,18 @@ import { ImageStyles } from "./ImageStyles";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 const { width, height } = Dimensions.get("window");
 
+console.disableYellowBox = true;
+console.reportErrorsAsExceptions = false;
+
 export const WelcomeScreen = ({ navigation }) => {
   return (
     <Layout style={ImageStyles.mainContainer}>
       <TopNavigation position="absolute" />
       <Divider />
-
       <Image
         style={ImageStyles.logoContainer}
         source={require("../../assets/logo.png")}
       />
-
       <Image
         style={ImageStyles.bubbleContainer}
         source={require("../../assets/bubble.png")}

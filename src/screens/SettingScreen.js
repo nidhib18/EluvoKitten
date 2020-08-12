@@ -77,7 +77,6 @@ export const SettingScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     container: {
-        //flex: 1,
         backgroundColor: "#f09874",
         alignItems: "center",
         height: hp('25%'),
@@ -100,7 +99,6 @@ const styles = StyleSheet.create({
         top: hp('58%'),
         alignItems: "center",
         backgroundColor: "#ffff",
-        // resizeMode: "contain"
     },
 
     cardTrackingContainer: {
@@ -112,7 +110,6 @@ const styles = StyleSheet.create({
         top: hp('10%'),
         alignItems: "center",
         backgroundColor: "#ffff",
-        // resizeMode: "contain"
     },
 
     cardNotificationContainer: {
@@ -124,7 +121,6 @@ const styles = StyleSheet.create({
         top: hp('43%'),
         alignItems: "center",
         backgroundColor: "#ffff",
-        // resizeMode: "contain"
     },
 
     cardDetailsContainer: {
@@ -136,7 +132,6 @@ const styles = StyleSheet.create({
         top: hp('76%'),
         alignItems: "center",
         backgroundColor: "#ffff",
-        // resizeMode: "contain"
     },
 
     cardExercise: {
@@ -148,7 +143,6 @@ const styles = StyleSheet.create({
         top: hp('45%'),
         alignItems: "center",
         backgroundColor: "#ffff",
-        // resizeMode: "contain"
     },
     cardText: {
         flex: 1,
