@@ -14,50 +14,7 @@ import { mapListItemsToTags } from "../../helpers/TagHelpers"
 import { initMoodDetails } from '../../models/MoodDetails';
 export default class MoodCard extends React.Component {
 
-    moodTags = [
-        {
-            id: 'Calm',
-            name: 'Calm'
-        },
-        {
-            id: 'Happy',
-            name: 'Happy'
-        },
-        {
-            id: 'Greatful',
-            name: 'Greatful'
-        },
-        {
-            id: 'Excited',
-            name: 'Excited'
-        },
-        {
-            id: 'Irritable',
-            name: 'Irritable'
-        },
-        {
-            id: 'Sad',
-            name: 'Sad'
-        },
-        {
-            id: ' Stressed',
-            name: 'Stressed'
-        },
-        {
-            id: 'Overwhelmed',
-            name: 'Overwhelmed'
-        },
-        {
-            id: 'Anxious',
-            name: 'Anxious'
-        },
-        {
-            id: 'Depressed',
-            name: 'Depressed'
-        },
-
-
-    ]
+    
     constructor(props) {
         super(props);
         this.state = { moodVisible: false };
@@ -153,7 +110,7 @@ export default class MoodCard extends React.Component {
             // Add pain locations
             let moodDescription = null ;
             
-            
+            console.log("mood occured date",this.state.moodDetails.occurred_date)     
             // this.state.selectedTags.map(tag => {
             //     let location = {location_id: tag };
             //     locations.push(location);

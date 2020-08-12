@@ -15,69 +15,7 @@ import { initDietDetails } from '../../models/DietDetails';
 const { width } = Dimensions.get('window');
 
 export default class DietCard extends React.Component {
-
-    dietTags = [
-        {
-            id: 'No change in diet',
-            name: 'No change in diet'
-        },
-        {
-            id: 'Healthy',
-            name: 'Healthy'
-        },
-        {
-            id: 'Pretty good',
-            name: 'Pretty good'
-        },
-        {
-            id: 'Average',
-            name: 'Average'
-        },
-        {
-            id: 'Below Average',
-            name: 'Below Average'
-        },
-        {
-            id: 'Poor',
-            name: 'Poor'
-        },
-
-    ];
-
-    dietTypeTags = [
-        {
-            id: 'Dairy',
-            name: 'Dairy'
-        },
-        {
-            id: 'Gluten',
-            name: 'Gluten'
-        },
-        {
-            id: 'Sugar',
-            name: 'Sugar'
-        },
-        {
-            id: 'Vegetables',
-            name: 'Vegetables'
-        },
-        {
-            id: 'Fruit',
-            name: 'Fruit'
-        },
-        {
-            id: 'Carbs',
-            name: 'Carbs'
-        },
-        {
-            id: 'Fatty food',
-            name: 'Fatty food'
-        }
-
-    ];
-
-
-    constructor(props) {
+   constructor(props) {
         super(props);
         this.state = { dietVisible: false };
         this.state = {

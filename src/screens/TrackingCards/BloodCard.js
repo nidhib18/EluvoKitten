@@ -1,7 +1,7 @@
 //Blood tracking card
 import React, { Component } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { Image, Dimensions, TouchableOpacity, Slider, StyleSheet, View } from 'react-native';
+import { Image, Dimensions, TouchableOpacity, Slider, StyleSheet, View,TextInput } from 'react-native';
 import { Layout, Card, Modal, Text, Button } from '@ui-kitten/components';
 import TagSelector from 'react-native-tag-selector';
 import { TrackingStyles } from "../TrackingStyles";
@@ -11,27 +11,21 @@ import { constants } from "../../resources/Constants";
 import { utcToLocal, localToUtcDate, localToUtcDateTime } from "../../helpers/DateHelpers";
 import { mapListItemsToTags } from "../../helpers/TagHelpers"
 import { initBloodDetails } from '../../models/BloodDetails';
+// import { EditableTagCloud } from 'rn-editable-tag-cloud'
+
+// import Tags from "react-native-tags";
+
 
 const { width } = Dimensions.get('window');
 
 export default class BloodCard extends React.Component {
-    bloodTags = [
-        {
-            id: 'Pad',
-            name: 'Pad'
-        },
-        {
-            id: 'Tampon',
-            name: 'Tampon'
-        },
-        {
-            id: 'MoonCup',
-            name: 'Moon Cup'
-        }
-    ]
+
     constructor(props) {
         super(props);
         this.state = { bloodVisible: false };
+        // this.state = {
+        //     textInput: []
+        // }
         this.state = {
             selectedTags: [],
             bloodValue: 0,
@@ -46,6 +40,7 @@ export default class BloodCard extends React.Component {
         };
         this.saveBloodDetails = this.saveBloodDetails.bind(this);
     }
+   
     setBloodVisible(visible) {
         this.setState({ bloodVisible: visible });
     }
@@ -91,7 +86,7 @@ export default class BloodCard extends React.Component {
                     // If responseData is not empty, then isPainDataAvailable = true
                     //("MOOD CARD Get User Mood Response", responseData);
                     if (Object.keys(responseData).length) {
-                        console.log ("*YES data*",responseData);
+                        console.log("*YES data*", responseData);
                         this.setState({
                             isBloodDataAvailable: true,
                             bloodDetails: responseData,
@@ -100,7 +95,7 @@ export default class BloodCard extends React.Component {
                         });
                     }
                     else {
-                        console.log ("*No data*");
+                        console.log("*No data*");
                         this.setState({
                             isBloodDataAvailable: false,
                             bloodDetails: initBloodDetails(userId, currentDate),
@@ -111,7 +106,7 @@ export default class BloodCard extends React.Component {
                 })
                 .catch((err) => console.log(err))
         );
-        console.log ("Chechi discussed",this.state.isBloodDataAvailable);
+        console.log("Chechi discussed", this.state.isBloodDataAvailable);
     };
     saveBloodDetails() {
 
@@ -190,7 +185,11 @@ export default class BloodCard extends React.Component {
 
 
         }
-
+        // addTextInput = (key) => {
+        //     let textInput = this.state.textInput;
+        //     textInput.push(<TextInput key={key} />);
+        //     this.setState({ textInput })
+        // }
         return (
             <Layout style={TrackingStyles.container}>
                 <TouchableOpacity onPress={() => { this.setBloodVisible(true); }}>
@@ -250,13 +249,15 @@ export default class BloodCard extends React.Component {
                                 onChange={(selected) => this.setState({ selectedPeriodProduct: selected })}
                             />
                         </View>
-
+                        {/* <View style={{ top: hp('20%'), left: wp('0%') }}>
+                        
+                        </View> */}
                         <Button
                             style={TrackingStyles.trackButton}
                             appearance='outline'
                             onPress={() => {
                                 this.setBloodVisible(!this.state.bloodVisible);
-                                this.saveBloodDetails();   
+                                this.saveBloodDetails();
                             }} > Track!
                             </Button>
                     </Card>
@@ -297,5 +298,38 @@ const styles = StyleSheet.create({
         top: hp('11%'),
         fontWeight: '500'
 
-    }
+    },
+    // textInputContainer: {
+    //     flex: 1,
+    //     minWidth: 1,
+    //     height: 35,
+    //     margin: 4,
+    //     borderRadius: 16,
+    //     backgroundColor: "rgba(118, 118, 128, 0.12)"
+    //   },
+
+    //   textInput: {
+    //     margin: 0,
+    //     padding: 5,
+    //     paddingLeft: 12,
+    //     paddingRight: 12,
+    //     flex: 1,
+    //     height: 35,
+    //     fontSize: 13,
+    //     color: "rgba(0, 0, 0, 0.87)"
+    //   },
+
+    //   tag: {
+    //     justifyContent: "center",
+    //     backgroundColor: "rgba(118, 118, 128, 0.12)",
+    //     borderRadius: 16,
+    //     paddingLeft: 12,
+    //     paddingRight: 12,
+    //     height: 35,
+    //     margin: 4
+    //   },
+    //   tagLabel: {
+    //     fontSize: 13,
+    //     color: "rgba(0, 0, 0, 0.87)"
+    //   }
 });

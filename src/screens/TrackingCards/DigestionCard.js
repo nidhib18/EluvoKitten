@@ -14,25 +14,7 @@ import { initDigestionDetails } from '../../models/DigestionDetails';
 const { width } = Dimensions.get('window');
 
 export default class DigestionCard extends React.Component {
-    bloatTypeTags = [
-        {
-            id: 'Bloating',
-            name: 'Bloating'
-        },
-        {
-            id: 'Diarrhea',
-            name: 'Diarrhea'
-        },
-        {
-            id: 'Constipation',
-            name: 'Constipation'
-        },
-        {
-            id: 'Gassy',
-            name: 'Gassy'
-        }
-
-    ]
+   
     constructor(props) {
         super(props);
         this.state = { digestionVisible: false };
@@ -129,7 +111,7 @@ export default class DigestionCard extends React.Component {
             let occurredDate = moment(this.state.currentDate).add(moment().hour(), 'hour').add(moment().minute(), 'minute');
             // Add pain locations
             let bowelSymptom = null;
-
+            console.log("digestion occured date",this.state.digestionDetails.occurred_date)
 
             if (this.state.selectedBowelSymptom.length > 0)
                 bowelSymptom = this.state.selectedBowelSymptom[0];

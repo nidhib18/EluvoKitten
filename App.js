@@ -9,17 +9,22 @@ import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { default as theme } from './theme.json'
 import { AppNavigator } from './src/screens/NavigationComponent';
+import ErrorBoundary from "./src/screens/ErrorBoundary"
 
 console.disableYellowBox = true;
-console.reportErrorsAsExceptions = false;
+//console.reportErrorsAsExceptions = false;
 
 export default () => (
   
   <>
     <IconRegistry icons={EvaIconsPack}/>
     <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
-      <AppNavigator/>    
+    <ErrorBoundary>
+      <AppNavigator/>
+    </ErrorBoundary>    
     </ApplicationProvider>
+    
   </>
+  
 );
 

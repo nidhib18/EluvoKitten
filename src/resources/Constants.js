@@ -63,6 +63,13 @@ export const constants = {
   FOODTYPE_DEV_URL:
   "https://dv4tzoya4d.execute-api.ap-southeast-2.amazonaws.com/DEV/listitems?listId=12",
 
+  
+  ADDUSERMEDICATION_DEV_URL: 
+  "https://dj280krk8i.execute-api.ap-southeast-2.amazonaws.com/DEV/addusermedication",
+  USERMEDICATION_DEV_URL:
+  "https://0qkeudkka9.execute-api.ap-southeast-2.amazonaws.com/DEV/getusermedication?userId=[userId]&occuredDate=[occuredDate]",
+  MEDICATIONSIDEEFFECTS_DEV_URL:
+  "https://dv4tzoya4d.execute-api.ap-southeast-2.amazonaws.com/DEV/listitems?listId=13"
 
 
 };
