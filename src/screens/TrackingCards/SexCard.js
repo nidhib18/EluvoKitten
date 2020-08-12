@@ -17,30 +17,7 @@ const { width } = Dimensions.get('window');
 
 export default class SexCard extends React.Component {
    
-    sexTags = [
-        {
-            id: ' Orgasm',
-            name: ' Orgasm'
-        },
-        {
-            id: 'Masturbation',
-            name: 'Masturbation'
-        },
-        {
-            id: 'Pain',
-            name: 'Pain'
-        },
-        {
-            id: 'Protection used',
-            name: 'Protection used'
-        },
-        {
-            id: 'No protection',
-            name: 'No protection'
-        },
-        
-
-    ];
+    
     constructor(props) {
         super(props);
         this.state = { sexVisible: false };
@@ -53,8 +30,8 @@ export default class SexCard extends React.Component {
             maxValue: 5,
             userDetails:{}, 
             sexDetails: initSexDetails(0,  moment().format('YYYY-MM-DD')) ,
-            isSexDataAvailable: false,
-            currentDate: moment().format('YYYY-MM-DD')// / this.props.route.params.CurrentDate 
+            //isSexDataAvailable: false,
+            currentDate: this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD')    
         };
         this.saveSexDetails = this.saveSexDetails.bind(this);
     }
@@ -85,64 +62,17 @@ export default class SexCard extends React.Component {
         );
     };
  
-    getUserSex = (route) => {
-        let userId = this.state.userDetails.user_id;
-        let currentDate = this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD');
-        let url = constants.USERSEX_DEV_URL.replace("[userId]", userId).replace(
-            "[occurredDate]",
-            localToUtcDateTime(currentDate)
-        );
-        
-        getData(constants.JWTKEY).then((jwt) =>
-            fetch(url, {
-                //calling API
-                method: "GET",
-                headers: {
-                    Authorization: "Bearer " + jwt, //Passing this will authorize the user
-                },
-            })
-                .then((response) => response.json())
-                .then((responseData) => {
-                    // If responseData is not empty, then isSexDataAvailable = true
-                    //("Sex CARD Get User sex Response", responseData);
-                    if (Object.keys(responseData).length) {
-                       
-                        this.setState({
-                            isSexDataAvailable: true,
-                            sexDetails: responseData,
-                            sexValue: responseData.sex.sex_level,
-                            currentDate: currentDate
-                        });
-                    }
-                    else {
-                        this.setState({
-                            isSexDataAvailable: false,
-                            sexDetails: initSexDetails(userId, currentDate),
-                            sexValue: 0,
-                            currentDate: currentDate
-                        });
-                    }
-                })
-                .catch((err) => console.log(err))
-        );
-    };
+
 
     saveSexDetails() {
       
-        if (!this.state.isSexDataAvailable) {
-            // Add the saved sex level
+     
+        //     // Add the saved sex level
             let userId = this.state.userDetails.user_id;
             let occurredDate = moment(this.state.currentDate).add(moment().hour(), 'hour').add(moment().minute(), 'minute');
             // Add sexual activity
             let sexualActivity = null ;
-            
-            
-            // this.state.selectedTags.map(tag => {
-            //     let location = {location_id: tag };
-            //     locations.push(location);
-            // });
-            
-            
+        
             if (this.state.selectedSexualActivity.length > 0)
                 sexualActivity = this.state.selectedSexualActivity[0]; 
        
@@ -173,12 +103,8 @@ export default class SexCard extends React.Component {
                         return response.json();
                     })
             );
-        }
-        else {
-           
-            alert("Update not implemented yet.");
-        }
-    }
+ 
+}
 
     componentDidMount() //after Ui has been uploaded 
      {
@@ -188,7 +114,6 @@ export default class SexCard extends React.Component {
             this.setState({
                 userDetails: JSON.parse(data),
             });
-            this.getUserSex();
             this.getSexualActivity();
             
         });
@@ -197,17 +122,10 @@ export default class SexCard extends React.Component {
 
     render() {
 
-        let sexLevel = this.state.sexDetails && this.state.sexDetails.sex && this.state.sexDetails.sex.sex_level || 0;
+        let sexLevel = 0;
 
         
         let sexualActivity = this.state.sexualActivity || [] ; // get all the possible value from the list item , if not then empty array .
-        let selectedSexualActivity = [];
-      
-        if (this.state.sexDetails && this.state.sexDetails.sex && this.state.sexDetails.sex.sexual_activity) {
-            selectedSexualActivity = mapListItemsToTags([{list_item_id: this.state.sexDetails.sex.sexual_activity,list_item_name:"Protected"}]);
-          
-
-        }
 
         return (
             <Layout style={TrackingStyles.container}>

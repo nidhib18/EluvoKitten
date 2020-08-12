@@ -65,14 +65,11 @@ export const TrackScreen = ({ route, navigation }) => {
           bottom: hp('-45%'),
         }}
       >
-
-        <MedicationCard />
-        {/* {show ? ( */}
-          <PainCard navigation={navigation}
-            route={route} />
-
-        {/* ) : null} */}
-
+        
+        <MedicationCard  navigation={navigation}
+         route= {route}/>
+        <PainCard navigation={navigation}
+         route= {route} />
         <MoodCard navigation={navigation}
           route={route} />
         <BloodCard navigation={navigation}
@@ -88,9 +85,9 @@ export const TrackScreen = ({ route, navigation }) => {
         <SaveCard navigation={navigation} />
         <Text style={TrackingStyles.dietText}>Diet</Text>
         <Text style={TrackingStyles.sexText}>Sex</Text>
-        {show ? (
+        {/* {show ? ( */}
         <Text style={TrackingStyles.painText}>Pain</Text>
-        ) : null}
+        {/* ) : null} */}
         <Text style={TrackingStyles.smallSaveText}>Save</Text>
       </ScrollView>
       <AppointmentCard />

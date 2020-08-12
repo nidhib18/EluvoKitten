@@ -45,8 +45,7 @@ export default class MedicationCard extends React.Component {
             medicationTimeTaken:" ",
             userDetails:{}, 
             medicationDetails: initMedicationDetails(0,  moment().format('YYYY-MM-DD')) ,
-            //isMedicationDataAvailable: false,
-            currentDate: moment().format('YYYY-MM-DD')// / this.props.route.params.CurrentDate    
+            currentDate: this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD')    
         };
         this.saveMedicationDetails = this.saveMedicationDetails.bind(this);
     }
@@ -75,52 +74,10 @@ export default class MedicationCard extends React.Component {
         );
     };
 
-    // getUserMedication = (route) => {
-    //     let userId = this.state.userDetails.user_id;
-    //     let currentDate = this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD');
-    //     let url = constants.USERMEDICATION_DEV_URL.replace("[userId]", userId).replace(
-    //         "[occuredDate]",
-    //         localToUtcDateTime(currentDate)
-    //     );
-    //     console.log ("URL FOR GETMEDICATION",url);
-    //     getData(constants.JWTKEY).then((jwt) =>
-    //         fetch(url, {
-    //             //calling API
-    //             method: "GET",
-    //             headers: {
-    //                 Authorization: "Bearer " + jwt, //Passing this will authorize the user
-    //             },
-    //         })
-    //             .then((response) => response.json())
-    //             .then((responseData) => {
-    //                 // If responseData is not empty, then isPainDataAvailable = true
-    //                 //("Medication CARD Get User Medication Response", responseData);
-    //                 if (Object.keys(responseData).length) {
-    //                     console.log ("*YES data*",responseData);
-    //                     this.setState({
-    //                         isMedicationDataAvailable: true,
-    //                         medicationDetails: responseData,
-    //                         currentDate: currentDate
-    //                     });
-    //                 }
-    //                 else {
-    //                     console.log ("*No data*");
-    //                     this.setState({
-    //                         isMedicationDataAvailable: false,
-    //                         medicationDetails: initMedicationDetails(userId, currentDate),
-                           
-    //                         currentDate: currentDate
-    //                     });
-    //                 }
-    //             })
-    //             .catch((err) => console.log(err))
-    //     );
-    //     console.log (this.state.isMedicationDataAvailable);
-    // };
 
     saveMedicationDetails() {
       
-        // if (!this.state.isMedicationDataAvailable) {
+   
             // Add the saved med level
             let userId = this.state.userDetails.user_id;
             let occuredDate = moment(this.state.currentDate).add(moment().hour(), 'hour').add(moment().minute(), 'minute');
@@ -128,19 +85,6 @@ export default class MedicationCard extends React.Component {
             let medicationSideEffects = null ;
             if (this.state.selectedMedicationSideEffects.length > 0)
             medicationSideEffects = this.state.selectedMedicationSideEffects[0]; 
-   
-            // let medicationTimeTaken = "";
-            // let medicationType ="";
-            // let medicationQuantity ="";
-            
-            
-            // this.state.selectedTags.map(tag => {
-            //     let location = {location_id: tag };
-            //     locations.push(location);
-            // });
-            
-            
-           
 
             let medication = { //sending to the database,if pian type value = 0 then don't send it to the database as it means the user didnt select any tags
                 user_id: userId,
@@ -170,11 +114,6 @@ export default class MedicationCard extends React.Component {
                         return response.json();
                     })
             );
-        // }
-        // else {
-           
-        //     alert("Update not implemented yet.");
-        // }
     }
 
     componentDidMount() //after Ui has been uploaded 
@@ -185,7 +124,6 @@ export default class MedicationCard extends React.Component {
             this.setState({
                 userDetails: JSON.parse(data),
             });
-            //this.getUserMedication();
             this.getMedicationSideEffects(); 
             
             
@@ -203,11 +141,6 @@ export default class MedicationCard extends React.Component {
         let  medicationQuantity = this.state.medicationQuantity || "";
         let  medicationTimeTaken= this.state.medicationTimeTaken ||"";
        
-        // let selectedMedicationSideEffects = [];
-      
-        // if (this.state.medicationDetails && this.state.medicationDetails.medication&&this.state.medicationDetails.medication.medication_side_effects) {
-        //     selectedMedicationSideEffects = mapListItemsToTags([{list_item_id: this.state.medicationDetails.medication.medication_side_effects,list_item_name:"Headache"}]);
-        // }
 
         return (
             <Layout style={TrackingStyles.container}>
@@ -276,14 +209,6 @@ export default class MedicationCard extends React.Component {
                             }
                         />
 
-
-                        {/* <Text style={{ color: '#8A8A8E', textAlign: 'left', top: -30, fontSize: 16 }}>Would you like a Reminder?</Text>
-                        <Toggle
-                            style={{ left: 180, top: -55 }}
-                            checked={this.state.checked}
-                            onChange={this.onCheckedChange}>
-                            {`Checked: ${this.state.checked}`}
-                        </Toggle> */}
                         <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('17%'), fontSize: wp('4%'), fontWeight: '500' }}>Have you noticed any side effects?</Text>
                         <View style={{ top: hp('20%'), left: wp('-2%') }}>
                             <TagSelector

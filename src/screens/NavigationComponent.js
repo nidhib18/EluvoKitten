@@ -10,7 +10,7 @@ import SettingScreen from './SettingScreen';
 import CustomiseTracking from './CustomiseTracking'
 import Home from './Home'
 import { TrackScreen } from './TrackScreen';
-import ErrorBoundary from './ErrorBoundary';
+// import ErrorBoundary from './ErrorBoundary';
 
 const MainStack = createStackNavigator();
 const RootStack = createStackNavigator();
@@ -24,7 +24,7 @@ function MainStackScreen() {
       <MainStack.Screen name='Forgot' component= {ForgotPassword}/>
       <MainStack.Screen name='SignUp' component={SignUpScreen} />
       <MainStack.Screen name='Home' component={Home} /> 
-      <MainStack.Screen name='Error' component={ErrorBoundary} /> 
+      {/* <MainStack.Screen name='Error' component={ErrorBoundary} />  */}
       {/* <MainStack.Screen name='TrackCust' component={CustomiseTracking} />  */}
     </MainStack.Navigator>
   );

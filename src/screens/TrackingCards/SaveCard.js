@@ -16,7 +16,9 @@ export default class SaveCard extends React.Component {
 
   onNavigate = () => {
     this.setSaveVisible(!this.state.saveVisible);
-    this.props.navigation.navigate("Home");
+    this.props.navigation.navigate("Home", {
+      currentDate: this.state.currentDate,
+    });
   };
 
   render() {

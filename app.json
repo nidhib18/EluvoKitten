@@ -2,6 +2,7 @@
   "expo": {
     "name": "EluvoKitten",
     "slug": "EluvoKitten",
+    "privacy":"unlisted", 
     "platforms": [
       "ios",
       "android",
