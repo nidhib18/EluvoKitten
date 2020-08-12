@@ -26,7 +26,7 @@ import {
   Button,
 } from "@ui-kitten/components";
 
-
+// pop ui to be implemented
 import { ImageStyles } from "./ImageStyles";
 import { SignUpStyles } from "./SignUpStyles";
 
