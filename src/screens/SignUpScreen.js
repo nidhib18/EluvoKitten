@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   KeyboardAvoidingView,
+  TouchableOpacity,
   ScrollView,
   Dimensions,
   Modal,
@@ -25,6 +26,7 @@ import {
   Button,
 } from "@ui-kitten/components";
 
+// pop ui to be implemented
 import { ImageStyles } from "./ImageStyles";
 import { SignUpStyles } from "./SignUpStyles";
 
@@ -50,6 +52,7 @@ export default class SignUpScreen extends Component {
       confirmationCode: "",
       secureTextEntry: false,
       modalVisible: false,
+      
       birthdate: new Date(),
 
       minDate: new Date(1960, 0, 1),
@@ -121,20 +124,20 @@ export default class SignUpScreen extends Component {
       alert("Password length is too short");
     }
   };
-
+  
   handleConfirmationCode = () => {
     const { username, confirmationCode } = this.state;
     Auth.confirmSignUp(username, confirmationCode, {})
 
       .then((user) => {
         this.setState({ modalVisible: false });
-        saveUserDetails(username);
-        this.props.navigation.navigate("Home");
+        saveUserDetails(username, this.props.navigation);
       })
 
       .catch((err) => console.log(err));
   };
-
+ 
+  
   render() {
     return (
       <ScrollView

@@ -58,7 +58,8 @@ export const TrackScreen = ({ route,navigation }) => {
         }}
       >
         
-        <MedicationCard />
+        <MedicationCard  navigation={navigation}
+         route= {route}/>
         <PainCard navigation={navigation}
          route= {route} />
         <MoodCard navigation={navigation}

@@ -1,4 +1,3 @@
-//Blood tracking card
 import React, { Component } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Image, Dimensions, TouchableOpacity, Slider, StyleSheet, View } from 'react-native';
@@ -17,20 +16,7 @@ import { initBloodDetails } from '../../models/BloodDetails';
 const { width } = Dimensions.get('window');
 
 export default class BloodCard extends React.Component {
-    bloodTags = [
-        {
-            id: 'Pad',
-            name: 'Pad'
-        },
-        {
-            id: 'Tampon',
-            name: 'Tampon'
-        },
-        {
-            id: 'MoonCup',
-            name: 'Moon Cup'
-        }
-    ]
+   
     constructor(props) {
         super(props);
         this.state = { bloodVisible: false };
@@ -43,8 +29,7 @@ export default class BloodCard extends React.Component {
             periodProducts: [], // moodDescriptions:[],
             userDetails: {},
             bloodDetails: initBloodDetails(0, moment().format('YYYY-MM-DD')),
-            isBloodDataAvailable: false,
-            currentDate: moment().format('YYYY-MM-DD')// / this.props.route.params.CurrentDate    
+            currentDate: this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD')     
         };
         this.saveBloodDetails = this.saveBloodDetails.bind(this);
     }
@@ -72,70 +57,20 @@ export default class BloodCard extends React.Component {
         );
     };
 
-    getUserBlood = (route) => {
-        let userId = this.state.userDetails.user_id;
-        let currentDate = this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD');
-        let url = constants.USERBLOOD_DEV_URL.replace("[userId]", userId).replace(
-            "[occurredDate]",
-            localToUtcDateTime(currentDate)
-        );
-
-        getData(constants.JWTKEY).then((jwt) =>
-            fetch(url, {
-                //calling API
-                method: "GET",
-                headers: {
-                    Authorization: "Bearer " + jwt, //Passing this will authorize the user
-                },
-            })
-                .then((response) => response.json())
-                .then((responseData) => {
-                    // If responseData is not empty, then isPainDataAvailable = true
-                    //("MOOD CARD Get User Mood Response", responseData);
-                    if (Object.keys(responseData).length) {
-                        console.log ("*YES data*",responseData);
-                        this.setState({
-                            isBloodDataAvailable: true,
-                            bloodDetails: responseData,
-                            bloodValue: responseData.blood.bleeding_level,
-                            currentDate: currentDate
-                        });
-                    }
-                    else {
-                        console.log ("*No data*");
-                        this.setState({
-                            isBloodDataAvailable: false,
-                            bloodDetails: initBloodDetails(userId, currentDate),
-                            bloodValue: 0,
-                            currentDate: currentDate
-                        });
-                    }
-                })
-                .catch((err) => console.log(err))
-        );
-        console.log ("Chechi discussed",this.state.isBloodDataAvailable);
-    };
     saveBloodDetails() {
 
-        if (!this.state.isBloodDataAvailable) {
-            // Add the saved mood level
+      
+            // Add the saved blood level
             let userId = this.state.userDetails.user_id;
             let occurredDate = moment(this.state.currentDate).add(moment().hour(), 'hour').add(moment().minute(), 'minute');
-            // Add pain locations
+            // Add period product 
             let periodProduct = null;
-
-
-            // this.state.selectedTags.map(tag => {
-            //     let location = {location_id: tag };
-            //     locations.push(location);
-            // });
-
 
             if (this.state.selectedPeriodProduct.length > 0)
                 periodProduct = this.state.selectedPeriodProduct[0];
 
 
-            let blood = { //sending to the database,if pian type value = 0 then don't send it to the database as it means the user didnt select any tags
+            let blood = { //sending to the database,if blood type value = 0 then don't send it to the database as it means the user didnt select any tags
                 user_id: userId,
                 bleeding_level: this.state.bloodValue,
                 period_product: periodProduct,
@@ -161,11 +96,7 @@ export default class BloodCard extends React.Component {
                         return response.json();
                     })
             );
-        }
-        else {
-
-            alert("Update not implemented yet.");
-        }
+        
     }
     componentDidMount() //after Ui has been uploaded 
     {
@@ -175,24 +106,17 @@ export default class BloodCard extends React.Component {
             this.setState({
                 userDetails: JSON.parse(data),
             });
-            this.getUserBlood();
+            //this.getUserBlood();
             this.getPeriodProducts();
         });
     }
 
     render() {
-        let bloodLevel = this.state.bloodDetails && this.state.bloodDetails.blood && this.state.bloodDetails.blood.bleeding_level || 0;
+        let bloodLevel =  0;
 
 
         let periodProducts = this.state.periodProducts || []; // get all the possible value from the list item , if not then empty array .
-        let selectedPeriodProduct = [];
-
-        if (this.state.bloodDetails && this.state.bloodDetails.blood && this.state.bloodDetails.blood.period_product) {
-            selectedPeriodProduct = mapListItemsToTags([{ list_item_id: this.state.bloodDetails.blood.period_product, list_item_name: "Pad" }]);
-
-
-        }
-
+        
         return (
             <Layout style={TrackingStyles.container}>
                 <TouchableOpacity onPress={() => { this.setBloodVisible(true); }}>
@@ -225,7 +149,7 @@ export default class BloodCard extends React.Component {
                             step={1}
                             minimumValue={this.state.minValue}
                             maximumValue={this.state.maxValue}
-                            value={this.state.value}
+                            value={bloodLevel}
                             onValueChange={val => this.setState({ bloodValue: val })}
                             maximumTrackTintColor='#d3d3d3'
                             minimumTrackTintColor='#f09874'

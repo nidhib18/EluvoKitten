@@ -9,8 +9,11 @@ export const constants = {
   /* API URls */
   USERDETAILS_DEV_URL:
     "https://bzi87na9hg.execute-api.ap-southeast-2.amazonaws.com/DEV/userdetails?userName=",
-  USERPAIN_DEV_URL:
-    "https://fpvzw0lz9i.execute-api.ap-southeast-2.amazonaws.com/DEV/pain?userId=[userId]&occurredDate=[occurredDate]",
+
+    USERPAIN_DEV_URL:
+    "https://kcxtvx9cxi.execute-api.ap-southeast-2.amazonaws.com/DEV/symptoms?userId=[userId]&occurredDate=[occurredDate]",
+  // USERPAIN_DEV_URL:
+  //   "https://fpvzw0lz9i.execute-api.ap-southeast-2.amazonaws.com/DEV/pain?userId=[userId]&occurredDate=[occurredDate]",
   PAINLOCATIONS_DEV_URL:
     "https://dv4tzoya4d.execute-api.ap-southeast-2.amazonaws.com/DEV/listitems?listId=5",
   ADDUSERPAIN_DEV_URL:
@@ -63,6 +66,13 @@ export const constants = {
   FOODTYPE_DEV_URL:
   "https://dv4tzoya4d.execute-api.ap-southeast-2.amazonaws.com/DEV/listitems?listId=12",
 
+  
+  ADDUSERMEDICATION_DEV_URL: 
+  "https://dj280krk8i.execute-api.ap-southeast-2.amazonaws.com/DEV/addusermedication",
+  USERMEDICATION_DEV_URL:
+  "https://0qkeudkka9.execute-api.ap-southeast-2.amazonaws.com/DEV/getusermedication?userId=[userId]&occuredDate=[occuredDate]",
+  MEDICATIONSIDEEFFECTS_DEV_URL:
+  "https://dv4tzoya4d.execute-api.ap-southeast-2.amazonaws.com/DEV/listitems?listId=13"
 
 
 };
