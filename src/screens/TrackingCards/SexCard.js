@@ -99,7 +99,6 @@ export default class SexCard extends React.Component {
                     body: JSON.stringify(sex)
                 })
                     .then((response) => {
-                        //console.log(response.json());
                         return response.json();
                     })
             );
