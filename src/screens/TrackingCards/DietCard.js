@@ -17,8 +17,6 @@ const { width } = Dimensions.get('window');
 export default class DietCard extends React.Component {
 
 
-
-
     constructor(props) {
         super(props);
         this.state = { dietVisible: false };
@@ -65,8 +63,8 @@ export default class DietCard extends React.Component {
 
     saveDietDetails() {
       
-        // if (!this.state.isDietDataAvailable) {
-        //     // Add the saved mood level
+        
+        //     // Add the saved level
             let userId = this.state.userDetails.user_id;
             let occurredDate = moment(this.state.currentDate).add(moment().hour(), 'hour').add(moment().minute(), 'minute');
             // Add pain locations
@@ -76,7 +74,7 @@ export default class DietCard extends React.Component {
             foodType = this.state.selectedFoodType[0]; 
        
 
-            let diet = { //sending to the database,if pian type value = 0 then don't send it to the database as it means the user didnt select any tags
+            let diet = { //sending to the database,if type value = 0 then don't send it to the database as it means the user didnt select any tags
                 user_id: userId,
                 diet_level: this.state.dietValue,
                 food_type :foodType, 
@@ -98,7 +96,6 @@ export default class DietCard extends React.Component {
                     body: JSON.stringify(diet)
                 })
                     .then((response) => {
-                        //console.log(response.json());
                         return response.json();
                     })
             );

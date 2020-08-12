@@ -194,7 +194,7 @@ export default class SettingScreen extends React.Component {
 const styles = StyleSheet.create({
 
     container: {
-        justifyContent: "center",
+        backgroundColor: "#f09874",
         alignItems: "center",
         backgroundColor: "#fbfbfb",
         height: hp('14'),
@@ -230,16 +230,6 @@ const styles = StyleSheet.create({
         top: hp('58%'),
         alignItems: "center",
         backgroundColor: "#ffff",
-        borderBottomColor: '#ffffff',
-        borderTopColor: '#ffffff',
-        borderLeftColor: '#ffffff',
-        borderRightColor: '#ffffff',
-        backgroundColor: '#ffffff',
-        shadowColor: '#c8c8c8',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.8,
-        shadowRadius: 30,
-        // resizeMode: "contain"
     },
 
     cardTrackingContainer: {
@@ -256,16 +246,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
 
         backgroundColor: "#ffff",
-        borderBottomColor: '#ffffff',
-        borderTopColor: '#ffffff',
-        borderLeftColor: '#ffffff',
-        borderRightColor: '#ffffff',
-        backgroundColor: '#ffffff',
-        shadowColor: '#c8c8c8',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.8,
-        shadowRadius: 30,
-        // resizeMode: "contain"
     },
 
     cardNotificationContainer: {
@@ -277,16 +257,6 @@ const styles = StyleSheet.create({
         top: hp('46%'),
         alignItems: "center",
         backgroundColor: "#ffff",
-        borderBottomColor: '#ffffff',
-        borderTopColor: '#ffffff',
-        borderLeftColor: '#ffffff',
-        borderRightColor: '#ffffff',
-        backgroundColor: '#ffffff',
-        shadowColor: '#c8c8c8',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.8,
-        shadowRadius: 30,
-        // resizeMode: "contain"
     },
 
     cardDetailsContainer: {
@@ -298,19 +268,18 @@ const styles = StyleSheet.create({
         top: hp('76%'),
         alignItems: "center",
         backgroundColor: "#ffff",
-        borderBottomColor: '#ffffff',
-        borderTopColor: '#ffffff',
-        borderLeftColor: '#ffffff',
-        borderRightColor: '#ffffff',
-        backgroundColor: '#ffffff',
-        shadowColor: '#c8c8c8',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.8,
-        shadowRadius: 30,
-        // resizeMode: "contain"
     },
 
-
+    cardExercise: {
+        flex: 1,
+        position: "absolute",
+        width: wp('95%'),
+        borderRadius: 20,
+        height: hp('12%'),
+        top: hp('45%'),
+        alignItems: "center",
+        backgroundColor: "#ffff",
+    },
     cardText: {
         flex: 1,
         position: "absolute",

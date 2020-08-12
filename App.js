@@ -9,10 +9,36 @@ import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { default as theme } from './theme.json'
 import { AppNavigator } from './src/screens/NavigationComponent';
-
-
+import {Alert} from 'react-native';
+import RNRestart from 'react-native-restart';
+import {setJSExceptionHandler} from 'react-native-exception-handler';
 console.disableYellowBox = true;
 //console.reportErrorsAsExceptions = false;
+
+
+
+const errorHandler = (err, isFatal) => {
+  const allowedInDevMode = true; //enable DEV mode true in index.js as well
+  if (isFatal && allowedInDevMode ) {
+    Alert.alert(
+        'Unexpected error occurred',
+        `
+        We will need to restart the app.
+        `,
+      [{
+        text: 'Restart',
+        onPress: () => {
+          RNRestart.Restart();
+        }
+      }]
+    );
+  } else {
+    console.log(err); // So that we can see it in the logs
+  }
+};
+
+setJSExceptionHandler(errorHandler);
+
 
 export default () => (
 

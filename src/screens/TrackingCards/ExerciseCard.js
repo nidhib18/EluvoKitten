@@ -109,7 +109,6 @@ export default class ExerciseCard extends React.Component {
             this.setState({
                 userDetails: JSON.parse(data),
             });
-           // this.getUserExercise();
             this.getExerciseTypes();
 
         });
@@ -117,8 +116,7 @@ export default class ExerciseCard extends React.Component {
 
     render() {
         let exerciseLevel =  0;
-        let exerciseTypes = this.state.exerciseTypes || []; // get all the possible value from the list item , if not then empty array .
-       
+        let exerciseTypes = this.state.exerciseTypes || []; // get all the possible value from the list item , if not then empty array 
         const { selectedHours, selectedMinutes } = this.state;
         return (
             <Layout style={TrackingStyles.container}>

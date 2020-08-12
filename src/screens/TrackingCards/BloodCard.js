@@ -98,7 +98,6 @@ export default class BloodCard extends React.Component {
                     body: JSON.stringify(blood)
                 })
                     .then((response) => {
-                        //console.log(response.json());
                         return response.json();
                     })
             );
@@ -112,7 +111,6 @@ export default class BloodCard extends React.Component {
             this.setState({
                 userDetails: JSON.parse(data),
             });
-            //this.getUserBlood();
             this.getPeriodProducts();
         });
     }
@@ -159,7 +157,6 @@ export default class BloodCard extends React.Component {
                             onValueChange={val => this.setState({ bloodValue: val })}
                             maximumTrackTintColor='#d3d3d3'
                             minimumTrackTintColor='#f09874'
-                        //thumbImage={require('../../../assets/slider.png')}
 
 
                         />

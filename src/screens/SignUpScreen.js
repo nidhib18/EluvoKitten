@@ -26,7 +26,6 @@ import {
   Button,
 } from "@ui-kitten/components";
 
-// pop ui to be implemented
 import { ImageStyles } from "./ImageStyles";
 import { SignUpStyles } from "./SignUpStyles";
 
@@ -52,9 +51,7 @@ export default class SignUpScreen extends Component {
       confirmationCode: "",
       secureTextEntry: false,
       modalVisible: false,
-      
       birthdate: new Date(),
-
       minDate: new Date(1960, 0, 1),
       maxDate: new Date(),
     };
@@ -89,7 +86,6 @@ export default class SignUpScreen extends Component {
   renderIcon = (props) => <Icon {...props} name={"eye"} fill="#0000" />;
 
   handleSignUp = () => {
-    // alert(JSON.stringify(this.state));
     const {
       given_name,
       family_name,
@@ -115,7 +111,6 @@ export default class SignUpScreen extends Component {
         .then(() => this.setState({ modalVisible: true }))
 
         // On failure, display error in console
-        //.errorHandler(err,user)
         .catch((err) => console.log(err));
     } else {
       alert("Passwords do not match!");

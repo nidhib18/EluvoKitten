@@ -13,14 +13,12 @@ export const getData = async (key) => {
   try {
     const value = await AsyncStorage.getItem(key);
     if (value !== null) {
-     // console.log("Get data", value);
       return value;
       // value previously stored
     } else {
       return "";
     }
   } catch (e) {
-   // console.log("print", e);
-    // error reading value
+  
   }
 };

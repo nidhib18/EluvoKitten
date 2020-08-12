@@ -33,8 +33,6 @@ export default class LoginScreen extends Component {
     this.state = {
       username: "",
       password: "",
-     //popUp:false,
-
     };
   }
 
@@ -65,9 +63,7 @@ export default class LoginScreen extends Component {
       <KeyboardAvoidingView
         style={{ flex: 1, backgroundColor: "#f09874" }}
         behavior="position"
-        enabled
-       
-      >
+        enabled>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <Layout style={ImageStyles.mainContainer}>
             <TopNavigation position="absolute" />
@@ -114,11 +110,10 @@ export default class LoginScreen extends Component {
 
             <Input
               style={LoginStyles.passwordInput}
-              //value={passwordValue}
               label="Password"
               secureTextEntry={true}
               onChangeText={
-                // Set this.state.email to the value in this Input box
+                // Set this.state.password to the value in this Input box
                 (value) => this.setState({ password: value })
               }
               placeholderTextColor={"#f09874"}
