@@ -14,25 +14,7 @@ import { initDigestionDetails } from '../../models/DigestionDetails';
 const { width } = Dimensions.get('window');
 
 export default class DigestionCard extends React.Component {
-    bloatTypeTags = [
-        {
-            id: 'Bloating',
-            name: 'Bloating'
-        },
-        {
-            id: 'Diarrhea',
-            name: 'Diarrhea'
-        },
-        {
-            id: 'Constipation',
-            name: 'Constipation'
-        },
-        {
-            id: 'Gassy',
-            name: 'Gassy'
-        }
-
-    ]
+   
     constructor(props) {
         super(props);
         this.state = { digestionVisible: false };
@@ -45,8 +27,7 @@ export default class DigestionCard extends React.Component {
             bowelSymptoms: [],
             userDetails: {},
             digestionDetails: initDigestionDetails(0, moment().format('YYYY-MM-DD')),
-            isDigestionDataAvailable: false,
-            currentDate: moment().format('YYYY-MM-DD')
+            currentDate: this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD')    
         };
         this.saveDigestionDetails = this.saveDigestionDetails.bind(this);
     }
@@ -54,8 +35,6 @@ export default class DigestionCard extends React.Component {
     setDigestionVisible(visible) {
         this.setState({ digestionVisible: visible });
     }
-
-
     getBowelSymptoms() {
         let url = constants.BOWELSYMPTOM_DEV_URL;
         getData(constants.JWTKEY).then((jwt) =>
@@ -68,83 +47,39 @@ export default class DigestionCard extends React.Component {
             })
                 .then((response) => response.json())
                 .then((responseData) => {
-                    let bowelSymptoms = [];//getting all possible paintype tags from the database  //{} is an object [] an array a value
+                    let bowelSymptoms = [];//getting all possible  tags from the database
                     bowelSymptoms = mapListItemsToTags(responseData);
-
+                    
                     this.setState({ bowelSymptoms: bowelSymptoms });
                 })
                 .catch((err) => console.log(err))
         );
     };
 
-    getUserDigestion = (route) => {
-        let userId = this.state.userDetails.user_id;
-        let currentDate = this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD');
-        let url = constants.USERDIGESTION_DEV_URL.replace("[userId]", userId).replace(
-            "[occurredDate]",
-            localToUtcDateTime(currentDate)
-        );
-        //console.log ("URL FOR GETMOOD",url);
-        getData(constants.JWTKEY).then((jwt) =>
-            fetch(url, {
-                //calling API
-                method: "GET",
-                headers: {
-                    Authorization: "Bearer " + jwt, //Passing this will authorize the user
-                },
-            })
-                .then((response) => response.json())
-                .then((responseData) => {
-                    // If responseData is not empty, then isPainDataAvailable = true
-                    //("MOOD CARD Get User Mood Response", responseData);
-                    if (Object.keys(responseData).length) {
-                        console.log("*YES data*", responseData);
-                        this.setState({
-                            isDigestionDataAvailable: true,
-                            digestionDetails: responseData,
-                            bloatValue: responseData.digestion.digestion_level,
-                            currentDate: currentDate
-                        });
-                    }
-                    else {
-                        console.log("*No data*");
-                        this.setState({
-                            isMoodDataAvailable: false,
-                            digestionDetails: initDigestionDetails(userId, currentDate),
-                            bloatValue: 0,
-                            currentDate: currentDate
-                        });
-                    }
-                })
-                .catch((err) => console.log(err))
-        );
-        //console.log ("Chechi discussed",this.state.isMoodDataAvailable);
-    };
-
     saveDigestionDetails() {
-
-        if (!this.state.isDigestionDataAvailable) {
-            // Add the saved mood level
+      
+    
+            // Add the saved blood level
             let userId = this.state.userDetails.user_id;
             let occurredDate = moment(this.state.currentDate).add(moment().hour(), 'hour').add(moment().minute(), 'minute');
             // Add pain locations
-            let bowelSymptom = null;
-
-
+            let bowelSymptom = null ;
+            
+            
             if (this.state.selectedBowelSymptom.length > 0)
-                bowelSymptom = this.state.selectedBowelSymptom[0];
+            bowelSymptom = this.state.selectedBowelSymptom[0]; 
+       
 
-
-            let digestion = { //sending to the database,if pain type value = 0 then don't send it to the database as it means the user didnt select any tags
+            let digestion = { //sending to the database,if  value = 0 then don't send it to the database as it means the user didnt select any tags
                 user_id: userId,
                 digestion_level: this.state.bloatValue,
-                bowel_symptom: bowelSymptom,
-                occurred_date: localToUtcDateTime(occurredDate),
-
+                bowel_symptom :bowelSymptom, 
+                occurred_date:localToUtcDateTime(occurredDate),
+                
             };
-
-
-            let url = constants.ADDUSERDIGESTION_DEV_URL;
+           
+           
+            let url = constants. ADDUSERDIGESTION_DEV_URL;
             getData(constants.JWTKEY).then((jwt) =>
                 fetch(url, {
                     //calling API
@@ -157,45 +92,33 @@ export default class DigestionCard extends React.Component {
                     body: JSON.stringify(digestion)
                 })
                     .then((response) => {
-                        //console.log(response.json());
                         return response.json();
                     })
             );
         }
-        else {
-
-            alert("Update not implemented yet.");
-        }
-    }
+     
+    
 
     componentDidMount() //after Ui has been uploaded 
-    {
+     {
         getData(constants.USERDETAILS).then((data) => {
             // Read back the user details from storage and convert to object
             this.state.userDetails = JSON.parse(data);
             this.setState({
                 userDetails: JSON.parse(data),
             });
-            this.getUserDigestion();
             this.getBowelSymptoms();
-
+            
         });
     }
+
 
     render() {
 
 
-        let digestionLevel = this.state.digestionDetails && this.state.digestionDetails.digestion && this.state.digestionDetails.digestion.digestion_level || 0;
-        //console.log("***RENDER MOOD LEVEL***",moodLevel)
-
+        let digestionLevel = 0;
         let bowelSymptoms = this.state.bowelSymptoms || []; // get all the possible value from the list item , if not then empty array .
-        let selectedBowelSymptoms = [];
-
-        if (this.state.digestionDetails && this.state.digestionDetails.digestion && this.state.digestionDetails.digestion.bowel_symptom) {
-            selectedBowelSymptoms = mapListItemsToTags([{ list_item_id: this.state.digestionDetails.digestion.bowel_symptom, list_item_name: "Bloated" }]);
-
-
-        }
+        
 
         return (
             <Layout style={TrackingStyles.container}>

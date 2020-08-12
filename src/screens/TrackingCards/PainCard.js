@@ -15,49 +15,7 @@ const { width } = Dimensions.get('window');
 
 
 export default class PainCard extends React.Component {
-    painTags = [
-        {
-            id: 'Stomach',
-            name: 'Stomach'
-        },
-        {
-            id: 'Abdominal',
-            name: 'Abdominal'
-        },
-        {
-            id: 'Gut',
-            name: 'Gut'
-        },
-        {
-            id: 'Left Side',
-            name: 'Left Side'
-        },
-        {
-            id: 'Right Side',
-            name: 'Right Side'
-        },
-        {
-            id: 'Back',
-            name: 'Back'
-        },
-
-    ];
-
-    painTypeTags = [
-        {
-            id: 'Sharp',
-            name: 'Sharp'
-        },
-        {
-            id: 'Dull',
-            name: 'Dull'
-        },
-        {
-            id: 'Throbbing',
-            name: 'Throbbing'
-        },
-
-    ]
+  
 
     constructor(props) {
         super(props);
@@ -73,8 +31,8 @@ export default class PainCard extends React.Component {
             painDetails: initPainDetails(0, moment().format('YYYY-MM-DD')),
             painTypes: [],  //all possible pain types from list item
             painLocations: [], // all possible pain locations from list item
-            isPainDataAvailable: false,
-            currentDate: moment().format('YYYY-MM-DD')// / this.props.route.params.CurrentDate    
+          
+            currentDate: this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD')    
         };
         this.savePainDetails = this.savePainDetails.bind(this);
 
@@ -128,52 +86,10 @@ export default class PainCard extends React.Component {
                 .catch((err) => console.log(err))
         );
     };
-    getUserPain = (route) => {
-
-        let userId = this.state.userDetails.user_id;
-        let currentDate = this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD');
-
-        let url = constants.USERPAIN_DEV_URL.replace("[userId]", userId).replace(
-            "[occurredDate]",
-            localToUtcDateTime(currentDate)
-        );
-        console.log("Url is", url);
-        getData(constants.JWTKEY).then((jwt) =>
-            fetch(url, {
-                //calling API
-                method: "GET",
-                headers: {
-                    Authorization: "Bearer " + jwt, //Passing this will authorize the user
-                },
-            })
-                .then((response) => response.json())
-
-                .then((responseData) => {
-                    // If responseData is not empty, then isPainDataAvailable = true
-                    console.log("PAIN CARD Get User Pain Respnse", responseData);
-                    if (Object.keys(responseData).length) {
-                        this.setState({
-                            isPainDataAvailable: true,
-                            painDetails: responseData,
-                            painValue: responseData.pain.pain_level,
-                            currentDate: currentDate
-                        });
-                    }
-                    else {
-                        this.setState({
-                            isPainDataAvailable: false,
-                            painDetails: initPainDetails(userId, currentDate),
-                            painValue: 0,
-                            currentDate: currentDate
-                        });
-                    }
-                })
-                .catch((err) => console.log(err))
-        );
-    };
+    
     savePainDetails() {
      
-        if (!this.state.isPainDataAvailable) {
+       
             // Add the saved pain level
             let userId = this.state.userDetails.user_id;
             let occurredDate = moment(this.state.currentDate).add(moment().hour(), 'hour').add(moment().minute(), 'minute');
@@ -190,7 +106,7 @@ export default class PainCard extends React.Component {
                 painType = this.state.selectedPainTypes[0]; 
           
 
-            let pain = { //sending to the database,if pian type value = 0 then don't send it to the database as it means the user didnt select any tags
+            let pain = { //sending to the database,if pain type value = 0 then don't send it to the database as it means the user didnt select any tags
                 user_id: userId,
                 pain_level: this.state.painValue,
                 pain_type : painType, 
@@ -211,15 +127,11 @@ export default class PainCard extends React.Component {
                     body: JSON.stringify(pain)
                 })
                     .then((response) => {
-                       // console.log(response.json());
+                   
                         return response.json();
                     })
             );
-        }
-        else {
-            
-            alert("Update not implemented yet.");
-        }
+        
     }
     componentDidMount() //after Ui has been uploaded 
      {
@@ -229,26 +141,17 @@ export default class PainCard extends React.Component {
             this.setState({
                 userDetails: JSON.parse(data),
             });
-            this.getUserPain();
             this.getPainTypes();
             this.getPainLocations();
         });
     }
     render() {
        
-        let painLevel = this.state.painDetails && this.state.painDetails.pain && this.state.painDetails.pain.pain_level || 0;
-        let painLocations = this.state.painLocations || [];
-        let selectedPainLocations = [];
-        if (this.state.painDetails && this.state.painDetails.pain && this.state.painDetails.pain.locations) {
-            selectedPainLocations = mapListItemsToTags(this.state.painDetails.pain.locations);
-            console.log(selectedPainLocations)
-        }
-        let painTypes = this.state.painTypes || [] ; // get all the possible value from the list item , if not then empty array .
-        let selectedPainTypes = [];
+        let painLevel = 0
         
-        if (this.state.painDetails && this.state.painDetails.pain && this.state.painDetails.pain.pain_type) {
-            selectedPainTypes = mapListItemsToTags([{list_item_id: this.state.painDetails.pain.pain_type,list_item_name:"Sharp"}]);
-        }
+        let painLocations = this.state.painLocations || [];
+        let painTypes = this.state.painTypes || [] ; // get all the possible value from the list item , if not then empty array .
+    
         return (
 
             <Layout style={TrackingStyles.container}
@@ -302,7 +205,6 @@ export default class PainCard extends React.Component {
                         <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('13%'), fontSize: wp('4%'), fontWeight: '500' }}>Where is your pain located?</Text>
 
                         <View style={{ top: hp('14%'), left: wp('-2%') }}>
-                            <Text> Selected: {selectedPainLocations.map(tag => `${tag} `)} </Text>
 
                             <TagSelector
 
