@@ -56,7 +56,6 @@ export default class MoodCard extends React.Component {
         );
     };
     saveMoodDetails() {
-      
     
             // Add the saved mood level
             let userId = this.state.userDetails.user_id;
@@ -90,7 +89,6 @@ export default class MoodCard extends React.Component {
                     body: JSON.stringify(mood)
                 })
                     .then((response) => {
-                        //console.log(response.json());
                         return response.json();
                     })
             );

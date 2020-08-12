@@ -25,8 +25,6 @@ import { constants } from "../resources/Constants";
 import { utcToLocal, localToUtcDate, localToUtcDateTime } from "../helpers/DateHelpers";
 import { FlatList } from "react-native-gesture-handler";
 import { initMoodDetails } from "../models/MoodDetails";
-import { Root, Popup } from 'popup-ui'
-
 
 var painSymptoms= [];
 var moodSymptoms= [];
@@ -62,7 +60,7 @@ export default class Home extends React.Component {
 
       // If any data is available, then we need to display the card
       isAnyDataAvailable: false,
-      // The symptom data/ cards to be populated only after all symptom data has been loaded
+      // The symptom data/cards to be populated only after all symptom data has been loaded
       isAllDataLoaded: false
     };
     this.setDate= this.setDate.bind(this);
@@ -109,8 +107,11 @@ export default class Home extends React.Component {
             ) : (<></>)}
             {item.medicationTypeText ? 
               ( <>
-                <Text style={{ left: wp('27%'), top: hp('-14%'), color: "#8A8A8E", fontWeight: '500' }}>{item.medicationTypeText} {item.medicationType}</Text>
-                <Text style={{ left: wp('27%'), top: hp('-14%'), color: "#8A8A8E", fontWeight: '500' }}>{item.medicationTimeText} {item.medicationTime}</Text>
+                <Text style={{ left: wp('27%'), top: hp('-19%'), color: "#8A8A8E", fontWeight: '500' }}>{item.medicationTypeText} {item.medicationType}</Text>
+                <Text style={{ left: wp('27%'), top: hp('-19%'), color: "#8A8A8E", fontWeight: '500' }}>{item.medicationTimeText} {item.medicationTime}</Text>
+                <Text style={{ left: wp('27%'), top: hp('-19%'), color: "#8A8A8E", fontWeight: '500' }}>{item.quantityText} {item.quantity}</Text>
+                <Text style={{ left: wp('27%'), top: hp('-19%'), color: "#8A8A8E", fontWeight: '500' }}>{item.medTagText} {item.medTags}</Text>
+
                 </>
               ) 
               : (<></>)}
@@ -125,19 +126,9 @@ export default class Home extends React.Component {
   setDate(newDate) 
   {
     this.resetState();
-    console.log("SELECTED DATE", newDate);
     this.setState({
       currentDate: newDate
     }, () => this.getUserSymptoms());
-  }
-  popUp = () => 
-  {
-    
-    
-         alert(
-        "Hello");
-    
-
   }
   resetState()
   {
@@ -156,7 +147,6 @@ export default class Home extends React.Component {
   }
 
   loadPainSymptomData(painDetails) {
-    console.log("Loading Pain Data...");
     var id = 0;
     painSymptoms = [];
     painDetails.forEach((painData, index) => {
@@ -169,20 +159,19 @@ export default class Home extends React.Component {
                 tagText: 'Pain Type:',
                 image: require("../../assets/painia.png"),
                 PainTag: painData.pain.locations,
+                tagLocText: 'Pain Location:',
                 available: true,
                 tags: painData.pain.pain_type_name,
             };
       painSymptoms.push(symptom);
       id = id + 1;
     });
-    console.log("Completed loading pain symptom data");
   }
 
   loadMoodSymptomData(moodDetails)
   {
     var id = 0;
     moodSymptoms = [];
-    console.log("Loading Mood Data...");
     moodDetails.forEach((moodData, index) => {
       var symptom =  {
           id: id,
@@ -198,41 +187,36 @@ export default class Home extends React.Component {
         moodSymptoms.push(symptom);
         id = id + 1;
       });
-      console.log("Completed loading mood symptom data");
     }
 
     loadMedicationData(medicationDetails) 
     {
         var id = 0;
         medicationSymptoms = [];
-        console.log("Loading Meds Data...");
         medicationDetails.forEach((medicationData, index) => {
             var symptom =  {
                 id: id,
                 name: 'Medication',
                 logTime: moment(medicationData.medication.occurred_date).format("hh:mm A"),
-                tags: medicationData.medication.medication_side_effects,
-                tagText: 'Side Effect:',
+                medTags: medicationData.medication.medication_side_effects,
+                medTagText: 'Side Effect:',
                 medicationTypeText: 'Medication Type:',
 	              medicationType:medicationData.medication.medication_type,
 	              medicationTimeText: 'Time Taken:',
 	              medicationTime: medicationData.medication.medication_time_taken,
-	              levelText: 'Quantity:',
-                level: medicationData.medication.medication_quantity,
+	              quantityText: 'Quantity:',
+                quantity: medicationData.medication.medication_quantity,
                 image: require("../../assets/medicationia.png"),
-                available: true
-                
+                available: true 
                 };
             medicationSymptoms.push(symptom);
             id = id + 1;
         });
-        console.log("Completed loading meds symptom data");
     }
     loadBloodSymptomData(bloodDetails)
     {
       var id = 0;
       bloodSymptoms = [];
-      console.log("Loading Blood Data...");
       bloodDetails.forEach((bloodData, index) => {
         var symptom =  {
             id: id,
@@ -248,14 +232,12 @@ export default class Home extends React.Component {
           bloodSymptoms.push(symptom);
           id = id + 1;
     });
-    console.log("Completed loading blood symptom data");
     }
 
     loadDietData(dietDetails)
     {
       var id = 0;
       dietSymptoms = [];
-      console.log("Loading Diet Data...");
       dietDetails.forEach((dietData, index) => {
         var symptom =  {
             id: id,
@@ -271,14 +253,12 @@ export default class Home extends React.Component {
           dietSymptoms.push(symptom);
           id = id + 1;
     });
-    console.log("Completed loading diet symptom data");
     }
 
     loadExerciseData(exerciseDetails)
     {
       var id = 0;
       exerciseSymptoms = [];
-      console.log("Loading Exercise Data...");
       exerciseDetails.forEach((exerciseData, index) => {
         var symptom =  {
             id: id,
@@ -294,14 +274,12 @@ export default class Home extends React.Component {
           exerciseSymptoms.push(symptom);
           id = id + 1;
       });
-      console.log("Completed loading exercise symptom data");
     }
 
     loadDigestionData(digestionDetails)
     {
       var id = 0;
       digestionSymptoms = [];
-      console.log("Loading Digestion Data...");
       digestionDetails.forEach((digestionData, index) => {
         var symptom =  {
             id: id,
@@ -317,14 +295,12 @@ export default class Home extends React.Component {
           digestionSymptoms.push(symptom);
           id = id + 1;
     });
-    console.log("Completed loading digestion symptom data");
     }
 
     loadSexData(sexDetails)
     {
       var id = 0;
       sexSymptoms = [];
-      console.log("Loading Sex Data...");
       sexDetails.forEach((sexData, index) => {
         var symptom =  {
             id: id,
@@ -340,7 +316,6 @@ export default class Home extends React.Component {
           sexSymptoms.push(symptom);
           id = id + 1;
     });
-    console.log("Completed loading sex symptom data");
     }
 
 
@@ -411,17 +386,6 @@ export default class Home extends React.Component {
             sexDetails = responseData.sexRecords;
           } 
 
-          // this.setState({
-          //   isAnyDataAvailable: isAnyDataAvailable,
-          //   painDetails: painDetails,
-          //   moodDetails: moodDetails,
-          //   medicationDetails: medicationDetails,
-          //   bloodDetails: bloodDetails,
-          //   dietDetails: dietDetails,
-          //   digestionDetails: digestionDetails,
-          //   exerciseDetails: exerciseDetails,
-          //   sexDetails: sexDetails            
-          // });
 
           if (painDetails.length) this.loadPainSymptomData(painDetails);
           if (moodDetails.length) this.loadMoodSymptomData(moodDetails);
@@ -446,7 +410,6 @@ export default class Home extends React.Component {
       // To load symptoms for the selected date after tracking as the home screen is already mounted and only comes into focus
       this.getUserSymptoms();
     });
-    console.log("Component Date is", this.state.currentDate);
     getData(constants.USERDETAILS).then((data) => {
       // Read back the user details from storage and convert to object
       this.setState({
@@ -457,7 +420,6 @@ export default class Home extends React.Component {
 }
 
   render() {
-    console.log("RENDER ALL DATA LOADED?", this.state.isAllDataLoaded);
     return (
       <Layout style={styles.container}>
         <TopNavigation position="absolute" />
@@ -469,7 +431,6 @@ export default class Home extends React.Component {
             style={{
               color: "#FFFFFF",
               fontSize: wp('7%'),
-              //lineHeight: 30,
               letterSpacing: wp('0%'),
               includeFontPadding: true,
               textAlign: "left",
@@ -508,7 +469,6 @@ export default class Home extends React.Component {
               top: hp('8%'),
               height: hp('15%'),
               width: wp('130%'),
-              // paddingTop: hp('2%'),
               paddingBottom: hp('5.2%'),
             }}
             calendarHeaderStyle={{ color: "white", top: hp('0'), fontWeight: '400' }}
@@ -666,7 +626,6 @@ export default class Home extends React.Component {
             this.props.navigation.navigate("Track", {
               currentDate: this.state.currentDate,
             })
-            //console.log("On Press", this.state.currentDate)
           }
         >
           <Image
@@ -704,7 +663,6 @@ const styles = StyleSheet.create({
     width: wp('90%'),
     borderRadius: 20,
     flexDirection: "row",
-    // height: hp('40%'),
     alignSelf: "flex-start",
     top: hp('-20%'),
     alignItems: "center",

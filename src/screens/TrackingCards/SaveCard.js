@@ -44,7 +44,6 @@ export default class SaveCard extends React.Component {
           <Card
             disabled={true}
             style={TrackingStyles.cardStyle}
-          //navigation={this.props.navigation}
           
           >
           <TouchableOpacity onPress={() => {

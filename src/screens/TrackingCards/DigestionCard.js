@@ -58,7 +58,6 @@ export default class DigestionCard extends React.Component {
 
     saveDigestionDetails() {
       
-    
             // Add the saved blood level
             let userId = this.state.userDetails.user_id;
             let occurredDate = moment(this.state.currentDate).add(moment().hour(), 'hour').add(moment().minute(), 'minute');
@@ -97,8 +96,6 @@ export default class DigestionCard extends React.Component {
             );
         }
      
-    
-
     componentDidMount() //after Ui has been uploaded 
      {
         getData(constants.USERDETAILS).then((data) => {
@@ -112,14 +109,10 @@ export default class DigestionCard extends React.Component {
         });
     }
 
-
     render() {
-
-
         let digestionLevel = 0;
         let bowelSymptoms = this.state.bowelSymptoms || []; // get all the possible value from the list item , if not then empty array .
         
-
         return (
             <Layout style={TrackingStyles.container}>
                 <TouchableOpacity onPress={() => { this.setDigestionVisible(true); }}>

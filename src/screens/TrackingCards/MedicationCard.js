@@ -18,21 +18,7 @@ import { initMedicationDetails } from '../../models/MedicationDetails';
 const { width } = Dimensions.get('window');
 
 export default class MedicationCard extends React.Component {
-    sideEffectTags = [
-        {
-            id: 'Dizziness',
-            name: 'Dizziness'
-        },
-        {
-            id: 'Sleepiness',
-            name: 'Sleepiness'
-        },
-        {
-            id: 'Headache',
-            name: 'Headache'
-        },
-
-    ]
+    
     constructor(props) {
         super(props);
         this.state = {medicationVisible: false}; 
@@ -74,10 +60,8 @@ export default class MedicationCard extends React.Component {
         );
     };
 
-
     saveMedicationDetails() {
-      
-   
+
             // Add the saved med level
             let userId = this.state.userDetails.user_id;
             let occuredDate = moment(this.state.currentDate).add(moment().hour(), 'hour').add(moment().minute(), 'minute');
@@ -95,7 +79,6 @@ export default class MedicationCard extends React.Component {
                 occured_date: localToUtcDateTime(occuredDate),
                 
             };
-           
            
             let url = constants.ADDUSERMEDICATION_DEV_URL;
             getData(constants.JWTKEY).then((jwt) =>
@@ -125,23 +108,17 @@ export default class MedicationCard extends React.Component {
                 userDetails: JSON.parse(data),
             });
             this.getMedicationSideEffects(); 
-            
-            
+                 
         });
     }
         
-
-
     render() {
-        
-        
         
         let  medicationSideEffects = this.state.medicationSideEffects || [] ; // get all the possible value from the list item , if not then empty array .
         let  medicationType = this.state.medicationType || "";
         let  medicationQuantity = this.state.medicationQuantity || "";
         let  medicationTimeTaken= this.state.medicationTimeTaken ||"";
-       
-
+    
         return (
             <Layout style={TrackingStyles.container}>
                 <TouchableOpacity onPress={() => { this.setMedicationVisible(true); }}>
@@ -179,9 +156,7 @@ export default class MedicationCard extends React.Component {
                             onChangeText={
                                 // Set this.state.email to the value in this Input box
                                 (value) => this.setState({ medicationType: value })
-                            }
-
-                        />
+                            }/>
 
                         <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('8%'), fontSize: wp('4%'), fontWeight: '500' }}>Time Taken</Text>
                         <Input

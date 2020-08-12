@@ -36,22 +36,15 @@ export default class ForgotPassword extends Component {
 // Upon confirmation redirect the user to the Sign In page
  forgotPasswordSubmit= () => {
   const { username, authCode, newPassword } = this.state
-  console.log(username)
-  console.log("print")
-  console.log(authCode)
-  console.log(newPassword)
 Auth.forgotPasswordSubmit(username,authCode,newPassword)
   .then(() => {
     this.props.navigation.navigate('Login')
-    console.log('the New password submitted successfully')
     alert('The new password submitted successfully')
   })
   .catch(err => {
     if (! err.message) {
-      console.log('Error while confirming the new password: ', err)
       alert('Error while confirming the new password: ', err)
     } else {
-      console.log('Error while confirming the new password: ', err.message)
       alert('Error while confirming the new password: ', err.message)
     }
   })
@@ -103,14 +96,9 @@ return (
                 style={ForgotStyles.emailInput}
                 placeholder='Username'
                 label='Username'
-                //value={emailValue}
-               // onChangeText={nextValue => setEmailValue(nextValue)}
                 onChangeText={
-                // Set this.state.email to the value in this Input box
+                // Set this.state.username to the value in this Input box
                 (value) => this.setState({username: value }) }
-
-             
-            
                 placeholderTextColor={'#f09874'}
                 backgroundColor = '#fff'
                 color={'black'}
@@ -121,15 +109,11 @@ return (
                 status='warning'
                 
                 onPress={this.forgotPassword}>Request verification code</Button>
-               {/* // onPress={() => navigation.navigate('Home')} */}
-
-
+             
             <Input
                 style={ForgotStyles.newPassword}
                 placeholder='New Password'
                 label='New Password'
-                //value={emailValue}
-               // onChangeText={nextValue => setEmailValue(nextValue)}
                 onChangeText={
                 // Set this.state.email to the value in this Input box
                 (value) => this.setState({newPassword: value }) }
@@ -140,49 +124,24 @@ return (
 
 
             />
-
-{/* <Input
-                style={ForgotStyles.emailInput}
-                placeholder='old password'
-                label='Old Password'
-                //value={emailValue}
-               // onChangeText={nextValue => setEmailValue(nextValue)}
-                onChangeText={
-                // Set this.state.email to the value in this Input box
-                (value) => this.setState({ passwordOld: value })}
-                placeholderTextColor={'#f09874'}
-                color={'black'}
-                height={28}
-
-
-            /> */}
- 
-            
+  
             <Input
                 style={ForgotStyles.confirmCode}
                 placeholder='Code'
                 label='Confirmation code'
-               // value={emailValue}
-               // onChangeText={nextValue => setEmailValue(nextValue)}
                 onChangeText={
-                // Set this.state.email to the value in this Input box
+                // Set this.state.code to the value in this Input box
                 (value) => this.setState({authCode: value }) }
                 placeholderTextColor={'#f09874'}
                 color={'black'}
                 height={28}
 
             />
-
-            {/* <Text style={ForgotStyles.headerText}>Forgot Password? No Worries</Text> */}
-
-            <Button style={ForgotStyles.submitBtnContainer}
+           <Button style={ForgotStyles.submitBtnContainer}
                 appearance='outline'
                 status='warning'
-                
                 onPress={this.forgotPasswordSubmit}>Confirm new password</Button>
-               {/* // onPress={() => navigation.navigate('Home')} */}
-
-               
+                      
         </Layout>
         </KeyboardAvoidingView>
 
