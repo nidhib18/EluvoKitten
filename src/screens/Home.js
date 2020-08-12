@@ -8,6 +8,7 @@ import {
   Image,
   TouchableOpacity,
   ImageBackground,
+  ListView,
 } from "react-native";
 import {
   TopNavigation,
@@ -28,14 +29,14 @@ import { initMoodDetails } from "../models/MoodDetails";
 // import { Root, Popup } from 'popup-ui'
 
 
-var painSymptoms= [];
-var moodSymptoms= [];
-var bloodSymptoms=[]; 
+var painSymptoms = [];
+var moodSymptoms = [];
+var bloodSymptoms = [];
 var medicationSymptoms = [];
 var dietSymptoms = [];
-var digestionSymptoms =[];
+var digestionSymptoms = [];
 var exerciseSymptoms = [];
-var sexSymptoms =[];
+var sexSymptoms = [];
 
 const { Width } = Dimensions.get("window");
 let datesWhitelist = [
@@ -64,19 +65,19 @@ export default class Home extends React.Component {
       // The symptom data/ cards to be populated only after all symptom data has been loaded
       isAllDataLoaded: false
     };
-    this.setDate= this.setDate.bind(this);
-    this.getUserSymptoms= this.getUserSymptoms.bind(this);
+    this.setDate = this.setDate.bind(this);
+    this.getUserSymptoms = this.getUserSymptoms.bind(this);
 
     this.loadPainSymptomData = this.loadPainSymptomData.bind(this);
     this.loadMoodSymptomData = this.loadMoodSymptomData.bind(this);
     this.loadMedicationData = this.loadMedicationData.bind(this);
-    this.loadBloodSymptomData=this.loadBloodSymptomData.bind(this);
+    this.loadBloodSymptomData = this.loadBloodSymptomData.bind(this);
     this.loadDietData = this.loadDietData.bind(this);
     this.loadDigestionData = this.loadDigestionData.bind(this);
     this.loadExerciseData = this.loadExerciseData.bind(this);
     this.loadSexData = this.loadSexData.bind(this);
     this.resetState = this.resetState.bind(this);
-   
+
   }
 
   renderItem = ({ item }) => {
@@ -86,13 +87,13 @@ export default class Home extends React.Component {
         {item.available ? (
           <View >
             {item.id == 0 ? (<View style={styles.symptomView}>
-            <Image style={styles.painIcon} source={item.image}></Image>
-            <Text style={styles.symptomText}>{item.name}</Text></View>) : (<></>)} 
-          
+              <Image style={styles.painIcon} source={item.image}></Image>
+              <Text style={styles.symptomText}>{item.name}</Text></View>) : (<></>)}
+
             <Text style={{ left: wp('27%'), top: hp('-12%'), color: "#8A8A8E", fontWeight: '500' }}>{item.levelText} {item.level}</Text>
             <Text style={styles.logText}> {item.logTime}</Text>
             <Text style={{ left: wp('27%'), top: hp('-14%'), color: "#8A8A8E", fontWeight: '500' }}>{item.tagText} {item.tags}</Text>
-           
+
             {item.PainTag ? (
               <Text style={{
                 left: wp('27%'), top: hp('-14%'), color: "#8A8A8E", fontWeight: '500', alignSelf: "flex-start",
@@ -107,52 +108,52 @@ export default class Home extends React.Component {
               })}
               </Text>
             ) : (<></>)}
-            {item.medicationTypeText ? 
-              ( <>
-                <Text style={{ left: wp('27%'), top: hp('-14%'), color: "#8A8A8E", fontWeight: '500' }}>{item.medicationTypeText} {item.medicationType}</Text>
-                <Text style={{ left: wp('27%'), top: hp('-14%'), color: "#8A8A8E", fontWeight: '500' }}>{item.medicationTimeText} {item.medicationTime}</Text>
-                </>
-              ) 
+            {item.medicationTypeText ?
+              (<>
+                <Text style={{ left: wp('27%'), top: hp('-19%'), color: "#8A8A8E", fontWeight: '500' }}>{item.medicationTypeText} {item.medicationType}</Text>
+                <Text style={{ left: wp('27%'), top: hp('-19%'), color: "#8A8A8E", fontWeight: '500' }}>{item.medicationTimeText} {item.medicationTime}</Text>
+                <Text style={{ left: wp('27%'), top: hp('-19%'), color: "#8A8A8E", fontWeight: '500' }}>{item.quantityText} {item.quantity}</Text>
+                <Text style={{ left: wp('27%'), top: hp('-19%'), color: "#8A8A8E", fontWeight: '500' }}>{item.medTagText} {item.medTags}</Text>
+                
+              </>
+              )
               : (<></>)}
 
 
-            </View>
-       ) : (<></>)}
+          </View>
+        ) : (<></>)}
       </View>
 
     )
   }
-  setDate(newDate) 
-  {
+  setDate(newDate) {
     this.resetState();
     console.log("SELECTED DATE", newDate);
     this.setState({
       currentDate: newDate
     }, () => this.getUserSymptoms());
   }
-  popUp = () => 
-  {
-    
-    
-         alert(
-        "Hello");
-    
+  popUp = () => {
+
+
+    alert(
+      "Hello");
+
 
   }
-  resetState()
-  {
+  resetState() {
     this.setState({
-        isAnyDataAvailable: false,
-        isAllDataLoaded: false
-      });
-      painSymptoms= [];
-      moodSymptoms= [];
-      bloodSymptoms=[]; 
-      medicationSymptoms = [];
-      dietSymptoms = [];
-      digestionSymptoms =[];
-      exerciseSymptoms = [];
-      sexSymptoms =[];  
+      isAnyDataAvailable: false,
+      isAllDataLoaded: false
+    });
+    painSymptoms = [];
+    moodSymptoms = [];
+    bloodSymptoms = [];
+    medicationSymptoms = [];
+    dietSymptoms = [];
+    digestionSymptoms = [];
+    exerciseSymptoms = [];
+    sexSymptoms = [];
   }
 
   loadPainSymptomData(painDetails) {
@@ -160,193 +161,187 @@ export default class Home extends React.Component {
     var id = 0;
     painSymptoms = [];
     painDetails.forEach((painData, index) => {
-      var symptom =  {
-                id: id,
-                name: 'Pain',
-                level: painData.pain.pain_level,
-                levelText: 'Pain level:',
-                logTime: moment(painData.pain.occurred_date).format("hh:mm A"),
-                tagText: 'Pain Type:',
-                image: require("../../assets/painia.png"),
-                PainTag: painData.pain.locations,
-                available: true,
-                tags: painData.pain.pain_type_name,
-            };
+      var symptom = {
+        id: id,
+        name: 'Pain',
+        level: painData.pain.pain_level,
+        levelText: 'Pain level:',
+        logTime: moment(painData.pain.occurred_date).format("hh:mm A"),
+        tagText: 'Pain Type:',
+        tagLocText: 'Pain Location:',
+        image: require("../../assets/painia.png"),
+        PainTag: painData.pain.locations,
+        available: true,
+        tags: painData.pain.pain_type_name,
+      };
       painSymptoms.push(symptom);
       id = id + 1;
     });
     console.log("Completed loading pain symptom data");
   }
 
-  loadMoodSymptomData(moodDetails)
-  {
+  loadMoodSymptomData(moodDetails) {
     var id = 0;
     moodSymptoms = [];
     console.log("Loading Mood Data...");
     moodDetails.forEach((moodData, index) => {
-      var symptom =  {
-          id: id,
-          name: 'Mood',
-          level: moodData.mood.mood_level,
-          levelText: 'Mood level:',
-          logTime: moment(moodData.mood.occurred_date).format("hh:mm A"),
-          tags: moodData.mood.mood_description_name,
-          available: true,
-          tagText: 'Mood Type:',
-          image: require("../../assets/moodia.png")
-        };
-        moodSymptoms.push(symptom);
-        id = id + 1;
-      });
-      console.log("Completed loading mood symptom data");
-    }
+      var symptom = {
+        id: id,
+        name: 'Mood',
+        level: moodData.mood.mood_level,
+        levelText: 'Mood level:',
+        logTime: moment(moodData.mood.occurred_date).format("hh:mm A"),
+        tags: moodData.mood.mood_description_name,
+        available: true,
+        tagText: 'Mood Type:',
+        image: require("../../assets/moodia.png")
+      };
+      moodSymptoms.push(symptom);
+      id = id + 1;
+    });
+    console.log("Completed loading mood symptom data");
+  }
 
-    loadMedicationData(medicationDetails) 
-    {
-        var id = 0;
-        medicationSymptoms = [];
-        console.log("Loading Meds Data...");
-        medicationDetails.forEach((medicationData, index) => {
-            var symptom =  {
-                id: id,
-                name: 'Medication',
-                logTime: moment(medicationData.medication.occurred_date).format("hh:mm A"),
-                tags: medicationData.medication.medication_side_effects,
-                tagText: 'Side Effect:',
-                medicationTypeText: 'Medication Type:',
-	              medicationType:medicationData.medication.medication_type,
-	              medicationTimeText: 'Time Taken:',
-	              medicationTime: medicationData.medication.medication_time_taken,
-	              levelText: 'Quantity:',
-                level: medicationData.medication.medication_quantity,
-                image: require("../../assets/medicationia.png"),
-                available: true
-                
-                };
-            medicationSymptoms.push(symptom);
-            id = id + 1;
-        });
-        console.log("Completed loading meds symptom data");
-    }
-    loadBloodSymptomData(bloodDetails)
-    {
-      var id = 0;
-      bloodSymptoms = [];
-      console.log("Loading Blood Data...");
-      bloodDetails.forEach((bloodData, index) => {
-        var symptom =  {
-            id: id,
-            name: 'Blood',
-            level: bloodData.blood.bleeding_level,
-            levelText: 'Blood level:',
-            logTime: moment( bloodData.blood.occurred_date).format("hh:mm A"),
-            tags:  bloodData.blood.period_product_name,
-            available: true,
-            tagText: 'Period product:',
-            image: require("../../assets/bloodia.png")
-          };
-          bloodSymptoms.push(symptom);
-          id = id + 1;
+  loadMedicationData(medicationDetails) {
+    var id = 0;
+    medicationSymptoms = [];
+    console.log("Loading Meds Data...");
+    medicationDetails.forEach((medicationData, index) => {
+      var symptom = {
+        id: id,
+        name: 'Medication',
+        logTime: moment(medicationData.medication.occurred_date).format("hh:mm A"),
+        medTags: medicationData.medication.medication_side_effects,
+        medTagText: 'Side Effect:',
+        medicationTypeText: 'Medication Type:',
+        medicationType: medicationData.medication.medication_type,
+        medicationTimeText: 'Time Taken:',
+        medicationTime: medicationData.medication.medication_time_taken,
+        quantityText: 'Quantity:',
+        quantity: medicationData.medication.medication_quantity,
+        image: require("../../assets/medicationia.png"),
+        available: true
+
+      };
+      medicationSymptoms.push(symptom);
+      id = id + 1;
+    });
+    console.log("Completed loading meds symptom data");
+  }
+  loadBloodSymptomData(bloodDetails) {
+    var id = 0;
+    bloodSymptoms = [];
+    console.log("Loading Blood Data...");
+    bloodDetails.forEach((bloodData, index) => {
+      var symptom = {
+        id: id,
+        name: 'Blood',
+        level: bloodData.blood.bleeding_level,
+        levelText: 'Blood level:',
+        logTime: moment(bloodData.blood.occurred_date).format("hh:mm A"),
+        tags: bloodData.blood.period_product_name,
+        available: true,
+        tagText: 'Period product:',
+        image: require("../../assets/bloodia.png")
+      };
+      bloodSymptoms.push(symptom);
+      id = id + 1;
     });
     console.log("Completed loading blood symptom data");
-    }
+  }
 
-    loadDietData(dietDetails)
-    {
-      var id = 0;
-      dietSymptoms = [];
-      console.log("Loading Diet Data...");
-      dietDetails.forEach((dietData, index) => {
-        var symptom =  {
-            id: id,
-            name: 'Diet',
-            level: dietData.diet.diet_level,
-            levelText: 'Diet level:',
-            logTime: moment(dietData.diet.occurred_date).format("hh:mm A"),
-            tags: dietData.diet.food_type_name,
-            available: true,
-            tagText: 'Food:',
-            image: require("../../assets/dietia.png")
-          };
-          dietSymptoms.push(symptom);
-          id = id + 1;
+  loadDietData(dietDetails) {
+    var id = 0;
+    dietSymptoms = [];
+    console.log("Loading Diet Data...");
+    dietDetails.forEach((dietData, index) => {
+      var symptom = {
+        id: id,
+        name: 'Diet',
+        level: dietData.diet.diet_level,
+        levelText: 'Diet level:',
+        logTime: moment(dietData.diet.occurred_date).format("hh:mm A"),
+        tags: dietData.diet.food_type_name,
+        available: true,
+        tagText: 'Food:',
+        image: require("../../assets/dietia.png")
+      };
+      dietSymptoms.push(symptom);
+      id = id + 1;
     });
     console.log("Completed loading diet symptom data");
-    }
+  }
 
-    loadExerciseData(exerciseDetails)
-    {
-      var id = 0;
-      exerciseSymptoms = [];
-      console.log("Loading Exercise Data...");
-      exerciseDetails.forEach((exerciseData, index) => {
-        var symptom =  {
-            id: id,
-            name: 'Exercise',
-            level: exerciseData.exercise.exercise_level,
-            levelText: 'Exercise level:',
-            logTime: moment( exerciseData.exercise.occurred_date).format("hh:mm A"),
-            tags:exerciseData.exercise.exercise_type_name,
-            available: true,
-            tagText: 'Exercise type:',
-            image: require("../../assets/exerciseia.png")
-          };
-          exerciseSymptoms.push(symptom);
-          id = id + 1;
-      });
-      console.log("Completed loading exercise symptom data");
-    }
+  loadExerciseData(exerciseDetails) {
+    var id = 0;
+    exerciseSymptoms = [];
+    console.log("Loading Exercise Data...");
+    exerciseDetails.forEach((exerciseData, index) => {
+      var symptom = {
+        id: id,
+        name: 'Exercise',
+        level: exerciseData.exercise.exercise_level,
+        levelText: 'Exercise level:',
+        logTime: moment(exerciseData.exercise.occurred_date).format("hh:mm A"),
+        tags: exerciseData.exercise.exercise_type_name,
+        available: true,
+        tagText: 'Exercise type:',
+        image: require("../../assets/exerciseia.png")
+      };
+      exerciseSymptoms.push(symptom);
+      id = id + 1;
+    });
+    console.log("Completed loading exercise symptom data");
+  }
 
-    loadDigestionData(digestionDetails)
-    {
-      var id = 0;
-      digestionSymptoms = [];
-      console.log("Loading Digestion Data...");
-      digestionDetails.forEach((digestionData, index) => {
-        var symptom =  {
-            id: id,
-            name: 'Digestion',
-            level: digestionData.digestion.digestion_level,
-            levelText: 'Digestion level:',
-            logTime: moment( digestionData.digestion.occurred_date).format("hh:mm A"),
-            tags: digestionData.digestion.bowel_symptom_name,
-            available: true,
-            tagText: 'Bowel symptom:',
-            image: require("../../assets/digestionia.png")
-          };
-          digestionSymptoms.push(symptom);
-          id = id + 1;
+  loadDigestionData(digestionDetails) {
+    var id = 0;
+    digestionSymptoms = [];
+    console.log("Loading Digestion Data...");
+    digestionDetails.forEach((digestionData, index) => {
+      var symptom = {
+        id: id,
+        name: 'Digestion',
+        level: digestionData.digestion.digestion_level,
+        levelText: 'Digestion level:',
+        logTime: moment(digestionData.digestion.occurred_date).format("hh:mm A"),
+        tags: digestionData.digestion.bowel_symptom_name,
+        available: true,
+        tagText: 'Bowel symptom:',
+        image: require("../../assets/digestionia.png")
+      };
+      digestionSymptoms.push(symptom);
+      id = id + 1;
     });
     console.log("Completed loading digestion symptom data");
-    }
+  }
 
-    loadSexData(sexDetails)
-    {
-      var id = 0;
-      sexSymptoms = [];
-      console.log("Loading Sex Data...");
-      sexDetails.forEach((sexData, index) => {
-        var symptom =  {
-            id: id,
-            name: 'Sex',
-            level: sexData.sex.sex_level,
-            levelText: 'Sex level:',
-            logTime: moment( sexData.sex.occurred_date).format("hh:mm A"),
-            tags:sexData.sex.sexual_activity_name,
-            available: true,
-            tagText: 'Sexual activity:',
-            image: require("../../assets/sexia.png")
-          };
-          sexSymptoms.push(symptom);
-          id = id + 1;
+  loadSexData(sexDetails) {
+    var id = 0;
+    sexSymptoms = [];
+    console.log("Loading Sex Data...");
+    sexDetails.forEach((sexData, index) => {
+      var symptom = {
+        id: id,
+        name: 'Sex',
+        level: sexData.sex.sex_level,
+        levelText: 'Sex level:',
+        logTime: moment(sexData.sex.occurred_date).format("hh:mm A"),
+        tags: sexData.sex.sexual_activity_name,
+        available: true,
+        tagText: 'Sexual activity:',
+        image: require("../../assets/sexia.png")
+      };
+      sexSymptoms.push(symptom);
+      id = id + 1;
     });
     console.log("Completed loading sex symptom data");
-    }
+  }
 
 
   getUserSymptoms() {
     let userId = this.state.userDetails.user_id;
-    let url = constants.USERPAIN_DEV_URL.replace("[userId]", userId).replace( 
+    let url = constants.USERPAIN_DEV_URL.replace("[userId]", userId).replace(
       "[occurredDate]",
       localToUtcDateTime(this.state.currentDate)
     );
@@ -354,10 +349,10 @@ export default class Home extends React.Component {
     var isAnyDataAvailable = false;
     var painDetails = [];
     var moodDetails = [];
-    var bloodDetails =[];
+    var bloodDetails = [];
     var dietDetails = [];
-    var digestionDetails=[];
-    var exerciseDetails =[];
+    var digestionDetails = [];
+    var exerciseDetails = [];
     var sexDetails = [];
     var medicationDetails = [];
 
@@ -368,48 +363,42 @@ export default class Home extends React.Component {
         headers: {
           Authorization: "Bearer " + jwt, //Passing this will authorize the user
         },
-        })
+      })
         .then((response) => response.json())
         .then((responseData) => {
           console.log("Completed API call");
-          if (Object.keys(responseData.painRecords).length) 
-          {
+          if (Object.keys(responseData.painRecords).length) {
             isAnyDataAvailable = true;
             painDetails = responseData.painRecords;
-          } 
-          if (Object.keys(responseData.moodRecords).length) 
-          {
+          }
+          if (Object.keys(responseData.moodRecords).length) {
             isAnyDataAvailable = true;
             moodDetails = responseData.moodRecords;
-          } 
+          }
           if (Object.keys(responseData.medicationRecords).length) {
             isAnyDataAvailable = true;
             medicationDetails = responseData.medicationRecords;
-          } 
+          }
           if (Object.keys(responseData.bloodRecords).length) {
             isAnyDataAvailable = true;
             bloodDetails = responseData.bloodRecords;
-          } 
-          if (Object.keys(responseData.dietRecords).length) 
-          {
+          }
+          if (Object.keys(responseData.dietRecords).length) {
             isAnyDataAvailable = true;
             dietDetails = responseData.dietRecords;
-          } 
-          if (Object.keys(responseData.digestionRecords).length) 
-          {
+          }
+          if (Object.keys(responseData.digestionRecords).length) {
             isAnyDataAvailable = true;
             digestionDetails = responseData.digestionRecords;
-          } 
-          if (Object.keys(responseData.exerciseRecords).length) 
-          {
+          }
+          if (Object.keys(responseData.exerciseRecords).length) {
             isAnyDataAvailable = true;
             exerciseDetails = responseData.exerciseRecords;
-          } 
-          if (Object.keys(responseData.sexRecords).length) 
-          {
+          }
+          if (Object.keys(responseData.sexRecords).length) {
             isAnyDataAvailable = true;
             sexDetails = responseData.sexRecords;
-          } 
+          }
 
           // this.setState({
           //   isAnyDataAvailable: isAnyDataAvailable,
@@ -440,7 +429,7 @@ export default class Home extends React.Component {
         .catch((err) => console.log(err))
     );
   }
-  
+
   componentDidMount() {
     this.props.navigation.addListener('focus', () => {
       // To load symptoms for the selected date after tracking as the home screen is already mounted and only comes into focus
@@ -453,8 +442,8 @@ export default class Home extends React.Component {
         userDetails: JSON.parse(data),
       });
       this.getUserSymptoms();
-  })
-}
+    })
+  }
 
   render() {
     console.log("RENDER ALL DATA LOADED?", this.state.isAllDataLoaded);
@@ -526,110 +515,123 @@ export default class Home extends React.Component {
         </View>
         {this.state.isAllDataLoaded ? (
           <>
-          {this.state.isAnyDataAvailable ? (
-          <>
-            <View style={{ width: wp('100'), height: 500, backgroundColor: '#f2f2f2', top: 262, alignContent: "center" }}>
-              <ScrollView contentContainerStyle={{
-                justifyContent: "space-around",
-                flex: 1,
-                flexGrow: 1,
-                flexDirection: "column",
-                marginTop: "-42%",
-                marginBottom: "-267%",
-                justifyContent: "center",
-                bottom: hp('-45%'),
-              }}>
+            {this.state.isAnyDataAvailable ? (
+              <>
+                <View style={{ width: wp('100'), height: 500, backgroundColor: '#f2f2f2', top: 262, alignContent: "center" }}>
+                  <ScrollView contentContainerStyle={{
+                    justifyContent: "space-around",
+                    flex: 1,
+                    flexGrow: 1,
+                    flexDirection: "column",
+                    marginTop: "-42%",
+                    marginBottom: "-267%",
+                    justifyContent: "center",
+                    bottom: hp('-45%'),
+                  }}>
 
-                <Card style={styles.cardContainer}>
-                        <Text style={styles.cardText}>Today you experienced...</Text>
+                    <Card style={styles.cardContainer}>
+                      <Text style={styles.cardText}>Today you experienced...</Text>
+                       
+                        <FlatList
+                          style={{width: 400, top: 25, left: -37 }}
+                          data={painSymptoms}
+                          renderItem={this.renderItem}
+                          keyExtractor={extractKey}
+                        />
+                       
+                      
+                        <FlatList
+                          style={{ width: 400, top: 25, left: -37 }}
+
+                          data={moodSymptoms}
+                          renderItem={this.renderItem}
+                          keyExtractor={extractKey}
+                        />
+                       
                         
+                       <FlatList
+                          style={{ width: 400, top: 25, left: -37 }}
+                          data={bloodSymptoms}
+                          renderItem={this.renderItem}
+                          keyExtractor={extractKey}
+                        /> 
+                       
+                                                              
                         <FlatList
-                            style={{ width: 400, top: 25, left: -37 }}
-                            data={painSymptoms}
-                            renderItem={this.renderItem}
-                            keyExtractor={extractKey}
-                        />
-                        <FlatList
-                            style={{ width: 400, top: 25, left: -37 }}
-                            
-                            data={moodSymptoms}
-                            renderItem={this.renderItem}
-                            keyExtractor={extractKey}
-                        />
-                        <FlatList
-                            style={{ width: 400, top: 25, left: -37 }}
-                            
-                            data={medicationSymptoms}
-                            renderItem={this.renderItem}
-                            keyExtractor={extractKey}
-                        />
+                          style={{ width: 400, top: 25, left: -37 }}
 
+                          data={digestionSymptoms}
+                          renderItem={this.renderItem}
+                          keyExtractor={extractKey}
+                        />  
+                          
+                                                   
                         <FlatList
-                            style={{ width: 400, top: 25, left: -37 }}
-                            
-                            data={bloodSymptoms}
-                            renderItem={this.renderItem}
-                            keyExtractor={extractKey}
-                        />    
+                          style={{ width: 400, top: 25, left: -37 }}
+
+                          data={exerciseSymptoms}
+                          renderItem={this.renderItem}
+                          keyExtractor={extractKey}
+                        />
+                       
+                                                   
                         <FlatList
-                            style={{ width: 400, top: 25, left: -37 }}
-                           
-                            data={dietSymptoms}
-                            renderItem={this.renderItem}
-                            keyExtractor={extractKey}
-                        />    
+                          style={{ width: 400, top: 25, left: -37 }}
+
+                          data={medicationSymptoms}
+                          renderItem={this.renderItem}
+                          keyExtractor={extractKey}
+                        />  
+                         
+                                                              
                         <FlatList
-                            style={{ width: 400, top: 25, left: -37 }}
-                            
-                            data={digestionSymptoms}
-                            renderItem={this.renderItem}
-                            keyExtractor={extractKey}
+                          style={{ width: 400, top: 25, left: -37 }}
+
+                          data={dietSymptoms}
+                          renderItem={this.renderItem}
+                          keyExtractor={extractKey}
                         />   
-                         <FlatList
-                            style={{ width: 400, top: 25, left: -37 }}
-                           
-                            data={exerciseSymptoms}
-                            renderItem={this.renderItem}
-                            keyExtractor={extractKey}
-                        />    
+                        
+                                                    
                         <FlatList
-                            style={{ width: 400, top: 25, left: -37 }}
-                           
-                            data={sexSymptoms}
-                            renderItem={this.renderItem}
-                            keyExtractor={extractKey}
-                        />                   
-                </Card>
+                          style={{ width: 400, top: 25, left: -37 }}
+
+                          data={sexSymptoms}
+                          renderItem={this.renderItem}
+                          keyExtractor={extractKey}
+                        />
+                       
+                    </Card>
+                  </ScrollView>
+                </View>
+              </>
+            )
+              : (
+                <>
+                  <View style={{ width: wp('100'), height: 500, backgroundColor: '#f2f2f2', top: -231, alignContent: "center", marginTop: 500, marginBottom: -500 }}>
+                    <ScrollView>
+                      <Image
+                        style={HomeStyles.girlContainer}
+                        source={require("../../assets/girl.png")}
+                      />
+                      <Text style={HomeStyles.headerText}>
+                        You haven't tracked anything today!
+                  </Text>
+                    </ScrollView>
+                  </View>
+                </>
+              )}
+          </>
+        ) :
+          (
+            <View style={{ width: wp('100'), height: 500, backgroundColor: '#f2f2f2', top: 262, alignContent: "center" }}>
+              <ScrollView>
+                <Text style={styles.cardText}>
+                  Loading...
+              </Text>
               </ScrollView>
             </View>
-          </>
           )
-        : (
-            <>
-              <View style={{ width: wp('100'), height: 500, backgroundColor: '#f2f2f2', top: -231, alignContent: "center", marginTop: 500, marginBottom: -500 }}>
-                <ScrollView>
-                  <Image
-                    style={HomeStyles.girlContainer}
-                    source={require("../../assets/girl.png")}
-                  />
-                  <Text style={HomeStyles.headerText}>
-                    You haven't tracked anything today!
-                  </Text>
-                </ScrollView>
-              </View>
-            </>
-          )}
-          </>
-        ): 
-        (
-          <View style={{ width: wp('100'), height: 500, backgroundColor: '#f2f2f2', top: 262, alignContent: "center" }}>
-            <ScrollView>
-              <Text style={styles.cardText}>
-                Loading...
-              </Text>
-            </ScrollView>
-          </View>
-        )
         }
 
         <Image
@@ -654,7 +656,7 @@ export default class Home extends React.Component {
             source={require("../../assets/learn.png")}
           />
         </TouchableOpacity>
-        <TouchableOpacity 
+        <TouchableOpacity
         // onPress={() => this.props.navigation.navigate('Settings')}
         >
           <Image
@@ -723,9 +725,8 @@ const styles = StyleSheet.create({
     shadowRadius: 30,
   },
   symptomView: {
-
     padding: 15,
-    marginBottom:25,
+    marginBottom: 25,
     color: "#8A8A8E",
     backgroundColor: "#ffff",
     fontWeight: 'bold',
@@ -737,7 +738,8 @@ const styles = StyleSheet.create({
     borderColor: '#ffff',
     textAlign: 'center',
     fontSize: 10,
-    height: 100
+    height: 100,
+    //top:10
   },
   cardSmallContainer: {
     flex: 1,
@@ -819,14 +821,14 @@ const styles = StyleSheet.create({
   },
 
   logText:
-  
-    {
-      left: wp('73%'),
-      top: hp('-13%'),
-      color: "#8A8A8E",
-      fontWeight: '500'
-    },
-  
+
+  {
+    left: wp('73%'),
+    top: hp('-15%'),
+    color: "#8A8A8E",
+    fontWeight: '500'
+  },
+
   painIcon: {
     position: "absolute",
     top: hp('-3.5%'),
