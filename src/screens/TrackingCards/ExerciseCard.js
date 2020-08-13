@@ -143,7 +143,7 @@ export default class ExerciseCard extends React.Component {
                                 source={require('../../../assets/x.png')}
                             />
                         </TouchableOpacity>
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(20), fontSize: Responsive.font(15), fontWeight: '500' }}>Did you do any exercise today?</Text>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('2%'), fontSize: wp('4%'), fontWeight: '500' }}>Did you do any exercise today?</Text>
                         <Slider
                             style={styles.sliderStyle}
                             step={1}
@@ -161,8 +161,8 @@ export default class ExerciseCard extends React.Component {
                             </Text>
                             <Text style={styles.colorGrey}>Heaps </Text>
                         </View>
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(95), fontSize: Responsive.font(15), fontWeight: '500' }}>Add more detail:  </Text>
-                        <View style={{ top: Responsive.height(115), left: Responsive.width(-10) }}>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('9%'), fontSize: wp('4%'), fontWeight: '500' }}>Add more detail:  </Text>
+                        <View style={{ top: hp('12%'), left: wp('-2%') }}>
                             <TagSelector
                                 tagStyle={TrackingStyles.tag}
                                 selectedTagStyle={TrackingStyles.tagSelected}
@@ -194,35 +194,56 @@ export default class ExerciseCard extends React.Component {
 const styles = StyleSheet.create({
 
     sliderStyle: {
-        alignSelf: 'center',
-        top: Responsive.height(38),
+
+        top: hp('5%'),
         flex: 1,
-        width: Responsive.width(292),
-        height: Responsive.height(52),
-        padding: Responsive.width(17),
+        width: wp('80%'),
+        height: hp('20.81%'),
+        padding: wp('5.5%'),
         backgroundColor: '#FFF'
 
     },
     textCon: {
-        width: Responsive.width(292),
+        width: wp('80%'),
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
     colorGrey: {
         color: '#8A8A8E',
-        fontWeight: '500',
-        top: Responsive.height(52),
-        fontSize:Responsive.font(13)
+        top: hp('6%'),
+        fontWeight: '500'
 
     },
     colorPeach: {
         color: '#f09874',
-        fontWeight: '500',
-        top: Responsive.height(52),
-        fontSize:Responsive.font(13)
+        top: hp('6%'),
+        fontWeight: '500'
 
     },
-    
+    text: {
+        fontSize: wp('3%'),
+        marginTop: hp('3%'),
+        color: '#000',
+        left: wp('20%'),
+        top: hp('-10.5%'),
+        alignContent: 'center',
+
+    },
+    button: {
+        width: wp('75%'),
+        backgroundColor: "rgba(240, 152, 116, 0.48)",
+        paddingVertical: hp('2%'),
+        paddingHorizontal: hp('1%'),
+        borderRadius: 15,
+        marginVertical: wp('15%'),
+        left: wp('2%'),
+        top: hp('5%'),
+        height: hp('5.7%')
+    },
+    buttonText: {
+        color: "#000",
+        fontSize: wp('3%'),
+    },
 
 
 });

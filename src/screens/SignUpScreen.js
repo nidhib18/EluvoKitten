@@ -142,7 +142,7 @@ export default class SignUpScreen extends Component {
           flexDirection: "column",
           marginTop: "-100%",
           justifyContent: "center",
-          top:Responsive.height(350),
+          top: hp('55%'),
         }}
         vertical={true}
         showsVerticalScrollIndicator={true}
@@ -174,7 +174,7 @@ export default class SignUpScreen extends Component {
             onChangeText={(value) => this.setState({ given_name: value })}
             placeholderTextColor={"#f09874"}
             color={"black"}
-            height={Responsive.height(24)}
+            height={28}
           />
           <Input
             style={SignUpStyles.usernameInput}
@@ -185,7 +185,7 @@ export default class SignUpScreen extends Component {
             }
             placeholderTextColor={"#f09874"}
             color={"black"}
-            height={Responsive.height(24)}
+            height={28}
           />
 
           <Input
@@ -197,7 +197,7 @@ export default class SignUpScreen extends Component {
             }
             placeholderTextColor={"#f09874"}
             color={"black"}
-            height={Responsive.height(24)}
+            height={28}
           />
 
           <Input
@@ -209,7 +209,7 @@ export default class SignUpScreen extends Component {
             onChangeText={(value) => this.setState({ password: value })}
             placeholderTextColor={"#f09874"}
             color={"black"}
-            height={Responsive.height(24)}
+            height={28}
           />
 
           <Input
@@ -221,7 +221,7 @@ export default class SignUpScreen extends Component {
             onChangeText={(value) => this.setState({ confirmPassword: value })}
             placeholderTextColor={"#f09874"}
             color={"black"}
-            height={Responsive.height(24)}
+            height={28}
           />
 
           {/* //**********User info ************ */}
@@ -231,7 +231,7 @@ export default class SignUpScreen extends Component {
             onChangeText={(value) => this.setState({ family_name: value })}
             placeholderTextColor={"#f09874"}
             color={"black"}
-            height={Responsive.height(24)}
+            height={28}
           />
 
           <Datepicker
@@ -303,7 +303,6 @@ export default class SignUpScreen extends Component {
                       (value) => this.setState({ confirmationCode: value })
                     }
                     color={"black"}
-                    height={Responsive.height(24)}
                   />
                   <Button
                     style={SignUpStyles.submit}

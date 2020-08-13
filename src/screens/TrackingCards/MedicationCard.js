@@ -145,41 +145,38 @@ export default class MedicationCard extends React.Component {
                                 source={require('../../../assets/x.png')}
                             />
                         </TouchableOpacity>
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(15), fontSize: Responsive.font(15), fontWeight: '500' }}>Did you take any medication today?</Text>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('3%'), fontSize: wp('4%'), fontWeight: '500' }}>Did you take any medication today?</Text>
 
                         <Input
-                            style={{ backgroundColor: '#FBFBFB', top: Responsive.height(30)  }}
+                            style={{ backgroundColor: '#FBFBFB', top: hp('5') }}
                             placeholder='E.g Panadol'
                             placeholderTextColor='#8A8A8E'
                             color='#8A8A8E'
                             value={medicationType}
-                            height={Responsive.height(26)}
                             onChangeText={
                                 // Set this.state.email to the value in this Input box
                                 (value) => this.setState({ medicationType: value })
                             }/>
 
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(45), fontSize: Responsive.font(15), fontWeight: '500' }}>Time Taken</Text>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('8%'), fontSize: wp('4%'), fontWeight: '500' }}>Time Taken</Text>
                         <Input
-                            style={{ backgroundColor: '#FBFBFB', top: Responsive.height(60) }}
+                            style={{ backgroundColor: '#FBFBFB', top: hp('10') }}
                             placeholder='9:00 am'
                             placeholderTextColor='#8A8A8E'
                             value={medicationTimeTaken}
                             color='#8A8A8E'
-                            height={Responsive.height(26)}
                             onChangeText={
                                 // Set this.state.email to the value in this Input box
                                 (value) => this.setState({ medicationTimeTaken: value })
                             }
                         />
 
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(75), fontSize: Responsive.font(15), fontWeight: '500' }}>Dosage</Text>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('12%'), fontSize: wp('4%'), fontWeight: '500' }}>Dosage</Text>
                         <Input
-                            style={{ backgroundColor: '#FBFBFB', top: Responsive.height(90) }}
+                            style={{ backgroundColor: '#FBFBFB', top: hp('14') }}
                             placeholder='2 tablets'
                             placeholderTextColor='#8A8A8E'
                             value={medicationQuantity}
-                            height={Responsive.height(26)}
                             color='#8A8A8E'
                             onChangeText={
                                 // Set this.state.email to the value in this Input box
@@ -187,13 +184,13 @@ export default class MedicationCard extends React.Component {
                             }
                         />
 
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(100), fontSize: Responsive.font(15), fontWeight: '500' }}>Have you noticed any side effects?</Text>
-                        <View style={{ top: Responsive.height(110), left: Responsive.width(-10) ,width:Responsive.width(400)}}>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('17%'), fontSize: wp('4%'), fontWeight: '500' }}>Have you noticed any side effects?</Text>
+                        <View style={{ top: hp('20%'), left: wp('-2%') }}>
                             <TagSelector
 
                                 tagStyle={TrackingStyles.tag}
                                 selectedTagStyle={TrackingStyles.tagSelected}
-                                maxHeight={60}
+                                maxHeight={70}
                                 tags={medicationSideEffects}
                                 onChange={(selected) => this.setState({ selectedMedicationSideEffects: selected })}
                             /> 
