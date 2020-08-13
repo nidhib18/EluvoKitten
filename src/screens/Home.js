@@ -110,7 +110,7 @@ export default class Home extends React.Component {
                 <Text style={{ left: wp('27%'), top: hp('-19%'), color: "#8A8A8E", fontWeight: '500' }}>{item.medicationTypeText} {item.medicationType}</Text>
                 <Text style={{ left: wp('27%'), top: hp('-19%'), color: "#8A8A8E", fontWeight: '500' }}>{item.medicationTimeText} {item.medicationTime}</Text>
                 <Text style={{ left: wp('27%'), top: hp('-19%'), color: "#8A8A8E", fontWeight: '500' }}>{item.quantityText} {item.quantity}</Text>
-                <Text style={{ left: wp('27%'), top: hp('-19%'), color: "#8A8A8E", fontWeight: '500' }}>{item.medTagText} {item.medTags}</Text>
+                <Text style={{ left: wp('27%'), top: hp('-19%'), color: "#8A8A8E", fontWeight: '500',marginBottom:-35 }}>{item.medTagText} {item.medTags}</Text>
 
                 </>
               ) 

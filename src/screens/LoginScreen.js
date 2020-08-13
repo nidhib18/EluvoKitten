@@ -2,6 +2,7 @@ import { Auth } from "aws-amplify";
 import React, { Component } from "react";
 import { SafeAreaView, Image, Platform, ScrollView } from "react-native";
 import { Header } from "@react-navigation/stack";
+import Responsive from 'react-native-lightweight-responsive';
 import {
   Divider,
   Input,
@@ -104,7 +105,7 @@ export default class LoginScreen extends Component {
               onChangeText={(value) => this.setState({ username: value })}
               placeholderTextColor={"#f09874"}
               color={"black"}
-              height={28}
+              height={Responsive.height(25)}
               alignItems={"center"}
             />
 
