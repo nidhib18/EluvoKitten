@@ -102,7 +102,7 @@ return (
                 placeholderTextColor={'#f09874'}
                 backgroundColor = '#fff'
                 color={'black'}
-                height={28}/>
+                height={Responsive.height(24)}/>
 
             <Button style={ForgotStyles.confirmationButton}
                 appearance='outline'
@@ -120,7 +120,7 @@ return (
                 secureTextEntry ={true}
                 placeholderTextColor={'#f09874'}
                 color={'black'}
-                height={28}
+                height={Responsive.height(24)}
 
 
             />
@@ -134,7 +134,7 @@ return (
                 (value) => this.setState({authCode: value }) }
                 placeholderTextColor={'#f09874'}
                 color={'black'}
-                height={28}
+                height={Responsive.height(24)}
 
             />
            <Button style={ForgotStyles.submitBtnContainer}

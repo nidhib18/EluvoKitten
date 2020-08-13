@@ -1,45 +1,46 @@
 import { Dimensions } from "react-native";
 const { width, height } = Dimensions.get("window");
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import Responsive from 'react-native-lightweight-responsive';
 export const UserInfoStyles = {
   
   nameInput: {
     position: "absolute",
-    width: wp('90%'),
-    height: hp('5%'),
+    width:Responsive.width(320),
+    height:Responsive.height(48),
     backgroundColor: "white",
-    top: hp('31%'),
-    borderRadius: 24,
+    top:Responsive.height(200),
+    borderRadius: Responsive.height(24),
     color: "black",
     alignLabel: "left",
   },
 
   lnameInput: {
     position: "absolute",
-    width: wp('90%'),
-    height: hp('5%'),
+    width:Responsive.width(320),
+    height:Responsive.height(48),
     backgroundColor: "white",
-    top: hp('44%'),
-    borderRadius: 25,
+    top:Responsive.height(280),
+    borderRadius: Responsive.height(24),
   },
 
   datepicker: {
-    width: wp('90%'),
+    width:Responsive.width(320),
+    height:Responsive.height(48),
     position: "absolute",
-    top: hp('98%'),
-    borderRadius: 24,
+    top:Responsive.height(620),
+    borderRadius: Responsive.height(24),
   },
   submitBtnContainer: {
     position: "absolute",
-    width: wp('90%'),
-    height: hp('5%'),
-    borderRadius: 24,
-    top: hp('111%'),
-
+    width:Responsive.width(320),
+    height:Responsive.height(45),
+    borderRadius: Responsive.height(24),
+    top:Responsive.height(700),
     alignItems: "center",
   },
   label: {
     color: "#FFFFFF",
-    fontSize: 18,
+    fontSize: Responsive.font(18)
   },
 };
