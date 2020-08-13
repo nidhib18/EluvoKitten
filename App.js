@@ -3,7 +3,7 @@ import config from './aws-exports'
 
 Amplify.configure(config)
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
@@ -13,7 +13,7 @@ import {Alert} from 'react-native';
 import RNRestart from 'react-native-restart';
 import {setJSExceptionHandler} from 'react-native-exception-handler';
 console.disableYellowBox = true;
-console.reportErrorsAsExceptions = false;
+//console.reportErrorsAsExceptions = false;
 
 
 
@@ -41,11 +41,12 @@ setJSExceptionHandler(errorHandler);
 
 
 export default () => (
-  
+
   <>
-    <IconRegistry icons={EvaIconsPack}/>
+    <IconRegistry icons={EvaIconsPack} />
     <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
-      <AppNavigator/>    
+      <AppNavigator />
     </ApplicationProvider>
+
   </>
 );

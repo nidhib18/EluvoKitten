@@ -139,7 +139,7 @@ export default class DigestionCard extends React.Component {
                                 source={require('../../../assets/x.png')}
                             />
                         </TouchableOpacity>
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('3%'), fontSize: wp('4%'), fontWeight: '500' }}>How is your digestion today?</Text>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(15), fontSize: Responsive.font(15), fontWeight: '500' }}>How is your digestion today?</Text>
 
 
                         <Slider
@@ -159,8 +159,8 @@ export default class DigestionCard extends React.Component {
                             </Text>
                             <Text style={styles.colorGrey}>Poor </Text>
                         </View>
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('15%'), fontSize: wp('4%'), fontWeight: '500' }}>Add more detail:</Text>
-                        <View style={{ top: hp('18%'), left: wp('-2%') }}>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(90), fontSize: Responsive.font(15), fontWeight: '500' }}>Add more detail:</Text>
+                        <View style={{ top: Responsive.height(110), left: Responsive.width(-10), width:Responsive.width(360) }}>
                             <TagSelector
 
                                 tagStyle={TrackingStyles.tag}
@@ -193,30 +193,33 @@ const styles = StyleSheet.create({
 
     sliderStyle: {
 
-        top: hp('7%'),
         alignSelf: 'center',
+        top: Responsive.height(38),
         flex: 1,
-        width: wp('75%'),
-        height: hp('20.81%'),
-        padding: wp('2.5%'),
+        width: Responsive.width(292),
+        height: Responsive.height(52),
+        padding: Responsive.width(17),
         backgroundColor: '#FFF'
 
     },
     textCon: {
-        width: wp('80%'),
+        width: Responsive.width(292),
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
     colorGrey: {
         color: '#8A8A8E',
-        top: hp('9%'),
-        fontWeight: '500'
+        fontWeight: '500',
+        top: Responsive.height(62),
+        fontSize:Responsive.font(13)
+
 
     },
     colorPeach: {
         color: '#f09874',
-        top: hp('9%'),
-        fontWeight: '500'
+        fontWeight: '500',
+        top: Responsive.height(62),
+        fontSize:Responsive.font(13)
 
     }
 });
