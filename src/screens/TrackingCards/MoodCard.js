@@ -140,7 +140,7 @@ export default class MoodCard extends React.Component {
                                 source={require('../../../assets/x.png')}
                             />
                         </TouchableOpacity>
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(15), fontSize: Responsive.font(15), fontWeight: '500' }}>How do you feel today? </Text>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('1%'), fontSize: wp('4%'), fontWeight:'500' }}>How do you feel today? </Text>
                         <Slider
                             style={styles.sliderStyle}
                             step={1}
@@ -158,8 +158,8 @@ export default class MoodCard extends React.Component {
                             </Text>
                             <Text style={styles.colorGrey}>Worst Mood </Text>
                         </View>
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(90), fontSize: Responsive.font(15), fontWeight: '500' }}>Add more detail: </Text>
-                        <View style={{ top: Responsive.height(110), left: Responsive.width(-10)}}>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('13%'), fontSize: wp('4%'),fontWeight:'500' }}>Add more detail: </Text>
+                        <View style={{ top: hp('17%'), left: wp('-2%') }}>
                             <TagSelector
 
                                 tagStyle={TrackingStyles.tag}
@@ -188,31 +188,30 @@ export default class MoodCard extends React.Component {
 const styles = StyleSheet.create({
 
     sliderStyle: {
-        alignSelf: 'center',
-        top: Responsive.height(28),
+
+        top: hp('5%'),
         flex: 1,
-        width: Responsive.width(292),
-        height: Responsive.height(52),
-        padding: Responsive.width(17),
+        width: wp('80%'),
+        height: hp('20.81%'),
+        padding: wp('2.5%'),
         backgroundColor: '#FFF'
 
     },
     textCon: {
-        width: Responsive.width(292),
+        width: wp('80%'),
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
     colorGrey: {
         color: '#8A8A8E',
-        fontWeight: '500',
-        top: Responsive.height(52),
-        fontSize:Responsive.font(13)
+        top: hp('8%'),
+        fontWeight:'500'
+
     },
     colorPeach: {
         color: '#f09874',
-        fontWeight: '500',
-        top: Responsive.height(52),
-        fontSize:Responsive.font(13)
+        top: hp('8%'),
+        fontWeight:'500'
 
-    },
+    }
 });

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { Image, Dimensions, TouchableOpacity, Slider, StyleSheet, View, TextInput } from 'react-native';
+import { Image, Dimensions, TouchableOpacity, Slider, StyleSheet, View } from 'react-native';
 import { Layout, Card, Modal, Text, Button } from '@ui-kitten/components';
 import TagSelector from 'react-native-tag-selector';
 import { TrackingStyles } from "../TrackingStyles";
@@ -10,21 +10,16 @@ import { constants } from "../../resources/Constants";
 import { utcToLocal, localToUtcDate, localToUtcDateTime } from "../../helpers/DateHelpers";
 import { mapListItemsToTags } from "../../helpers/TagHelpers"
 import { initBloodDetails } from '../../models/BloodDetails';
-// import { EditableTagCloud } from 'rn-editable-tag-cloud'
 
-// import Tags from "react-native-tags";
 
 
 const { width } = Dimensions.get('window');
 
 export default class BloodCard extends React.Component {
-
+   
     constructor(props) {
         super(props);
         this.state = { bloodVisible: false };
-        // this.state = {
-        //     textInput: []
-        // }
         this.state = {
             selectedTags: [],
             bloodValue: 0,
@@ -34,11 +29,10 @@ export default class BloodCard extends React.Component {
             periodProducts: [], // moodDescriptions:[],
             userDetails: {},
             bloodDetails: initBloodDetails(0, moment().format('YYYY-MM-DD')),
-            currentDate: this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD')
+            currentDate: this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD')     
         };
         this.saveBloodDetails = this.saveBloodDetails.bind(this);
     }
-
     setBloodVisible(visible) {
         this.setState({ bloodVisible: visible });
     }
@@ -65,43 +59,43 @@ export default class BloodCard extends React.Component {
 
     saveBloodDetails() {
 
+      
+            // Add the saved blood level
+            let userId = this.state.userDetails.user_id;
+            let occurredDate = moment(this.state.currentDate).add(moment().hour(), 'hour').add(moment().minute(), 'minute');
+            // Add period product 
+            let periodProduct = null;
 
-        // Add the saved blood level
-        let userId = this.state.userDetails.user_id;
-        let occurredDate = moment(this.state.currentDate).add(moment().hour(), 'hour').add(moment().minute(), 'minute');
-        // Add period product 
-        let periodProduct = null;
-
-        if (this.state.selectedPeriodProduct.length > 0)
-            periodProduct = this.state.selectedPeriodProduct[0];
-
-
-        let blood = { //sending to the database,if blood type value = 0 then don't send it to the database as it means the user didnt select any tags
-            user_id: userId,
-            bleeding_level: this.state.bloodValue,
-            period_product: periodProduct,
-            occurred_date: localToUtcDateTime(occurredDate),
-
-        };
+            if (this.state.selectedPeriodProduct.length > 0)
+                periodProduct = this.state.selectedPeriodProduct[0];
 
 
-        let url = constants.ADDUSERBLOOD_DEV_URL;
-        getData(constants.JWTKEY).then((jwt) =>
-            fetch(url, {
-                //calling API
-                method: "POST",
-                headers: {
-                    Authorization: "Bearer " + jwt, //Passing this will authorize the user
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(blood)
-            })
-                .then((response) => {
-                    return response.json();
+            let blood = { //sending to the database,if blood type value = 0 then don't send it to the database as it means the user didnt select any tags
+                user_id: userId,
+                bleeding_level: this.state.bloodValue,
+                period_product: periodProduct,
+                occurred_date: localToUtcDateTime(occurredDate),
+
+            };
+
+
+            let url = constants.ADDUSERBLOOD_DEV_URL;
+            getData(constants.JWTKEY).then((jwt) =>
+                fetch(url, {
+                    //calling API
+                    method: "POST",
+                    headers: {
+                        Authorization: "Bearer " + jwt, //Passing this will authorize the user
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(blood)
                 })
-        );
-
+                    .then((response) => {
+                        return response.json();
+                    })
+            );
+        
     }
     componentDidMount() //after Ui has been uploaded 
     {
@@ -116,11 +110,11 @@ export default class BloodCard extends React.Component {
     }
 
     render() {
-        let bloodLevel = 0;
+        let bloodLevel =  0;
 
 
         let periodProducts = this.state.periodProducts || []; // get all the possible value from the list item , if not then empty array .
-
+        
         return (
             <Layout style={TrackingStyles.container}>
                 <TouchableOpacity onPress={() => { this.setBloodVisible(true); }}>
@@ -168,9 +162,9 @@ export default class BloodCard extends React.Component {
                             <Text style={styles.colorGrey}>Heavy </Text>
                         </View>
 
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(-40), fontSize: Responsive.font(15), fontWeight: '500' }}>Did you have any bleeding today?</Text>
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(80), fontSize: Responsive.font(15), fontWeight: '500' }}>Did you use any of the following?</Text>
-                        <View style={{ top: Responsive.height(100), left: Responsive.width(-10) }}>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('-4'), fontSize: wp('4%'), fontWeight: '500' }}>Did you have any bleeding today?</Text>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('16'), fontSize: wp('4%'), fontWeight: '500' }}>Did you use any of the following?</Text>
+                        <View style={{ top: hp('20%'), left: wp('-2%') }}>
                             <TagSelector
                                 tagStyle={TrackingStyles.tag}
                                 selectedTagStyle={TrackingStyles.tagSelected}
@@ -185,7 +179,7 @@ export default class BloodCard extends React.Component {
                             appearance='outline'
                             onPress={() => {
                                 this.setBloodVisible(!this.state.bloodVisible);
-                                this.saveBloodDetails();
+                                this.saveBloodDetails();   
                             }} > Track!
                             </Button>
                     </Card>
@@ -201,33 +195,30 @@ export default class BloodCard extends React.Component {
 const styles = StyleSheet.create({
 
     sliderStyle: {
-        alignSelf: 'center',
-        top: Responsive.height(48),
+
+        top: hp('10%'),
         flex: 1,
-        width: Responsive.width(292),
-        height: Responsive.height(52),
-        padding: Responsive.width(17),
+        width: wp('80%'),
+        height: hp('20.81%'),
+        padding: wp('5.5%'),
         backgroundColor: '#FFF'
 
     },
     textCon: {
-        width: Responsive.width(292),
+        width: wp('80%'),
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
     colorGrey: {
         color: '#8A8A8E',
-        fontWeight: '500',
-        top: Responsive.height(62),
-        fontSize:Responsive.font(13)
+        top: hp('11%'),
+        fontWeight: '500'
 
     },
     colorPeach: {
         color: '#f09874',
-        fontWeight: '500',
-        top: Responsive.height(62),
-        fontSize:Responsive.font(13)
+        top: hp('11%'),
+        fontWeight: '500'
 
-    },
-
+    }
 });
