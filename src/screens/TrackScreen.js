@@ -37,18 +37,17 @@ export const TrackScreen = ({ route, navigation }) => {
         style={{ height: hp('9%'), width: width }}
       />
       <Button
-        style={{ left: wp('40%'), top: wp('5%'), height: hp('5%') }}
-        
+        style={{ right: Responsive.width(-144), top: Responsive.height(17),  height:Responsive.height(17) }}      
         appearance="outline"
         onPress={() => navigation.navigate("Home")}
       >
         Done
       </Button>
 
-      <Image
+      {/* <Image
         style={TrackingStyles.doctorContainer}
         source={require("../../assets/doctor.png")}
-      />
+      /> */}
 
       <Divider />
 
@@ -59,10 +58,10 @@ export const TrackScreen = ({ route, navigation }) => {
           flex: 1,
           flexGrow: 1,
           flexDirection: "row",
-          marginLeft: "-42%",
-          marginRight: "-63%",
+          marginLeft: Responsive.width(-139),
+          marginRight:Responsive.width(-208),
           justifyContent: "center",
-          bottom: hp('-45%'),
+          bottom: Responsive.height(-288),
         }}
       >
         
@@ -90,8 +89,8 @@ export const TrackScreen = ({ route, navigation }) => {
         {/* ) : null} */}
         <Text style={TrackingStyles.smallSaveText}>Save</Text>
       </ScrollView>
-      <AppointmentCard />
-      <Text style={TrackingStyles.appointmentText}>Appointment</Text>
+      {/* <AppointmentCard /> */}
+      {/* <Text style={TrackingStyles.appointmentText}>Appointment</Text> */}
     </Layout>
   );
 };

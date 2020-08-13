@@ -115,9 +115,7 @@ export default class DietCard extends React.Component {
         });
     }
 
-    render() {
-
-       
+    render() {   
         let dietLevel =  0;
     
         let foodTypes = this.state.foodTypes || [] ; 
@@ -148,7 +146,7 @@ export default class DietCard extends React.Component {
                                 source={require('../../../assets/x.png')}
                             />
                         </TouchableOpacity>
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('3%'), fontSize: wp('4%'), fontWeight:'500' }}>How well did you eat today? </Text>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(15), fontSize: Responsive.font(15), fontWeight: '500' }}>How well did you eat today? </Text>
                         <Slider
                             style={styles.sliderStyle}
                             step={1}
@@ -167,8 +165,8 @@ export default class DietCard extends React.Component {
                             <Text style={styles.colorGrey}>Poor </Text>
                         </View>
                         
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('15%'), fontSize: wp('4%'),  fontWeight:'500' }}>What types of food did you consume today? </Text>
-                        <View style={{ top: hp('16%'), left: wp('-2') }}>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(65), fontSize: Responsive.font(15), fontWeight: '500' }}>What types of food did you consume today? </Text>
+                        <View style={{ top: Responsive.height(75), left: Responsive.width(-10) }}>
                             <TagSelector
 
                                 tagStyle={TrackingStyles.tag}
@@ -200,29 +198,31 @@ const styles = StyleSheet.create({
 
     sliderStyle: {
 
-        top: hp('5%'),
+        top: Responsive.height(28),
         flex: 1,
-        width: wp('80%'),
-        height: hp('20.81%'),
-        padding: wp('5.5%'),
+        width: Responsive.width(292),
+        height: Responsive.height(52),
+        padding: Responsive.width(17),
         backgroundColor: '#FFF'
 
     },
     textCon: {
-        width: wp('80%'),
+        width: Responsive.width(292),
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
     colorGrey: {
         color: '#8A8A8E',
-        top: hp('6%'),
-        fontWeight:'500'
+        top: Responsive.height(45),
+        fontWeight:'500',
+        fontSize:Responsive.font(13)
 
     },
     colorPeach: {
         color: '#f09874',
-        top: hp('6%'),
-        fontWeight:'500'
+        top: Responsive.height(45),
+        fontWeight:'500',
+        fontSize:Responsive.font(13)
 
     }
 

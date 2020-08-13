@@ -4,9 +4,9 @@ const { width, height } = Dimensions.get("window");
 export const SignUpStyles = {
   headerText: {
     position: "absolute",
-    fontSize: wp('8%'),
+    fontSize: Responsive.font(28),
     fontWeight: "bold",
-    top: hp('7%'),
+    top:Responsive.height(60),
     alignItems: "center",
   },
   //
@@ -44,38 +44,39 @@ export const SignUpStyles = {
 
   usernameInput: {
     position: "absolute",
-    width: wp('90%'),
-    height: hp('5%'),
+    width:Responsive.width(320),
+    height:Responsive.height(45),
     backgroundColor: "white",
-    top: hp('18%'),
-    borderRadius: 24,
+    top:Responsive.height(120),
+    borderRadius: Responsive.height(24),
   },
 
   emailInput: {
     position: "absolute",
-    width: wp('90%'),
+    width:Responsive.width(320),
+    height:Responsive.height(45),
     backgroundColor: "white",
-    top: hp('57%'),
-    borderRadius: 24,
+    top:Responsive.height(360),
+    borderRadius: Responsive.height(24),
     color: "black",
   },
 
   passwordInput: {
     position: "absolute",
-    width: wp('90%'),
-    height: hp('15%'),
+    width:Responsive.width(320),
+    height:Responsive.height(45),
     backgroundColor: "white",
-    borderRadius: 24,
-    top: hp('70%'),
+    borderRadius: Responsive.height(24),
+    top:Responsive.height(440),
   },
 
   passwordConfirmInput: {
     position: "absolute",
-    width: wp('90%'),
-    height: hp('15%'),
+    width:Responsive.width(320),
+    height:Responsive.height(45),
     backgroundColor: "white",
-    top: hp('85%'),
-    borderRadius: 24,
+    top:Responsive.height(540),
+    borderRadius: Responsive.height(24),
   },
 
 };
