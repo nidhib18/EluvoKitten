@@ -33,7 +33,7 @@ import { UserInfoStyles } from "./UserInfoStyles";
 
 import { Auth } from "aws-amplify";
 import { saveUserDetails } from "../helpers/AuthHelpers";
-
+import { constants } from "../resources/Constants";
 const { sheight } = Dimensions.get("window").height;
 
 export default class SignUpScreen extends Component {
@@ -107,12 +107,21 @@ export default class SignUpScreen extends Component {
           birthdate: Moment(birthdate).format("YYYY-MM-DD"),
         },
       })
+
+      
         // On success, show Confirmation Code Modal
         .then(() => this.setState({ modalVisible: true }))
-
+        .catch((err) => {
+          console.log(err);
+          (err.code == constants.USERNAMEEXISTS_EXCEPTION); alert(err.message);
+         
+        });
         // On failure, display error in console
-        .catch((err) => console.log(err));
-    } else {
+//    
+
+    } 
+    
+    else {
       alert("Passwords do not match!");
     }
     if (password.length <= 7) {

@@ -20,6 +20,7 @@ import AppointmentCard from "./TrackingCards/AppointmentCard";
 const { width } = Dimensions.get("window");
 export const TrackScreen = ({ route,navigation }) => {
     const { currentDate } = route.params;
+    const { show } = route.params;
       console.log("Route params in Track", route.params)
   return (
     <Layout style={TrackingStyles.container}>
@@ -30,7 +31,7 @@ export const TrackScreen = ({ route,navigation }) => {
       />
       <Button
         style={{ left: wp('40%'), top: wp('5%'), height:hp('5%') }}
-        s
+        
         appearance="outline"
         onPress={() => navigation.navigate("Home")}
       >
@@ -60,8 +61,10 @@ export const TrackScreen = ({ route,navigation }) => {
         
         <MedicationCard  navigation={navigation}
          route= {route}/>
-        <PainCard navigation={navigation}
-         route= {route} />
+       {show ? (
+          <PainCard navigation={navigation}
+            route={route} />
+        ) :null}
         <MoodCard navigation={navigation}
          route= {route}/>
         <BloodCard navigation={navigation}

@@ -3,6 +3,7 @@ export const constants = {
 
   NOTAUTHORISED_EXCEPTION: "NotAuthorizedException",
   USERNOTFOUND_EXCEPTION: "UserNotFoundException",
+  USERNAMEEXISTS_EXCEPTION:"UsernameExistsException",
   USERDETAILS: "@userdetails",
   CURRENTDATE: "currentDate",
 
