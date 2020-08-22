@@ -26,7 +26,7 @@ import {
 } from "react-native";
 import { saveUserDetails } from "../helpers/AuthHelpers";
 import { constants } from "../resources/Constants";
-import { popUp } from "./Home"
+// import { popUp } from "./Home"
 
 export default class LoginScreen extends Component {
   constructor(props) {
@@ -40,13 +40,14 @@ export default class LoginScreen extends Component {
   handleSignIn = () => {
     const { username, password } = this.state;
 
-    Auth.signIn({ username: username, password })
+    Auth.signIn({ username, password })
 
       // If we are successful, navigate to Home screen
       .then((user) => {
         // We need to pass this.props.navigation, so that navigation happens only after user details has completed saving
-        saveUserDetails(username, this.props.navigation);
-        popUp();
+        this.props.navigation.navigate("Home", {
+          username: username,
+        });
       })
 
       // On failure, display error in console
@@ -57,7 +58,17 @@ export default class LoginScreen extends Component {
           alert(err.message);
       });
   };
+  // handleConfirmationCode = () => {
+  //   const { username, confirmationCode } = this.state;
+  //   Auth.confirmSignUp(username, confirmationCode, {})
 
+  //     .then((user) => {
+  //       this.setState({ modalVisible: false });
+      
+  //     })
+
+  //     .catch((err) => console.log(err));
+  // };
   render() {
     return (
       

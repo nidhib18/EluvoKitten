@@ -32,7 +32,7 @@ import { SignUpStyles } from "./SignUpStyles";
 import { UserInfoStyles } from "./UserInfoStyles";
 
 import { Auth } from "aws-amplify";
-import { saveUserDetails } from "../helpers/AuthHelpers";
+
 import { constants } from "../resources/Constants";
 const { sheight } = Dimensions.get("window").height;
 
@@ -47,7 +47,7 @@ export default class SignUpScreen extends Component {
       username: "",
       password: "",
       confirmPassword: " ",
-      screenHeight: sheight,
+      screenHeight: sheight, 
       confirmationCode: "",
       secureTextEntry: false,
       modalVisible: false,
@@ -129,19 +129,32 @@ export default class SignUpScreen extends Component {
     }
   };
   
+  // handleConfirmationCode = () => {
+  //   const { username, confirmationCode } = this.state;
+  //   Auth.confirmSignUp(username, confirmationCode, {})
+
+  //     .then((user) => {
+  //       this.setState({ modalVisible: false });
+  //       saveUserDetails(username, this.props.navigation);
+  //     })
+
+  //     .catch((err) => console.log(err));
+  // };
+ 
   handleConfirmationCode = () => {
     const { username, confirmationCode } = this.state;
     Auth.confirmSignUp(username, confirmationCode, {})
 
       .then((user) => {
         this.setState({ modalVisible: false });
-        saveUserDetails(username, this.props.navigation);
+        this.props.navigation.navigate("Home", {
+          username: username,
+        });
       })
 
       .catch((err) => console.log(err));
   };
- 
-  
+
   render() {
     return (
       <ScrollView

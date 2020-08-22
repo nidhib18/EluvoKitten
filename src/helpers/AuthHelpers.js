@@ -3,7 +3,7 @@ import { constants } from "../resources/Constants";
 import { Auth } from "aws-amplify";
 
 // We need to pass this.props.navigation, so that navigation happens only after user details has completed saving
-export const saveUserDetails = (username, nav) => {
+export const saveUserDetails = (username) => {
   Auth.currentSession().then((res) => {
     let accessToken = res.getAccessToken();
     let jwt = accessToken.getJwtToken();
@@ -23,7 +23,7 @@ export const saveUserDetails = (username, nav) => {
       })
       .then((data) => {
         storeData(constants.USERDETAILS, JSON.stringify(data)); // Convert user details object returned by API to a string and add to storage so that user details can be accessed on any screen without calling API again
-        nav.navigate("Home");
+        //nav.navigate("Home");
       })
       .catch((err) => console.log(err));
   });
