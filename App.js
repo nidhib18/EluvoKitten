@@ -9,7 +9,7 @@ import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { default as theme } from './theme.json'
 import { AppNavigator } from './src/screens/NavigationComponent';
-import {Alert,SafeAreaView} from 'react-native';
+import {Alert} from 'react-native';
 import RNRestart from 'react-native-restart';
 import {setJSExceptionHandler} from 'react-native-exception-handler';
 console.disableYellowBox = true;
@@ -44,13 +44,13 @@ export default () => (
   
   <>
     <IconRegistry icons={EvaIconsPack}/>
-   <SafeAreaView style={{ flex: 1 , backgroundColor:'#F09874'}}> 
+   {/* <SafeAreaView style={{ flex: 1 , backgroundColor:'#F09874'}}>  */}
    <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
 
     <AppNavigator />
 
     </ApplicationProvider>
- </SafeAreaView>
+ {/* </SafeAreaView> */}
 
   </>
 );

@@ -46,7 +46,7 @@ export default class LoginScreen extends Component {
       .then((user) => {
         // We need to pass this.props.navigation, so that navigation happens only after user details has completed saving
         this.props.navigation.navigate("Home", {
-          username: username,
+          username: username,                            
         });
       })
 
