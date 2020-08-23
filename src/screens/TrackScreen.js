@@ -14,7 +14,7 @@ import { HomeStyles } from "./HomeStyles";
 
 import { Divider, Layout, TopNavigation, Button } from "@ui-kitten/components";
 import { ScrollView, Dimensions, Image, Text } from "react-native";
-import AppointmentCard from "./TrackingCards/AppointmentCard";
+// import AppointmentCard from "./TrackingCards/AppointmentCard";
 
 
 const { width } = Dimensions.get("window");
@@ -27,10 +27,11 @@ export const TrackScreen = ({ route,navigation }) => {
       <TopNavigation
         position="absolute"
         top={0}
-        style={{ height:hp('9%'), width: width }}
+        style={{ height:Responsive.height(70), width: width }}
+        
       />
       <Button
-        style={{ left: wp('40%'), top: wp('5%'), height:hp('5%') }}
+        style={{ left: wp('40%'), top: wp('%'), height:hp('7%') }}
         
         appearance="outline"
         onPress={() => navigation.navigate("Home")}
@@ -38,10 +39,10 @@ export const TrackScreen = ({ route,navigation }) => {
         Done
       </Button>
       
-      <Image
+      {/* <Image
         style={TrackingStyles.doctorContainer}
         source={require("../../assets/doctor.png")}
-      />
+      /> */}
 
       <Divider />
       
@@ -52,19 +53,20 @@ export const TrackScreen = ({ route,navigation }) => {
           flex: 1,
           flexGrow: 1,
           flexDirection: "row",
-          marginLeft: "-42%",
-          marginRight: "-63%",
+          marginLeft: Responsive.width(-139),
+          marginRight:Responsive.width(-208),
           justifyContent: "center",
-          bottom: hp('-45%'),
+          //justifyContent:"space-evenly",
+          bottom: Responsive.height(-288),
         }}
       >
         
         <MedicationCard  navigation={navigation}
          route= {route}/>
-       {show ? (
+       {/* {show ? ( */}
           <PainCard navigation={navigation}
             route={route} />
-        ) :null}
+        {/* ) :null} */}
         <MoodCard navigation={navigation}
          route= {route}/>
         <BloodCard navigation={navigation}
@@ -83,8 +85,8 @@ export const TrackScreen = ({ route,navigation }) => {
         <Text style={TrackingStyles.painText}>Pain</Text>
         <Text style={TrackingStyles.smallSaveText}>Save</Text>
       </ScrollView>
-      <AppointmentCard/>
-      <Text style={TrackingStyles.appointmentText}>Appointment</Text>
+      {/* <AppointmentCard/>
+      <Text style={TrackingStyles.appointmentText}>Appointment</Text> */}
     </Layout>
   );
 };

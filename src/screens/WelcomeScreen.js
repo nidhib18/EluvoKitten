@@ -63,10 +63,8 @@ export const WelcomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   signBtnContainer: {
     position: "absolute",
-    // width: wp('95%') ,
-    // height: hp('7%'),
     width:Responsive.width(345),
-    height:Responsive.height(48),
+    height:Responsive.height(42),
     borderRadius: Responsive.height(24),
     top: Responsive.height(550),
     backgroundColor: "#fff",
@@ -77,11 +75,9 @@ const styles = StyleSheet.create({
   loginBtnContainer: {
     position: "absolute",
     width:Responsive.width(345),
-    height:Responsive.height(48),
-   // width:wp('95%'),
-    //height: hp('7%'),
+    height:Responsive.height(42),
     borderRadius: Responsive.height(24),
-    top: Responsive.height(480),
+    top: Responsive.height(495),
     backgroundColor: "white",
     includeFontPadding: true,
     paddingVertical: 5,

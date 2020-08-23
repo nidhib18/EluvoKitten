@@ -110,13 +110,13 @@ export default class LoginScreen extends Component {
               source={require("../../assets/dots.png")}
             />
 
-            <Input
+<Input
               style={LoginStyles.usernameInput}
               label="Username"
               onChangeText={(value) => this.setState({ username: value })}
               placeholderTextColor={"#f09874"}
               color={"black"}
-              height={Responsive.height(25)}
+              height={Responsive.height(24)}
               alignItems={"center"}
             />
 
@@ -130,7 +130,7 @@ export default class LoginScreen extends Component {
               }
               placeholderTextColor={"#f09874"}
               color={"black"}
-              height={28}
+              height={Responsive.height(24)}
             />
 
             <Button

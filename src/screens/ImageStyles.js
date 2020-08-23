@@ -11,8 +11,6 @@ export const ImageStyles = {
   logoContainer: {
     flex: 1,
     position: "absolute",
-    // width: wp('65.98%'),
-    // height: hp('20.81%'),
     width:Responsive.width(151),
     height:Responsive.height(150),
     top: Responsive.height(200),
@@ -42,8 +40,7 @@ export const ImageStyles = {
     position: "absolute",
     left:  Responsive.width(-17),
     top: Responsive.height(127),
-    // height: hp('20%'),
-    // width: wp('25%'),
+    //width: wp('25%'),
     width:Responsive.width(114),
     height:Responsive.height(108),
     resizeMode: "contain",
@@ -53,9 +50,7 @@ export const ImageStyles = {
     position: "absolute",
     alignItems: "center",
     top:Responsive.height(300),
-    //height: hp('10%'),
-    
-    width: wp('30%'),
+    //: wp('30%'),
     width:Responsive.width(151),
     height:Responsive.height(150),
     resizeMode: "contain",
@@ -64,11 +59,8 @@ export const ImageStyles = {
     position: "absolute",
     alignItems: "center",
     top:Responsive.height(408),
-    // height: hp('3'),
-    // width: wp('50%'),
     width:Responsive.width(186),
-    height:Responsive.height(22),
-    
+    height:Responsive.height(22), 
     resizeMode: "contain",
   },
 };

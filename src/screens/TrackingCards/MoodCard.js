@@ -132,15 +132,15 @@ export default class MoodCard extends React.Component {
                     <Card disabled={true}
                         style={TrackingStyles.cardStyle}>
                         <Text style={TrackingStyles.symptomText}>Mood </Text>
-                        <TouchableOpacity onPress={() => {
+                        <TouchableWithoutFeedback onPress={() => {
                             this.setMoodVisible(!this.state.moodVisible);
                         }}>
                             <Image
                                 style={TrackingStyles.xContainer}
                                 source={require('../../../assets/x.png')}
                             />
-                        </TouchableOpacity>
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('1%'), fontSize: wp('4%'), fontWeight:'500' }}>How do you feel today? </Text>
+                        </TouchableWithoutFeedback>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(15), fontSize: Responsive.font(15), fontWeight: '400' }}>How do you feel today? </Text>
                         <Slider
                             style={styles.sliderStyle}
                             step={1}
@@ -158,8 +158,8 @@ export default class MoodCard extends React.Component {
                             </Text>
                             <Text style={styles.colorGrey}>Worst Mood </Text>
                         </View>
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('13%'), fontSize: wp('4%'),fontWeight:'500' }}>Add more detail: </Text>
-                        <View style={{ top: hp('17%'), left: wp('-2%') }}>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(70), fontSize: Responsive.font(15), fontWeight: '400' }}>Add more detail: </Text>
+                        <View style={{ top: Responsive.height(80), left: Responsive.width(-10)}}>
                             <TagSelector
 
                                 tagStyle={TrackingStyles.tag}
@@ -188,30 +188,31 @@ export default class MoodCard extends React.Component {
 const styles = StyleSheet.create({
 
     sliderStyle: {
-
-        top: hp('5%'),
+        alignSelf: 'center',
+        top: Responsive.height(28),
         flex: 1,
-        width: wp('80%'),
-        height: hp('20.81%'),
-        padding: wp('2.5%'),
+        width: Responsive.width(292),
+        height: Responsive.height(52),
+        padding: Responsive.width(17),
         backgroundColor: '#FFF'
 
     },
     textCon: {
-        width: wp('80%'),
+        width: Responsive.width(292),
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
     colorGrey: {
         color: '#8A8A8E',
-        top: hp('8%'),
-        fontWeight:'500'
-
+        fontWeight: '400',
+        top: Responsive.height(52),
+        fontSize:Responsive.font(13)
     },
     colorPeach: {
         color: '#f09874',
-        top: hp('8%'),
-        fontWeight:'500'
+        fontWeight: '400',
+        top: Responsive.height(52),
+        fontSize:Responsive.font(13)
 
-    }
+    },
 });

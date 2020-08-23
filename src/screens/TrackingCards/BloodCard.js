@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { Image, Dimensions, TouchableOpacity, Slider, StyleSheet, View } from 'react-native';
+import { Image, Dimensions, TouchableOpacity,TouchableWithoutFeedback, Slider, StyleSheet, View } from 'react-native';
 import { Layout, Card, Modal, Text, Button } from '@ui-kitten/components';
 import TagSelector from 'react-native-tag-selector';
 import { TrackingStyles } from "../TrackingStyles";
@@ -134,14 +134,14 @@ export default class BloodCard extends React.Component {
                     <Card disabled={true}
                         style={TrackingStyles.cardStyle}>
                         <Text style={TrackingStyles.symptomText}>Bleeding</Text>
-                        <TouchableOpacity onPress={() => {
+                        <TouchableWithoutFeedback  onPress={() => {
                             this.setBloodVisible(!this.state.bloodVisible);
                         }}>
                             <Image
                                 style={TrackingStyles.xContainer}
                                 source={require('../../../assets/x.png')}
                             />
-                        </TouchableOpacity>
+                        </TouchableWithoutFeedback>
                         <Slider
                             style={styles.sliderStyle}
                             step={1}
@@ -162,9 +162,11 @@ export default class BloodCard extends React.Component {
                             <Text style={styles.colorGrey}>Heavy </Text>
                         </View>
 
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('-4'), fontSize: wp('4%'), fontWeight: '500' }}>Did you have any bleeding today?</Text>
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('16'), fontSize: wp('4%'), fontWeight: '500' }}>Did you use any of the following?</Text>
-                        <View style={{ top: hp('20%'), left: wp('-2%') }}>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(-40), fontSize: Responsive.font(15), fontWeight: '400' }}>Did you have any bleeding today?</Text>
+                        <View style={{width:Responsive.width(350) }} >
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(50), fontSize: Responsive.font(15), fontWeight: '400' }}>Did you use any of the following?</Text>
+                        </View>
+                        <View style={{ top: Responsive.height(70), left: Responsive.width(-10) , width:Responsive.width(350)}}>
                             <TagSelector
                                 tagStyle={TrackingStyles.tag}
                                 selectedTagStyle={TrackingStyles.tagSelected}
@@ -195,30 +197,33 @@ export default class BloodCard extends React.Component {
 const styles = StyleSheet.create({
 
     sliderStyle: {
-
-        top: hp('10%'),
+        alignSelf: 'center',
+        top: Responsive.height(48),
         flex: 1,
-        width: wp('80%'),
-        height: hp('20.81%'),
-        padding: wp('5.5%'),
+        width: Responsive.width(292),
+        height: Responsive.height(52),
+        padding: Responsive.width(17),
         backgroundColor: '#FFF'
 
     },
     textCon: {
-        width: wp('80%'),
+        width: Responsive.width(292),
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
     colorGrey: {
         color: '#8A8A8E',
-        top: hp('11%'),
-        fontWeight: '500'
+        fontWeight: '400',
+        top: Responsive.height(62),
+        fontSize:Responsive.font(13)
 
     },
     colorPeach: {
         color: '#f09874',
-        top: hp('11%'),
-        fontWeight: '500'
+        fontWeight: '400',
+        top: Responsive.height(62),
+        fontSize:Responsive.font(13)
 
-    }
+    },
+
 });

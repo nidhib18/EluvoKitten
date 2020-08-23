@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { Image, Dimensions, TouchableOpacity, Slider, StyleSheet, View } from 'react-native';
+import { Image, Dimensions, TouchableOpacity,TouchableWithoutFeedback, Slider, StyleSheet, View } from 'react-native';
 import { Layout, Card, Modal, Text, Button } from '@ui-kitten/components';
 import { TrackingStyles } from "../TrackingStyles";
 import TagSelector from 'react-native-tag-selector';
@@ -128,12 +128,12 @@ export default class SexCard extends React.Component {
 
         return (
             <Layout style={TrackingStyles.container}>
-                <TouchableOpacity onPress={() => { this.setSexVisible(true); }}>
+                <TouchableWithoutFeedback onPress={() => { this.setSexVisible(true); }}>
                     <Image
                         style={TrackingStyles.sexButton}
                         source={require('../../../assets/sex.png')}
                     />
-                </TouchableOpacity>
+                </TouchableWithoutFeedback>
 
                 <Modal style={{
                     shadowColor: '#c8c8c8',
@@ -144,15 +144,15 @@ export default class SexCard extends React.Component {
                     <Card disabled={true}
                         style={ TrackingStyles.cardStyle }>
                         <Text style={TrackingStyles.symptomText}>Sex </Text>
-                        <TouchableOpacity onPress={() => {
+                        <TouchableWithoutFeedback onPress={() => {
                             this.setSexVisible(!this.state.sexVisible);
                         }}>
                             <Image
                                 style={TrackingStyles.xContainer}
                                 source={require('../../../assets/x.png')}
                             />
-                        </TouchableOpacity>
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top:hp('3%'), fontSize: wp('4%'),fontWeight:'500' }}>Did you do any sexual activities today </Text>
+                        </TouchableWithoutFeedback>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(15), fontSize: Responsive.font(15), fontWeight: '400' }}>Did you do any sexual activities today </Text>
                         <Slider
                             style={styles.sliderStyle}
                             step={5}
@@ -170,8 +170,8 @@ export default class SexCard extends React.Component {
                             </Text>
                             <Text style={styles.colorGrey}>Had Sex </Text>
                         </View>
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top:hp('15%'), fontSize: wp('4%'), fontWeight:'500' }}>Add more detail: </Text>
-                        <View style={{top: hp('18%'), left: wp('-2%')}}>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(65), fontSize: Responsive.font(15), fontWeight: '400' }}>Add more detail: </Text>
+                        <View style={{top: Responsive.height(80), left: Responsive.width(-10), width:Responsive.width(310)}}>
                             <TagSelector
                                 tagStyle={TrackingStyles.tag}
                                 selectedTagStyle={TrackingStyles.tagSelected}
@@ -201,32 +201,32 @@ export default class SexCard extends React.Component {
 const styles = StyleSheet.create({
 
     sliderStyle: {
-
-        top: hp('5%'),
+        alignSelf: 'center',
+        top: Responsive.height(38),
         flex: 1,
-        width: wp('80%'),
-        height: hp('20.81%'),
-        padding: wp('5.5%'),
+        width: Responsive.width(292),
+        height: Responsive.height(52),
+        padding: Responsive.width(17),
         backgroundColor: '#FFF'
 
     },
     textCon: {
-        width: wp('80%'),
+        width: Responsive.width(292),
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
     colorGrey: {
         color: '#8A8A8E',
-        top: hp('6%'),
-        fontWeight:'500'
+        fontWeight: '400',
+        top: Responsive.height(52),
 
     },
     colorPeach: {
         color: '#f09874',
-        top: hp('6%'),
-        fontWeight:'500'
+        fontWeight: '400',
+        top: Responsive.height(52),
 
-    }
+    },
 
 
 });

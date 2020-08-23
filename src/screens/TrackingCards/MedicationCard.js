@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Image, Dimensions, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Image, Dimensions, TouchableOpacity,TouchableWithoutFeedback, View } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Layout, Input, Card, Modal, Text, Button, Toggle } from '@ui-kitten/components';
 import { TrackingStyles } from "../TrackingStyles";
@@ -121,12 +121,12 @@ export default class MedicationCard extends React.Component {
     
         return (
             <Layout style={TrackingStyles.container}>
-                <TouchableOpacity onPress={() => { this.setMedicationVisible(true); }}>
+                <TouchableWithoutFeedback onPress={() => { this.setMedicationVisible(true); }}>
                     <Image
                         style={TrackingStyles.medicationButton}
                         source={require('../../../assets/medication.png')}
                     />
-                </TouchableOpacity>
+                </TouchableWithoutFeedback>
 
                 <Modal style={{
                     shadowColor: '#c8c8c8',
@@ -137,55 +137,56 @@ export default class MedicationCard extends React.Component {
                     <Card disabled={true}
                         style={TrackingStyles.cardStyle}>
                         <Text style={TrackingStyles.symptomText}>Medication</Text>
-                        <TouchableOpacity onPress={() => {
+                        <TouchableWithoutFeedback onPress={() => {
                             this.setMedicationVisible(!this.state.medicationVisible);
                         }}>
                             <Image
                                 style={TrackingStyles.xContainer}
                                 source={require('../../../assets/x.png')}
                             />
-                        </TouchableOpacity>
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('3%'), fontSize: wp('4%'), fontWeight: '500' }}>Did you take any medication today?</Text>
+                        </TouchableWithoutFeedback>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(10), fontSize: Responsive.font(15), fontWeight: '400' }}>Did you take any medication today?</Text>
 
                         <Input
-                            style={{ backgroundColor: '#FBFBFB', top: hp('5') }}
+                            style={{ backgroundColor: '#FBFBFB', top: Responsive.height(15)  }}
                             placeholder='E.g Panadol'
                             placeholderTextColor='#8A8A8E'
                             color='#8A8A8E'
                             value={medicationType}
+                            height={Responsive.height(26)}
                             onChangeText={
                                 // Set this.state.email to the value in this Input box
                                 (value) => this.setState({ medicationType: value })
                             }/>
-
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('8%'), fontSize: wp('4%'), fontWeight: '500' }}>Time Taken</Text>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(25), fontSize: Responsive.font(15), fontWeight: '400' }}>Time Taken</Text>
                         <Input
-                            style={{ backgroundColor: '#FBFBFB', top: hp('10') }}
+                            style={{ backgroundColor: '#FBFBFB', top: Responsive.height(30) }}
                             placeholder='9:00 am'
                             placeholderTextColor='#8A8A8E'
                             value={medicationTimeTaken}
                             color='#8A8A8E'
+                            height={Responsive.height(26)}
                             onChangeText={
                                 // Set this.state.email to the value in this Input box
                                 (value) => this.setState({ medicationTimeTaken: value })
                             }
                         />
 
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('12%'), fontSize: wp('4%'), fontWeight: '500' }}>Dosage</Text>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(35), fontSize: Responsive.font(15), fontWeight: '400' }}>Dosage</Text>
                         <Input
-                            style={{ backgroundColor: '#FBFBFB', top: hp('14') }}
+                            style={{ backgroundColor: '#FBFBFB', top: Responsive.height(40) }}
                             placeholder='2 tablets'
                             placeholderTextColor='#8A8A8E'
                             value={medicationQuantity}
+                            height={Responsive.height(26)}
                             color='#8A8A8E'
                             onChangeText={
                                 // Set this.state.email to the value in this Input box
                                 (value) => this.setState({ medicationQuantity: value })
                             }
                         />
-
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('17%'), fontSize: wp('4%'), fontWeight: '500' }}>Have you noticed any side effects?</Text>
-                        <View style={{ top: hp('20%'), left: wp('-2%') }}>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(45), fontSize: Responsive.font(15), fontWeight: '400' }}>Have you noticed any side effects?</Text>
+                        <View style={{ top: Responsive.height(50), left: Responsive.width(-10) ,width:Responsive.width(350)}}>
                             <TagSelector
 
                                 tagStyle={TrackingStyles.tag}

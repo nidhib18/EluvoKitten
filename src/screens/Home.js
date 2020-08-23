@@ -85,48 +85,55 @@ export default class Home extends React.Component {
     // console.log("Child Id", item.childId);
     return (
       <View>
-        {item.available ? (
-          <View >
-            {item.id == 0 ? (<View style={styles.symptomView}>
-              <Image style={styles.painIcon} source={item.image}></Image>
-              <Text style={styles.symptomText}>{item.name}</Text></View>) : (<></>)}
+        {item.available && item.id == 0 ? (
 
-            <Text style={{ left: Responsive.width(96), top: Responsive.height(-85), color: "#8A8A8E", fontWeight: '500', fontSize: Responsive.font(13) }}>{item.levelText} {item.level}</Text>
-            <Text style={styles.logText}> {item.logTime}</Text>
-            <Text style={{ left: Responsive.width(96), fontSize: Responsive.font(13), top: Responsive.height(-100), color: "#8A8A8E", fontWeight: '500' }}>{item.tagText} {item.tags}</Text>
+          <View style={styles.symptomView}>
+            <Image style={styles.painIcon} source={item.image}></Image>
+            <Text style={styles.symptomText}>{item.name}</Text></View>) : (<></>)}
 
-            {item.PainTag ? (
-              <Text style={{
-                left: Responsive.width(96), fontSize: Responsive.font(13), top: Responsive.height(-100), color: "#8A8A8E", fontWeight: '500', alignSelf: "flex-start",
-                flexDirection: "row",
-              }}>{item.tagLocText} {item.PainTag.map((location, index) => {
-                let locationText =
-                  location.list_item_name +
-                  (index < item.PainTag.length - 1
-                    ? ", "
-                    : "");
-                return locationText;
-              })}
-              </Text>
-            ) : (<></>)}
-            {item.medicationTypeText ?
-              (<>
-                <Text style={{ left: Responsive.width(96), top: Responsive.height(-132), color: "#8A8A8E", fontWeight: '500', fontSize: Responsive.font(13) }}>{item.medicationTypeText} {item.medicationType}</Text>
-                <Text style={{ left: Responsive.width(96), top: Responsive.height(-132), color: "#8A8A8E", fontWeight: '500', fontSize: Responsive.font(13) }}>{item.medicationTimeText} {item.medicationTime}</Text>
-                <Text style={{ left: Responsive.width(96), top: Responsive.height(-132), color: "#8A8A8E", fontWeight: '500', fontSize: Responsive.font(13) }}>{item.quantityText} {item.quantity}</Text>
-                <Text style={{ left: Responsive.width(96), top: Responsive.height(-132), color: "#8A8A8E", fontWeight: '500', marginBottom: -35, }}>{item.medTagText} {item.medTags}</Text>
+        <Text style={{ left: wp('27%'), top: hp('-2%'), color: "#8A8A8E", fontWeight: '500' }}>{item.levelText} {item.level}</Text>
+        <Text style={styles.logText}> {item.logTime}</Text>
+        <Text style={{ left: wp('27%'), top: hp('-4%'), color: "#8A8A8E", fontWeight: '500' }}>{item.tagText} {item.tags}</Text>
 
-              </>
-              )
-              : (<></>)}
+        {item.PainTag ? (
 
+          <Text style={{
+            left: wp('27%'), top: hp('-4%'), color: "#8A8A8E", fontWeight: '500',
 
-          </View>
+          }}>{item.tagLocText} {item.PainTag.map((location, index) => {
+            let locationText =
+              location.list_item_name +
+              (index < item.PainTag.length - 1
+                ? ", "
+                : "");
+            return locationText;
+          })}
+          </Text>
+
         ) : (<></>)}
+
+        {item.medicationTypeText ?
+
+          (<View style={{height:35}}>
+
+            <Text style={{ left: wp('27%'), top: hp('-9%'), color: "#8A8A8E", fontWeight: '500' }}>{item.medicationTypeText} {item.medicationType}</Text>
+            <Text style={{ left: wp('27%'), top: hp('-9%'), color: "#8A8A8E", fontWeight: '500' }}>{item.medicationTimeText} {item.medicationTime}</Text>
+            <Text style={{ left: wp('27%'), top: hp('-9%'), color: "#8A8A8E", fontWeight: '500' }}>{item.quantityText} {item.quantity}</Text>
+            <Text style={{ left: wp('27%'), top: hp('-9%'), color: "#8A8A8E", fontWeight: '500', paddingBottom: 10 }}>{item.medTagText} {item.medTags}</Text>
+
+
+            </View>
+          )
+          : (<></>)}
+
+
+
+
       </View>
 
-    )
-  }
+
+  )
+}
   setDate(newDate) {
     this.resetState();
     this.setState({
@@ -200,7 +207,7 @@ export default class Home extends React.Component {
         logTime: moment(medicationData.medication.occurred_date).format("hh:mm A"),
         medTags: medicationData.medication.medication_side_effects,
         medTagText: 'Side Effect:',
-        medicationTypeText: 'Medication Type:',
+        medicationTypeText: 'Type:',
         medicationType: medicationData.medication.medication_type,
         medicationTimeText: 'Time Taken:',
         medicationTime: medicationData.medication.medication_time_taken,
@@ -285,7 +292,7 @@ export default class Home extends React.Component {
         logTime: moment(digestionData.digestion.occurred_date).format("hh:mm A"),
         tags: digestionData.digestion.bowel_symptom_name,
         available: true,
-        tagText: 'Bowel symptom:',
+        tagText: 'Symptoms:',
         image: require("../../assets/digestionia.png")
       };
       digestionSymptoms.push(symptom);
@@ -416,7 +423,7 @@ export default class Home extends React.Component {
 
         <Divider />
 
-        <View style={{ top: 230 }}>
+        <View style={{ top:  Responsive.height(180) }}>
           <Text
             style={{
               color: "#FFFFFF",
@@ -424,9 +431,9 @@ export default class Home extends React.Component {
               letterSpacing: wp('0%'),
               includeFontPadding: true,
               textAlign: "left",
-              fontWeight: "600",
+              fontWeight: "500",
               left: Responsive.width(80),
-              top: Responsive.height(35),
+              top: Responsive.height(55),
             }}
           >
             How are you, {this.state.userDetails.first_name}?{" "}
@@ -480,93 +487,89 @@ export default class Home extends React.Component {
           <>
             {this.state.isAnyDataAvailable ? (
               <>
-                <View style={{ width: Responsive.width(360), height: Responsive.height(435), backgroundColor: '#f2f2f2', top: Responsive.height(250), alignSelf: "center" }}>
+              <View style={{ width: Responsive.width(360), height: Responsive.height(435), backgroundColor: '#f2f2f2', top: Responsive.height(250), alignSelf: "center" }}>
 
 
-                  <ScrollView contentContainerStyle={{
-                    justifyContent: "space-around",
-                    flex: 1,
-                    flexGrow: 1,
-                    flexDirection: "column",
-                    marginTop: Responsive.height(-435),
-                    marginBottom: "-267%",
-                    justifyContent: "center",
-                    bottom: Responsive.height(-580),
-                  }}>
+        <ScrollView contentContainerStyle={{
+                  justifyContent: "space-around",
+                  flex: 1,
+                  flexGrow: 1,
+                  flexDirection: "column",
+                  marginTop: Responsive.height(-435),
+                  marginBottom: "-267%",
+                  justifyContent: "center",
+                  bottom: Responsive.height(-580),
+                    }}>
 
                     <Card style={styles.cardContainer}>
                       <Text style={styles.cardText}>Today you experienced...</Text>
 
                       <FlatList
-                        style={{ width: Responsive.width(400), top: Responsive.height(25), left: Responsive.width(-37) }}
-                        data={painSymptoms}                      
+                        style={{ flex: 0, width: 400, top: 25, left: -37 }}
+                        data={painSymptoms}
                         renderItem={this.renderItem}
                         keyExtractor={extractKey}
+
                       />
 
-
-
                       <FlatList
-                        style={{ width: Responsive.width(400), top: Responsive.height(25), left: Responsive.width(-37) }}
+                        style={{ flex: 0, width: 400, top: 25, left: -37 }}
                         data={moodSymptoms}
                         renderItem={this.renderItem}
                         keyExtractor={extractKey}
                       />
-
-
                       <FlatList
-                        style={{ width: Responsive.width(400), top: Responsive.height(25), left: Responsive.width(-37) }}
+                        style={{ width: 400, top: 25, left: -37 }}
+                        // contentContainerStyle={{justifyContent:'space-around'}}
+                        data={medicationSymptoms}
+                        renderItem={this.renderItem}
+                        //ItemSeparatorComponent ={false}
+                        keyExtractor={extractKey}
+
+                      />
+                      <FlatList
+                        style={{ width: 400, top: 25, left: -37 }}
+
                         data={bloodSymptoms}
                         renderItem={this.renderItem}
                         keyExtractor={extractKey}
                       />
-
-
                       <FlatList
-                        style={{ width: Responsive.width(400), top: Responsive.height(25), left: Responsive.width(-37) }}
-                        data={digestionSymptoms}
-                        renderItem={this.renderItem}
-                        keyExtractor={extractKey}
-                      />
-
-
-                      <FlatList
-                        style={{ width: Responsive.width(400), top: Responsive.height(25), left: Responsive.width(-37) }}
-                        data={exerciseSymptoms}
-                        renderItem={this.renderItem}
-                        keyExtractor={extractKey}
-                      />
-
-
-                      <FlatList
-                        style={{ width: Responsive.width(400), top: Responsive.height(25), left: Responsive.width(-37) }}
-                        data={medicationSymptoms}
-                        renderItem={this.renderItem}
-                        keyExtractor={extractKey}
-                      />
-
-
-                      <FlatList
-                        style={{ width: Responsive.width(400), top: Responsive.height(25), left: Responsive.width(-37) }}
+                        style={{ width: 400, top: 25, left: -37 }}
                         data={dietSymptoms}
                         renderItem={this.renderItem}
                         keyExtractor={extractKey}
                       />
-
-
                       <FlatList
-                        style={{ width: Responsive.width(400), top: Responsive.height(25), left: Responsive.width(-37) }}
+                        style={{ width: 400, top: 25, left: -37 }}
+                        data={digestionSymptoms}
+                        renderItem={this.renderItem}
+                        keyExtractor={extractKey}
+                      />
+                      <FlatList
+                        style={{ width: 400, top: 25, left: -37 }}
+
+                        data={exerciseSymptoms}
+                        renderItem={this.renderItem}
+                        keyExtractor={extractKey}
+                      />
+                      <FlatList
+                        style={{ width: 400, top: 25, left: -37 }}
+
                         data={sexSymptoms}
                         renderItem={this.renderItem}
                         keyExtractor={extractKey}
                       />
+
+
+                  
 
                     </Card>
 
                   </ScrollView>
 
                 </View>
-              </>
+                </>
             )
               : (
                 <>
@@ -600,32 +603,33 @@ export default class Home extends React.Component {
           style={HomeStyles.tabContainer}
           source={require("../../assets/bottomtab.png")}
         />
-        <TouchableOpacity >
+        <View style = {{top:Responsive.height(-15)}}>
+        <TouchableWithoutFeedback >
           <Image
             style={HomeStyles.careplan}
             source={require("../../assets/careplan.png")}
           />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('Insights')}>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Insights')}>
           <Image
             style={HomeStyles.insights}
             source={require("../../assets/insights.png")}
           />
-        </TouchableOpacity>
-        <TouchableOpacity >
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback >
           <Image
             style={HomeStyles.learn}
             source={require("../../assets/learn.png")}
           />
-        </TouchableOpacity>
-        <TouchableOpacity 
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback
         onPress={() => this.props.navigation.navigate('Settings')}
         >
           <Image
             style={HomeStyles.settings}
             source={require("../../assets/settings.png")}
           />
-        </TouchableOpacity>
+        </TouchableWithoutFeedback>
 
         <TouchableWithoutFeedback 
           onPress={() =>
@@ -639,7 +643,7 @@ export default class Home extends React.Component {
             source={require("../../assets/oval.png")}
           />
         </TouchableWithoutFeedback>
-
+        </View>
       </Layout>
     );
   }
@@ -686,21 +690,20 @@ const styles = StyleSheet.create({
     shadowRadius: 30,
   },
   symptomView: {
-    padding: Responsive.height(15),
-    marginBottom: Responsive.height(15),
+    padding: 15,
+    marginBottom: 25,
     color: "#8A8A8E",
-    backgroundColor: "#ffff",
+    // backgroundColor: "blue",
     fontWeight: 'bold',
     fontFamily: "French Script MT",
-    marginRight: Responsive.width(20),
-    marginLeft: Responsive.width(20),
-    borderRadius: 10,
-    //borderWidth: 1,
+    marginRight: 20,
+    marginLeft: 20,
+    // borderRadius: 10,
+    borderWidth: 1,
     borderColor: '#ffff',
     textAlign: 'center',
-    fontSize: Responsive.font(10),
-    height: Responsive.height(100),
-    //top:10
+    fontSize: 10,
+    //height: 100
   },
 
   cardText: {
@@ -708,7 +711,7 @@ const styles = StyleSheet.create({
     left: wp('5'),
     position: "absolute",
     fontSize: Responsive.font(16),
-    fontWeight: "600",
+    fontWeight: "500",
     letterSpacing: wp('0%'),
     justifyContent: "center",
     alignItems: "center",
@@ -720,7 +723,7 @@ const styles = StyleSheet.create({
     flex: 1,
     position: "absolute",
     fontSize: Responsive.font(18),
-    fontWeight: "600",
+    fontWeight: "500",
     letterSpacing: wp('0%'),
     justifyContent: "center",
     alignItems: "center",
@@ -730,13 +733,11 @@ const styles = StyleSheet.create({
   },
 
   logText:
-
   {
-    fontSize: Responsive.font(12.5),
-    left: Responsive.width(260),
-    top: Responsive.height(-95),
+    left: wp('73%'),
+    top: hp('-2.8%'),
     color: "#8A8A8E",
-    fontWeight: '500'
+    fontWeight: '400'
   },
 
   painIcon: {

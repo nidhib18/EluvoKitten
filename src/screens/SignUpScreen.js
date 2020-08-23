@@ -156,19 +156,20 @@ export default class SignUpScreen extends Component {
   };
 
   render() {
-    return (
-      <ScrollView
-        contentContainerStyle={{
-          flex: 1,
-          flexGrow: 1,
-          flexDirection: "column",
-          marginTop: "-100%",
-          justifyContent: "center",
-          top: hp('55%'),
-        }}
-        vertical={true}
-        showsVerticalScrollIndicator={true}
-      >
+    
+      return (
+        <ScrollView
+          contentContainerStyle={{
+            flex: 1,
+            flexGrow: 1,
+            flexDirection: "column",
+            marginTop: Responsive.height(-350),
+            justifyContent: "center",
+            top:Responsive.height(350),
+          }}
+          vertical={true}
+          showsVerticalScrollIndicator={true}
+        >
         <Layout style={ImageStyles.mainContainer}>
           <TopNavigation position="absolute" />
           <Divider />
@@ -187,16 +188,16 @@ export default class SignUpScreen extends Component {
             style={ImageStyles.dotsContainer}
             source={require("../../assets/dots.png")}
           />
-
+<View style={{width:Responsive.width(320), top:Responsive.height(-500)}}>
           <Text style={SignUpStyles.headerText}>Create a new account </Text>
-
+</View>
           <Input
             style={UserInfoStyles.nameInput}
             label="First name"
             onChangeText={(value) => this.setState({ given_name: value })}
             placeholderTextColor={"#f09874"}
             color={"black"}
-            height={28}
+            height={Responsive.height(24)}
           />
           <Input
             style={SignUpStyles.usernameInput}
@@ -207,7 +208,7 @@ export default class SignUpScreen extends Component {
             }
             placeholderTextColor={"#f09874"}
             color={"black"}
-            height={28}
+            height={Responsive.height(24)}
           />
 
           <Input
@@ -219,7 +220,7 @@ export default class SignUpScreen extends Component {
             }
             placeholderTextColor={"#f09874"}
             color={"black"}
-            height={28}
+            height={Responsive.height(24)}
           />
 
           <Input
@@ -231,7 +232,7 @@ export default class SignUpScreen extends Component {
             onChangeText={(value) => this.setState({ password: value })}
             placeholderTextColor={"#f09874"}
             color={"black"}
-            height={28}
+            height={Responsive.height(24)}
           />
 
           <Input
@@ -243,7 +244,7 @@ export default class SignUpScreen extends Component {
             onChangeText={(value) => this.setState({ confirmPassword: value })}
             placeholderTextColor={"#f09874"}
             color={"black"}
-            height={28}
+            height={Responsive.height(24)}
           />
 
           {/* //**********User info ************ */}
@@ -253,7 +254,7 @@ export default class SignUpScreen extends Component {
             onChangeText={(value) => this.setState({ family_name: value })}
             placeholderTextColor={"#f09874"}
             color={"black"}
-            height={28}
+            height={Responsive.height(24)}
           />
 
           <Datepicker
