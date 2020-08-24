@@ -17,35 +17,40 @@ console.reportErrorsAsExceptions = false;
 
 
 
-const errorHandler = (err, isFatal) => {
-  const allowedInDevMode = true; //enable DEV mode true in index.js as well
-  if (isFatal && allowedInDevMode ) {
-    Alert.alert(
-        'Unexpected error occurred',
-        `
-        We will need to restart the app.
-        `,
-      [{
-        text: 'Restart',
-        onPress: () => {
-          RNRestart.Restart();
-        }
-      }]
-    );
-  } else {
-    console.log(err); // So that we can see it in the logs
-  }
-};
+// const errorHandler = (err, isFatal) => {
+//   const allowedInDevMode = true; //enable DEV mode true in index.js as well
+//   if (isFatal && allowedInDevMode ) {
+//     Alert.alert(
+//         'Unexpected error occurred',
+//         `
+//         We will need to restart the app.
+//         `,
+//       [{
+//         text: 'Restart',
+//         onPress: () => {
+//           RNRestart.Restart();
+//         }
+//       }]
+//     );
+//   } else {
+//     console.log(err); // So that we can see it in the logs
+//   }
+// };
 
-setJSExceptionHandler(errorHandler);
+// setJSExceptionHandler(errorHandler);
 
 
 export default () => (
   
   <>
     <IconRegistry icons={EvaIconsPack}/>
-    <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
-      <AppNavigator/>    
+   {/* <SafeAreaView style={{ flex: 1 , backgroundColor:'#F09874'}}>  */}
+   <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
+
+    <AppNavigator />
+
     </ApplicationProvider>
+ {/* </SafeAreaView> */}
+
   </>
 );

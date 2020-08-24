@@ -1,7 +1,7 @@
 import React from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { TrackingStyles } from "../TrackingStyles";
-import { Image, Dimensions, TouchableOpacity, Slider, View, StyleSheet } from 'react-native';
+import { Image, Dimensions, TouchableOpacity,TouchableWithoutFeedback, Slider, View, StyleSheet } from 'react-native';
 import { Layout, Card, Modal, Text, Button } from '@ui-kitten/components';
 import moment from "moment";
 import TagSelector from 'react-native-tag-selector';
@@ -10,7 +10,9 @@ import { constants } from "../../resources/Constants";
 import { initPainDetails } from "../../models/PainDetails";
 import { utcToLocal, localToUtcDate, localToUtcDateTime } from "../../helpers/DateHelpers";
 import { mapListItemsToTags } from "../../helpers/TagHelpers"
-const { width } = Dimensions.get('window');
+import Responsive from 'react-native-lightweight-responsive';
+//const { width } = Dimensions.get('window');
+
 
 
 
@@ -156,14 +158,14 @@ export default class PainCard extends React.Component {
 
             <Layout style={TrackingStyles.container}
             >
-                <TouchableOpacity onPress={() => {
+                <TouchableWithoutFeedback onPress={() => {
                     this.setPainVisible(true);
                 }}>
                     <Image
                         style={TrackingStyles.painButton}
                         source={require('../../../assets/pain.png')}
                     />
-                </TouchableOpacity>
+                </TouchableWithoutFeedback>
 
                 <Modal style={{
                     shadowColor: '#c8c8c8',
@@ -175,15 +177,15 @@ export default class PainCard extends React.Component {
                         style={TrackingStyles.cardStyle}>
                         <Text style={TrackingStyles.symptomText}>Pain </Text>
 
-                        <TouchableOpacity onPress={() => {
+                        <TouchableWithoutFeedback onPress={() => {
                             this.setPainVisible(!this.state.painVisible);
                         }}>
                             <Image
                                 style={TrackingStyles.xContainer}
                                 source={require('../../../assets/x.png')}
                             />
-                        </TouchableOpacity>
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('2%'), fontSize: wp('4%'), fontWeight: '500' }}>How much pain did you have today? </Text>
+                        </TouchableWithoutFeedback>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(15), fontSize: Responsive.font(15), fontWeight: '500' }}>How much pain did you have today? </Text>
 
                         <Slider
                             style={styles.sliderStyle}
@@ -202,9 +204,10 @@ export default class PainCard extends React.Component {
                             </Text>
                             <Text style={styles.colorGrey}>The Worst Pain </Text>
                         </View>
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('13%'), fontSize: wp('4%'), fontWeight: '500' }}>Where is your pain located?</Text>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(75), fontSize: Responsive.font(15), fontWeight: '500' }}>Where is your pain located?</Text>
 
-                        <View style={{ top: hp('14%'), left: wp('-2%') }}>
+                        <View style={{top: Responsive.height(90), left: Responsive.width(-5) }}>
+
 
                             <TagSelector
 
@@ -218,12 +221,12 @@ export default class PainCard extends React.Component {
 
                         </View>
 
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('18%'), fontSize: wp('4%'), fontWeight: '500' }}>What type of pain was it?</Text>
-                        <View style={{ top: hp('21%'), left: wp('-2%') }}>
-                            <TagSelector
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(145), fontSize: Responsive.font(15), fontWeight: '400' }}>What type of pain was it?</Text>
+                        <View style={{ top: Responsive.height(150), left: Responsive.width(-5), width:Responsive.width(350) }}>
+                        <TagSelector
                                 tagStyle={TrackingStyles.tag}
                                 selectedTagStyle={TrackingStyles.tagSelected}
-                                maxHeight={hp('20%')}
+                                maxHeight={70}
                                 tags={painTypes} //source
                                 onChange={(selected) => this.setState({ selectedPainTypes: selected })}
                             />
@@ -235,7 +238,7 @@ export default class PainCard extends React.Component {
                             onPress={() => {
                                 this.setPainVisible(!this.state.painVisible);
                                 this.savePainDetails();
-                            }}> Track!
+                            }}> Save!
                             </Button>
 
                     </Card>
@@ -250,35 +253,33 @@ export default class PainCard extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
+    sliderStyle: {
+        alignSelf: 'center',
+        top: Responsive.height(38),
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#000',
+        width: Responsive.width(292),
+        height: Responsive.height(52),
+        padding: Responsive.width(17),
+        backgroundColor: '#FFF'
+
     },
     textCon: {
-        width: wp('80%'),
+        width: Responsive.width(292),
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
-    sliderStyle: {
-
-        top: hp('5%'),
-        flex: 1,
-        width: wp('80%'),
-        height: hp('20.81%'),
-        padding: wp('3.5%'),
-        backgroundColor: '#FFF'
-    },
     colorGrey: {
         color: '#8A8A8E',
-        top: hp('9%'),
-        fontWeight: '500'
+        fontWeight: '500',
+        top: Responsive.height(52),
+        fontSize:Responsive.font(13)
     },
     colorPeach: {
         color: '#f09874',
-        top: hp('9%'),
-        fontWeight: '500'
+        fontWeight: '500',
+        top: Responsive.height(52),
+        fontSize:Responsive.font(13)
 
-    }
-});
+    },
+}
+);

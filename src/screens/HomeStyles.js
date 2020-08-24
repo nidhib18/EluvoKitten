@@ -1,6 +1,6 @@
 
 import { Dimensions } from "react-native";
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 const { width, height } = Dimensions.get("window");
 export const HomeStyles = {
   mainContainer: {
@@ -9,36 +9,33 @@ export const HomeStyles = {
     backgroundColor: "#fbfbfb",
   },
 
-  
+
   girlContainer: {
     flex: 1,
     position: "absolute",
-    width: wp('95%'),
-    height: hp('30%'),
-    top: hp('15%'),
-    alignItems: "center",
+    width: Responsive.width(121),
+    height: Responsive.height(206),
+    top: Responsive.height(90),
+    alignSelf: "center",
     resizeMode: "contain",
   },
   headerText: {
     position: "absolute",
-    height: hp('20%'),
-    width: wp('90%'),
     color: "#8A8A8E",
-    fontSize:  wp('5%'),
+    fontSize: Responsive.width(16),
     letterSpacing: -0.2,
-    lineHeight: wp('5%'),
-    alignItems: "center",
-    left: wp('14%'),
-    top: hp('50%'),
+    fontWeight: '500',
+    alignSelf: 'center',
+    top: Responsive.height(316),
   },
 
   ovalContainer: {
     flex: 1,
     position: "absolute",
-    width: wp('38%'),
-    height: hp('15%'),
-    top: hp('28%'),
-    left: wp('-21%'),
+    width: Responsive.width(100),
+    height: Responsive.height(100),
+    top: Responsive.height(180),
+    left: Responsive.width(-57),
     alignItems: "center",
     resizeMode: "contain",
   },
@@ -46,55 +43,55 @@ export const HomeStyles = {
   tabContainer: {
     flex: 1,
     position: "absolute",
-    width: wp('150%'),
-    height: hp('9%'),
-    top: hp('92%'),
+    width: Responsive.width(450),
+    height: Responsive.height(50),
+    top: Responsive.height(590),
     left: wp('0%'),
     alignItems: "center",
-    
+
   },
   careplan: {
     flex: 1,
     position: "absolute",
-    width: wp('15%'),
-    height: hp('15%'),
-    top: hp('32.5'),
-    left: wp('-48%'),
+    width: Responsive.width(50),
+    height: Responsive.height(50),
+    top: Responsive.height(230),
+    left: Responsive.width(-170),
     alignItems: "center",
     resizeMode: "contain",
-    
+
   },
   insights: {
     flex: 1,
     position: "absolute",
-    width: wp('15%'),
-    height: hp('15%'),
-    top: hp('32'),
-    left: wp('-30%'),
+    width: Responsive.width(50),
+    height: Responsive.height(50),
+    top: Responsive.height(230),
+    left: Responsive.width(-110),
     alignItems: "center",
     resizeMode: "contain",
-    
+
   },
   learn: {
     flex: 1,
     position: "absolute",
-    width: wp('13%'),
-    height: hp('13%'),
-    top: hp('33'),
-    left: wp('16%'),
+    width: Responsive.width(45),
+    height: Responsive.height(45),
+    top: Responsive.height(230),
+    left: Responsive.width(50),
     alignItems: "center",
     resizeMode: "contain",
-    
+
   },
   settings: {
     flex: 1,
     position: "absolute",
-    width: wp('13%'),
-    height: hp('13%'),
-    top: hp('33'),
-    left: wp('35%'),
+    width: Responsive.width(45),
+    height: Responsive.height(45),
+    top: Responsive.height(230),
+    left: Responsive.width(125),
     alignItems: "center",
     resizeMode: "contain",
-    
+
   },
 };

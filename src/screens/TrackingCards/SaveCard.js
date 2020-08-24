@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, Dimensions, TouchableOpacity, Navigator } from "react-native";
+import { Image, Dimensions, TouchableOpacity,TouchableWithoutFeedback, Navigator } from "react-native";
 import { Layout, Card, Modal, Text, Button } from "@ui-kitten/components";
 import { TrackingStyles } from "../TrackingStyles";
 
@@ -24,7 +24,7 @@ export default class SaveCard extends React.Component {
   render() {
     return (
       <Layout>
-        <TouchableOpacity
+        <TouchableWithoutFeedback
           onPress={() => {
             this.setSaveVisible(true);
           }}
@@ -34,7 +34,7 @@ export default class SaveCard extends React.Component {
             source={require("../../../assets/save.png")}
           />
           
-        </TouchableOpacity>
+        </TouchableWithoutFeedback>
         <Modal style={{
                     shadowColor: '#c8c8c8',
                     shadowOffset: { width: 0, height: 2 },
@@ -46,14 +46,14 @@ export default class SaveCard extends React.Component {
             style={TrackingStyles.cardStyle}
           
           >
-          <TouchableOpacity onPress={() => {
+          <TouchableWithoutFeedback onPress={() => {
             this.setSaveVisible(!this.state.saveVisible);
           }}>
             <Image
-              style={TrackingStyles.xContainer}
+              style={TrackingStyles.xContainerSave}
               source={require('../../../assets/x.png')}
             />
-          </TouchableOpacity>
+          </TouchableWithoutFeedback>
           
           
             <Text style={TrackingStyles.saveText}>Thanks for That!</Text>

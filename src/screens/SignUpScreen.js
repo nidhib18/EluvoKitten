@@ -32,8 +32,8 @@ import { SignUpStyles } from "./SignUpStyles";
 import { UserInfoStyles } from "./UserInfoStyles";
 
 import { Auth } from "aws-amplify";
-import { saveUserDetails } from "../helpers/AuthHelpers";
 
+import { constants } from "../resources/Constants";
 const { sheight } = Dimensions.get("window").height;
 
 export default class SignUpScreen extends Component {
@@ -47,7 +47,7 @@ export default class SignUpScreen extends Component {
       username: "",
       password: "",
       confirmPassword: " ",
-      screenHeight: sheight,
+      screenHeight: sheight, 
       confirmationCode: "",
       secureTextEntry: false,
       modalVisible: false,
@@ -107,12 +107,21 @@ export default class SignUpScreen extends Component {
           birthdate: Moment(birthdate).format("YYYY-MM-DD"),
         },
       })
+
+      
         // On success, show Confirmation Code Modal
         .then(() => this.setState({ modalVisible: true }))
-
+        .catch((err) => {
+          console.log(err);
+          (err.code == constants.USERNAMEEXISTS_EXCEPTION); alert(err.message);
+         
+        });
         // On failure, display error in console
-        .catch((err) => console.log(err));
-    } else {
+//    
+
+    } 
+    
+    else {
       alert("Passwords do not match!");
     }
     if (password.length <= 7) {
@@ -120,33 +129,47 @@ export default class SignUpScreen extends Component {
     }
   };
   
+  // handleConfirmationCode = () => {
+  //   const { username, confirmationCode } = this.state;
+  //   Auth.confirmSignUp(username, confirmationCode, {})
+
+  //     .then((user) => {
+  //       this.setState({ modalVisible: false });
+  //       saveUserDetails(username, this.props.navigation);
+  //     })
+
+  //     .catch((err) => console.log(err));
+  // };
+ 
   handleConfirmationCode = () => {
     const { username, confirmationCode } = this.state;
     Auth.confirmSignUp(username, confirmationCode, {})
 
       .then((user) => {
         this.setState({ modalVisible: false });
-        saveUserDetails(username, this.props.navigation);
+        this.props.navigation.navigate("Instruction", {
+          username: username,
+        });
       })
 
       .catch((err) => console.log(err));
   };
- 
-  
+
   render() {
-    return (
-      <ScrollView
-        contentContainerStyle={{
-          flex: 1,
-          flexGrow: 1,
-          flexDirection: "column",
-          marginTop: "-100%",
-          justifyContent: "center",
-          top: hp('55%'),
-        }}
-        vertical={true}
-        showsVerticalScrollIndicator={true}
-      >
+    
+      return (
+        <ScrollView
+          contentContainerStyle={{
+            flex: 1,
+            flexGrow: 1,
+            flexDirection: "column",
+            marginTop: Responsive.height(-350),
+            justifyContent: "center",
+            top:Responsive.height(350),
+          }}
+          vertical={true}
+          showsVerticalScrollIndicator={true}
+        >
         <Layout style={ImageStyles.mainContainer}>
           <TopNavigation position="absolute" />
           <Divider />
@@ -165,16 +188,16 @@ export default class SignUpScreen extends Component {
             style={ImageStyles.dotsContainer}
             source={require("../../assets/dots.png")}
           />
-
+<View style={{width:Responsive.width(320), top:Responsive.height(-500)}}>
           <Text style={SignUpStyles.headerText}>Create a new account </Text>
-
+</View>
           <Input
             style={UserInfoStyles.nameInput}
             label="First name"
             onChangeText={(value) => this.setState({ given_name: value })}
             placeholderTextColor={"#f09874"}
             color={"black"}
-            height={28}
+            height={Responsive.height(24)}
           />
           <Input
             style={SignUpStyles.usernameInput}
@@ -185,7 +208,7 @@ export default class SignUpScreen extends Component {
             }
             placeholderTextColor={"#f09874"}
             color={"black"}
-            height={28}
+            height={Responsive.height(24)}
           />
 
           <Input
@@ -197,7 +220,7 @@ export default class SignUpScreen extends Component {
             }
             placeholderTextColor={"#f09874"}
             color={"black"}
-            height={28}
+            height={Responsive.height(24)}
           />
 
           <Input
@@ -209,7 +232,7 @@ export default class SignUpScreen extends Component {
             onChangeText={(value) => this.setState({ password: value })}
             placeholderTextColor={"#f09874"}
             color={"black"}
-            height={28}
+            height={Responsive.height(24)}
           />
 
           <Input
@@ -221,7 +244,7 @@ export default class SignUpScreen extends Component {
             onChangeText={(value) => this.setState({ confirmPassword: value })}
             placeholderTextColor={"#f09874"}
             color={"black"}
-            height={28}
+            height={Responsive.height(24)}
           />
 
           {/* //**********User info ************ */}
@@ -231,7 +254,7 @@ export default class SignUpScreen extends Component {
             onChangeText={(value) => this.setState({ family_name: value })}
             placeholderTextColor={"#f09874"}
             color={"black"}
-            height={28}
+            height={Responsive.height(24)}
           />
 
           <Datepicker
