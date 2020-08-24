@@ -147,7 +147,7 @@ export default class SignUpScreen extends Component {
 
       .then((user) => {
         this.setState({ modalVisible: false });
-        this.props.navigation.navigate("Home", {
+        this.props.navigation.navigate("Instruction", {
           username: username,
         });
       })

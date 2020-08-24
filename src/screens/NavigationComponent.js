@@ -9,6 +9,7 @@ import {InsightScreen }from './InsightScreen';
 import SettingScreen from './SettingScreen';
 import CustomiseTracking from './CustomiseTracking.js';
 import ResetPassword from './ResetPassword.js'
+import Instruction from './Instruction';
 import Home from './Home'
 import { TrackScreen } from './TrackScreen';
 // import ErrorBoundary from './ErrorBoundary';
@@ -27,6 +28,7 @@ function MainStackScreen() {
       <MainStack.Screen name='Home' component={Home} /> 
       {/* <MainStack.Screen name='Error' component={ErrorBoundary} />  */}
       <MainStack.Screen name='TrackCust' component={CustomiseTracking} /> 
+      <MainStack.Screen name='Instruction' component={Instruction} />
       <MainStack.Screen name='Reset' component={ResetPassword} /> 
     </MainStack.Navigator>
   );
