@@ -187,7 +187,7 @@ export default class SexCard extends React.Component {
                             onPress={() => {
                                 this.setSexVisible(!this.state.sexVisible);
                                 this.saveSexDetails(); 
-                            }} > Track!
+                            }} > Save!
                             </Button>
                     </Card>
                     

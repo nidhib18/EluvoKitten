@@ -178,7 +178,7 @@ export default class DigestionCard extends React.Component {
                                 this.setDigestionVisible(!this.state.digestionVisible);
                                 this.saveDigestionDetails();
                             }}
-                        > Track!
+                        > Save!
 
                             </Button>
                     </Card>

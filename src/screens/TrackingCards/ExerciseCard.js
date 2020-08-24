@@ -180,7 +180,7 @@ export default class ExerciseCard extends React.Component {
                                 this.setExerciseVisible(!this.state.exerciseVisible);
                                 this.saveExerciseDetails();
                             }}
-                        > Track!
+                        > Save!!
                         </Button>
                     </Card>
                 </Modal>

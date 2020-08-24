@@ -13,9 +13,9 @@ export const TrackingStyles= {
 
   painButton: {
     position: "absolute",
-    top: hp('28%'),
-    width: wp('20%'),
-    height: hp('20.81%'),
+    top: hp('29.5%'),
+    width: wp('21%'),
+    height: hp('22%'),
     right: wp('25%'),
     resizeMode: "contain",
   },
@@ -25,16 +25,16 @@ export const TrackingStyles= {
     top: hp('30%'),
     width: wp('20%'),
     height: hp('20.81%'),
-    right: wp('3%'),
+    right: wp('4%'),
     resizeMode: "contain",
   },
   
   bloodButton: {
     position: "absolute",
-    top: hp('30.5%'),
+    top: hp('30.8%'),
     width: wp('22%'),
     height: hp('20.81%'),
-    right: wp('-18%'),
+    right: wp('-17%'),
     resizeMode: "contain",
   },
 
@@ -43,7 +43,7 @@ export const TrackingStyles= {
     top: hp('30%'),
     width: wp('22%'),
     height: hp('20.81%'),
-    right: wp('-39%'),
+    right: wp('-38%'),
     resizeMode: "contain",
   },
 
@@ -52,25 +52,25 @@ export const TrackingStyles= {
     top: hp('30%'),
     width: wp('22%'),
     height: hp('20.81%'),
-    right: wp('-60.5%'),
+    right: wp('-59.5%'),
     resizeMode: "contain",
   },
 
   medicationButton: {
     position: "absolute",
-    top: hp('30%'),
+    top: hp('30.5%'),
     width: wp('22%'),
-    height: hp('20.81%'),
-    right: wp('-82.5%'),
+    height: hp('20%'),
+    right: wp('-81.5%'),
     resizeMode: "contain",
   },
 
   dietButton: {
     position: "absolute",
     top: hp('28.5%'),
-    width: wp('24.5%'),
-    height: hp('20.81%'),
-    right: wp('-106%'),
+    width: wp('22.8%'),
+    height: hp('23.81%'),
+    right: wp('-104%'),
     resizeMode: "contain",
 
   },
@@ -94,10 +94,10 @@ export const TrackingStyles= {
 
   sexButton: {
     position: "absolute",
-    top: hp('28.5%'),
-    width: wp('23%'),
-    height: hp('20.81%'),
-    right: wp('-128.5%'),
+    top: hp('29.2%'),
+    width: wp('22%'),
+    height: hp('23a.81%'),
+    right: wp('-125.8%'),
     resizeMode: "contain",
 
   },
@@ -143,7 +143,7 @@ export const TrackingStyles= {
     color: '#96969a',
     textAlign: 'left',
     top: hp('45.5%'),
-    left: wp('109.6%'),
+    left: wp('110.6%'),
     fontSize: wp('2.7%'),
     fontWeight: '500'
   },
@@ -160,10 +160,10 @@ export const TrackingStyles= {
 
   saveButton: {
     position: "absolute",
-    top: hp('28.5%'),
-    width: wp('20%'),
-    height: hp('20.81%'),
-    right: wp('-149%'),
+    top: hp('29.6%'),
+    width: wp('23%'),
+    height: hp('22.81%'),
+    right: wp('-147.8%'),
     resizeMode: "contain",
   },
 
@@ -199,21 +199,21 @@ export const TrackingStyles= {
   saveText: {
     color: "black",
     textAlign: "center",
-    fontWeight: "400",
+    fontWeight: "600",
     fontSize: Responsive.font(26),
     top:Responsive.height(275),
   },
   saveLogText: {
     color: "black",
     textAlign: "center",    
-    fontWeight: "400",
+    fontWeight: "500",
     fontSize: Responsive.font(13),
     top:Responsive.height(290),
     color: "#B3B3B3",
   },
 
   cardStyle: {
-    top:Responsive.height(-17),
+    top:Responsive.height(-26),
     width:Responsive.width(325),
     height:Responsive.height(450),
     borderRadius: 20,
@@ -232,7 +232,7 @@ export const TrackingStyles= {
   symptomText: {
     color: 'black',
     textAlign: 'left',
-    fontWeight: '500',
+    fontWeight: 'bold',
     fontSize: Responsive.font(25),
   },
   
@@ -275,6 +275,7 @@ export const TrackingStyles= {
     color: '#8A8A8E',
     fontWeight:'400',
     backgroundColor: 'rgba(118, 118, 128, 0.12)',
+    
   },
   tagSelected: {
     justifyContent: "left",
@@ -307,6 +308,16 @@ export const TrackingStyles= {
     height: hp('5%'),
     top: hp('3%'),
     right:wp('4%'),
+    //alignItems: "center",
+    resizeMode: "contain",
+  },
+  painContainer: {
+    //flex: 1,
+    position: "absolute",
+    width: wp('5%'),
+    height: hp('5%'),
+    top: hp('15%'),
+    right:wp('45%'),
     //alignItems: "center",
     resizeMode: "contain",
   },

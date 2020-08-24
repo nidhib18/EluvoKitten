@@ -238,7 +238,7 @@ export default class PainCard extends React.Component {
                             onPress={() => {
                                 this.setPainVisible(!this.state.painVisible);
                                 this.savePainDetails();
-                            }}> Track!
+                            }}> Save!
                             </Button>
 
                     </Card>

@@ -162,15 +162,16 @@ export default class BloodCard extends React.Component {
                             <Text style={styles.colorGrey}>Heavy </Text>
                         </View>
 
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(-40), fontSize: Responsive.font(15), fontWeight: '400' }}>Did you have any bleeding today?</Text>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(-40), fontSize: Responsive.font(15),  fontWeight: '500' }}>Did you have any bleeding today?</Text>
                         <View style={{width:Responsive.width(350) }} >
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(50), fontSize: Responsive.font(15), fontWeight: '400' }}>Did you use any of the following?</Text>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(60), fontSize: Responsive.font(15),  fontWeight: '500' }}>Did you use any of the following?</Text>
                         </View>
                         <View style={{ top: Responsive.height(70), left: Responsive.width(-10) , width:Responsive.width(350)}}>
                             <TagSelector
                                 tagStyle={TrackingStyles.tag}
                                 selectedTagStyle={TrackingStyles.tagSelected}
                                 maxHeight={70}
+                                
                                 tags={periodProducts}
                                 onChange={(selected) => this.setState({ selectedPeriodProduct: selected })}
                             />
@@ -182,7 +183,7 @@ export default class BloodCard extends React.Component {
                             onPress={() => {
                                 this.setBloodVisible(!this.state.bloodVisible);
                                 this.saveBloodDetails();   
-                            }} > Track!
+                            }} > Save!
                             </Button>
                     </Card>
 
@@ -213,14 +214,14 @@ const styles = StyleSheet.create({
     },
     colorGrey: {
         color: '#8A8A8E',
-        fontWeight: '400',
+        fontWeight: '500',
         top: Responsive.height(62),
         fontSize:Responsive.font(13)
 
     },
     colorPeach: {
         color: '#f09874',
-        fontWeight: '400',
+        fontWeight: '500',
         top: Responsive.height(62),
         fontSize:Responsive.font(13)
 

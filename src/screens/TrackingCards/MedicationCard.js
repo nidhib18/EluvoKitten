@@ -203,7 +203,7 @@ export default class MedicationCard extends React.Component {
                                 this.setMedicationVisible(!this.state.medicationVisible);
                                 this.saveMedicationDetails(); 
                             }}
-                        > Track!
+                        > Save!
                             </Button>
                     </Card>
                 </Modal>

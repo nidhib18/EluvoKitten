@@ -175,7 +175,7 @@ export default class MoodCard extends React.Component {
                             onPress={() => {
                                 this.setMoodVisible(!this.state.moodVisible);
                                 this.saveMoodDetails();    
-                            }} > Track!
+                            }} > Save!!
                             </Button>
                     </Card>
                 </Modal>

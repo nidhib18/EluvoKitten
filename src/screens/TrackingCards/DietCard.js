@@ -185,7 +185,7 @@ export default class DietCard extends React.Component {
                             onPress={() => {
                                 this.setDietVisible(!this.state.dietVisible);
                                 this.saveDietDetails(); 
-                            }} > Track!
+                            }} > Save!
                             </Button>
                     </Card>
 
