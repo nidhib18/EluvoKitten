@@ -4,21 +4,21 @@ const { width, height } = Dimensions.get("window");
 export const LoginStyles = {
   usernameInput: {
     position: "absolute",
-    width: wp('90%'),
-    height: hp('15%'),
+    width:Responsive.width(330),
+    height:Responsive.height(48),
     backgroundColor: "white",
-    top: hp('68%'),
-    borderRadius: 25,
+    top:Responsive.height(430),
+    borderRadius: Responsive.height(24),
     color: "black",
   },
 
   passwordInput: {
     position: "absolute",
-    width: wp('90%'),
-    height: hp('15%'),
+    width:Responsive.width(330),
+    height:Responsive.height(48),
     backgroundColor: "white",
-    top: hp('78%'),
-    borderRadius: 25,
+    top:Responsive.height(495),
+    borderRadius: Responsive.height(24),
   },
 
   keyboardAvoidContainer: {
@@ -28,16 +28,18 @@ export const LoginStyles = {
   },
   submitBtnContainer: {
     position: "absolute",
-    width: wp('90%'),
-    height: hp('5%'),
-    borderRadius: 25,
-    top: hp('91%'),
+    width:Responsive.width(330),
+    height:Responsive.height(40),
+    borderRadius: Responsive.height(24),
+    top:Responsive.height(585),
     alignItems: "center",
+    
   },
 
   forgotBtnContainer: {
     position: "absolute",
-    top: hp('86%'),
+    top:Responsive.height(545),
     left: wp('0%'),
+    
   },
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Dimensions, TouchableOpacity, Slider, View, StyleSheet } from 'react-native';
+import { Image, Dimensions, TouchableOpacity,TouchableWithoutFeedback, Slider, View, StyleSheet } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Layout, Card, Modal, Text, Button, Input } from '@ui-kitten/components';
 import { TrackingStyles } from "../TrackingStyles";
@@ -115,12 +115,12 @@ export default class DigestionCard extends React.Component {
         
         return (
             <Layout style={TrackingStyles.container}>
-                <TouchableOpacity onPress={() => { this.setDigestionVisible(true); }}>
+                <TouchableWithoutFeedback onPress={() => { this.setDigestionVisible(true); }}>
                     <Image
                         style={TrackingStyles.digestionButton}
                         source={require('../../../assets/digestion.png')}
                     />
-                </TouchableOpacity>
+                </TouchableWithoutFeedback>
 
                 <Modal style={{
                     shadowColor: '#c8c8c8',
@@ -131,15 +131,16 @@ export default class DigestionCard extends React.Component {
                     <Card disabled={true}
                         style={TrackingStyles.cardStyle}>
                         <Text style={TrackingStyles.symptomText}>Digestion</Text>
-                        <TouchableOpacity onPress={() => {
+                        <TouchableWithoutFeedback onPress={() => {
                             this.setDigestionVisible(!this.state.digestionVisible);
                         }}>
                             <Image
                                 style={TrackingStyles.xContainer}
                                 source={require('../../../assets/x.png')}
                             />
-                        </TouchableOpacity>
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('3%'), fontSize: wp('4%'), fontWeight: '500' }}>How is your digestion today?</Text>
+                       </TouchableWithoutFeedback>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(15), fontSize: Responsive.font(15), fontWeight: '400' }}>How is your digestion today?</Text>
+
 
 
                         <Slider
@@ -159,8 +160,8 @@ export default class DigestionCard extends React.Component {
                             </Text>
                             <Text style={styles.colorGrey}>Poor </Text>
                         </View>
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('15%'), fontSize: wp('4%'), fontWeight: '500' }}>Add more detail:</Text>
-                        <View style={{ top: hp('18%'), left: wp('-2%') }}>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(80), fontSize: Responsive.font(15), fontWeight: '400' }}>Add more detail:</Text>
+                        <View style={{ top: Responsive.height(90), left: Responsive.width(-10), width:Responsive.width(330)}}>
                             <TagSelector
 
                                 tagStyle={TrackingStyles.tag}
@@ -177,7 +178,7 @@ export default class DigestionCard extends React.Component {
                                 this.setDigestionVisible(!this.state.digestionVisible);
                                 this.saveDigestionDetails();
                             }}
-                        > Track!
+                        > Save!
 
                             </Button>
                     </Card>
@@ -188,35 +189,37 @@ export default class DigestionCard extends React.Component {
         );
     };
 }
-
 const styles = StyleSheet.create({
 
     sliderStyle: {
 
-        top: hp('7%'),
         alignSelf: 'center',
+        top: Responsive.height(38),
         flex: 1,
-        width: wp('75%'),
-        height: hp('20.81%'),
-        padding: wp('2.5%'),
+        width: Responsive.width(292),
+        height: Responsive.height(52),
+        padding: Responsive.width(17),
         backgroundColor: '#FFF'
 
     },
     textCon: {
-        width: wp('80%'),
+        width: Responsive.width(292),
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
     colorGrey: {
         color: '#8A8A8E',
-        top: hp('9%'),
-        fontWeight: '500'
+        fontWeight: '400',
+        top: Responsive.height(62),
+        fontSize:Responsive.font(13)
+
 
     },
     colorPeach: {
         color: '#f09874',
-        top: hp('9%'),
-        fontWeight: '500'
+        fontWeight: '400',
+        top: Responsive.height(62),
+        fontSize:Responsive.font(13)
 
     }
 });

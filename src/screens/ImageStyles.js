@@ -1,4 +1,5 @@
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import Responsive from 'react-native-lightweight-responsive';
 export const ImageStyles = {
   mainContainer: {
     flex: 1,
@@ -10,54 +11,56 @@ export const ImageStyles = {
   logoContainer: {
     flex: 1,
     position: "absolute",
-    width: wp('65.98%'),
-    height: hp('20.81%'),
-    top: hp('33.81%'),
+    width:Responsive.width(151),
+    height:Responsive.height(150),
+    top: Responsive.height(200),
     alignItems: "center",
     resizeMode: "contain",
   },
 
   bubbleContainer: {
     position: "absolute",
-    right: wp('-23%'),
+    right:Responsive.width(-87),
     top: hp('0%'),
-    width: wp('87%'),
-    height: hp('44%'),
+    width:Responsive.width(322),
+    height:Responsive.height(271),
     resizeMode: "contain",
   },
 
   squiggleContainer: {
     position: "absolute",
-    right: wp('25%'),
-    top: hp('55%'),
-    height: hp('29%'),
-    width: wp('100%'),
+    right:Responsive.width(110.36),
+    top: Responsive.height(427.86),
+    width:Responsive.width(280.36),
+    height:Responsive.height(165.86),
     resizeMode: "contain",
   },
 
   dotsContainer: {
     position: "absolute",
-    right: wp('75%'),
-    top: hp('20%'),
-    height: hp('20%'),
-    width: wp('25%'),
+    left:  Responsive.width(-17),
+    top: Responsive.height(127),
+    //width: wp('25%'),
+    width:Responsive.width(114),
+    height:Responsive.height(108),
     resizeMode: "contain",
   },
 
   eluvoContainer: {
     position: "absolute",
     alignItems: "center",
-    top: hp('55%'),
-    height: hp('10%'),
-    width: wp('30%'),
+    top:Responsive.height(300),
+    //: wp('30%'),
+    width:Responsive.width(151),
+    height:Responsive.height(150),
     resizeMode: "contain",
   },
   eluvoTextContainer: {
     position: "absolute",
     alignItems: "center",
-    top: hp('64%'),
-    height: hp('3'),
-    width: wp('50%'),
+    top:Responsive.height(408),
+    width:Responsive.width(186),
+    height:Responsive.height(22), 
     resizeMode: "contain",
   },
 };

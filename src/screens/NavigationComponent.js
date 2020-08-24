@@ -6,13 +6,17 @@ import  LoginScreen  from './LoginScreen';
 import SignUpScreen  from './SignUpScreen';
 import ForgotPassword from './ForgotPassword';
 import {InsightScreen }from './InsightScreen';
-import {SettingScreen }from './SettingScreen';
-
+import SettingScreen from './SettingScreen';
+import CustomiseTracking from './CustomiseTracking.js';
+import ResetPassword from './ResetPassword.js'
+import Instruction from './Instruction';
 import Home from './Home'
 import { TrackScreen } from './TrackScreen';
+// import ErrorBoundary from './ErrorBoundary';
 
 const MainStack = createStackNavigator();
 const RootStack = createStackNavigator();
+
 
 function MainStackScreen() {
   return (
@@ -21,7 +25,11 @@ function MainStackScreen() {
       <MainStack.Screen name='Login' component={LoginScreen} />
       <MainStack.Screen name='Forgot' component= {ForgotPassword}/>
       <MainStack.Screen name='SignUp' component={SignUpScreen} />
-      <MainStack.Screen name='Home' component={Home} />
+      <MainStack.Screen name='Home' component={Home} /> 
+      {/* <MainStack.Screen name='Error' component={ErrorBoundary} />  */}
+      <MainStack.Screen name='TrackCust' component={CustomiseTracking} /> 
+      <MainStack.Screen name='Instruction' component={Instruction} />
+      <MainStack.Screen name='Reset' component={ResetPassword} /> 
     </MainStack.Navigator>
   );
 }
@@ -47,6 +55,8 @@ function RootStackScreen() {
         options={{ headerShown: false }}
       />
       <RootStack.Screen name="Settings" component={SettingScreen} />
+      
+     
     </RootStack.Navigator>
   );
 }

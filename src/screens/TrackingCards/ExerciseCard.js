@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Dimensions, TouchableOpacity, View, StyleSheet, Slider } from 'react-native';
+import { Image, Dimensions, TouchableOpacity,TouchableWithoutFeedback, View, StyleSheet, Slider } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Layout, Card, Modal, Text, Button, Input, Toggle } from '@ui-kitten/components';
 import { TrackingStyles } from "../TrackingStyles";
@@ -120,12 +120,12 @@ export default class ExerciseCard extends React.Component {
         const { selectedHours, selectedMinutes } = this.state;
         return (
             <Layout style={TrackingStyles.container}>
-                <TouchableOpacity onPress={() => { this.setExerciseVisible(true); }}>
+                <TouchableWithoutFeedback onPress={() => { this.setExerciseVisible(true); }}>
                     <Image
                         style={TrackingStyles.exerciseButton}
                         source={require('../../../assets/exercise.png')}
                     />
-                </TouchableOpacity>
+                </TouchableWithoutFeedback>
                 <Modal style={{
                     shadowColor: '#c8c8c8',
                     shadowOffset: { width: 0, height: 2 },
@@ -135,15 +135,15 @@ export default class ExerciseCard extends React.Component {
                     <Card disabled={true}
                         style={TrackingStyles.cardStyle}>
                         <Text style={TrackingStyles.symptomText}>Exercise</Text>
-                        <TouchableOpacity onPress={() => {
+                        <TouchableWithoutFeedback onPress={() => {
                             this.setExerciseVisible(!this.state.exerciseVisible);
                         }}>
                             <Image
                                 style={TrackingStyles.xContainer}
                                 source={require('../../../assets/x.png')}
                             />
-                        </TouchableOpacity>
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('2%'), fontSize: wp('4%'), fontWeight: '500' }}>Did you do any exercise today?</Text>
+                        </TouchableWithoutFeedback>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(20), fontSize: Responsive.font(15), fontWeight: '400' }}>Did you do any exercise today?</Text>
                         <Slider
                             style={styles.sliderStyle}
                             step={1}
@@ -161,8 +161,8 @@ export default class ExerciseCard extends React.Component {
                             </Text>
                             <Text style={styles.colorGrey}>Heaps </Text>
                         </View>
-                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: hp('9%'), fontSize: wp('4%'), fontWeight: '500' }}>Add more detail:  </Text>
-                        <View style={{ top: hp('12%'), left: wp('-2%') }}>
+                        <Text style={{ color: '#8A8A8E', textAlign: 'left', top: Responsive.height(75), fontSize: Responsive.font(15), fontWeight: '400' }}>Add more detail:  </Text>
+                        <View style={{ top: Responsive.height(100), left: Responsive.width(-10), width: Responsive.width(300) }}>
                             <TagSelector
                                 tagStyle={TrackingStyles.tag}
                                 selectedTagStyle={TrackingStyles.tagSelected}
@@ -180,7 +180,7 @@ export default class ExerciseCard extends React.Component {
                                 this.setExerciseVisible(!this.state.exerciseVisible);
                                 this.saveExerciseDetails();
                             }}
-                        > Track!
+                        > Save!!
                         </Button>
                     </Card>
                 </Modal>
@@ -194,56 +194,35 @@ export default class ExerciseCard extends React.Component {
 const styles = StyleSheet.create({
 
     sliderStyle: {
-
-        top: hp('5%'),
+        alignSelf: 'center',
+        top: Responsive.height(38),
         flex: 1,
-        width: wp('80%'),
-        height: hp('20.81%'),
-        padding: wp('5.5%'),
+        width: Responsive.width(292),
+        height: Responsive.height(52),
+        padding: Responsive.width(17),
         backgroundColor: '#FFF'
 
     },
     textCon: {
-        width: wp('80%'),
+        width: Responsive.width(292),
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
     colorGrey: {
         color: '#8A8A8E',
-        top: hp('6%'),
-        fontWeight: '500'
+        fontWeight: '400',
+        top: Responsive.height(52),
+        fontSize:Responsive.font(13)
 
     },
     colorPeach: {
         color: '#f09874',
-        top: hp('6%'),
-        fontWeight: '500'
+        fontWeight: '400',
+        top: Responsive.height(52),
+        fontSize:Responsive.font(13)
 
     },
-    text: {
-        fontSize: wp('3%'),
-        marginTop: hp('3%'),
-        color: '#000',
-        left: wp('20%'),
-        top: hp('-10.5%'),
-        alignContent: 'center',
-
-    },
-    button: {
-        width: wp('75%'),
-        backgroundColor: "rgba(240, 152, 116, 0.48)",
-        paddingVertical: hp('2%'),
-        paddingHorizontal: hp('1%'),
-        borderRadius: 15,
-        marginVertical: wp('15%'),
-        left: wp('2%'),
-        top: hp('5%'),
-        height: hp('5.7%')
-    },
-    buttonText: {
-        color: "#000",
-        fontSize: wp('3%'),
-    },
+    
 
 
 });
