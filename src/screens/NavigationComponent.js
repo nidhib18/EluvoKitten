@@ -49,13 +49,13 @@ function RootStackScreen() {
         options={{ headerShown: false }}
       />
       <RootStack.Screen name="Insights" component={InsightScreen} />
-      <RootStack.Screen
+      {/* <RootStack.Screen
         name="Set"
         component={MainStackScreen}
         options={{ headerShown: false }}
       />
       <RootStack.Screen name="Settings" component={SettingScreen} />
-      
+       */}
      
     </RootStack.Navigator>
   );
