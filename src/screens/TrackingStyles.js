@@ -94,9 +94,9 @@ export const TrackingStyles= {
 
   sexButton: {
     position: "absolute",
-    top: hp('29.2%'),
+    top: hp('28.4%'),
     width: wp('22%'),
-    height: hp('23a.81%'),
+    height: hp('23.81%'),
     right: wp('-125.8%'),
     resizeMode: "contain",
 

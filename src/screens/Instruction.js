@@ -3,6 +3,9 @@ import React, { Component } from "react";
 import {StyleSheet,View,Image,Text} from "react-native";
 import Responsive from 'react-native-lightweight-responsive';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { Auth } from "aws-amplify";
+import { saveUserDetails } from "../helpers/AuthHelpers";
+
 const slides = [
     {
       key: 'k1',
@@ -30,24 +33,38 @@ export default class Instruction extends React.Component
         super(props);
         this.state = 
         {
-            show_Main_App: false
+            show_Main_App: false,
+            userDetails: {},
+            username:
+            (this.props &&
+              this.props.route &&
+              this.props.route.params &&
+              this.props.route.params.username) ||
+            "",
+           
         };
     }
-
+   
     // _renderNextButton = () => {
     // };
     // _renderDoneButton = () => {
     // };
 //will enable the program to handle the state show_Main_App and set it as true.
     on_Done_all_slides = () => 
-      {
+      { const { username } = this.state;
         this.setState({ show_Main_App: true });
-        this.props.navigation.navigate("Home");
+        this.props.navigation.navigate("Home",
+        {username:username});
       };
     on_Skip_slides = () => 
      {
+        const { username } = this.state;
         this.setState({ show_Main_App: true });
-        this.props.navigation.navigate("Home");
+        this.props.navigation.navigate("Home",
+        {username:username});
+        // this.props.navigation.navigate("Instruction", {
+        //   username: username,
+        // });
       };
 
       _renderItem = ({ item }) => {

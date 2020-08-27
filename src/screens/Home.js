@@ -28,6 +28,7 @@ import moment from "moment";
 import { HomeStyles } from "./HomeStyles";
 import { storeData, getData } from "../helpers/StorageHelpers";
 import { constants } from "../resources/Constants";
+import { Auth } from "aws-amplify";
 import {
   utcToLocal,
   localToUtcDate,
@@ -77,8 +78,7 @@ export default class Home extends React.Component {
         (this.props &&
           this.props.route &&
           this.props.route.params &&
-          this.props.route.params.username) ||
-        "",
+          this.props.route.params.username) ||"",
       // If any data is available, then we need to display the card
       isAnyDataAvailable: false,
       // The symptom data/cards to be populated only after all symptom data has been loaded
@@ -462,20 +462,21 @@ export default class Home extends React.Component {
     );
   }
 
-  componentDidMount() {
-    this.props.navigation.addListener("focus", () => {
-      // To load symptoms for the selected date after tracking as the home screen is already mounted and only comes into focus
-      this.getUserSymptoms();
-    });
-    saveUserDetails(this.state.username);
+  async componentDidMount() {
+    await saveUserDetails(this.state.username);
+    console.log("Get user details")
     getData(constants.USERDETAILS).then((data) => {
       // Read back the user details from storage and convert to object
       this.setState({
         userDetails: JSON.parse(data),
-      });
+        }, () => this.getUserSymptoms());
+    });
+    this.props.navigation.addListener("focus", () => {
+      // To load symptoms for the selected date after tracking as the home screen is already mounted and only comes into focus
       this.getUserSymptoms();
     });
   }
+
 
   render() {
     return (
@@ -743,7 +744,7 @@ export default class Home extends React.Component {
             />
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
-            onPress={() => this.props.navigation.navigate("Settings")}
+            // onPress={() => this.props.navigation.navigate("Settings")}
           >
             <Image
               style={HomeStyles.settings}
