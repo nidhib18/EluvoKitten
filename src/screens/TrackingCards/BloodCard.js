@@ -117,7 +117,7 @@ export default class BloodCard extends React.Component {
         
         return (
             <Layout style={TrackingStyles.container}>
-                <TouchableOpacity onPress={() => { this.setBloodVisible(true); }}>
+                <TouchableOpacity onPress={() => { this.setBloodVisible(true);}}>
                     <Image
                         style={TrackingStyles.bloodButton}
                         source={require('../../../assets/blood.png')}
