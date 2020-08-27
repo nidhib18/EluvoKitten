@@ -66,7 +66,7 @@ export const TrackScreen = ({ route,navigation }) => {
           marginLeft: "-52%",
           marginRight: "-48%",
           justifyContent: "center",
-          bottom: hp('-44%')
+          bottom: hp('-40%')
           
         }}
       >
