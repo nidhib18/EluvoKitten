@@ -5,7 +5,7 @@ import { WelcomeScreen as WelcomeScreen } from './WelcomeScreen';
 import  LoginScreen  from './LoginScreen';
 import SignUpScreen  from './SignUpScreen';
 import ForgotPassword from './ForgotPassword';
-import {InsightScreen }from './InsightScreen';
+import InsightScreen from './InsightScreen';
 import SettingScreen from './SettingScreen';
 import CustomiseTracking from './CustomiseTracking.js';
 import ResetPassword from './ResetPassword.js'
@@ -49,13 +49,13 @@ function RootStackScreen() {
         options={{ headerShown: false }}
       />
       <RootStack.Screen name="Insights" component={InsightScreen} />
-      {/* <RootStack.Screen
+      <RootStack.Screen
         name="Set"
         component={MainStackScreen}
         options={{ headerShown: false }}
       />
       <RootStack.Screen name="Settings" component={SettingScreen} />
-       */}
+      
      
     </RootStack.Navigator>
   );

@@ -38,6 +38,7 @@ import { FlatList } from "react-native-gesture-handler";
 import { initMoodDetails } from "../models/MoodDetails";
 
 import { saveUserDetails } from "../helpers/AuthHelpers";
+import {saveUserSettings} from "../helpers/SettingHelpers";
 import Responsive from "react-native-lightweight-responsive";
 var painSymptoms = [];
 var moodSymptoms = [];
@@ -68,6 +69,7 @@ export default class Home extends React.Component {
       imageVisibility: true,
       backgroundImagePath: require("../../assets/girl.png"),
       userDetails: {},
+      userSettings: {},
       currentDate:
         (this.props &&
           this.props.route &&
@@ -381,13 +383,34 @@ export default class Home extends React.Component {
       id = id + 1;
     });
   }
-
+  // *************ADDED HERE*******************
+  getUserSettings ()
+  { 
+    let userId = this.state.userDetails.user_id;
+    let url = constants.GETUSERSETTINGS_DEV_URL.replace("[userId]", userId);
+    getData(constants.JWTKEY).then((jwt) =>
+    fetch(url, {
+      //calling API
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + jwt, //Passing this will authorize the user
+      },
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        console.log("Completed API call");
+  
+}
+      )
+    )
+  }
   getUserSymptoms() {
     let userId = this.state.userDetails.user_id;
     let url = constants.USERPAIN_DEV_URL.replace("[userId]", userId).replace(
       "[occurredDate]",
-      localToUtcDateTime(this.state.currentDate)
-    );
+      localToUtcDateTime(this.state.currentDate));
+      
+   
     console.log("Url is", url);
     var isAnyDataAvailable = false;
     var painDetails = [];
@@ -462,6 +485,35 @@ export default class Home extends React.Component {
     );
   }
 
+  // async componentDidMount() {
+  //   await saveUserDetails(this.state.username);
+  //   console.log("Get user details")
+  //   getData(constants.USERDETAILS).then((data) => {
+  //     // Read back the user details from storage and convert to object
+  //     this.setState({
+  //       userDetails: JSON.parse(data),
+  //       }, () => 
+  //       {console.log("Get user details done", this.state.userDetails);
+
+  //         saveUserSettings(this.state.userDetails.user_id).then((data) => {
+  //         getData(constants.USERSETTINGS).then((data) => {
+  //           // Read back the user settings from storage and convert to object
+  //           console.log ("****USER SETTINGS****" ,data);
+  //           this.setState({
+  //             userSettings: JSON.parse(data),
+  //           })
+  //           this.getUserSymptoms()
+  //         });
+  //         });
+
+  //       }
+  //     );
+  //   });
+  //   this.props.navigation.addListener("focus", () => {
+  //     // To load symptoms for the selected date after tracking as the home screen is already mounted and only comes into focus
+  //     this.getUserSymptoms();
+  //   });
+  // }
   async componentDidMount() {
     await saveUserDetails(this.state.username);
     console.log("Get user details")
@@ -470,14 +522,37 @@ export default class Home extends React.Component {
       this.setState({
         userDetails: JSON.parse(data),
         }, () => this.getUserSymptoms());
+    })
+    .then((data) => {
+        saveUserSettings(this.state.userDetails.user_id).then((data) => {
+          getData(constants.USERSETTINGS).then((data) => {
+            // Read back the user settings from storage and convert to object
+            console.log ("****USER SETTINGS****" ,data);
+            this.setState({
+              userSettings: JSON.parse(data),
+            });
+        })
+      })
     });
     this.props.navigation.addListener("focus", () => {
       // To load symptoms for the selected date after tracking as the home screen is already mounted and only comes into focus
       this.getUserSymptoms();
     });
   }
-
-
+  // async componentDidMount() {
+  //   await saveUserSettings(this.state.username);
+  //   console.log("Get user details")
+  //   getData(constants.GETUSERSETTINGS_DEV_URL).then((data) => {
+  //     // Read back the user details from storage and convert to object
+  //     this.setState({
+  //       userDetails: JSON.parse(data),
+  //       }, () => this.getUserSettings());
+  //   });
+  //   this.props.navigation.addListener("focus", () => {
+  //     // To load symptoms for the selected date after tracking as the home screen is already mounted and only comes into focus
+  //     this.getUserSettings();
+  //   });
+  // }
   render() {
     return (
       <Layout style={styles.container}>
@@ -744,7 +819,7 @@ export default class Home extends React.Component {
             />
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
-            // onPress={() => this.props.navigation.navigate("Settings")}
+            onPress={() => this.props.navigation.navigate("Settings")}
           >
             <Image
               style={HomeStyles.settings}

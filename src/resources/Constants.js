@@ -6,6 +6,7 @@ export const constants = {
   USERNAMEEXISTS_EXCEPTION:"UsernameExistsException",
   USERDETAILS: "@userdetails",
   CURRENTDATE: "currentDate",
+  USERSETTINGS: "usersettings",
 
   /* API URls */
     USERDETAILS_DEV_URL:
@@ -70,7 +71,14 @@ export const constants = {
     USERMEDICATION_DEV_URL:
     "https://0qkeudkka9.execute-api.ap-southeast-2.amazonaws.com/DEV/getusermedication?userId=[userId]&occuredDate=[occuredDate]",
     MEDICATIONSIDEEFFECTS_DEV_URL:
-    "https://dv4tzoya4d.execute-api.ap-southeast-2.amazonaws.com/DEV/listitems?listId=13"
+    "https://dv4tzoya4d.execute-api.ap-southeast-2.amazonaws.com/DEV/listitems?listId=13",
+
+    GETUSERSETTINGS_DEV_URL:
+    "https://wbgd0fem0e.execute-api.ap-southeast-2.amazonaws.com/DEV/settings?userId=[userId]",
+
+    UPDATEUSERSETTINGS_DEV_URL:
+    "https://85n1xoyyu1.execute-api.ap-southeast-2.amazonaws.com/DEV/settings",
+
 
 
 };

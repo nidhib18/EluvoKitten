@@ -28,6 +28,7 @@ export default class BloodCard extends React.Component {
             selectedPeriodProduct: [],
             periodProducts: [], // moodDescriptions:[],
             userDetails: {},
+            userSettings :{},
             bloodDetails: initBloodDetails(0, moment().format('YYYY-MM-DD')),
             currentDate: this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD')     
         };
@@ -106,24 +107,58 @@ export default class BloodCard extends React.Component {
                 userDetails: JSON.parse(data),
             });
             this.getPeriodProducts();
+        })
+    
+    .then((data) => {
+        getData(constants.USERSETTINGS).then((data) => {
+            // Read back the user settings from storage and convert to object
+            console.log ("****USER SETTINGS in exercise card****" ,data);
+            this.setState({
+              userSettings: JSON.parse(data),
+            });
         });
-    }
+       });
+}
+getUserSettings ()
+{ 
+  let userId = this.state.userDetails.user_id;
+  let url = constants.GETUSERSETTINGS_DEV_URL.replace("[userId]", userId);
+  getData(constants.JWTKEY).then((jwt) =>
+  fetch(url, {
+    //calling API
+    method: "GET",
+    headers: {
+      Authorization: "Bearer " + jwt, //Passing this will authorize the user
+    },
+  })
+    .then((response) => response.json())
+    .then((responseData) => {
+      console.log("Completed API call");
 
+}
+    )
+  )
+}
     render() {
         let bloodLevel =  0;
 
 
         let periodProducts = this.state.periodProducts || []; // get all the possible value from the list item , if not then empty array .
-        
+        let isBloodEnabled = (this.state.userSettings && this.state.userSettings.enable_bleeding) || false;
         return (
             <Layout style={TrackingStyles.container}>
+              {isBloodEnabled ? (
+                    <>
                 <TouchableOpacity onPress={() => { this.setBloodVisible(true);}}>
                     <Image
                         style={TrackingStyles.bloodButton}
                         source={require('../../../assets/blood.png')}
                     />
                 </TouchableOpacity>
-
+                </>
+                )
+                : (<></>)
+                }
                 <Modal style={{
                     shadowColor: '#c8c8c8',
                     shadowOffset: { width: 0, height: 2 },

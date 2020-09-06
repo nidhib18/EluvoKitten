@@ -26,6 +26,7 @@ export default class DigestionCard extends React.Component {
             selectedBowelSymptom: [],
             bowelSymptoms: [],
             userDetails: {},
+            userSettings:{},
             digestionDetails: initDigestionDetails(0, moment().format('YYYY-MM-DD')),
             currentDate: this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD')    
         };
@@ -106,21 +107,55 @@ export default class DigestionCard extends React.Component {
             });
             this.getBowelSymptoms();
             
-        });
+        })  .then((data) => {
+            getData(constants.USERSETTINGS).then((data) => {
+                // Read back the user settings from storage and convert to object
+                console.log ("****USER SETTINGS in exercise card****" ,data);
+                this.setState({
+                  userSettings: JSON.parse(data),
+                });
+            });
+           });
+    }
+    getUserSettings ()
+    { 
+      let userId = this.state.userDetails.user_id;
+      let url = constants.GETUSERSETTINGS_DEV_URL.replace("[userId]", userId);
+      getData(constants.JWTKEY).then((jwt) =>
+      fetch(url, {
+        //calling API
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + jwt, //Passing this will authorize the user
+        },
+      })
+        .then((response) => response.json())
+        .then((responseData) => {
+          console.log("Completed API call");
+    
+  }
+        )
+      )
     }
 
     render() {
         let digestionLevel = 0;
         let bowelSymptoms = this.state.bowelSymptoms || []; // get all the possible value from the list item , if not then empty array .
-        
+        let isDigestionEnabled = (this.state.userSettings && this.state.userSettings.enable_digestion) || false;
         return (
             <Layout style={TrackingStyles.container}>
+               {isDigestionEnabled ? (
+                    <>
                 <TouchableWithoutFeedback onPress={() => { this.setDigestionVisible(true); }}>
                     <Image
                         style={TrackingStyles.digestionButton}
                         source={require('../../../assets/digestion.png')}
                     />
                 </TouchableWithoutFeedback>
+                </>
+                )
+                : (<></>)
+                }
 
                 <Modal style={{
                     shadowColor: '#c8c8c8',

@@ -27,7 +27,8 @@ export default class DietCard extends React.Component {
             maxValue: 5,
             selectedFoodType: [], 
             foodTypes:[],
-            userDetails: {},            
+            userDetails: {},       
+            userSettings: {},     
             dietDetails: initDietDetails (0,  moment().format('YYYY-MM-DD')) ,
             currentDate: this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD')    
         };
@@ -112,25 +113,57 @@ export default class DietCard extends React.Component {
             });
             this.getFoodTypes();
             
-        });
+        }).then((data) => {
+            getData(constants.USERSETTINGS).then((data) => {
+                // Read back the user settings from storage and convert to object
+                console.log ("****USER SETTINGS in exercise card****" ,data);
+                this.setState({
+                  userSettings: JSON.parse(data),
+                });
+            });
+           });
     }
-
+    getUserSettings ()
+    { 
+      let userId = this.state.userDetails.user_id;
+      let url = constants.GETUSERSETTINGS_DEV_URL.replace("[userId]", userId);
+      getData(constants.JWTKEY).then((jwt) =>
+      fetch(url, {
+        //calling API
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + jwt, //Passing this will authorize the user
+        },
+      })
+        .then((response) => response.json())
+        .then((responseData) => {
+          console.log("Completed API call");
+    
+  }
+        )
+      )
+    }
     render() {
 
        
         let dietLevel =  0;
     
         let foodTypes = this.state.foodTypes || [] ; 
-
+        let isDietEnabled = (this.state.userSettings && this.state.userSettings.enable_diet) || false;
         return (
             <Layout style={TrackingStyles.container}>
+              {isDietEnabled ? (
+                    <>
                 <TouchableWithoutFeedback onPress={() => { this.setDietVisible(true); }}>
                     <Image
                         style={TrackingStyles.dietButton}
                         source={require('../../../assets/diet.png')}
                     />
                 </TouchableWithoutFeedback>
-
+                </>
+                )
+                : (<></>)
+                }
                 <Modal style={{
                     shadowColor: '#c8c8c8',
                     shadowOffset: { width: 0, height: 2 },

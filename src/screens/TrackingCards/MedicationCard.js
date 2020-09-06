@@ -109,8 +109,38 @@ export default class MedicationCard extends React.Component {
             });
             this.getMedicationSideEffects(); 
                  
-        });
+        })
+        .then((data) => {
+            getData(constants.USERSETTINGS).then((data) => {
+                // Read back the user settings from storage and convert to object
+                console.log ("****USER SETTINGS in medication card****" ,data);
+                this.setState({
+                  userSettings: JSON.parse(data),
+                });
+            });
+           });
     }
+    getUserSettings ()
+    { 
+      let userId = this.state.userDetails.user_id;
+      let url = constants.GETUSERSETTINGS_DEV_URL.replace("[userId]", userId);
+      getData(constants.JWTKEY).then((jwt) =>
+      fetch(url, {
+        //calling API
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + jwt, //Passing this will authorize the user
+        },
+      })
+        .then((response) => response.json())
+        .then((responseData) => {
+          console.log("Completed API call");
+    
+  }
+        )
+      )
+    }
+
         
     render() {
         
@@ -118,16 +148,21 @@ export default class MedicationCard extends React.Component {
         let  medicationType = this.state.medicationType || "";
         let  medicationQuantity = this.state.medicationQuantity || "";
         let  medicationTimeTaken= this.state.medicationTimeTaken ||"";
-    
+        let isMedicationEnabled = (this.state.userSettings && this.state.userSettings.enable_medication) || false;
         return (
             <Layout style={TrackingStyles.container}>
+               {isMedicationEnabled ? (
+                    <>
                 <TouchableWithoutFeedback onPress={() => { this.setMedicationVisible(true); }}>
                     <Image
                         style={TrackingStyles.medicationButton}
                         source={require('../../../assets/medication.png')}
                     />
                 </TouchableWithoutFeedback>
-
+                </>
+                )
+                : (<></>)
+                }
                 <Modal style={{
                     shadowColor: '#c8c8c8',
                     shadowOffset: { width: 0, height: 2 },
