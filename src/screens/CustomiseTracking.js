@@ -33,108 +33,140 @@ export default class CustomiseTracking extends React.Component {
     this.state = {
       show: false,
       PainCard: false,
-      painChecked: false,
-      moodChecked: false,
-      bleedingChecked: false,
-      exerciseChecked: false,
-      dietChecked: false,
-      medicationChecked: false,
-      digestionChecked: false,
-      sexChecked: false,
       activeSwitch: null,
       userDetails: {},
+      userSettings: {}
     };
   }
-  onCheckedPainChange = () =>
+  onCheckedPainChange = (val) =>
    {
-        this.setState({ painChecked: !this.state.painChecked });
+        this.setState({
+          userSettings: {
+            ...this.state.userSettings,
+            enable_pain: !this.state.userSettings.enable_pain 
+          },
+        });
    };
    onCheckedBloodChange = () =>
    {
-        this.setState({ bleedingChecked: !this.state.bleedingChecked });
+    this.setState({
+      userSettings: {
+        ...this.state.userSettings,
+        enable_bleeding:!this.state.userSettings.enable_bleeding
+      },
+    });
    };
    onCheckedMoodChange = () =>
    {
-        this.setState({ moodChecked: !this.state.moodChecked });
+      this.setState({
+        userSettings: {
+          ...this.state.userSettings,
+            enable_mood:!this.state.userSettings.enable_mood
+      },
+    });
    };
    onCheckedDietChange =() =>
    {
-       this.setState ({dietChecked:!this.state.dietChecked});
+        this.setState({
+        userSettings: {
+          ...this.state.userSettings,
+            enable_diet:!this.state.userSettings.enable_diet
+      },
+  });
    };
    onCheckedDigestionChange =() =>
    {
-       this.setState ({digestionChecked:!this.state.digestionChecked});
+        this.setState({
+           userSettings: {
+           ...this.state.userSettings,
+          enable_digestion:!this.state.userSettings.enable_digestion
+    },
+});
    };
    onCheckedExerciseChange =() =>
    {
-       this.setState ({exerciseChecked:!this.state.exerciseChecked});
+    this.setState({
+      userSettings: {
+      ...this.state.userSettings,
+     enable_exercise:!this.state.userSettings.enable_exercise
+},
+});
    };
    onCheckedMedicineChange =() =>
    {
-       this.setState ({medicationChecked:!this.state.medicationChecked});
+    this.setState({
+      userSettings: {
+      ...this.state.userSettings,
+     enable_medication:!this.state.userSettings.enable_medication
+},
+});
    };
    onCheckedSexChange =() =>
    {
-       this.setState ({sexChecked:!this.state.sexChecked});
+    this.setState({
+      userSettings: {
+      ...this.state.userSettings,
+     enable_sex:!this.state.userSettings.enable_sex
+},
+});
    };
   ShowHideComponent = () => {
-    console.log(state);
     this.setState({ show: !this.state.show });
-    // } else {
-    //     this.setState({ show: true });
-    // }
   };
-//   toggleSwitch = (switchNumber) => {
-//     this.setState({
-//       activeSwitch: switchNumber === this.state.activeSwitch ? null : switchNumber
-//     })
-//   };
-//   switchOne = (value) => { this.toggleSwitch(1) };
-//   switchTwo = (value) => { this.toggleSwitch(2) };
-//   switchThree = (value) => { this.toggleSwitch(3) };
 
 // ***************ADDED HERE************
 updateUserSettings ()
 {
-    let url = constants. UPDATEUSERSETTINGS_DEV_URL;
+    let url = constants.UPDATEUSERSETTINGS_DEV_URL;
+    let setting = this.state.userSettings;
+
     getData(constants.JWTKEY).then((jwt) =>
-    fetch(url, {
-      //calling API
-      method: "GET",
-      headers: {
-        Authorization: "Bearer " + jwt, //Passing this will authorize the user
-      },
-    })
-      .then((response) => response.json())
-      .then((responseData) => {
-        console.log("Completed API call");
-  
-  }
-      )
-    )
+        fetch(url, {
+            //calling API
+            method: "PUT",
+            headers: {
+                Authorization: "Bearer " + jwt, //Passing this will authorize the user
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(setting)
+        })
+        .then((response) => {          
+            // Update the saved settings 
+            saveUserSettings(this.state.userDetails.user_id);
+        })
+    );
    
 }
-getUserSettings ()
-{ 
-  let userId = this.state.userDetails.user_id;
-  let url = constants.GETUSERSETTINGS_DEV_URL.replace("[userId]", userId);
-  getData(constants.JWTKEY).then((jwt) =>
-  fetch(url, {
-    //calling API
-    method: "GET",
-    headers: {
-      Authorization: "Bearer " + jwt, //Passing this will authorize the user
-    },
-  })
-    .then((response) => response.json())
-    .then((responseData) => {
-      console.log("Completed API call");
 
+componentDidMount()
+{
+  getData(constants.USERDETAILS).then((data) => {
+    // Read back the user details from storage and convert to object
+    this.setState({
+      userDetails: JSON.parse(data)
+    });
+  })
+  .then((data) => {
+      getData(constants.USERSETTINGS).then((data) => {
+        // Read back the user settings from storage and convert to object
+        this.setState({
+          userSettings: JSON.parse(data),
+        });
+    })
+  });
 }
-    )
-  )
-}
-  render() {
+
+render() 
+{
+    var isPainChecked = (this.state.userSettings && this.state.userSettings.enable_pain) || false;
+    var isMoodChecked =(this.state.userSettings && this.state.userSettings.enable_mood) || false;
+    var isBleedingChecked = (this.state.userSettings && this.state.userSettings.enable_bleeding) || false;
+    var isDietChecked = (this.state.userSettings && this.state.userSettings.enable_diet) || false;
+    var isDigestionChecked = (this.state.userSettings && this.state.userSettings.enable_digestion) || false;
+    var isExerciseChecked = (this.state.userSettings && this.state.userSettings.enable_exercise) || false;
+    var isMedicationChecked = (this.state.userSettings && this.state.userSettings.enable_medication) || false;
+    var isSexChecked = (this.state.userSettings && this.state.userSettings.enable_sex) || false;
     return (
       <Layout style={styles.mainContainer}>
         <TopNavigation
@@ -217,15 +249,15 @@ getUserSettings ()
             <Toggle
               style={styles.togglePain}
               onChange={this.onCheckedPainChange.bind(this)}
-              checked={this.state.painChecked}
+              checked={isPainChecked}
               //onChange={(value) => this.setState({painChecked: value})}
                 //value = {this.state.painChecked}
             >
-              {`Checked: ${this.state.painChecked}`}{" "}
+              {/* {`Checked: ${this.state.painChecked}`}{" "} */}
             </Toggle>
             <Toggle
               style={styles.toggleMood}
-              checked={this.state.moodChecked}
+              checked={isMoodChecked}
               onChange={this.onCheckedMoodChange.bind(this)}
               //onValueChange={(value) => this.setState({moodChecked: value} )}
               //onChange={this.onCheckedChange.bind(this)}
@@ -239,56 +271,58 @@ getUserSettings ()
         
             <Toggle
               style={styles.toggleBlood}
-              checked={this.state.bleedingChecked}
+              checked={isBleedingChecked}
               //onChange={(value) => this.setState({bleedingChecked: value})}
               onChange={this.onCheckedBloodChange.bind(this)}
-              value = {this.state.bleedingChecked}
+              // value = {this.state.bleedingChecked}
              
             >
-              {`Checked: ${this.state.bleedingChecked}`}
+              {/* {`Checked: ${this.state.bleedingChecked}`} */}
             </Toggle>
             <Toggle
               style={styles.toggleDiet}
-              checked={this.state.dietChecked}
+              checked={isDietChecked}
               onChange={this.onCheckedDietChange.bind(this)}
+             
             >
-              {`Checked: ${this.state.dietChecked}`}
+            <Text style ={{top:10,right:20,backgroundColor:'#f089'}}>DIET </Text> 
+              {/* {`Checked: ${this.state.dietChecked}`} */}
             </Toggle>
             <Toggle
               style={styles.toggleExercise}
-              checked={this.state.exerciseChecked}
+              checked={isExerciseChecked}
               onChange={this.onCheckedExerciseChange.bind(this)}
             >
-              {`Checked: ${this.state.exerciseChecked}`}
+              {/* {`Checked: ${this.state.exerciseChecked}`} */}
             </Toggle>
 
             <Toggle
               style={styles.toggleMedication}
-              checked={this.state.medicationChecked}
+              checked={isMedicationChecked}
               onChange={this.onCheckedMedicineChange.bind(this)}
             >
-              {`Checked: ${this.state.medicationChecked}`}
+              {/* {`Checked: ${this.state.medicationChecked}`} */}
             </Toggle>
             <Toggle
               style={styles.toggleDigestion}
-              checked={this.state.digestionChecked}
+              checked={isDigestionChecked}
               onChange={this.onCheckedDigestionChange.bind(this)}
             >
-              {`Checked: ${this.state.digestionChecked}`}
+             {/* {`Checked: ${this.state.digestionChecked}`}  */}
             </Toggle>
             <Toggle
               style={styles.toggleSex}
-              checked={this.state.sexChecked}
+              checked={isSexChecked}
               onChange={this.onCheckedSexChange.bind(this)}
             >
-              {`Checked: ${this.state.sexChecked}`}
+              {/* {`Checked: ${this.state.sexChecked}`} */}
             </Toggle>
 
             <Button
-                            style={TrackingStyles.trackButton}
+                            style={styles.trackButton}
                             appearance='outline'
                             onPress={() => {
-                                this.getUserSettings();
+                                //this.getUserSettings();
                                 this.updateUserSettings(); 
                                 this.props.navigation.navigate('TrackCust');
                             }}
@@ -321,6 +355,7 @@ getUserSettings ()
                         </Toggle> */}
           </Card>
         </View>
+        
       </Layout>
     );
   }
@@ -331,6 +366,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#fbfbfb",
     height: hp("14"),
+  },
+  trackButton: {
+    position: "absolute",
+    alignItems: "center",
+    justifyContent: "center",
+    top: hp('72%'),
+    left: wp('-25%'),
+    backgroundColor: "#f09874",
+    borderRadius: 25,
+    width: wp('80%'),
+
   },
   signBtnContainer: {
     position: "absolute",

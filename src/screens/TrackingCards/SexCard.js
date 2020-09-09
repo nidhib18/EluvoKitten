@@ -29,6 +29,7 @@ export default class SexCard extends React.Component {
             minValue: 0,
             maxValue: 5,
             userDetails:{}, 
+            userSettings:{},
             sexDetails: initSexDetails(0,  moment().format('YYYY-MM-DD')) ,
             //isSexDataAvailable: false,
             currentDate: this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD')    
@@ -115,7 +116,36 @@ export default class SexCard extends React.Component {
             });
             this.getSexualActivity();
             
-        });
+        })
+        .then((data) => {
+            getData(constants.USERSETTINGS).then((data) => {
+                // Read back the user settings from storage and convert to object
+                console.log ("****USER SETTINGS in exercise card****" ,data);
+                this.setState({
+                  userSettings: JSON.parse(data),
+                });
+            });
+           });
+    }
+    getUserSettings ()
+    { 
+      let userId = this.state.userDetails.user_id;
+      let url = constants.GETUSERSETTINGS_DEV_URL.replace("[userId]", userId);
+      getData(constants.JWTKEY).then((jwt) =>
+      fetch(url, {
+        //calling API
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + jwt, //Passing this will authorize the user
+        },
+      })
+        .then((response) => response.json())
+        .then((responseData) => {
+          console.log("Completed API call");
+    
+  }
+        )
+      )
     }
 
 
@@ -125,16 +155,21 @@ export default class SexCard extends React.Component {
 
         
         let sexualActivity = this.state.sexualActivity || [] ; // get all the possible value from the list item , if not then empty array .
-
+        let isSexEnabled = (this.state.userSettings && this.state.userSettings.enable_sex) || false;
         return (
             <Layout style={TrackingStyles.container}>
+              {isSexEnabled ? (
+                    <>
                 <TouchableWithoutFeedback onPress={() => { this.setSexVisible(true); }}>
                     <Image
                         style={TrackingStyles.sexButton}
                         source={require('../../../assets/sex.png')}
                     />
                 </TouchableWithoutFeedback>
-
+                </>
+                )
+                : (<></>)
+                }
                 <Modal style={{
                     shadowColor: '#c8c8c8',
                     shadowOffset: { width: 0, height: 2 },

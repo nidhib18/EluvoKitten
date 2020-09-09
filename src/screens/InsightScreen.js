@@ -1,6 +1,6 @@
 import React , { PureComponent }from "react";
-import { SafeAreaView, Image, StyleSheet, Dimensions,View,ScrollView } from "react-native";
-import { Button, Divider, Layout, TopNavigation,Card } from "@ui-kitten/components";
+import { SafeAreaView, Image, StyleSheet, Dimensions,View,ScrollView,Text} from "react-native";
+import { Button, Divider, Layout, TopNavigation,Card,Toggle } from "@ui-kitten/components";
 import { TrackingStyles } from "./TrackingStyles";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 const { width, height } = Dimensions.get("window");
@@ -8,6 +8,9 @@ const { width, height } = Dimensions.get("window");
 //import { StyleSheet, View } from "react-native";
 import { VictoryBar, VictoryChart, VictoryTheme,VictoryGroup,VictoryAxis} from "victory-native";
 import { color } from "react-native-reanimated";
+import TopBarNav from 'top-bar-nav';
+//import TopBarNav from './TopBarNav';
+
 // import { Layout, Card, Modal, Text, Button } from "@ui-kitten/components";
 
 const data = [
@@ -42,10 +45,87 @@ const colors =
 // }
 
 
+//TOP NAVIGATION BAR
+
+const Scene = ({ index }) => (
+  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text style={{ fontSize: 20 }}>{index}</Text>
+  </View>
+);
+
+const SceneTwo = ({ index }) => (
+  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text style={{ fontSize: 20 }}>{index}</Text>
+  </View>
+);
+const ROUTES = {
+  Scene,
+  SceneTwo
+  
+  // ideally you would have a ROUTES object with multiple React component scenes
+};
+
+// There are three types of labels (image, text, and element)
+const ROUTESTACK = [
+  
+  { text: 'WEEKLY', title: 'Scene' },
+  { text: 'MONTHLY', title: 'SceneTwo' },
+  { text: 'YEARLY', title: 'Scene' }
+];
+
 export default class InsightScreen extends React.Component
 {
+  constructor() {
+    super();
+    this.state = {
+      show: false,
+      PainCard: false,
+      painChecked: false,
+      moodChecked: false,
+      bleedingChecked: false,
+      painData : [],
+      moodData: [],
+      bloodData: [],
+      activeSwitch: null,
+      userDetails: {},
+    };
+  }
+  painData = () =>
+  {
+    this.setState(painData=[{ x: 1, y: 1 }, { x: 2, y: 2}, { x: 3, y: 7 }]);
+  }
 
+  moodData = () =>
+  {
+    this.setState(moodData=[{ x: 1, y: 2 }, { x: 2, y: 3}, { x: 3, y: 8 }]);
+  }
 
+  bloodData = () =>
+  {
+    this.setState(bloodData=[{ x: 1, y: 3 }, { x: 2, y: 4 }, { x: 3, y: 9 }]);
+  }
+  onCheckedPainChange = () =>
+   {
+        this.setState({ painChecked: !this.state.painChecked });
+        
+   };
+  //  onCheckedPainChange = (val) =>
+  //  {
+  //       this.setState({
+  //         userSettings: {
+  //           ...this.state.userSettings, 
+  //           enable_pain: !this.state.userSettings.enable_pain 
+  //         },
+  //       }); 
+   onCheckedBloodChange = () =>
+   {
+        this.setState({ bleedingChecked: !this.state.bleedingChecked });
+   };
+   onCheckedMoodChange = () =>
+   {
+        this.setState({ moodChecked: !this.state.moodChecked });
+   };
+   
   render ()
    {
   //   const data = [
@@ -90,9 +170,9 @@ export default class InsightScreen extends React.Component
 
   return (
     <Layout style={styles.container}>
-    <TopNavigation position="absolute"
+    {/* <TopNavigation position="absolute"
         top={0}
-        style={{ height:hp('20%'), width: width }} />
+        style={{ height:hp('20%'), width: width }} /> */}
         {/* <Button
         style={{ left: wp('40%'), top: wp('5.5%'), height:hp('5%') }}
         
@@ -101,9 +181,24 @@ export default class InsightScreen extends React.Component
       >
         Done
       </Button> */}
-      <Divider />
-
-      <ScrollView
+      {/* <Divider /> */}
+      <TopBarNav
+                routeStack={ROUTESTACK}
+                renderScene={(route, i) => {
+                  let Component = ROUTES[route.title];
+                  return <Component index={i} />;
+                }}
+                headerStyle={[styles.header]} 
+                labelStyle={styles.label}
+                underlineStyle={styles.underline}
+                imageStyle={styles.image}
+                sidePadding={0} 
+                inactiveOpacity={0.4}
+                fadeLabels={true}
+    />
+     
+          <View style>
+        {/* <ScrollView
             contentContainerStyle={{
               justifyContent: "center",
               flex: 1,
@@ -112,43 +207,93 @@ export default class InsightScreen extends React.Component
               marginTop: Responsive.height(100),
               marginBottom: Responsive.height(-1800),
               justifyContent: "center",
-              bottom: Responsive.height(200),
+              bottom: Responsive.height(100),
               top: Responsive.height(55),
               left: wp("4.5"),
-              shadowColor: "#c8c8c8",
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.8,
-              shadowRadius: 30,
+            
+              //shadowColor: "#c8c8c8",
+              //shadowOffset: { width: 0, height: 2 },
+              //shadowOpacity: 0.8,
+              //shadowRadius: 30,
             }}
-          >
-          <View style>
-       
+          > */}
     <Card style={styles.cardStyle} >
-
+    <VictoryChart>
     
     <VictoryGroup  offset={20} colorScale={["#f08974", "#FF9B8F", "gold"]}
     domain={{ x: [1, 4] }}
      >
    
-      <VictoryBar
-         
-      data={[{ x: 2
-      , y: 1 }, { x: 2, y: 2 }, { x: 3, y: 5 }]}
+   <VictoryBar
+      data={this.state.painData}  tickValues={[1,5]}
     />
     <VictoryBar
-      data={[{ x: 1, y: 2 }, { x: 2, y: 1 }, { x: 3, y: 7 }]}
+      data={this.state.moodData}
     />
     <VictoryBar
-      data={[{ x: 1, y: 3 }, { x: 2, y: 4 }, { x: 3, y: 9 }]}
+      data={this.state.bloodData}
     />
     </VictoryGroup>
-
+    </VictoryChart>
+    
           </Card>
+
+          <Card style={styles.cardToggle}>
+            <Image
+              source={require("../../assets/painia.png")}
+              style ={{width:60,height:60}}
+              // 
+            />
+
+            <Image
+              source={require("../../assets/moodia.png")}
+              style={{ width: 60, height: 60, top: 10 }}
+            />
+
+            <Image
+              source={require("../../assets/bloodia.png")}
+              style={{ width: 60, height: 60, top: 20 }}
+            />
+             <Toggle
+              style={styles.togglePain}
+              onChange={this.onCheckedPainChange.bind(this)}
+              checked={this.state.painChecked}
+              //onChange={(value) => this.setState({painChecked: value})}
+                //value = {this.state.painChecked}
+            >
+              {/* {`Checked: ${this.state.painChecked}`}{" "} */}
+            </Toggle>
+            <Toggle
+              style={styles.toggleMood}
+              checked={this.state.moodChecked}
+              onChange={this.onCheckedMoodChange.bind(this)}
+              onChange = {this.painData.bind(this)}
+              //onValueChange={(value) => this.setState({moodChecked: value} )}
+              //onChange={this.onCheckedChange.bind(this)}
+            
+              //value = {this.state.moodChecked}
+            //   onValueChange={this.switchOne}
+            //   value={this.state.activeSwitch === 1}
+            >
+              {/* {`Checked: ${this.state.moodChecked}`} */}
+            </Toggle>
+        
+            <Toggle
+              style={styles.toggleBlood}
+              checked={this.state.bleedingChecked}
+              //onChange={(value) => this.setState({bleedingChecked: value})}
+              onChange={this.onCheckedBloodChange.bind(this)}
+              value = {this.state.bleedingChecked}
+             
+            >
+              {/* {`Checked: ${this.state.bleedingChecked}`} */}
+            </Toggle>
+            </Card>
         {/* <InsightScreen data={data} round={100} unit="€" /> */}
     
  
 </View>
-       </ScrollView>
+       {/* </ScrollView> */}
        
     </Layout>
   );
@@ -169,10 +314,11 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   cardStyle: {
-    top:Responsive.height(-26),
+    top:Responsive.height(-30),
     width:Responsive.width(325),
     height:Responsive.height(300),
     borderRadius: 20,
+    left:0,
     borderBottomColor: '#ffffff',
     borderTopColor: '#ffffff',
     borderLeftColor: '#ffffff',
@@ -183,11 +329,47 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 30,
   },
+  
+  cardToggle: {
+    top:Responsive.height(-40),
+    width:Responsive.width(325),
+    height:Responsive.height(200),
+    borderRadius: 20,
+    left:0,
+    borderBottomColor: '#ffffff',
+    borderTopColor: '#ffffff',
+    borderLeftColor: '#ffffff',
+    borderRightColor: '#ffffff',
+    backgroundColor: '#ffffff',
+    shadowColor: '#c8c8c8',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 30,
+  },
+  togglePain: {
+    position: "absolute",
+    top: hp("4%"),
+    right: -90,
+    backgroundColor: "#fff",
+  },
+
+  toggleMood: {
+    position: "absolute",
+    top: hp("13%"),
+    right: -90,
+    backgroundColor: "#fff",
+  },
+  toggleBlood: {
+    position: "absolute",
+    top: hp("23%"),
+    right: -90,
+    backgroundColor: "#fff",
+  },
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f5fcff"
+    backgroundColor:"#c8c8c8"
   },
   loginBtnContainer: {
     position: "absolute",
@@ -199,6 +381,48 @@ const styles = StyleSheet.create({
     includeFontPadding: true,
     paddingVertical: 5,
   },
+  header: {
+    borderBottomWidth: 1,
+    borderColor: '#cecece',
+    height:hp('17%'),
+    backgroundColor: '#f08974'
+  },
+  label: {
+    fontSize: 15,
+    fontWeight: '500',
+    color: '#fff'
+  },
+  image: {
+    height: 20,
+    width: 20,
+    tintColor: '#e6faff'
+  },
+  underline: {
+    height: 1,
+    backgroundColor: '#1c1c1c',
+    width: 40
+  },
+  headerStyle: {
+    borderBottomWidth: 1,
+    height:hp('14%'),
+    borderColor: '#e6faff',
+    backgroundColor: '#f08974'
+},
+labelStyle: {
+    fontSize: 15,
+    fontWeight: '500',
+    color: '#fff'
+},
+imageStyle: {
+    height: 20,
+    width: 20,
+    tintColor: '#e6faff'
+},
+underlineStyle: {
+    height: 3.6,
+    backgroundColor: '#e6faff',
+    width: 40
+}
 });
 
 

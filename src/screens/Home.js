@@ -527,7 +527,6 @@ export default class Home extends React.Component {
         saveUserSettings(this.state.userDetails.user_id).then((data) => {
           getData(constants.USERSETTINGS).then((data) => {
             // Read back the user settings from storage and convert to object
-            console.log ("****USER SETTINGS****" ,data);
             this.setState({
               userSettings: JSON.parse(data),
             });
