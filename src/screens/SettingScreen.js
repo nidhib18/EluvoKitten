@@ -36,7 +36,10 @@ export const SettingScreen = ({ navigation }) => {
                     >
                         Tracking
               </Text>
+             
                 </Card>
+
+                
 
                 <Card style={styles.cardNotificationContainer}>
                     <Text style={styles.medicationText}>Tracking</Text>
@@ -50,8 +53,11 @@ export const SettingScreen = ({ navigation }) => {
                             fontWeight: 'bold'
                         }}
                     >
-                        Notifications
+                        Appointments
               </Text>
+              <Button style={{ left: wp('-36%'), top: wp('6.7%'), height: hp('1%') }}
+                
+                  onPress={() => navigation.navigate("Calendar")} > Add to Calendar </Button>
                 </Card>
 
                 <Card style={styles.cardDetailsContainer}>

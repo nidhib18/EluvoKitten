@@ -2,7 +2,7 @@
   "expo": {
     "name": "EluvoKitten",
     "slug": "EluvoKitten",
-    "privacy":"unlisted", 
+    "privacy": "unlisted",
     "platforms": [
       "ios",
       "android",
@@ -23,8 +23,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCalendarsUsageDescription": [
+          "Are you sure you want to allow this app to use Calendar?"
+        ],
+        "NSContactsUsageDescription": [
+          " "
+        ]
+      }
     }
-    
   }
 }

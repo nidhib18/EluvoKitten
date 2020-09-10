@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Image, Dimensions, TouchableOpacity, Slider, StyleSheet, View } from 'react-native';
-import { Layout, Card, Modal, Text, Button, Input } from '@ui-kitten/components';
+import { Layout, Card, Modal, Text, Button, Input,TextInput } from '@ui-kitten/components';
 import { TrackingStyles } from "../TrackingStyles";
 import TagSelector from 'react-native-tag-selector';
 import TimePicker from "react-native-24h-timepicker";
+import * as AddCalendarEvent from 'react-native-add-calendar-event';
+import moment from 'moment';
+
 
 const { width } = Dimensions.get('window');
-
+const TIME_NOW_IN_UTC = moment.utc();
+const eventTitle = 'default event';
+const utcDateToString = momentInUTC => {
+    let s = moment.utc(momentInUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+    return s;
+  };
 export default class AppointmentCard extends React.Component {
 
 
@@ -19,6 +27,23 @@ export default class AppointmentCard extends React.Component {
         };
         
     }
+
+     addEventToCalendar(title, startDateUTC) {
+        const eventConfig = {
+          title: eventTitle,
+          startDate: utcDateToString(startDateUTC),
+          endDate: utcDateToString(moment.utc(startDateUTC).add(1, 'hours')),
+          notes: 'Default Event Description'
+        };
+      
+        AddCalendarEvent.presentEventCreatingDialog(eventConfig)
+          .then(eventInfo => {
+            alert(JSON.stringify(eventInfo));
+          })
+          .catch(error => {
+            alert('Error ', error);
+          });
+      }
 
     setAppointmentVisible(visible) {
         this.setState({ appointmentVisible: visible });
@@ -110,6 +135,12 @@ export default class AppointmentCard extends React.Component {
 
                         <Text style={{ color: '#B3B3B3', fontWeight: 'bold', textAlign: 'left', top: hp('-8%'), fontSize: wp('3.5%') }}>Notes:</Text>
 
+
+                        <TouchableOpacity style={styles.button2}>
+        <Text style={[styles.text2, { color: 'white' }]}>
+          Add this event to the calendar
+        </Text>
+      </TouchableOpacity>
                     </Card>
                 </Modal>
             </Layout>
@@ -146,5 +177,23 @@ buttonText: {
     color: "#FFF",
     fontSize: wp('3.5%'),
 
+
+
 },
+
+text2: {
+    fontSize: wp('2.5%'),
+    color: '#000',
+    marginVertical: wp('0.5%')
+  },
+
+button2: {
+    alignItems: 'center',
+    backgroundColor: '#f09874',
+    paddingVertical: hp('1%'),
+    paddingHorizontal: hp('5%'),
+    marginTop: hp ('1%'),
+    borderRadius: 25
+  },
 });
+

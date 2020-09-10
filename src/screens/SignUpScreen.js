@@ -126,11 +126,14 @@ export default class SignUpScreen extends Component {
 
       .then((user) => {
         this.setState({ modalVisible: false });
-        saveUserDetails(username, this.props.navigation);
+        this.props.navigation.navigate("Home", {
+          username: username,
+        });
       })
 
       .catch((err) => console.log(err));
   };
+
  
   
   render() {

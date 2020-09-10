@@ -7,6 +7,7 @@ import SignUpScreen  from './SignUpScreen';
 import ForgotPassword from './ForgotPassword';
 import {InsightScreen }from './InsightScreen';
 import {SettingScreen }from './SettingScreen';
+import {CalendarScreen} from './CalendarScreen'; 
 
 import Home from './Home'
 import { TrackScreen } from './TrackScreen';
@@ -22,6 +23,8 @@ function MainStackScreen() {
       <MainStack.Screen name='Forgot' component= {ForgotPassword}/>
       <MainStack.Screen name='SignUp' component={SignUpScreen} />
       <MainStack.Screen name='Home' component={Home} />
+      <MainStack.Screen name='Calendar' component={CalendarScreen} />
+      <MainStack.Screen name='Setting' component={SettingScreen} />
     </MainStack.Navigator>
   );
 }
@@ -36,11 +39,11 @@ function RootStackScreen() {
       />
       <RootStack.Screen name="Track" component={TrackScreen} />
       <RootStack.Screen
-        name="Insight"
+        name="Cal"
         component={MainStackScreen}
         options={{ headerShown: false }}
       />
-      <RootStack.Screen name="Insights" component={InsightScreen} />
+      <RootStack.Screen name="Calendar" component={CalendarScreen} />
       <RootStack.Screen
         name="Set"
         component={MainStackScreen}

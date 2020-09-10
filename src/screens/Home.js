@@ -7,6 +7,7 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   ImageBackground,
 } from "react-native";
 import {
@@ -25,6 +26,8 @@ import { constants } from "../resources/Constants";
 import { utcToLocal, localToUtcDate, localToUtcDateTime } from "../helpers/DateHelpers";
 import { FlatList } from "react-native-gesture-handler";
 import { initMoodDetails } from "../models/MoodDetails";
+
+
 
 var painSymptoms= [];
 var moodSymptoms= [];
@@ -602,7 +605,7 @@ export default class Home extends React.Component {
             source={require("../../assets/careplan.png")}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('Insights')}>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('Calendar')}>
           <Image
             style={HomeStyles.insights}
             source={require("../../assets/insights.png")}
@@ -621,18 +624,19 @@ export default class Home extends React.Component {
           />
         </TouchableOpacity>
 
-        <TouchableOpacity
+        <TouchableWithoutFeedback 
           onPress={() =>
             this.props.navigation.navigate("Track", {
               currentDate: this.state.currentDate,
             })
           }
         >
-          <Image
+         <Image
             style={HomeStyles.ovalContainer}
             source={require("../../assets/oval.png")}
           />
-        </TouchableOpacity>
+        </TouchableWithoutFeedback>
+
 
       </Layout>
     );

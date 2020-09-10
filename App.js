@@ -12,9 +12,11 @@ import { AppNavigator } from './src/screens/NavigationComponent';
 import {Alert} from 'react-native';
 import RNRestart from 'react-native-restart';
 import {setJSExceptionHandler} from 'react-native-exception-handler';
+import RNCalendarEvents from "react-native-calendar-events";
+import moment from 'moment';
+
 console.disableYellowBox = true;
 console.reportErrorsAsExceptions = false;
-
 
 
 const errorHandler = (err, isFatal) => {

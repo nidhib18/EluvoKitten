@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { Image, Dimensions, TouchableOpacity, Slider, StyleSheet, View } from 'react-native';
+import { Image, Dimensions, TouchableOpacity,TouchableWithoutFeedback, Slider, StyleSheet, View } from 'react-native';
 import { Layout, Card, Modal, Text, Button } from '@ui-kitten/components';
 import { TrackingStyles } from "../TrackingStyles";
 import TagSelector from 'react-native-tag-selector';
@@ -116,12 +116,12 @@ export default class MoodCard extends React.Component {
     
         return (
             <Layout style={TrackingStyles.container}>
-                <TouchableOpacity onPress={() => { this.setMoodVisible(true); }}>
+                <TouchableWithoutFeedback onPress={() => { this.setMoodVisible(true); }}>
                     <Image
                         style={TrackingStyles.moodButton}
                         source={require('../../../assets/mood.png')}
                     />
-                </TouchableOpacity>
+                </TouchableWithoutFeedback>
 
                 <Modal style={{
                     shadowColor: '#c8c8c8',
