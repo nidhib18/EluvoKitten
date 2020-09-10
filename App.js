@@ -129,27 +129,27 @@ console.reportErrorsAsExceptions = false;
 
 
 
-// const errorHandler = (err, isFatal) => {
-//   const allowedInDevMode = true; //enable DEV mode true in index.js as well
-//   if (isFatal && allowedInDevMode ) {
-//     Alert.alert(
-//         'Unexpected error occurred',
-//         `
-//         We will need to restart the app.
-//         `,
-//       [{
-//         text: 'Restart',
-//         onPress: () => {
-//           RNRestart.Restart();
-//         }
-//       }]
-//     );
-//   } else {
-//     console.log(err); // So that we can see it in the logs
-//   }
-// };
+const errorHandler = (err, isFatal) => {
+  const allowedInDevMode = true; //enable DEV mode true in index.js as well
+  if (isFatal && allowedInDevMode ) {
+    Alert.alert(
+        'Unexpected error occurred',
+        `
+        We will need to restart the app.
+        `,
+      [{
+        text: 'Restart',
+        onPress: () => {
+          RNRestart.Restart();
+        }
+      }]
+    );
+  } else {
+    console.log(err); // So that we can see it in the logs
+  }
+};
 
-// setJSExceptionHandler(errorHandler);
+setJSExceptionHandler(errorHandler);
 
 
 export default () => (
@@ -174,13 +174,15 @@ export default () => (
 // import { createStackNavigator} from 'react-navigation-stack'
 // import * as Permissions from 'expo-permissions';
 // import HomeTwo from './src/screens/HomeTwo';
+
 // import CreateTask from './src/screens/CreateTask';
 // import TodoStore from './src/screens/TodoStore';
 
 // const AppNavigator = createStackNavigator(
 //   {
-//     HomeTwo,
+//     //HomeTwo,
 //     CreateTask,
+    
 //   },
 //   {
 //     headerMode: 'none',

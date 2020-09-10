@@ -282,7 +282,7 @@ export default class CreateTask extends Component {
 
     await value.updateTodo(creatTodo);
     await updateCurrentTask(currentDate);
-    navigation.navigate('Home');
+    navigation.navigate('HomeTwo');
   };
 
   _handleDatePicked = date => {

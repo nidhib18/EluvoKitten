@@ -120,6 +120,27 @@ getPeriodProducts() {
             .catch((err) => console.log(err))
     );
 };
+
+//Add Tags 
+addPeriodProducts ()
+{
+    let url = constants.ADDTAGS_DEV_URL;
+    getData(constants.JWTKEY).then((jwt) =>
+        fetch(url, {
+            //calling API
+            method: "POST",
+            headers: {
+                Authorization: "Bearer " + jwt, //Passing this will authorize the user
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(blood)
+        })
+            .then((response) => {
+                return response.json();
+            })
+    );
+}
 addValues = (text, index) => {
     let dataArray = this.state.inputData;
     let checkBool = false;

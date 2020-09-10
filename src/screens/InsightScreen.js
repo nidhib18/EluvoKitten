@@ -1,4 +1,4 @@
-import React , { PureComponent }from "react";
+import React from "react";
 import { SafeAreaView, Image, StyleSheet, Dimensions,View,ScrollView,Text} from "react-native";
 import { Button, Divider, Layout, TopNavigation,Card,Toggle } from "@ui-kitten/components";
 import { TrackingStyles } from "./TrackingStyles";
@@ -9,6 +9,15 @@ const { width, height } = Dimensions.get("window");
 import { VictoryBar, VictoryChart, VictoryTheme,VictoryGroup,VictoryAxis} from "victory-native";
 import { color } from "react-native-reanimated";
 import TopBarNav from 'top-bar-nav';
+import { mapMoodDataToChartData,mapPainDataToChartData,mapBloodDataToChartData} from "../helpers/ChartHelpers";
+import moment from "moment";
+import { constants } from "../resources/Constants";
+import {
+  utcToLocal,
+  localToUtcDate,
+  localToUtcDateTime,
+} from "../helpers/DateHelpers";
+import { storeData, getData } from "../helpers/StorageHelpers";
 //import TopBarNav from './TopBarNav';
 
 // import { Layout, Card, Modal, Text, Button } from "@ui-kitten/components";
@@ -80,30 +89,31 @@ export default class InsightScreen extends React.Component
     this.state = {
       show: false,
       PainCard: false,
-      painChecked: false,
-      moodChecked: false,
-      bleedingChecked: false,
+      painChecked: true,
+      moodChecked: true,
+      bleedingChecked: true,
       painData : [],
       moodData: [],
       bloodData: [],
       activeSwitch: null,
       userDetails: {},
+      currentDate: moment().format("YYYY-MM-DD")
     };
   }
-  painData = () =>
-  {
-    this.setState(painData=[{ x: 1, y: 1 }, { x: 2, y: 2}, { x: 3, y: 7 }]);
-  }
+  // painData = () =>
+  // {
+  //   this.setState(painData=[{ x: 1, y: 1 }, { x: 2, y: 2}, { x: 3, y: 7 }]);
+  // }
 
-  moodData = () =>
-  {
-    this.setState(moodData=[{ x: 1, y: 2 }, { x: 2, y: 3}, { x: 3, y: 8 }]);
-  }
+  // moodData = () =>
+  // {
+  //   this.setState(moodData=[{ x: 1, y: 2 }, { x: 2, y: 3}, { x: 3, y: 8 }]);
+  // }
 
-  bloodData = () =>
-  {
-    this.setState(bloodData=[{ x: 1, y: 3 }, { x: 2, y: 4 }, { x: 3, y: 9 }]);
-  }
+  // bloodData = () =>
+  // {
+  //   this.setState(bloodData=[{ x: 1, y: 3 }, { x: 2, y: 4 }, { x: 3, y: 9 }]);
+  // }
   onCheckedPainChange = () =>
    {
         this.setState({ painChecked: !this.state.painChecked });
@@ -126,8 +136,71 @@ export default class InsightScreen extends React.Component
         this.setState({ moodChecked: !this.state.moodChecked });
    };
    
+  componentDidMount()
+  {
+    getData(constants.USERDETAILS).then((data) => {
+      // Read back the user details from storage and convert to object
+      this.setState({
+          userDetails: JSON.parse(data),
+      });    
+    })
+    .then(data => {
+      console.log("In component did mount");
+      //this.setState({ painChecked: true}) ;
+      this.getChartData();
+    })
+     
+
+
+  }
+  getChartData() {
+    let userId = this.state.userDetails.user_id;
+    let url = constants.GETWEEKLYCHARTS_DEV_URL.replace("[userId]", userId).replace(
+      "[DayOfWeek]",
+      localToUtcDateTime(this.state.currentDate));
+      
+    console.log("Chart Url is", url);
+  
+
+    getData(constants.JWTKEY).then((jwt) =>
+      fetch(url, {
+        //calling API
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + jwt, //Passing this will authorize the user
+        },
+      })
+        .then((response) => response.json())
+        .then((responseData) => {
+          console.log("Completed API call to get data for weekly chart");
+          console.log(responseData);
+          let painData = [];
+          painData = mapPainDataToChartData(responseData);
+
+          let moodData = [];
+          moodData = mapMoodDataToChartData(responseData);
+
+          let bloodData = [];
+          bloodData = mapBloodDataToChartData(responseData);
+          console.log ("PAIN CHART DATA",painData);
+          console.log ("MOOD CHART DATA",moodData);
+          console.log ("BLOOD CHART DATA",bloodData);
+
+          this.setState({painData:painData,moodData:moodData,bloodData:bloodData});
+
+        })
+        .catch((err) => console.log(err))
+    ); 
+  }
   render ()
    {
+
+     var isPainChecked = (this.state.painChecked ) ;
+     var isMoodChecked = (this.state.moodChecked ) ;
+     var isBloodChecked = (this.state.bleedingChecked ) ;//|| false;
+     
+    // var isMoodChecked =(this.state.isMoodChecked || false);
+    // var isBloodChecked =(this.state.isBloodChecked ||false);
   //   const data = [
   //     { label: 'Jan', value: 500 },
   //     { label: 'Feb', value: 312 },
@@ -220,19 +293,51 @@ export default class InsightScreen extends React.Component
     <Card style={styles.cardStyle} >
     <VictoryChart>
     
-    <VictoryGroup  offset={20} colorScale={["#f08974", "#FF9B8F", "gold"]}
-    domain={{ x: [1, 4] }}
+    <VictoryGroup  offset={10}  colorScale={["tomato", "orange", "gold"]}
+    
      >
+     
    
-   <VictoryBar
-      data={this.state.painData}  tickValues={[1,5]}
-    />
-    <VictoryBar
-      data={this.state.moodData}
-    />
-    <VictoryBar
-      data={this.state.bloodData}
-    />
+     {isPainChecked && this.state.painData.length? 
+      (
+                    <>
+        <VictoryBar
+             
+              style={{ data: { fill: "#f08974", width: 25 } }}
+              barWidth={15}
+              cornerRadius={7}
+              domainPadding={{x: [10, -10]}}
+              //alignment="start"
+              //barRatio={0.8}
+              data={this.state.painData}/>
+          </>
+      ): (<></>)
+      }
+
+      {isMoodChecked && this.state.moodData.length? 
+      (
+                    <>
+        <VictoryBar
+              style={{ data: { fill: "gold", width: 25 } }}
+              barWidth={15}
+              cornerRadius={7}
+              domainPadding={{x: [25, -25]}}
+              data={this.state.moodData}/>
+          </>
+      ): (<></>)
+      }
+      {isBloodChecked && this.state.bloodData.length? 
+      (
+                    <>
+        <VictoryBar
+          style={{ data: { fill: "#FFBF81", width: 25 } }}
+              barWidth={15}
+              cornerRadius={7}
+              domainPadding={{x: [30, -30]}}
+              data={this.state.bloodData}/>
+          </>
+      ): (<></>)
+      }
     </VictoryGroup>
     </VictoryChart>
     
@@ -255,19 +360,22 @@ export default class InsightScreen extends React.Component
               style={{ width: 60, height: 60, top: 20 }}
             />
              <Toggle
-              style={styles.togglePain}
+              style ={{top :-170, right: -90}}
               onChange={this.onCheckedPainChange.bind(this)}
-              checked={this.state.painChecked}
+              checked={isPainChecked}
               //onChange={(value) => this.setState({painChecked: value})}
                 //value = {this.state.painChecked}
             >
               {/* {`Checked: ${this.state.painChecked}`}{" "} */}
             </Toggle>
             <Toggle
-              style={styles.toggleMood}
-              checked={this.state.moodChecked}
+    //           style={{
+    // top: hp("400%")}} 
+              style ={{top :-130, right: -90}}
+
+              checked={isMoodChecked}
               onChange={this.onCheckedMoodChange.bind(this)}
-              onChange = {this.painData.bind(this)}
+              
               //onValueChange={(value) => this.setState({moodChecked: value} )}
               //onChange={this.onCheckedChange.bind(this)}
             
@@ -279,12 +387,12 @@ export default class InsightScreen extends React.Component
             </Toggle>
         
             <Toggle
-              style={styles.toggleBlood}
-              checked={this.state.bleedingChecked}
+               style ={{top :-80, right: -90}}
+              // style={styles.toggleBlood}
+              checked={isBloodChecked}
               //onChange={(value) => this.setState({bleedingChecked: value})}
               onChange={this.onCheckedBloodChange.bind(this)}
-              value = {this.state.bleedingChecked}
-             
+              
             >
               {/* {`Checked: ${this.state.bleedingChecked}`} */}
             </Toggle>
@@ -331,7 +439,7 @@ const styles = StyleSheet.create({
   },
   
   cardToggle: {
-    top:Responsive.height(-40),
+    top:Responsive.height(-20),
     width:Responsive.width(325),
     height:Responsive.height(200),
     borderRadius: 20,
@@ -348,7 +456,7 @@ const styles = StyleSheet.create({
   },
   togglePain: {
     position: "absolute",
-    top: hp("4%"),
+    top: hp("500%"),
     right: -90,
     backgroundColor: "#fff",
   },

@@ -201,7 +201,7 @@ export default class PainCard extends React.Component {
     
         let isPainEnabled = (this.state.userSettings && this.state.userSettings.enable_pain) || false;
         console.log("In render get user settings - Enable Pain", this.state.userSettings.enable_pain);
-        console.log("Is Psin Enabled", isPainEnabled);
+        console.log("Is Pain Enabled", isPainEnabled);
         return (
 
             <Layout style={TrackingStyles.container}>

@@ -244,7 +244,11 @@ export default class SettingScreen extends React.Component {
                 
                 </View>
          <TouchableOpacity
-                  onPress={() => this.props.navigation.navigate("Reset")}
+                  onPress={() => navigation.navigate('CreateTask', {
+                    updateCurrentTask: this._updateCurrentTask,
+                    currentDate,
+                    createNewCalendar: this._createNewCalendar,
+                  })}
                 >
                   <Text
                     style={{

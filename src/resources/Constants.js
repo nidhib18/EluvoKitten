@@ -79,6 +79,13 @@ export const constants = {
     UPDATEUSERSETTINGS_DEV_URL:
     "https://85n1xoyyu1.execute-api.ap-southeast-2.amazonaws.com/DEV/settings",
 
+    GETWEEKLYCHARTS_DEV_URL:
+    "https://1xr9e39ry4.execute-api.ap-southeast-2.amazonaws.com/DEV/weekly?userId=[userId]&DayOfWeek=[DayOfWeek]",
 
+    ADDTAGS_DEV_URL:
+    "https://kkeo9fr2pg.execute-api.ap-southeast-2.amazonaws.com/DEV/tags",
+
+    GETTAGS_DEV_URL:
+    "https://dv4tzoya4d.execute-api.ap-southeast-2.amazonaws.com/DEV"
 
 };

@@ -1,8 +1,9 @@
 import { Auth } from "aws-amplify"
 import React, { Component } from 'react';
-import { SafeAreaView, Image,TouchableWithoutFeedback,Keyboard,KeyboardAvoidingView, } from 'react-native';
+import { SafeAreaView, Image,TouchableWithoutFeedback,Keyboard,KeyboardAvoidingView,StyleSheet } from 'react-native';
 import { Divider, Input, Icon, Layout, Text, TopNavigation, TopNavigationAction, evaProps, Button } from '@ui-kitten/components';
 import { ImageStyles } from "./ImageStyles";
+
 import { ForgotStyles } from "./ForgotStyles";
 
 export default class ResetPassword extends Component {
@@ -95,7 +96,7 @@ return (
 
 
             <Input
-                style={ForgotStyles.emailInput}
+                style={styles.newPassword}
                 //placeholder='password'
                 label='Old password'
                 onChangeText={
@@ -107,7 +108,7 @@ return (
                 height={28}/>
 
 <Input
-                style={ForgotStyles.newPassword}
+                style={styles.emailInput}
                // placeholder='New Password'
                 label='New Password'
                 onChangeText={
@@ -121,7 +122,7 @@ return (
 
             />
 
-<Button style={ForgotStyles.submitBtnContainer}
+<Button style={styles.submitBtnContainer}
                 appearance='outline'
                 status='warning'
                 onPress={this.changePassword}>Confirm new password</Button>
@@ -131,3 +132,33 @@ return (
 );
 }
 }
+
+const styles = StyleSheet.create({
+newPassword: {
+  position: "absolute",
+  width:Responsive.width(330),
+  height:Responsive.height(48),
+  backgroundColor: "white",
+  top: Responsive.height(380),
+  borderRadius: Responsive.height(24),
+},
+
+emailInput: {
+  position: "absolute",
+  width:Responsive.width(330),
+  height:Responsive.height(48),
+  backgroundColor: "white",
+  top:Responsive.height(439),
+  borderRadius: Responsive.height(24),
+},
+
+submitBtnContainer: {
+  position: "absolute",
+  width:Responsive.width(330),
+  height:Responsive.height(40),
+  borderRadius: Responsive.height(24),
+  top:Responsive.height(520),
+  alignItems: "center",
+},
+
+})
