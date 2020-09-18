@@ -148,7 +148,7 @@ export default class SettingScreen extends React.Component {
                     }}
                   >
                     ______________________________________
-                  </Text>
+                    </Text>
                   <Image
                     style={{
                       left: Responsive.width(280),
@@ -157,10 +157,10 @@ export default class SettingScreen extends React.Component {
                       width: Responsive.width(21),
                       resizeMode: "contain",
                     }}
-                    source={require("../../assets/pain.png")}
+                    source={require("../../assets/goto.png")}
                   ></Image>
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate("Calendar")}>
                   <Text
                     style={{
                       left: wp("0%"),
@@ -170,7 +170,7 @@ export default class SettingScreen extends React.Component {
                       fontSize: Responsive.font(16),
                     }}
                   >
-                    Cycle settings
+                    Add to calendar
                   </Text>
                   <Text
                     style={{
@@ -181,7 +181,7 @@ export default class SettingScreen extends React.Component {
                       fontSize: Responsive.font(16),
                     }}
                   >
-                    Edit cycle Length and period reminders
+                    add to calendar and syncronise with device calendar 
                   </Text>
                   <Text
                     style={{
@@ -192,6 +192,7 @@ export default class SettingScreen extends React.Component {
                       fontSize: Responsive.font(16),
                     }}
                   >
+                  
                     ______________________________________
                   </Text>
                   <Image
@@ -202,7 +203,7 @@ export default class SettingScreen extends React.Component {
                       width: Responsive.width(21),
                       resizeMode: "contain",
                     }}
-                    source={require("../../assets/pain.png")}
+                    source={require("../../assets/goto.png")}
                   ></Image>
                 </TouchableOpacity>
               </Card>
@@ -292,7 +293,7 @@ export default class SettingScreen extends React.Component {
                       justifyContent:'center'
                       
                     }}
-                    source={require("../../assets/pain.png")}
+                    source={require("../../assets/goto.png")}
                   ></Image>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={this.handleSignOut}>

@@ -506,7 +506,7 @@ export default class HomeTwo extends Component {
                       </Text>
                     </TouchableOpacity>
                   </View>
-                  <View style={styles.sepeerator} />
+                  <View style={styles.seperator} />
                   <View
                     style={{
                       flexDirection: 'row',
@@ -605,7 +605,7 @@ export default class HomeTwo extends Component {
                 paddingTop: Constants.statusBarHeight,
               }}
             >
-              <CalendarStrip
+              {/* <CalendarStrip
                 ref={ref => {
                   this.calenderRef = ref;
                 }}
@@ -654,7 +654,7 @@ export default class HomeTwo extends Component {
                     currentDate: selectedDate,
                   });
                 }}
-              />
+              /> */}
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate('CreateTask', {

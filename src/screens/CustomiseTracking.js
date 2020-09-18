@@ -138,6 +138,10 @@ updateUserSettings ()
     );
    
 }
+functionCombined() {
+  this.functionOne();
+  this.functionTwo();
+} 
 
 componentDidMount()
 {
@@ -155,6 +159,10 @@ componentDidMount()
         });
     })
   });
+}
+handleSignUp = () => {
+
+
 }
 
 render() 
@@ -285,7 +293,7 @@ render()
               onChange={this.onCheckedDietChange.bind(this)}
              
             >
-            <Text style ={{top:10,right:20,backgroundColor:'#f089'}}>DIET </Text> 
+           
               {/* {`Checked: ${this.state.dietChecked}`} */}
             </Toggle>
             <Toggle

@@ -21,6 +21,7 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 import {v4 as uuid} from "uuid";
 import { Context } from './Context';
 
+
 const { width: vw } = Dimensions.get('window');
 // moment().format('YYYY/MM/DD')
 
@@ -41,36 +42,36 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   notes: {
-    color: '#9CAAC4',
+    color: '#f09874',
     fontSize: 16,
     fontWeight: '600',
   },
   notesContent: {
     height: 0.5,
     width: '100%',
-    backgroundColor: '#979797',
+    backgroundColor: '#f09874',
     alignSelf: 'center',
     marginVertical: 20,
   },
-  learn: {
+  meetfriend: {
     height: 23,
-    width: 51,
-    backgroundColor: '#F8D557',
+    width: 90,
+    backgroundColor: '#f09874',
     justifyContent: 'center',
     borderRadius: 5,
   },
-  design: {
+  exercise: {
     height: 23,
-    width: 59,
-    backgroundColor: '#62CCFB',
+    width: 75,
+    backgroundColor: '#f09874',
     justifyContent: 'center',
     borderRadius: 5,
     marginRight: 7,
   },
-  readBook: {
+  appointment: {
     height: 23,
-    width: 83,
-    backgroundColor: '#4CD565',
+    width: 100,
+    backgroundColor: '#f09874',
     justifyContent: 'center',
     borderRadius: 5,
     marginRight: 7,
@@ -81,6 +82,7 @@ const styles = StyleSheet.create({
     borderLeftWidth: 1,
     paddingLeft: 8,
     fontSize: 19,
+    color: '#f09874',
   },
   taskContainer: {
     height: 400,
@@ -103,6 +105,9 @@ const styles = StyleSheet.create({
     width: 350,
     height: 350,
     alignSelf: 'center',
+    color: '#f09874',
+   
+    
   },
   newTask: {
     alignSelf: 'center',
@@ -110,17 +115,21 @@ const styles = StyleSheet.create({
     width: 120,
     height: 25,
     textAlign: 'center',
+    color: '#f09874',
   },
+
   backButton: {
     flexDirection: 'row',
     marginTop: 60,
     width: '100%',
     alignItems: 'center',
+    
   },
   container: {
     flex: 1,
     paddingTop: Constants.statusBarHeight,
-    backgroundColor: '#eaeef7',
+    backgroundColor: '#f09874',
+    
   },
 });
 
@@ -273,8 +282,8 @@ export default class CreateTask extends Component {
         dots: [
           {
             key: uuid(),
-            color: '#2E66E7',
-            selectedDotColor: '#2E66E7',
+            color: '#f09874',
+            selectedDotColor: '#f09874',
           },
         ],
       },
@@ -282,7 +291,7 @@ export default class CreateTask extends Component {
 
     await value.updateTodo(creatTodo);
     await updateCurrentTask(currentDate);
-    navigation.navigate('HomeTwo');
+    navigation.navigate('Home');
   };
 
   _handleDatePicked = date => {
@@ -317,11 +326,13 @@ export default class CreateTask extends Component {
     } = this;
 
     return (
+
+      
       <Context.Consumer>
         {value => (
           <>
             <DateTimePicker
-              isVisible={isDateTimePickerVisible}
+              isVisible={false}
               onConfirm={this._handleDatePicked}
               onCancel={this._hideDateTimePicker}
               mode="time"
@@ -355,8 +366,12 @@ export default class CreateTask extends Component {
                   <View style={styles.calenderContainer}>
                     <CalendarList
                       style={{
-                        width: 350,
+                        width: 327,
                         height: 350,
+                        borderRadius: 20,
+                        alignSelf: 'center',
+                        backgroundColor: '#ffffff',
+                        
                       }}
                       current={currentDay}
                       minDate={moment().format()}
@@ -396,30 +411,32 @@ export default class CreateTask extends Component {
                       onChangeText={text => this.setState({ taskText: text })}
                       value={taskText}
                       placeholder="What do you need to do?"
+                      
                     />
                     <Text
                       style={{
                         fontSize: 14,
                         color: '#BDC6D8',
                         marginVertical: 10,
+                        
                       }}
                     >
                       Suggestion
                     </Text>
                     <View style={{ flexDirection: 'row' }}>
-                      <View style={styles.readBook}>
+                      <View style={styles.appointment}>
                         <Text style={{ textAlign: 'center', fontSize: 14 }}>
-                          Read book
+                          Appointment
                         </Text>
                       </View>
-                      <View style={styles.design}>
+                      <View style={styles.exercise}>
                         <Text style={{ textAlign: 'center', fontSize: 14 }}>
-                          Design
+                          Exercise
                         </Text>
                       </View>
-                      <View style={styles.learn}>
+                      <View style={styles.meetfriend}>
                         <Text style={{ textAlign: 'center', fontSize: 14 }}>
-                          Learn
+                          Meet Friend
                         </Text>
                       </View>
                     </View>
@@ -443,12 +460,12 @@ export default class CreateTask extends Component {
                     <View>
                       <Text
                         style={{
-                          color: '#9CAAC4',
+                          color: '#f09874',
                           fontSize: 16,
                           fontWeight: '600',
                         }}
                       >
-                        Times
+                        Time
                       </Text>
                       <TouchableOpacity
                         onPress={() => this._showDateTimePicker()}
@@ -473,7 +490,7 @@ export default class CreateTask extends Component {
                       <View>
                         <Text
                           style={{
-                            color: '#9CAAC4',
+                            color: '#f09874',
                             fontSize: 16,
                             fontWeight: '600',
                           }}
@@ -502,10 +519,8 @@ export default class CreateTask extends Component {
                     style={[
                       styles.createTaskButton,
                       {
-                        backgroundColor:
-                          taskText === ''
-                            ? 'rgba(46, 102, 231,0.5)'
-                            : '#2E66E7',
+                        backgroundColor: '#f09874',
+                          
                       },
                     ]}
                     onPress={async () => {

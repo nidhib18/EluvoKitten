@@ -9,10 +9,9 @@ const { width, height } = Dimensions.get("window");
 import { VictoryBar, VictoryChart, VictoryTheme,VictoryGroup,VictoryAxis} from "victory-native";
 import { color } from "react-native-reanimated";
 import TopBarNav from 'top-bar-nav';
-import { mapMoodDataToChartData,mapPainDataToChartData,mapBloodDataToChartData} from "../helpers/ChartHelpers";
+import { mapMoodDataToChartData,mapPainDataToChartData,mapBloodDataToChartData} from "../helpers/YearlyHelpers";
 import moment from "moment";
 import { constants } from "../resources/Constants";
-
 import {
   utcToLocal,
   localToUtcDate,
@@ -23,68 +22,9 @@ import { storeData, getData } from "../helpers/StorageHelpers";
 
 // import { Layout, Card, Modal, Text, Button } from "@ui-kitten/components";
 
-const data = [
-  { quarter: 1, earnings: 13000 },
-  { quarter: 2, earnings: 16500 },
-  { quarter: 3, earnings: 14250 },
-  { quarter: 4, earnings: 19000 }
-];
-const yellow200 = "#FFF59D";
-const deepOrange600 = "#F4511E";
-const lime300 = "#DCE775";
-const lightGreen500 = "#8BC34A";
-const teal700 = "#00796B";
-const cyan900 = "#006064";
-const colors = 
-{
- fill: deepOrange600,
-  // yellow200,
-  // lime300,
-  // lightGreen500,
-  // teal700,
-  // cyan900
-}
-// import * as d3 from 'd3'
-// import { Svg, G, Line,Rect,Text} from 'react-native-svg'
-// import Chart from './Chart';
-// const GRAPH_MARGIN = 20
-// const GRAPH_BAR_WIDTH = 5
-// const colors = {
-//   axis: '#E4E4E4',
-//   bars: '#15AD13'
-// }
 
 
-//TOP NAVIGATION BAR
-
-const Scene = ({ index }) => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Button style = {{top:-40}}></Button>  
-      <Text style={{ fontSize: 20 }}>{index}</Text>
-  </View>
-);
-
-const SceneTwo = ({ index }) => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={{ fontSize: 20 }}>{index}</Text>
-  </View>
-);
-const ROUTES = {
-  Scene,
-  SceneTwo
-  
-  // ideally you would have a ROUTES object with multiple React component scenes
-};
-
-// There are three types of labels (image, text, and element)
-const ROUTESTACK = [
-  
-  { text: 'WEEK', title: 'Scene' },
-  { text: 'MONTH', title: 'SceneTwo' },
-  { text: 'YEAR', title: 'Scene' }
-];
-
-export default class InsightScreen extends React.Component
+export default class Yearly extends React.Component
 {
   constructor() {
     super();
@@ -102,33 +42,13 @@ export default class InsightScreen extends React.Component
       currentDate: moment().format("YYYY-MM-DD")
     };
   }
-  // painData = () =>
-  // {
-  //   this.setState(painData=[{ x: 1, y: 1 }, { x: 2, y: 2}, { x: 3, y: 7 }]);
-  // }
-
-  // moodData = () =>
-  // {
-  //   this.setState(moodData=[{ x: 1, y: 2 }, { x: 2, y: 3}, { x: 3, y: 8 }]);
-  // }
-
-  // bloodData = () =>
-  // {
-  //   this.setState(bloodData=[{ x: 1, y: 3 }, { x: 2, y: 4 }, { x: 3, y: 9 }]);
-  // }
+  
   onCheckedPainChange = () =>
    {
         this.setState({ painChecked: !this.state.painChecked });
         
    };
-  //  onCheckedPainChange = (val) =>
-  //  {
-  //       this.setState({
-  //         userSettings: {
-  //           ...this.state.userSettings, 
-  //           enable_pain: !this.state.userSettings.enable_pain 
-  //         },
-  //       }); 
+  
    onCheckedBloodChange = () =>
    {
         this.setState({ bleedingChecked: !this.state.bleedingChecked });
@@ -157,11 +77,8 @@ export default class InsightScreen extends React.Component
   }
   getChartData() {
     let userId = this.state.userDetails.user_id;
-    let url = constants.GETWEEKLYCHARTS_DEV_URL.replace("[userId]", userId).replace(
-      "[DayOfWeek]",
-      localToUtcDateTime(this.state.currentDate));
-      
-    console.log("Chart Url is", url);
+    let url = constants.GETYEARLYCHARTS_DEV_URL.replace("[userId]", userId);
+    console.log("Chart yearly Url is", url);
   
 
     getData(constants.JWTKEY).then((jwt) =>
@@ -174,7 +91,7 @@ export default class InsightScreen extends React.Component
       })
         .then((response) => response.json())
         .then((responseData) => {
-          console.log("Completed API call to get data for weekly chart");
+          console.log("Completed API call to get data for yearly chart");
           console.log(responseData);
           let painData = [];
           painData = mapPainDataToChartData(responseData);
@@ -199,26 +116,14 @@ export default class InsightScreen extends React.Component
 
      var isPainChecked = (this.state.painChecked ) ;
      var isMoodChecked = (this.state.moodChecked ) ;
-     var isBloodChecked = (this.state.bleedingChecked ) ;//|| false;
+     var isBloodChecked = (this.state.bleedingChecked ) ;
      
     
   return (
     <Layout style={styles.container}>
-    {/* <TopNavigation position="absolute"
+    <TopNavigation position="absolute"
         top={0}
-        style={{ height:hp('20%'), width: width }} /> */}
-        {/* <Button
-        style={{ left: wp('40%'), top: wp('5.5%'), height:hp('5%') }}
-        
-        appearance="outline"
-        onPress={() => navigation.navigate("Home")}
-      >
-        Done
-      </Button> */}
-      {/* <Divider /> */}
-      <TopNavigation position="absolute"
-        top={0}
-        style={{ height:hp('20%'), width: width}} /> 
+        style={{ height:hp('20%'), width: width }} /> 
       <Button
           style={{
             left: Responsive.width(140),
@@ -249,14 +154,11 @@ export default class InsightScreen extends React.Component
             top: Responsive.width(-5),
             height: Responsive.height(40),
             width: Responsive.width(130),
-           
           }}
           appearance="outline"
-
           onPress={() => this.props.navigation.navigate("Insights")}
         >
          Week
-         
         </Button>
         <Text style ={{left: Responsive.width(-100),
             top: Responsive.width(-80),
@@ -267,7 +169,47 @@ export default class InsightScreen extends React.Component
     fontWeight: 'bold',
   
     fontSize: Responsive.font(25)}}>Insights</Text>
-      
+       <Divider />
+      {/* <TopBarNav
+         
+                routeStack={ROUTESTACK}
+                renderScene={(route, i) => {
+                  let Component = ROUTES[route.title];
+                  return <Component index={i} />;
+                }}
+                
+                headerStyle={[styles.header]} 
+                labelStyle={styles.label}
+                underlineStyle={styles.underline}
+                imageStyle={styles.image}
+                sidePadding={0} 
+                inactiveOpacity={0.4}
+                fadeLabels={true}
+    /> */}
+     {/* <Button
+          style={{
+            left: Responsive.width(150),
+            top: Responsive.width(-10),
+            height: Responsive.height(40),
+            width: Responsive.width(130),
+          }}
+          appearance="outline"
+          onPress={() => this.props.navigation.navigate("Monthly")}
+        >
+         
+        </Button>
+        <Button
+          style={{
+            left: Responsive.width(10),
+            top: Responsive.width(-50),
+            height: Responsive.height(40),
+            width: Responsive.width(100),
+          }}
+          appearance="outline"
+          onPress={() => this.props.navigation.navigate("Yearly")}
+        >
+         
+        </Button> */}
         {/* <Button
           style={{
             right: Responsive.width(80),
@@ -291,7 +233,7 @@ export default class InsightScreen extends React.Component
     textAlign: 'left',
     fontWeight: 'bold',
     top:120,
-    fontSize: Responsive.font(15)}}> (i) No data to view the graph</Text>
+    fontSize: Responsive.font(15)}}> (i) Not enough data to view the graph</Text>
                     </Card>
           </>
       ): (
@@ -302,7 +244,7 @@ export default class InsightScreen extends React.Component
     <VictoryChart domainPadding={40}>
     <VictoryAxis
    
-    label="Days"
+    label="Years"
     style={{axisLabel: {padding: 35} }} 
   />
   <VictoryAxis
@@ -444,7 +386,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   cardStyle: {
-    top:Responsive.height(-15),
+    top:Responsive.height(-20),
     width:Responsive.width(338),
     height:Responsive.height(290),
     borderRadius: 20,
@@ -461,7 +403,7 @@ const styles = StyleSheet.create({
   },
   
   cardToggle: {
-    top:Responsive.height(-8),
+    top:Responsive.height(-10),
     width:Responsive.width(338),
     height:Responsive.height(200),
     borderRadius: 20,

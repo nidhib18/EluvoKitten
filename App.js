@@ -180,8 +180,9 @@ export default () => (
 
 // const AppNavigator = createStackNavigator(
 //   {
-//     //HomeTwo,
-//     CreateTask,
+   
+//     CreateTask, HomeTwo,
+    
     
 //   },
 //   {

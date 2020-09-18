@@ -30,7 +30,7 @@ export default class PainCard extends React.Component {
             userSettings: {},
             selectedPainTypes: [],  //user selected pain type value 
             minValue: 0,
-            maxValue: 10,
+            maxValue: 5,
             userDetails: {},
             painDetails: initPainDetails(0, moment().format('YYYY-MM-DD')),
             painTypes: [],  //all possible pain types from list item

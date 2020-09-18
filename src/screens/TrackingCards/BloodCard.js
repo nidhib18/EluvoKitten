@@ -332,14 +332,14 @@ render() {
                             }>
                                 <Image
                                     style={{ marginLeft: 8, width: 38, height: 38 }}
-                                    source={require('../../../assets/x.png')}
+                                    source={require('../../../assets/plusButton.png')}
                                 />
                             </TouchableWithoutFeedback>
                             {/* <Button title='Get Values' onPress={() => this.getValues()} /> */}
                         </View>
                         <View style={styles.row}>
                             <View style={{ margin: 10, top: Responsive.height(75) }}>
-                                <Button onPress={() => this.removeTextInput()}>Remove</Button>
+                                {/* <Button onPress={() => this.removeTextInput()}>Remove</Button> */}
                             </View>
                         </View>
                     </View>

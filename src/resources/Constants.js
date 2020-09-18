@@ -86,6 +86,17 @@ export const constants = {
     "https://kkeo9fr2pg.execute-api.ap-southeast-2.amazonaws.com/DEV/tags",
 
     GETTAGS_DEV_URL:
-    "https://dv4tzoya4d.execute-api.ap-southeast-2.amazonaws.com/DEV"
+    "https://dv4tzoya4d.execute-api.ap-southeast-2.amazonaws.com/DEV",
+
+    GETMONTHLYCHARTS_DEV_URL:
+    "https://1kwl2gipc0.execute-api.ap-southeast-2.amazonaws.com/DEV/monthly?userId=[userId]",
+
+    GETYEARLYCHARTS_DEV_URL:
+    "https://ci7tfssnmk.execute-api.ap-southeast-2.amazonaws.com/DEV/yearly?userId=[userId]"
+
+    
+
+
+
 
 };

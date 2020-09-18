@@ -6,13 +6,13 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 const { width, height } = Dimensions.get("window");
 //import React from "react";
 //import { StyleSheet, View } from "react-native";
-import { VictoryBar, VictoryChart, VictoryTheme,VictoryGroup,VictoryAxis} from "victory-native";
+import { VictoryBar, VictoryChart,VictoryLabel, VictoryTheme,VictoryGroup} from "victory-native";
 import { color } from "react-native-reanimated";
 import TopBarNav from 'top-bar-nav';
-import { mapMoodDataToChartData,mapPainDataToChartData,mapBloodDataToChartData} from "../helpers/ChartHelpers";
+// import { mapMoodDataToChartData,mapPainDataToChartData,mapBloodDataToChartData} from "../helpers/ChartHelpers";
+import { mapMoodToChartData,mapPainToChartData,mapBloodToChartData} from "../helpers/MonthHelpers";
 import moment from "moment";
 import { constants } from "../resources/Constants";
-
 import {
   utcToLocal,
   localToUtcDate,
@@ -57,34 +57,34 @@ const colors =
 
 //TOP NAVIGATION BAR
 
-const Scene = ({ index }) => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Button style = {{top:-40}}></Button>  
-      <Text style={{ fontSize: 20 }}>{index}</Text>
-  </View>
-);
+// const Scene = ({ index }) => (
+//   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+//       <Button style = {{top:-40}}></Button>  
+//       <Text style={{ fontSize: 20 }}>{index}</Text>
+//   </View>
+// );
 
-const SceneTwo = ({ index }) => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={{ fontSize: 20 }}>{index}</Text>
-  </View>
-);
-const ROUTES = {
-  Scene,
-  SceneTwo
+// const SceneTwo = ({ index }) => (
+//   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+//       <Text style={{ fontSize: 20 }}>{index}</Text>
+//   </View>
+// );
+// const ROUTES = {
+//   Scene,
+//   SceneTwo
   
-  // ideally you would have a ROUTES object with multiple React component scenes
-};
+//   // ideally you would have a ROUTES object with multiple React component scenes
+// };
 
 // There are three types of labels (image, text, and element)
-const ROUTESTACK = [
+// const ROUTESTACK = [
   
-  { text: 'WEEK', title: 'Scene' },
-  { text: 'MONTH', title: 'SceneTwo' },
-  { text: 'YEAR', title: 'Scene' }
-];
+//   { text: 'WEEK', title: 'Scene' },
+//   { text: 'MONTH', title: 'SceneTwo' },
+//   { text: 'YEAR', title: 'Scene' }
+// ];
 
-export default class InsightScreen extends React.Component
+export default class Monthly extends React.Component
 {
   constructor() {
     super();
@@ -102,33 +102,13 @@ export default class InsightScreen extends React.Component
       currentDate: moment().format("YYYY-MM-DD")
     };
   }
-  // painData = () =>
-  // {
-  //   this.setState(painData=[{ x: 1, y: 1 }, { x: 2, y: 2}, { x: 3, y: 7 }]);
-  // }
-
-  // moodData = () =>
-  // {
-  //   this.setState(moodData=[{ x: 1, y: 2 }, { x: 2, y: 3}, { x: 3, y: 8 }]);
-  // }
-
-  // bloodData = () =>
-  // {
-  //   this.setState(bloodData=[{ x: 1, y: 3 }, { x: 2, y: 4 }, { x: 3, y: 9 }]);
-  // }
+ 
   onCheckedPainChange = () =>
    {
         this.setState({ painChecked: !this.state.painChecked });
         
    };
-  //  onCheckedPainChange = (val) =>
-  //  {
-  //       this.setState({
-  //         userSettings: {
-  //           ...this.state.userSettings, 
-  //           enable_pain: !this.state.userSettings.enable_pain 
-  //         },
-  //       }); 
+
    onCheckedBloodChange = () =>
    {
         this.setState({ bleedingChecked: !this.state.bleedingChecked });
@@ -152,15 +132,10 @@ export default class InsightScreen extends React.Component
       this.getChartData();
     })
      
-
-
   }
   getChartData() {
     let userId = this.state.userDetails.user_id;
-    let url = constants.GETWEEKLYCHARTS_DEV_URL.replace("[userId]", userId).replace(
-      "[DayOfWeek]",
-      localToUtcDateTime(this.state.currentDate));
-      
+    let url = constants. GETMONTHLYCHARTS_DEV_URL.replace("[userId]", userId); 
     console.log("Chart Url is", url);
   
 
@@ -177,13 +152,13 @@ export default class InsightScreen extends React.Component
           console.log("Completed API call to get data for weekly chart");
           console.log(responseData);
           let painData = [];
-          painData = mapPainDataToChartData(responseData);
+          painData = mapPainToChartData(responseData);
 
           let moodData = [];
-          moodData = mapMoodDataToChartData(responseData);
+          moodData = mapMoodToChartData(responseData);
 
           let bloodData = [];
-          bloodData = mapBloodDataToChartData(responseData);
+          bloodData = mapBloodToChartData(responseData);
           console.log ("PAIN CHART DATA",painData);
           console.log ("MOOD CHART DATA",moodData);
           console.log ("BLOOD CHART DATA",bloodData);
@@ -197,28 +172,16 @@ export default class InsightScreen extends React.Component
   render ()
    {
 
-     var isPainChecked = (this.state.painChecked ) ;
-     var isMoodChecked = (this.state.moodChecked ) ;
+     var isPainChecked = (this.state.painChecked );
+     var isMoodChecked = (this.state.moodChecked );
      var isBloodChecked = (this.state.bleedingChecked ) ;//|| false;
      
     
   return (
     <Layout style={styles.container}>
-    {/* <TopNavigation position="absolute"
+    <TopNavigation position="absolute"
         top={0}
-        style={{ height:hp('20%'), width: width }} /> */}
-        {/* <Button
-        style={{ left: wp('40%'), top: wp('5.5%'), height:hp('5%') }}
-        
-        appearance="outline"
-        onPress={() => navigation.navigate("Home")}
-      >
-        Done
-      </Button> */}
-      {/* <Divider /> */}
-      <TopNavigation position="absolute"
-        top={0}
-        style={{ height:hp('20%'), width: width}} /> 
+        style={{ height:hp('20%'), width: width }} /> 
       <Button
           style={{
             left: Responsive.width(140),
@@ -238,7 +201,7 @@ export default class InsightScreen extends React.Component
             height: Responsive.height(40),
             width: Responsive.width(130),
           }}
-           appearance="outline"
+          appearance="outline"
           onPress={() => this.props.navigation.navigate("Monthly")}
         >
          Month
@@ -249,16 +212,14 @@ export default class InsightScreen extends React.Component
             top: Responsive.width(-5),
             height: Responsive.height(40),
             width: Responsive.width(130),
-           
           }}
           appearance="outline"
-
           onPress={() => this.props.navigation.navigate("Insights")}
         >
          Week
-         
         </Button>
-        <Text style ={{left: Responsive.width(-100),
+       <Divider />
+       <Text style ={{left: Responsive.width(-100),
             top: Responsive.width(-80),
             height: Responsive.height(40),
             width: Responsive.width(130),
@@ -267,20 +228,6 @@ export default class InsightScreen extends React.Component
     fontWeight: 'bold',
   
     fontSize: Responsive.font(25)}}>Insights</Text>
-      
-        {/* <Button
-          style={{
-            right: Responsive.width(80),
-            top: Responsive.width(-45),
-            height: Responsive.height(40),
-            width: Responsive.width(140),
-          }}
-          //appearance="outline"
-          onPress={() => this.props.navigation.navigate("Home")}
-        >
-         
-        </Button> */}
-        <Divider />
      
           <View style>
     {!isPainChecked & !isBloodChecked & !isMoodChecked?
@@ -291,7 +238,7 @@ export default class InsightScreen extends React.Component
     textAlign: 'left',
     fontWeight: 'bold',
     top:120,
-    fontSize: Responsive.font(15)}}> (i) No data to view the graph</Text>
+    fontSize: Responsive.font(15)}}> (i) Not enough data to view the graph</Text>
                     </Card>
           </>
       ): (
@@ -300,18 +247,18 @@ export default class InsightScreen extends React.Component
    
     
     <VictoryChart domainPadding={40}>
-    <VictoryAxis
+    {/* <VictoryAxis
    
-    label="Days"
+    label="Month"
     style={{axisLabel: {padding: 35} }} 
   />
   <VictoryAxis
     dependentAxis
     label="Symptom Level"
     style={{axisLabel: {padding: 35 } }} 
-  />
-    <VictoryGroup  offset={20} padding={{left: 50}} colorScale={["tomato", "orange", "gold"]} 
-       
+  /> */}
+    <VictoryGroup  offset={20} padding={{left: 50}} 
+       tickLabelComponent={<VictoryLabel angle={45}/>}
      >
      
    
@@ -444,7 +391,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   cardStyle: {
-    top:Responsive.height(-15),
+    top:Responsive.height(5),
     width:Responsive.width(338),
     height:Responsive.height(290),
     borderRadius: 20,
@@ -461,7 +408,7 @@ const styles = StyleSheet.create({
   },
   
   cardToggle: {
-    top:Responsive.height(-8),
+    top:Responsive.height(10),
     width:Responsive.width(338),
     height:Responsive.height(200),
     borderRadius: 20,
@@ -511,48 +458,48 @@ const styles = StyleSheet.create({
     includeFontPadding: true,
     paddingVertical: 5,
   },
-  header: {
-    borderBottomWidth: 1,
-    //borderColor: '#cecece',
-    height:hp('17%'),
-    backgroundColor: "#f09874"
-  },
-  label: {
-    fontSize: 15,
-    fontWeight: '500',
-    color: '#fff'
-  },
-  image: {
-    height: 20,
-    width: 20,
-    tintColor: '#e6faff'
-  },
-  underline: {
-    height: 1,
-    backgroundColor: '#1c1c1c',
-    width: 40
-  },
-  headerStyle: {
-    borderBottomWidth: 1,
-    height:hp('14%'),
-    borderColor: '#e6faff',
-    backgroundColor: '#f08974'
-},
-labelStyle: {
-    fontSize: 15,
-    fontWeight: '500',
-    color: '#fff'
-},
-imageStyle: {
-    height: 20,
-    width: 20,
-    tintColor: '#e6faff'
-},
-underlineStyle: {
-    height: 3.6,
-    backgroundColor: '#e6faff',
-    width: 40
-}
+//   header: {
+//     borderBottomWidth: 1,
+//     //borderColor: '#cecece',
+//     height:hp('17%'),
+//     backgroundColor: "#f09874"
+//   },
+//   label: {
+//     fontSize: 15,
+//     fontWeight: '500',
+//     color: '#fff'
+//   },
+//   image: {
+//     height: 20,
+//     width: 20,
+//     tintColor: '#e6faff'
+//   },
+//   underline: {
+//     height: 1,
+//     backgroundColor: '#1c1c1c',
+//     width: 40
+//   },
+//   headerStyle: {
+//     borderBottomWidth: 1,
+//     height:hp('14%'),
+//     borderColor: '#e6faff',
+//     backgroundColor: '#f08974'
+// },
+// labelStyle: {
+//     fontSize: 15,
+//     fontWeight: '500',
+//     color: '#fff'
+// },
+// imageStyle: {
+//     height: 20,
+//     width: 20,
+//     tintColor: '#e6faff'
+// },
+// underlineStyle: {
+//     height: 3.6,
+//     backgroundColor: '#e6faff',
+//     width: 40
+// }
 });
 
 
