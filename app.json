@@ -22,9 +22,19 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+  
     "ios": {
-      "supportsTablet": true
-    }
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCalendarsUsageDescription": [
+          "Are you sure you want to allow this app to use Calendar?"
+        ],
+        "NSContactsUsageDescription": [
+          " "
+        ]
+      }
+    
     
   }
+}
 }

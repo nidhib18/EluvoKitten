@@ -110,7 +110,7 @@ export default class LoginScreen extends Component {
               source={require("../../assets/dots.png")}
             />
 
-<Input
+         <Input
               style={LoginStyles.usernameInput}
               label="Username"
               onChangeText={(value) => this.setState({ username: value })}

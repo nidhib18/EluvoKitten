@@ -6,6 +6,7 @@ export const constants = {
   USERNAMEEXISTS_EXCEPTION:"UsernameExistsException",
   USERDETAILS: "@userdetails",
   CURRENTDATE: "currentDate",
+  USERSETTINGS: "usersettings",
 
   /* API URls */
     USERDETAILS_DEV_URL:
@@ -70,7 +71,32 @@ export const constants = {
     USERMEDICATION_DEV_URL:
     "https://0qkeudkka9.execute-api.ap-southeast-2.amazonaws.com/DEV/getusermedication?userId=[userId]&occuredDate=[occuredDate]",
     MEDICATIONSIDEEFFECTS_DEV_URL:
-    "https://dv4tzoya4d.execute-api.ap-southeast-2.amazonaws.com/DEV/listitems?listId=13"
+    "https://dv4tzoya4d.execute-api.ap-southeast-2.amazonaws.com/DEV/listitems?listId=13",
+
+    GETUSERSETTINGS_DEV_URL:
+    "https://wbgd0fem0e.execute-api.ap-southeast-2.amazonaws.com/DEV/settings?userId=[userId]",
+
+    UPDATEUSERSETTINGS_DEV_URL:
+    "https://85n1xoyyu1.execute-api.ap-southeast-2.amazonaws.com/DEV/settings",
+
+    GETWEEKLYCHARTS_DEV_URL:
+    "https://1xr9e39ry4.execute-api.ap-southeast-2.amazonaws.com/DEV/weekly?userId=[userId]&DayOfWeek=[DayOfWeek]",
+
+    ADDTAGS_DEV_URL:
+    "https://kkeo9fr2pg.execute-api.ap-southeast-2.amazonaws.com/DEV/tags",
+
+    GETTAGS_DEV_URL:
+    "https://dv4tzoya4d.execute-api.ap-southeast-2.amazonaws.com/DEV",
+
+    GETMONTHLYCHARTS_DEV_URL:
+    "https://1kwl2gipc0.execute-api.ap-southeast-2.amazonaws.com/DEV/monthly?userId=[userId]",
+
+    GETYEARLYCHARTS_DEV_URL:
+    "https://ci7tfssnmk.execute-api.ap-southeast-2.amazonaws.com/DEV/yearly?userId=[userId]"
+
+    
+
+
 
 
 };

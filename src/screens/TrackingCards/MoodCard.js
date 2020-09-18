@@ -25,6 +25,7 @@ export default class MoodCard extends React.Component {
             moodDescriptions:[],
             minValue: 0,
             maxValue: 5,
+            userSettings: {},
             userDetails:{}, 
             moodDetails: initMoodDetails(0,  moment().format('YYYY-MM-DD')) ,
             currentDate: this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD')     
@@ -55,6 +56,37 @@ export default class MoodCard extends React.Component {
                 .catch((err) => console.log(err))
         );
     };
+    getUserSettings ()
+    { 
+      let userId = this.state.userDetails.user_id;
+      let url = constants.GETUSERSETTINGS_DEV_URL.replace("[userId]", userId);
+      getData(constants.JWTKEY).then((jwt) =>
+      fetch(url, {
+        //calling API
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + jwt, //Passing this will authorize the user
+        },
+      })
+        .then((response) => response.json())
+        .then((responseData) => {
+          console.log("Completed API call");
+    
+  }
+        )
+      )
+    }
+    componentDidMount() //after Ui has been uploaded 
+     {
+        getData(constants.GETUSERSETTINGS_DEV_URL).then(( enable_mood) => {
+            // Read back the user details from storage and convert to object
+            this.state.userDetails = JSON.parse(enable_mood);
+            this.setState({
+                userDetails: JSON.parse(enable_mood),
+            });
+            this.getUserSettings();
+        });
+    }
     saveMoodDetails() {
     
             // Add the saved mood level
@@ -105,23 +137,57 @@ export default class MoodCard extends React.Component {
             });
             this.getMoodDescriptions();
             
-        });
+        })
+        .then((data) => {
+            getData(constants.USERSETTINGS).then((data) => {
+                // Read back the user settings from storage and convert to object
+                console.log ("****USER SETTINGS in mood card****" ,data);
+                this.setState({
+                  userSettings: JSON.parse(data),
+                });
+            });
+           });
     }
 
-
+    getUserSettings ()
+    { 
+      let userId = this.state.userDetails.user_id;
+      let url = constants.GETUSERSETTINGS_DEV_URL.replace("[userId]", userId);
+      getData(constants.JWTKEY).then((jwt) =>
+      fetch(url, {
+        //calling API
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + jwt, //Passing this will authorize the user
+        },
+      })
+        .then((response) => response.json())
+        .then((responseData) => {
+          console.log("Completed API call");
+    
+  }
+        )
+      )
+    }
 
     render() {
         let moodLevel =  0;
         let moodDescriptions = this.state.moodDescriptions || [] ; // get all the possible value from the list item , if not then empty array .
-    
+        let isMoodEnabled = (this.state.userSettings && this.state.userSettings.enable_mood) || false;
         return (
             <Layout style={TrackingStyles.container}>
+              {isMoodEnabled ? (
+                    <>
                 <TouchableWithoutFeedback onPress={() => { this.setMoodVisible(true); }}>
                     <Image
                         style={TrackingStyles.moodButton}
                         source={require('../../../assets/mood.png')}
                     />
                 </TouchableWithoutFeedback>
+                </>
+                )
+                : (<></>)
+                }
 
                 <Modal style={{
                     shadowColor: '#c8c8c8',
@@ -175,7 +241,7 @@ export default class MoodCard extends React.Component {
                             onPress={() => {
                                 this.setMoodVisible(!this.state.moodVisible);
                                 this.saveMoodDetails();    
-                            }} > Save!!
+                            }} > Save!
                             </Button>
                     </Card>
                 </Modal>
