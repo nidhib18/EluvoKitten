@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Dimensions,
   ScrollView,
+  Button, 
   TextInput,
   Keyboard,
   Switch,
@@ -20,7 +21,7 @@ import Constants from 'expo-constants';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import {v4 as uuid} from "uuid";
 import { Context } from './Context';
-
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const { width: vw } = Dimensions.get('window');
 // moment().format('YYYY/MM/DD')
@@ -328,6 +329,8 @@ export default class CreateTask extends Component {
     return (
 
       
+
+      
       <Context.Consumer>
         {value => (
           <>
@@ -344,25 +347,28 @@ export default class CreateTask extends Component {
                   height: visibleHeight,
                 }}
               >
-                <ScrollView
-                  contentContainerStyle={{
-                    paddingBottom: 100,
-                  }}
-                >
-                  <View style={styles.backButton}>
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate('Home')}
-                      style={{ marginRight: vw / 2 - 120, marginLeft: 20 }}
-                    >
-                      <Image
-                        style={{ height: 25, width: 40 }}
-                        source={require('../../assets/back.png')}
-                        resizeMode="contain"
-                      />
-                    </TouchableOpacity>
 
-                    <Text style={styles.newTask}>New Task</Text>
-                  </View>
+                <Button
+        
+        
+        title=  "Back"
+        style={{
+          left: Responsive.width(150),
+          top: Responsive.width(-5),
+          height: Responsive.height(40),
+          width: Responsive.width(140),
+        }}
+        appearance="outline"
+        onPress={() => this.props.navigation.navigate('Calendar')}
+
+        
+      >
+    
+      </Button>
+              
+                  
+    
+      
                   <View style={styles.calenderContainer}>
                     <CalendarList
                       style={{
@@ -410,7 +416,7 @@ export default class CreateTask extends Component {
                       style={styles.title}
                       onChangeText={text => this.setState({ taskText: text })}
                       value={taskText}
-                      placeholder="What do you need to do?"
+                      placeholder="Set Reminder"
                       
                     />
                     <Text
@@ -453,7 +459,7 @@ export default class CreateTask extends Component {
                           this.setState({ notesText: text })
                         }
                         value={notesText}
-                        placeholder="Enter notes about the task."
+                        placeholder="Enter notes about the task"
                       />
                     </View>
                     <View style={styles.seperator} />
@@ -465,7 +471,7 @@ export default class CreateTask extends Component {
                           fontWeight: '600',
                         }}
                       >
-                        Time
+                        Set Time
                       </Text>
                       <TouchableOpacity
                         onPress={() => this._showDateTimePicker()}
@@ -503,9 +509,16 @@ export default class CreateTask extends Component {
                             marginTop: 3,
                           }}
                         >
-                          <Text style={{ fontSize: 19 }}>
-                            {moment(alarmTime).format('h:mm A')}
-                          </Text>
+                          <Text
+                      style={{
+                        fontSize: 14,
+                        color: '#BDC6D8',
+                        marginVertical: -3,
+                        
+                      }}
+                    >
+                      Set an alarm
+                    </Text>
                         </View>
                       </View>
                       <Switch
@@ -542,7 +555,9 @@ export default class CreateTask extends Component {
                       ADD YOUR TASK
                     </Text>
                   </TouchableOpacity>
-                </ScrollView>
+
+                  
+                
               </View>
             </View>
           </>
