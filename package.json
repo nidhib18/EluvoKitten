@@ -57,10 +57,7 @@
     "react-native-tag-selector": "0.0.3",
     "react-native-web": "~0.11.7",
     "react-navigation": "^4.4.0",
-    "react-navigation-stack": "^2.8.2",
-    "react-navigation-tabs": "^2.9.0",
     "react-time-picker": "^4.0.1",
-    "top-bar-nav": "^1.2.2",
     "uuid": "^8.3.0",
     "victory-native": "^35.0.1"
   },
