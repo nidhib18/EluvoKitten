@@ -8,7 +8,7 @@ const { width, height } = Dimensions.get("window");
 //import { StyleSheet, View } from "react-native";
 import { VictoryBar, VictoryChart,VictoryLabel, VictoryTheme,VictoryGroup} from "victory-native";
 import { color } from "react-native-reanimated";
-import TopBarNav from 'top-bar-nav';
+// import TopBarNav from 'top-bar-nav';
 // import { mapMoodDataToChartData,mapPainDataToChartData,mapBloodDataToChartData} from "../helpers/ChartHelpers";
 import { mapMoodToChartData,mapPainToChartData,mapBloodToChartData} from "../helpers/MonthHelpers";
 import moment from "moment";
@@ -327,7 +327,7 @@ export default class Monthly extends React.Component
             
              <Toggle
               style ={{top :-170, right: -90}}
-              status='danger'
+              status='Warning'
               
               onChange={this.onCheckedPainChange.bind(this)}
               checked={isPainChecked}
@@ -340,7 +340,7 @@ export default class Monthly extends React.Component
     //           style={{
     // top: hp("400%")}} 
               style ={{top :-130, right: -90}}
-              status='info'
+              status='Warning'
               checked={isMoodChecked}
               onChange={this.onCheckedMoodChange.bind(this)}
               

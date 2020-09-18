@@ -7,6 +7,7 @@ export const constants = {
   USERDETAILS: "@userdetails",
   CURRENTDATE: "currentDate",
   USERSETTINGS: "usersettings",
+  NO_OF_YEARS: 5 ,
 
   /* API URls */
     USERDETAILS_DEV_URL:
@@ -92,7 +93,9 @@ export const constants = {
     "https://1kwl2gipc0.execute-api.ap-southeast-2.amazonaws.com/DEV/monthly?userId=[userId]",
 
     GETYEARLYCHARTS_DEV_URL:
-    "https://ci7tfssnmk.execute-api.ap-southeast-2.amazonaws.com/DEV/yearly?userId=[userId]"
+    "https://ci7tfssnmk.execute-api.ap-southeast-2.amazonaws.com/DEV/yearly?userId=[userId]&no_of_years=[NO_OF_YEARS]",
+
+    NO_OF_YEARS: 5 
 
     
 

@@ -436,7 +436,7 @@ export default class CreateTask extends Component {
                       </View>
                       <View style={styles.meetfriend}>
                         <Text style={{ textAlign: 'center', fontSize: 14 }}>
-                          Meet Friend
+                          Social
                         </Text>
                       </View>
                     </View>
@@ -495,7 +495,7 @@ export default class CreateTask extends Component {
                             fontWeight: '600',
                           }}
                         >
-                          Alarm
+                          Add to your calendar
                         </Text>
                         <View
                           style={{
@@ -525,6 +525,7 @@ export default class CreateTask extends Component {
                     ]}
                     onPress={async () => {
                       if (isAlarmSet) {
+                        alert("Added successfully");
                         await this.synchronizeCalendar(value);
                       }
                       if (!isAlarmSet) {

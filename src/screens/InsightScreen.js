@@ -8,7 +8,7 @@ const { width, height } = Dimensions.get("window");
 //import { StyleSheet, View } from "react-native";
 import { VictoryBar, VictoryChart, VictoryTheme,VictoryGroup,VictoryAxis} from "victory-native";
 import { color } from "react-native-reanimated";
-import TopBarNav from 'top-bar-nav';
+// import TopBarNav from 'top-bar-nav';
 import { mapMoodDataToChartData,mapPainDataToChartData,mapBloodDataToChartData} from "../helpers/ChartHelpers";
 import moment from "moment";
 import { constants } from "../resources/Constants";
@@ -57,24 +57,7 @@ const colors =
 
 //TOP NAVIGATION BAR
 
-const Scene = ({ index }) => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Button style = {{top:-40}}></Button>  
-      <Text style={{ fontSize: 20 }}>{index}</Text>
-  </View>
-);
 
-const SceneTwo = ({ index }) => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={{ fontSize: 20 }}>{index}</Text>
-  </View>
-);
-const ROUTES = {
-  Scene,
-  SceneTwo
-  
-  // ideally you would have a ROUTES object with multiple React component scenes
-};
 
 // There are three types of labels (image, text, and element)
 const ROUTESTACK = [
@@ -102,20 +85,7 @@ export default class InsightScreen extends React.Component
       currentDate: moment().format("YYYY-MM-DD")
     };
   }
-  // painData = () =>
-  // {
-  //   this.setState(painData=[{ x: 1, y: 1 }, { x: 2, y: 2}, { x: 3, y: 7 }]);
-  // }
-
-  // moodData = () =>
-  // {
-  //   this.setState(moodData=[{ x: 1, y: 2 }, { x: 2, y: 3}, { x: 3, y: 8 }]);
-  // }
-
-  // bloodData = () =>
-  // {
-  //   this.setState(bloodData=[{ x: 1, y: 3 }, { x: 2, y: 4 }, { x: 3, y: 9 }]);
-  // }
+  
   onCheckedPainChange = () =>
    {
         this.setState({ painChecked: !this.state.painChecked });
@@ -204,18 +174,7 @@ export default class InsightScreen extends React.Component
     
   return (
     <Layout style={styles.container}>
-    {/* <TopNavigation position="absolute"
-        top={0}
-        style={{ height:hp('20%'), width: width }} /> */}
-        {/* <Button
-        style={{ left: wp('40%'), top: wp('5.5%'), height:hp('5%') }}
-        
-        appearance="outline"
-        onPress={() => navigation.navigate("Home")}
-      >
-        Done
-      </Button> */}
-      {/* <Divider /> */}
+    
       <TopNavigation position="absolute"
         top={0}
         style={{ height:hp('20%'), width: width}} /> 
@@ -268,18 +227,7 @@ export default class InsightScreen extends React.Component
   
     fontSize: Responsive.font(25)}}>Insights</Text>
       
-        {/* <Button
-          style={{
-            right: Responsive.width(80),
-            top: Responsive.width(-45),
-            height: Responsive.height(40),
-            width: Responsive.width(140),
-          }}
-          //appearance="outline"
-          onPress={() => this.props.navigation.navigate("Home")}
-        >
-         
-        </Button> */}
+        
         <Divider />
      
           <View style>
@@ -380,7 +328,7 @@ export default class InsightScreen extends React.Component
             
              <Toggle
               style ={{top :-170, right: -90}}
-              status='danger'
+              status='Warning'
               
               onChange={this.onCheckedPainChange.bind(this)}
               checked={isPainChecked}
@@ -393,7 +341,7 @@ export default class InsightScreen extends React.Component
     //           style={{
     // top: hp("400%")}} 
               style ={{top :-130, right: -90}}
-              status='info'
+              status='Warning'
               checked={isMoodChecked}
               onChange={this.onCheckedMoodChange.bind(this)}
               
