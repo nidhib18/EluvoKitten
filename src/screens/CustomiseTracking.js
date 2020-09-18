@@ -332,7 +332,9 @@ render()
                             onPress={() => {
                                 //this.getUserSettings();
                                 this.updateUserSettings(); 
+                                
                                 this.props.navigation.navigate('TrackCust');
+                                
                             }}
                            
                         > Save!
