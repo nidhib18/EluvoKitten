@@ -34,6 +34,7 @@ export default class ExerciseCard extends React.Component {
             selectedExerciseType: [],
             exerciseTypes: [], // moodDescriptions:[],
             userDetails: {},
+            userSettings:{},
             exerciseDetails: initExerciseDetails(0, moment().format('YYYY-MM-DD')),
            currentDate: this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD')     
         };
@@ -111,21 +112,56 @@ export default class ExerciseCard extends React.Component {
             });
             this.getExerciseTypes();
 
-        });
+        })
+        .then((data) => {
+            getData(constants.USERSETTINGS).then((data) => {
+                // Read back the user settings from storage and convert to object
+                console.log ("****USER SETTINGS in exercise card****" ,data);
+                this.setState({
+                  userSettings: JSON.parse(data),
+                });
+            });
+           });
     }
-
+    getUserSettings ()
+    { 
+      let userId = this.state.userDetails.user_id;
+      let url = constants.GETUSERSETTINGS_DEV_URL.replace("[userId]", userId);
+      getData(constants.JWTKEY).then((jwt) =>
+      fetch(url, {
+        //calling API
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + jwt, //Passing this will authorize the user
+        },
+      })
+        .then((response) => response.json())
+        .then((responseData) => {
+          console.log("Completed API call");
+    
+  }
+        )
+      )
+    }
     render() {
         let exerciseLevel =  0;
         let exerciseTypes = this.state.exerciseTypes || []; // get all the possible value from the list item , if not then empty array 
         const { selectedHours, selectedMinutes } = this.state;
+        let isExerciseEnabled = (this.state.userSettings && this.state.userSettings.enable_exercise) || false;
         return (
             <Layout style={TrackingStyles.container}>
+               {isExerciseEnabled ? (
+                    <>
                 <TouchableWithoutFeedback onPress={() => { this.setExerciseVisible(true); }}>
                     <Image
                         style={TrackingStyles.exerciseButton}
                         source={require('../../../assets/exercise.png')}
                     />
                 </TouchableWithoutFeedback>
+                </>
+                )
+                : (<></>)
+                }
                 <Modal style={{
                     shadowColor: '#c8c8c8',
                     shadowOffset: { width: 0, height: 2 },

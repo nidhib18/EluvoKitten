@@ -10,6 +10,7 @@ import { constants } from "../../resources/Constants";
 import { initPainDetails } from "../../models/PainDetails";
 import { utcToLocal, localToUtcDate, localToUtcDateTime } from "../../helpers/DateHelpers";
 import { mapListItemsToTags } from "../../helpers/TagHelpers"
+import {saveUserSettings} from "../../helpers/SettingHelpers";
 import Responsive from 'react-native-lightweight-responsive';
 //const { width } = Dimensions.get('window');
 
@@ -26,9 +27,10 @@ export default class PainCard extends React.Component {
         this.state = {
             selectedTags: [], //user selected pain locations
             painValue: 0,
+            userSettings: {},
             selectedPainTypes: [],  //user selected pain type value 
             minValue: 0,
-            maxValue: 10,
+            maxValue: 5,
             userDetails: {},
             painDetails: initPainDetails(0, moment().format('YYYY-MM-DD')),
             painTypes: [],  //all possible pain types from list item
@@ -135,18 +137,61 @@ export default class PainCard extends React.Component {
             );
         
     }
+
+    
     componentDidMount() //after Ui has been uploaded 
-     {
-        getData(constants.USERDETAILS).then((data) => {
-            // Read back the user details from storage and convert to object
-            this.state.userDetails = JSON.parse(data);
+    {
+       getData(constants.USERDETAILS).then((data) => {
+           // Read back the user details from storage and convert to object
+           this.state.userDetails = JSON.parse(data);
+           this.setState({
+               userDetails: JSON.parse(data),
+           });
+           this.getPainTypes();
+           this.getPainLocations();
+       })
+       .then((data) => {
+        getData(constants.USERSETTINGS).then((data) => {
+            // Read back the user settings from storage and convert to object
+            console.log ("****USER SETTINGS in pain card****" ,data);
             this.setState({
-                userDetails: JSON.parse(data),
+              userSettings: JSON.parse(data),
             });
-            this.getPainTypes();
-            this.getPainLocations();
         });
+       });
+   }
+//    ****************ADDED HERE**************
+    getUserSettings ()
+    { 
+      let userId = this.state.userDetails.user_id;
+      let url = constants.GETUSERSETTINGS_DEV_URL.replace("[userId]", userId);
+      getData(constants.JWTKEY).then((jwt) =>
+      fetch(url, {
+        //calling API
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + jwt, //Passing this will authorize the user
+        },
+      })
+        .then((response) => response.json())
+        .then((responseData) => {
+          console.log("Completed API call");
+    
+  }
+        )
+      )
     }
+    // componentWillMount() //after Ui has been uploaded 
+    //  {
+    //     getData(constants.GETUSERSETTINGS_DEV_URL).then((enable_pain) => {
+    //         // Read back the user details from storage and convert to object
+    //         this.state.userDetails = JSON.parse(enable_pain);
+    //         this.setState({
+    //             userDetails: JSON.parse(enable_pain),
+    //         });
+    //         this.getUserSettings();
+    //     });
+    // }
     render() {
        
         let painLevel = 0
@@ -154,18 +199,27 @@ export default class PainCard extends React.Component {
         let painLocations = this.state.painLocations || [];
         let painTypes = this.state.painTypes || [] ; // get all the possible value from the list item , if not then empty array .
     
+        let isPainEnabled = (this.state.userSettings && this.state.userSettings.enable_pain) || false;
+        console.log("In render get user settings - Enable Pain", this.state.userSettings.enable_pain);
+        console.log("Is Pain Enabled", isPainEnabled);
         return (
 
-            <Layout style={TrackingStyles.container}
-            >
-                <TouchableWithoutFeedback onPress={() => {
-                    this.setPainVisible(true);
-                }}>
-                    <Image
-                        style={TrackingStyles.painButton}
-                        source={require('../../../assets/pain.png')}
-                    />
-                </TouchableWithoutFeedback>
+            <Layout style={TrackingStyles.container}>
+                {isPainEnabled ? (
+                    <>
+                    <TouchableWithoutFeedback onPress={() => {
+                        this.setPainVisible(true);
+                    }}>
+                        <Image
+                            style={TrackingStyles.painButton}
+                            source={require('../../../assets/pain.png')}
+                        />
+                    </TouchableWithoutFeedback>
+                    </>
+                )
+                : (<></>)
+                }
+
 
                 <Modal style={{
                     shadowColor: '#c8c8c8',
