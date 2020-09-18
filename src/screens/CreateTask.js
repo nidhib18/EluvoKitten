@@ -26,6 +26,10 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 const { width: vw } = Dimensions.get('window');
 // moment().format('YYYY/MM/DD')
 
+const Separator = () => (
+  <View style={styles.separator} />
+);
+
 const styles = StyleSheet.create({
   createTaskButton: {
     width: 252,
@@ -121,7 +125,8 @@ const styles = StyleSheet.create({
 
   backButton: {
     flexDirection: 'row',
-    marginTop: 60,
+    marginTop: 40,
+    marginLeft: 20,
     width: '100%',
     alignItems: 'center',
     
@@ -347,24 +352,19 @@ export default class CreateTask extends Component {
                   height: visibleHeight,
                 }}
               >
-
+<View style={styles.backButton}>
                 <Button
-        
-        
         title=  "Back"
-        style={{
-          left: Responsive.width(150),
-          top: Responsive.width(-5),
-          height: Responsive.height(40),
-          width: Responsive.width(140),
-        }}
+        color = "#fff"
         appearance="outline"
         onPress={() => this.props.navigation.navigate('Calendar')}
 
         
-      >
-    
-      </Button>
+      />
+
+</View>
+        
+<Separator />
               
                   
     
