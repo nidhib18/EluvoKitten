@@ -110,111 +110,111 @@
 //   }
 // }
 
-import Amplify from 'aws-amplify'
-import config from './aws-exports'
+// import Amplify from 'aws-amplify'
+// import config from './aws-exports'
 
-Amplify.configure(config)
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import React, {Component} from 'react';
-import * as eva from '@eva-design/eva';
-import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
-import { EvaIconsPack } from '@ui-kitten/eva-icons';
-import { default as theme } from './theme.json'
-import { AppNavigator } from './src/screens/NavigationComponent';
-import {Alert} from 'react-native';
-import RNRestart from 'react-native-restart';
-import {setJSExceptionHandler} from 'react-native-exception-handler';
-console.disableYellowBox = true;
-console.reportErrorsAsExceptions = false;
-
-
-
-const errorHandler = (err, isFatal) => {
-  const allowedInDevMode = true; //enable DEV mode true in index.js as well
-  if (isFatal && allowedInDevMode ) {
-    Alert.alert(
-        'Unexpected error occurred',
-        `
-        We will need to restart the app.
-        `,
-      [{
-        text: 'Restart',
-        onPress: () => {
-          RNRestart.Restart();
-        }
-      }]
-    );
-  } else {
-    console.log(err); // So that we can see it in the logs
-  }
-};
-
-setJSExceptionHandler(errorHandler);
+// Amplify.configure(config)
+// import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+// import React, {Component} from 'react';
+// import * as eva from '@eva-design/eva';
+// import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
+// import { EvaIconsPack } from '@ui-kitten/eva-icons';
+// import { default as theme } from './theme.json'
+// import { AppNavigator } from './src/screens/NavigationComponent';
+// import {Alert} from 'react-native';
+// import RNRestart from 'react-native-restart';
+// import {setJSExceptionHandler} from 'react-native-exception-handler';
+// console.disableYellowBox = true;
+// console.reportErrorsAsExceptions = false;
 
 
-export default () => (
-  
-  <>
-    <IconRegistry icons={EvaIconsPack}/>
-   {/* <SafeAreaView style={{ flex: 1 , backgroundColor:'#F09874'}}>  */}
-   <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
 
-    <AppNavigator />
-
-    </ApplicationProvider>
- {/* </SafeAreaView> */}
-
-  </>
-);
-
-
-// import React, { Component } from 'react';
-// import { Platform } from 'react-native';
-//  import { createAppContainer } from 'react-navigation';
-// import { createStackNavigator} from 'react-navigation-stack'
-// import * as Permissions from 'expo-permissions';
-// import HomeTwo from './src/screens/HomeTwo';
-
-// import CreateTask from './src/screens/CreateTask';
-// import TodoStore from './src/screens/TodoStore';
-
-// const AppNavigator = createStackNavigator(
-//   {
-   
-//     CreateTask, HomeTwo,
-    
-    
-//   },
-//   {
-//     headerMode: 'none',
+// const errorHandler = (err, isFatal) => {
+//   const allowedInDevMode = true; //enable DEV mode true in index.js as well
+//   if (isFatal && allowedInDevMode ) {
+//     Alert.alert(
+//         'Unexpected error occurred',
+//         `
+//         We will need to restart the app.
+//         `,
+//       [{
+//         text: 'Restart',
+//         onPress: () => {
+//           RNRestart.Restart();
+//         }
+//       }]
+//     );
+//   } else {
+//     console.log(err); // So that we can see it in the logs
 //   }
+// };
+
+// setJSExceptionHandler(errorHandler);
+
+
+// export default () => (
+  
+//   <>
+//     <IconRegistry icons={EvaIconsPack}/>
+//    {/* <SafeAreaView style={{ flex: 1 , backgroundColor:'#F09874'}}>  */}
+//    <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
+
+//     <AppNavigator />
+
+//     </ApplicationProvider>
+//  {/* </SafeAreaView> */}
+
+//   </>
 // );
 
-// const AppContainer = createAppContainer(AppNavigator);
 
-// export default class App extends Component {
-//   async componentWillMount() {
-//     await this._askForCalendarPermissions();
-//     await this._askForReminderPermissions();
-//   }
+import React, { Component } from 'react';
+import { Platform } from 'react-native';
+ import { createAppContainer } from 'react-navigation';
+import { createStackNavigator} from 'react-navigation-stack'
+import * as Permissions from 'expo-permissions';
+import HomeTwo from './src/screens/HomeTwo';
 
-//   _askForCalendarPermissions = async () => {
-//     await Permissions.askAsync(Permissions.CALENDAR);
-//   };
+import CreateTask from './src/screens/CreateTask';
+import TodoStore from './src/screens/TodoStore';
 
-//   _askForReminderPermissions = async () => {
-//     if (Platform.OS === 'android') {
-//       return true;
-//     }
+const AppNavigator = createStackNavigator(
+  {
+   
+    CreateTask, HomeTwo,
+    
+    
+  },
+  {
+    headerMode: 'none',
+  }
+);
 
-//     await Permissions.askAsync(Permissions.REMINDERS);
-//   };
+const AppContainer = createAppContainer(AppNavigator);
 
-//   render() {
-//     return (
-//       <TodoStore>
-//         <AppContainer />
-//       </TodoStore>
-//     );
-//   }
-// }
+export default class App extends Component {
+  async componentWillMount() {
+    await this._askForCalendarPermissions();
+    await this._askForReminderPermissions();
+  }
+
+  _askForCalendarPermissions = async () => {
+    await Permissions.askAsync(Permissions.CALENDAR);
+  };
+
+  _askForReminderPermissions = async () => {
+    if (Platform.OS === 'android') {
+      return true;
+    }
+
+    await Permissions.askAsync(Permissions.REMINDERS);
+  };
+
+  render() {
+    return (
+      <TodoStore>
+        <AppContainer />
+      </TodoStore>
+    );
+  }
+}

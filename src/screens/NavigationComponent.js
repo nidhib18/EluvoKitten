@@ -1,3 +1,4 @@
+  
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -10,7 +11,7 @@ import Yearly from './Yearly';
 import Monthly from './Monthly';
 import SettingScreen from './SettingScreen';
 import CustomiseTracking from './CustomiseTracking.js';
-
+import Learn from './Learn';
 import ResetPassword from './ResetPassword.js'
 import Instruction from './Instruction';
 import CreateTask from './CreateTask';
@@ -33,7 +34,7 @@ function MainStackScreen() {
       <MainStack.Screen name='Home' component={Home} /> 
       <MainStack.Screen name='Monthly' component={Monthly} /> 
       <MainStack.Screen name='Yearly' component={Yearly} /> 
-      {/* <MainStack.Screen name='Error' component={ErrorBoundary} />  */}
+      <MainStack.Screen name='Learn' component={Learn} /> 
       <MainStack.Screen name='TrackCust' component={CustomiseTracking} /> 
       <MainStack.Screen name='Instruction' component={Instruction} />
       <MainStack.Screen name='Calendar' component={CalendarScreen} />
@@ -60,6 +61,7 @@ function RootStackScreen() {
         options={{ headerShown: false }}
       />
       <RootStack.Screen name="Insights" component={InsightScreen} />
+      {/* <RootStack.Screen name = "Learn" component ={Learn} /> */}
       <RootStack.Screen
         name="Set"
         component={MainStackScreen}

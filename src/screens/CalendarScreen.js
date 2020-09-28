@@ -24,15 +24,15 @@ export const CalendarScreen = () => {
   
   
   async function  componentWillMount() {
-    await this._askForCalendarPermissions();
-    await this._askForReminderPermissions();
+    await this.askForCalendarPermissions();
+    await this.askForReminderPermissions();
   }
 
-  _askForCalendarPermissions = async () => {
+  askForCalendarPermissions = async () => {
     await Permissions.askAsync(Permissions.CALENDAR);
   };
 
-  _askForReminderPermissions = async () => {
+  askForReminderPermissions = async () => {
     if (Platform.OS === 'ios') {
       return true;
     }

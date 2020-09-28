@@ -811,7 +811,7 @@ export default class Home extends React.Component {
               source={require("../../assets/insights.png")}
             />
           </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback>
+          <TouchableWithoutFeedback  onPress={() => this.props.navigation.navigate("Learn")}>
             <Image
               style={HomeStyles.learn}
               source={require("../../assets/learn.png")}
