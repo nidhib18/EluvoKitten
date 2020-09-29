@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   AsyncStorage,
   ScrollView,
-  Text,
+ 
   Dimensions,
   TextInput,
   Switch,
@@ -17,12 +17,22 @@ import moment from 'moment';
 import * as Calendar from 'expo-calendar';
 import * as Localization from 'expo-localization';
 import Constants from 'expo-constants';
-
+import {
+    Button,
+    Divider,
+    Layout,
+    TopNavigation,
+    Card,
+    Text
+  } from "@ui-kitten/components";
 import CalendarStrip from 'react-native-calendar-strip';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import { Context } from './Context';
 import { Task } from './Task';
-
+import {
+    widthPercentageToDP as wp,
+    heightPercentageToDP as hp,
+  } from "react-native-responsive-screen";
 const styles = StyleSheet.create({
   taskListContent: {
     height: 100,
@@ -143,6 +153,86 @@ const styles = StyleSheet.create({
     elevation: 5,
     padding: 22,
   },
+  container: {
+    backgroundColor: "#f09874",
+    alignItems: "center",
+    backgroundColor: "#fbfbfb",
+    height: hp("14"),
+  },
+
+  cardTrackingContainer: {
+    flex: 1,
+    position: "absolute",
+    width: Responsive.width(325),
+    borderRadius: 20,
+    flexDirection: "row",
+    height: Responsive.height(280),
+    //alignSelf: "flex-start",
+    bottom: Responsive.height(1040),
+    alignItems: "center",
+    paddingTop: Responsive.height(25),
+    backgroundColor: "#ffff",
+    borderBottomColor: "#ffffff",
+    borderTopColor: "#ffffff",
+    borderLeftColor: "#ffffff",
+    borderRightColor: "#ffffff",
+    backgroundColor: "#ffffff",
+    shadowColor: "#c8c8c8",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 30,
+    top:-1570
+  },
+
+  // cardNotificationContainer: {
+  //   flex: 1,
+  //   position: "absolute",
+  //   width: wp("90%"),
+  //   borderRadius: 20,
+  //   height: hp("28%"),
+  //   top: hp("76%"),
+  //   alignItems: "center",
+  //   backgroundColor: "#ffff",
+  // },
+
+  cardDetailsContainer: {
+    flex: 1,
+    paddingLeft: Responsive.width(10),
+    position: "absolute",
+    width: Responsive.width(325),
+    borderRadius: 20,
+    top: Responsive.height(420),
+    width: Responsive.width(325),
+    height: Responsive.height(200),
+    bottom: Responsive.height(2000),
+    //alignItems: "center",
+    backgroundColor: "#ffff",
+    borderBottomColor: "#ffffff",
+    borderTopColor: "#ffffff",
+    borderLeftColor: "#ffffff",
+    borderRightColor: "#ffffff",
+    backgroundColor: "#ffffff",
+  },
+  cardAppointmentsContainer: {
+    flex: 1,
+    top: Responsive.height(180),
+    paddingLeft: Responsive.width(10),
+    position: "absolute",
+    width: Responsive.width(325),
+    borderRadius: 20,
+    width: Responsive.width(325),
+    height: Responsive.height(200),
+    bottom: Responsive.height(2000),
+    //alignItems: "center",
+    backgroundColor: "#ffff",
+    borderBottomColor: "#ffffff",
+    borderTopColor: "#ffffff",
+    borderLeftColor: "#ffffff",
+    borderRightColor: "#ffffff",
+    backgroundColor: "#ffffff",
+  },
+
+
 });
 
 export default class HomeTwo extends Component {
@@ -405,6 +495,371 @@ export default class HomeTwo extends Component {
     } = this;
 
     return (
+        <Layout style={styles.container}>
+        <TopNavigation
+          position="absolute"
+          top={0}
+          style={{ height: Responsive.height(90), width: width }}
+        />
+        <Text
+          style={{
+            top: Responsive.height(35),
+            left: Responsive.width(-100),
+            fontSize: Responsive.font(30),
+            fontWeight: "700",
+          }}
+        >
+          Settings
+        </Text>
+        <Button
+          style={{
+            left: Responsive.width(150),
+            top: Responsive.width(-5),
+            height: Responsive.height(40),
+            width: Responsive.width(140),
+          }}
+          appearance="outline"
+          onPress={() => this.props.navigation.navigate("Home")}
+        >
+          Done
+        </Button>
+        <Divider />
+        <View
+          style={{
+            width: width,
+            height: Responsive.height(673),
+            backgroundColor: "#f2f2f2",
+            top: Responsive.height(-3),
+            alignContent: "center",
+            shadowColor: "#c8c8c8",
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.8,
+            shadowRadius: 30,
+          }}
+        >
+          <ScrollView
+          
+            contentContainerStyle={{
+              justifyContent: "center",
+              flex: 1,
+              flexGrow: 1,
+              flexDirection: "column",
+              marginTop: Responsive.height(100),
+              marginBottom: Responsive.height(-1900),
+              justifyContent: "center",
+              bottom: Responsive.height(200),
+              top: Responsive.height(55),
+              left: wp("4.5"),
+              shadowColor: "#c8c8c8",
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.8,
+              shadowRadius: 30,
+              
+            }}
+          >
+            <View style>
+              <Card disabled={true} style={styles.cardTrackingContainer}>
+                <Text
+                  style={{
+                    paddingBottom: Responsive.height(50),
+                    top: Responsive.height(-15),
+                    color: "#000",
+                    left: Responsive.width(1),
+                    fontSize: Responsive.font(24),
+                    fontWeight: "600",
+                    height: Responsive.height(30),
+                    marginBottom: Responsive.height(-10),
+                  }}
+                >
+                  Tracking
+                </Text>
+                <TouchableOpacity
+                  onPress={() => this.props.navigation.navigate("TrackCust")}
+                >
+                  <Text
+                    style={{
+                      left: wp("0%"),
+                      top: Responsive.height(-10),
+                      color: "#000",
+                      fontWeight: "500",
+                      fontSize: Responsive.font(16),
+                    }}
+                  >
+                    Customise trackers
+                  </Text>
+                  <Text
+                    style={{
+                      left: wp("0%"),
+                      top: Responsive.height(-5),
+                      color: "#8A8A8E",
+                      fontWeight: "500",
+                      fontSize: Responsive.font(16),
+                    }}
+                  >
+                    Edit which things you are tracking{" "}
+                  </Text>
+                  <Text
+                    style={{
+                      left: wp("0%"),
+                      top: Responsive.height(3),
+                      color: "#DFDFE0",
+                      fontWeight: "300",
+                      fontSize: Responsive.font(16),
+                    }}
+                  >
+                    ______________________________________
+                  </Text>
+                  <Image
+                    style={{
+                      left: Responsive.width(280),
+                      top: Responsive.height(-75),
+                      height: Responsive.height(21),
+                      width: Responsive.width(21),
+                      resizeMode: "contain",
+                    }}
+                    source={require("../../assets/goto.png")}
+                  ></Image>
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <Text
+                    style={{
+                      left: wp("0%"),
+                      top: Responsive.height(10),
+                      color: "#000",
+                      fontWeight: "500",
+                      fontSize: Responsive.font(16),
+                    }}
+                  >
+                    Cycle settings
+                  </Text>
+                  <Text
+                    style={{
+                      left: wp("0%"),
+                      top: Responsive.height(17),
+                      color: "#8A8A8E",
+                      fontWeight: "500",
+                      fontSize: Responsive.font(16),
+                    }}
+                  >
+                    Edit cycle Length and period reminders
+                  </Text>
+                  <Text
+                    style={{
+                      left: wp("0%"),
+                      top: Responsive.height(10),
+                      color: "#DFDFE0",
+                      fontWeight: "300",
+                      fontSize: Responsive.font(16),
+                    }}
+                  >
+                    ______________________________________
+                  </Text>
+                  <Image
+                    style={{
+                      left: Responsive.width(280),
+                      top: Responsive.height(-60),
+                      height: Responsive.height(21),
+                      width: Responsive.width(21),
+                      resizeMode: "contain",
+                    }}
+                    source={require("../../assets/goto.png")}
+                  ></Image>
+                </TouchableOpacity>
+              </Card>
+            </View>
+            {/* <Card style={styles.cardNotificationContainer}>
+              <Text style={styles.medicationText}>Tracking</Text>
+              <Text
+                style={{
+                  fontSize: wp("6%"),
+                  left: wp("-30%"),
+                  position: "absolute",
+                  top: hp("2%"),
+                  color: "#000",
+                  fontWeight: "bold",
+                }}
+              >
+                Notifications
+              </Text>
+            </Card> */}
+
+            <Card style={styles.cardDetailsContainer}>
+              <Text style={styles.medicationText}>Tracking</Text>
+              <View style={{ left: Responsive.width }}>
+                <Text
+                  style={{
+                    justifyContent: "flex-start",
+                    paddingBottom: Responsive.height(50),
+                    top: Responsive.height(-15),
+                    color: "#000",
+                    left: Responsive.width(-10),
+                    fontSize: Responsive.font(24),
+                    fontWeight: "600",
+                    height: Responsive.height(30),
+                    marginBottom: Responsive.height(-10),
+                  }}
+                >
+                  Personal Details
+                </Text>
+
+              </View>
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate("Reset")}
+              >
+                <Text
+                  style={{
+                    left: Responsive.width(-8),
+                    top: Responsive.height(-8),
+                    color: "#000",
+                    fontWeight: "500",
+                    fontSize: Responsive.font(16),
+                  }}
+                >
+                  Login
+                  </Text>
+                <Text
+                  style={{
+                    left: Responsive.width(-8),
+                    top: Responsive.height(-8),
+                    color: "#8A8A8E",
+                    fontWeight: "500",
+                    fontSize: Responsive.font(16),
+                  }}
+                >
+                  Change your password{" "}
+                </Text>
+                <Text
+                  style={{
+                    left: Responsive.width(-8),
+                    top: Responsive.height(-10),
+                    color: "#DFDFE0",
+                    fontWeight: "300",
+                    fontSize: Responsive.font(16)
+                  }}
+                >
+                  ______________________________________
+                  </Text>
+                <Image
+                  style={{
+                    left: Responsive.width(280),
+                    top: Responsive.height(-60),
+                    height: Responsive.height(17),
+                    width: Responsive.width(17),
+                    resizeMode: "contain",
+                    justifyContent: 'center'
+
+                  }}
+                  source={require("../../assets/goto.png")}
+                ></Image>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={this.handleSignOut}>
+                <Text
+                  style={{
+                    left: Responsive.width(-8),
+                    top: Responsive.height(-8),
+                    color: "#000",
+                    fontWeight: "500",
+                    fontSize: Responsive.font(16)
+                  }}
+                >
+                  Sign out{" "}
+                </Text>
+
+                <Text
+                  style={{
+                    left: Responsive.width(-8),
+                    top: Responsive.height(-17),
+                    color: "#DFDFE0",
+                    fontWeight: "300",
+                    fontSize: Responsive.font(16)
+                  }}
+                >
+                  ________________________________________
+                  </Text>
+
+              </TouchableOpacity>
+            </Card>
+            <Card style={styles.cardAppointmentsContainer}>
+              <Text style={{
+                paddingBottom: Responsive.height(50),
+                top: Responsive.height(5),
+                color: "#000",
+                left: Responsive.width(-10),
+                fontSize: Responsive.font(24),
+                fontWeight: "600",
+                marginBottom: Responsive.height(-10),
+              }}>Appointments</Text>
+              <TouchableOpacity
+               onPress={() =>
+                  navigation.navigate('AddApp', {
+                    updateCurrentTask: this._updateCurrentTask,
+                    currentDate,
+                    createNewCalendar: this._createNewCalendar,
+                  })
+                }
+              
+                >
+                <Text style={{
+                  paddingBottom: Responsive.height(50),
+                  top: Responsive.height(-20),
+                  color: "#000",
+                  left: Responsive.width(-10),
+                  fontSize: Responsive.font(16),
+                  fontWeight: "600",
+                  marginBottom: Responsive.height(-10),
+                }}>Add new appointment</Text>
+                <Image
+                  style={{
+                    left: Responsive.width(260),
+                    top: Responsive.height(-80),
+                    height: Responsive.height(17),
+                    width: Responsive.width(17),
+                    resizeMode: "contain",
+                    justifyContent: 'center'
+
+                  }}
+                  source={require("../../assets/goto.png")}
+                ></Image>
+              </TouchableOpacity>
+
+              <Text
+                style={{
+                  left: Responsive.width(-8),
+                  top: Responsive.height(-70),
+                  color: "#DFDFE0",
+                  fontWeight: "300",
+                  fontSize: Responsive.font(16)
+                }}
+              >
+                ________________________________________
+                  </Text>
+              <Text style={{
+                paddingBottom: Responsive.height(50),
+                top: Responsive.height(-50),
+                color: "#000",
+                left: Responsive.width(-10),
+                fontSize: Responsive.font(16),
+                fontWeight: "600",
+                marginBottom: Responsive.height(-10),
+              }}>Edit an existing appointment</Text>
+              <Image
+                style={{
+                  left: Responsive.width(260),
+                  top: Responsive.height(-100),
+                  height: Responsive.height(17),
+                  width: Responsive.width(17),
+                  resizeMode: "contain",
+                  justifyContent: 'center'
+
+                }}
+                source={require("../../assets/goto.png")}
+              ></Image>
+
+            </Card>
+            
+            
+          </ScrollView>
+          </View>
       <Context.Consumer>
         {value => (
           <>
@@ -416,7 +871,7 @@ export default class HomeTwo extends Component {
                   onCancel={this._hideDateTimePicker}
                   mode="time"
                 />
-                <View style={styles.taskContainer}>
+               
                   <TextInput
                     style={styles.title}
                     onChangeText={text => {
@@ -596,7 +1051,7 @@ export default class HomeTwo extends Component {
                       </Text>
                     </TouchableOpacity>
                   </View>
-                </View>
+               
               </Task>
             )}
             <View
@@ -655,9 +1110,9 @@ export default class HomeTwo extends Component {
                   });
                 }}
               /> */}
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={() =>
-                  navigation.navigate('CreateTask', {
+                  navigation.navigate('AddApp', {
                     updateCurrentTask: this._updateCurrentTask,
                     currentDate,
                     createNewCalendar: this._createNewCalendar,
@@ -670,9 +1125,10 @@ export default class HomeTwo extends Component {
                   style={{
                     height: 30,
                     width: 30,
+                    top: Responsive.height(620),
                   }}
                 />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
               <View
                 style={{
                   width: '100%',
@@ -681,7 +1137,7 @@ export default class HomeTwo extends Component {
               >
                 <ScrollView
                   contentContainerStyle={{
-                    paddingBottom: 20,
+                    paddingBottom: 40,
                   }}
                 >
                   {todoList.map(item => (
@@ -775,6 +1231,7 @@ export default class HomeTwo extends Component {
           </>
         )}
       </Context.Consumer>
+      </Layout>
     );
   }
 }

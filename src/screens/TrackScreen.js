@@ -13,7 +13,7 @@ import { TrackingStyles } from "./TrackingStyles";
 import { HomeStyles } from "./HomeStyles";
 
 import { Divider, Layout, TopNavigation, Button } from "@ui-kitten/components";
-import { ScrollView, Dimensions, Image, Text,SafeAreaView } from "react-native";
+import { ScrollView, Dimensions, Image, Text,SafeAreaView, StyleSheet } from "react-native";
 // import AppointmentCard from "./TrackingCards/AppointmentCard";
 
 
@@ -24,7 +24,7 @@ export const TrackScreen = ({ route,navigation }) => {
       console.log("Route params in Track", route.params)
   return (
     
-    <Layout style={TrackingStyles.container}>
+    <Layout style={styles.container}>
       <TopNavigation
         position="absolute"
        
@@ -102,3 +102,12 @@ export const TrackScreen = ({ route,navigation }) => {
     
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: "center",
+    alignItems: "center",
+    flex:1,
+    backgroundColor: "#fbfbfb",
+  }
+})

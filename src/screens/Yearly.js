@@ -253,7 +253,7 @@ export default class Yearly extends React.Component
     label="Symptom Level"
     style={{axisLabel: {padding: 35 } }} 
   />
-    <VictoryGroup  offset={20} padding={{left: 50}} colorScale={["tomato", "orange", "gold"]} 
+    <VictoryGroup  offset={20} padding={{left:100}} colorScale={["tomato", "orange", "gold"]} 
        
      >
      
@@ -266,7 +266,7 @@ export default class Yearly extends React.Component
               style={{ data: { fill: "#f08974", width: 25 } }}
               barWidth={15}
               cornerRadius={7}
-              domainPadding={{x: [7, -7]}}
+              domainPadding={{x: [0, 100]}}
               //alignment="start"
               //barRatio={0.8}
               data={this.state.painData}/>
@@ -278,10 +278,10 @@ export default class Yearly extends React.Component
       (
                     <>
         <VictoryBar
-              style={{ data: { fill: "gold", width: 25 } }}
+              style={{ data: { fill: "#f09", width: 25 } }}
               barWidth={15}
               cornerRadius={7}
-              domainPadding={{x: [25, -25]}}
+              domainPadding={{x: [0, 30]}}
               data={this.state.moodData}/>
           </>
       ): (<></>)
@@ -293,7 +293,7 @@ export default class Yearly extends React.Component
           style={{ data: { fill: "#FFBF81", width: 25 } }}
               barWidth={15}
               cornerRadius={7}
-              domainPadding={{x: [40, -40]}}
+              domainPadding={{x: [0, 50]}}
               data={this.state.bloodData}/>
           </>
       ): (<></>)

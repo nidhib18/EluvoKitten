@@ -143,7 +143,7 @@ export default class DigestionCard extends React.Component {
         let bowelSymptoms = this.state.bowelSymptoms || []; // get all the possible value from the list item , if not then empty array .
         let isDigestionEnabled = (this.state.userSettings && this.state.userSettings.enable_digestion) || false;
         return (
-            <Layout style={TrackingStyles.container}>
+            <Layout>
                {isDigestionEnabled ? (
                     <>
                 <TouchableWithoutFeedback onPress={() => { this.setDigestionVisible(true); }}>

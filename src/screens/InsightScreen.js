@@ -256,6 +256,7 @@ export default class InsightScreen extends React.Component
   <VictoryAxis
     dependentAxis
     label="Symptom Level"
+    domain={5,10}
     style={{axisLabel: {padding: 35 } }} 
   />
     <VictoryGroup  offset={20} padding={{left: 50}} colorScale={["tomato", "orange", "gold"]} 
@@ -268,10 +269,11 @@ export default class InsightScreen extends React.Component
                     <>
         <VictoryBar
              
-              style={{ data: { fill: "#f08974", width: 25 } }}
+              style={{ data: { fill: "#f08974", width: Responsive.width(25) } }}
               barWidth={15}
               cornerRadius={7}
               domainPadding={{x: [7, -7]}}
+              
               //alignment="start"
               //barRatio={0.8}
               data={this.state.painData}/>
@@ -328,7 +330,7 @@ export default class InsightScreen extends React.Component
             
              <Toggle
               style ={{top :-170, right: -90}}
-              status='Warning'
+              //status='Warning'
               
               onChange={this.onCheckedPainChange.bind(this)}
               checked={isPainChecked}
@@ -341,7 +343,7 @@ export default class InsightScreen extends React.Component
     //           style={{
     // top: hp("400%")}} 
               style ={{top :-130, right: -90}}
-              status='Warning'
+              //status='Warning'
               checked={isMoodChecked}
               onChange={this.onCheckedMoodChange.bind(this)}
               
@@ -358,7 +360,7 @@ export default class InsightScreen extends React.Component
             <Toggle
                style ={{top :-80, right: -90}}
               // style={styles.toggleBlood}
-              status='Warning'
+              //status='Warning'
               checked={isBloodChecked}
               //onChange={(value) => this.setState({bleedingChecked: value})}
               onChange={this.onCheckedBloodChange.bind(this)}

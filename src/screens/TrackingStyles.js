@@ -297,7 +297,7 @@ export const TrackingStyles= {
   container: {
     justifyContent: "center",
     alignItems: "center",
-   
+    flex:1,
     backgroundColor: "#fbfbfb",
   },
 

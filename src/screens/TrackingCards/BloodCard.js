@@ -255,15 +255,15 @@ render() {
     let periodProducts = this.state.periodProducts || []; // get all the possible value from the list item , if not then empty array .
     let isBleedingEnabled = (this.state.userSettings && this.state.userSettings.enable_bleeding) || false;
     return (
-        <Layout style={TrackingStyles.container}>
+        <Layout>
            {isBleedingEnabled ? (
                     <>
-            <TouchableOpacity onPress={() => { this.setBloodVisible(true); }}>
+            <TouchableWithoutFeedback onPress={() => { this.setBloodVisible(true); }}>
                 <Image
                     style={TrackingStyles.bloodButton}
                     source={require('../../../assets/blood.png')}
                 />
-            </TouchableOpacity>
+            </TouchableWithoutFeedback>
             </>
                 )
                 : (<></>)
