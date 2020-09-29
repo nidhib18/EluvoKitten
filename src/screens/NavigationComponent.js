@@ -9,15 +9,17 @@ import ForgotPassword from './ForgotPassword';
 import InsightScreen from './InsightScreen';
 import Yearly from './Yearly';
 import Monthly from './Monthly';
-import SettingScreen from './SettingScreen';
+// import SettingScreen from './SettingScreen';
 import CustomiseTracking from './CustomiseTracking.js';
 import Learn from './Learn';
 import ResetPassword from './ResetPassword.js'
 import Instruction from './Instruction';
-import CreateTask from './CreateTask';
+import HomeTwo from './HomeTwo';
+// import CreateTask from './CreateTask';
+import AddAppointment from './AddAppointment';
 import Home from './Home'
 import { TrackScreen } from './TrackScreen';
-import {CalendarScreen} from './CalendarScreen'; 
+// import {CalendarScreen} from './CalendarScreen'; 
 // import ErrorBoundary from './ErrorBoundary';
 
 const MainStack = createStackNavigator();
@@ -37,10 +39,10 @@ function MainStackScreen() {
       <MainStack.Screen name='Learn' component={Learn} /> 
       <MainStack.Screen name='TrackCust' component={CustomiseTracking} /> 
       <MainStack.Screen name='Instruction' component={Instruction} />
-      <MainStack.Screen name='Calendar' component={CalendarScreen} />
+      {/* <MainStack.Screen name='Calendar' component={CalendarScreen} /> */}
       <MainStack.Screen name='Reset' component={ResetPassword} /> 
-      <MainStack.Screen name='Setting' component={SettingScreen} />
-      {/* <MainStack.Screen name='Create Task' component={CreateTask} />  */}
+      {/* <MainStack.Screen name='Setting' component={SettingScreen} /> */}
+       <MainStack.Screen name='AddApp' component={AddAppointment} /> 
 
     </MainStack.Navigator>
   );
@@ -62,14 +64,19 @@ function RootStackScreen() {
       />
       <RootStack.Screen name="Insights" component={InsightScreen} />
       {/* <RootStack.Screen name = "Learn" component ={Learn} /> */}
-      <RootStack.Screen
+      {/* <RootStack.Screen
         name="Set"
         component={MainStackScreen}
         options={{ headerShown: false }}
       />
-      <RootStack.Screen name="Settings" component={SettingScreen} />
+      <RootStack.Screen name="Settings" component={SettingScreen} /> */}
       
-     
+      <RootStack.Screen
+        name="HmTwo"
+        component={MainStackScreen}
+        options={{ headerShown: false }}
+      />
+      <RootStack.Screen name="HTwo" component={HomeTwo} />
     </RootStack.Navigator>
   );
 }

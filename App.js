@@ -168,29 +168,102 @@
 // );
 
 
-import React, { Component } from 'react';
-import { Platform } from 'react-native';
- import { createAppContainer } from 'react-navigation';
-import { createStackNavigator} from 'react-navigation-stack'
-import * as Permissions from 'expo-permissions';
-import HomeTwo from './src/screens/HomeTwo';
+// import React, { Component } from 'react';
+// import { Platform } from 'react-native';
+//  import { createAppContainer } from 'react-navigation';
+// import { createStackNavigator} from 'react-navigation-stack'
+// import * as Permissions from 'expo-permissions';
+// import HomeTwo from './src/screens/HomeTwo';
 
-import CreateTask from './src/screens/CreateTask';
+// import CreateTask from './src/screens/CreateTask';
+// import TodoStore from './src/screens/TodoStore';
+
+// const AppNavigator = createStackNavigator(
+//   {
+   
+//     CreateTask, HomeTwo,
+    
+    
+//   },
+//   {
+//     headerMode: 'none',
+//   }
+// );
+
+// const AppContainer = createAppContainer(AppNavigator);
+
+// export default class App extends Component {
+//   async componentWillMount() {
+//     await this._askForCalendarPermissions();
+//     await this._askForReminderPermissions();
+//   }
+
+//   _askForCalendarPermissions = async () => {
+//     await Permissions.askAsync(Permissions.CALENDAR);
+//   };
+
+//   _askForReminderPermissions = async () => {
+//     if (Platform.OS === 'android') {
+//       return true;
+//     }
+
+//     await Permissions.askAsync(Permissions.REMINDERS);
+//   };
+
+//   render() {
+//     return (
+//       <TodoStore>
+//         <AppContainer />
+//       </TodoStore>
+//     );
+//   }
+// }
+
+import Amplify from 'aws-amplify'
+import config from './aws-exports'
+
+Amplify.configure(config)
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import React, { Component } from 'react';
+import * as eva from '@eva-design/eva';
+import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
+import { EvaIconsPack } from '@ui-kitten/eva-icons';
+import { default as theme } from './theme.json'
+import { AppNavigator } from './src/screens/NavigationComponent';
+import { Alert } from 'react-native';
+import RNRestart from 'react-native-restart';
+import { setJSExceptionHandler } from 'react-native-exception-handler';
+console.disableYellowBox = true;
+console.reportErrorsAsExceptions = false;
+
+
+import { Platform } from 'react-native';
+
+import * as Permissions from 'expo-permissions';
+
 import TodoStore from './src/screens/TodoStore';
 
-const AppNavigator = createStackNavigator(
-  {
-   
-    CreateTask, HomeTwo,
-    
-    
-  },
-  {
-    headerMode: 'none',
-  }
-);
+// const AppNavigator = createStackNavigator(
+//   {
+//     Home,
+//     CreateTask,
+//   },
+//   {
+//     headerMode: 'none',
+//   }
+// );
 
-const AppContainer = createAppContainer(AppNavigator);
+// const AppNavigator = createStackNavigator(
+//   {
+//     Home,
+//     CreateTask,
+//   },
+//   {
+//     headerMode: 'none',
+//   }
+// );
+
+// const AppContainer = createAppContainer(AppNavigator);
 
 export default class App extends Component {
   async componentWillMount() {
@@ -203,7 +276,7 @@ export default class App extends Component {
   };
 
   _askForReminderPermissions = async () => {
-    if (Platform.OS === 'android') {
+    if (Platform.OS === 'ios') {
       return true;
     }
 
@@ -212,9 +285,12 @@ export default class App extends Component {
 
   render() {
     return (
-      <TodoStore>
-        <AppContainer />
-      </TodoStore>
+      <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
+        <TodoStore>
+          <AppNavigator />
+        </TodoStore>
+      </ApplicationProvider>
     );
   }
 }
+

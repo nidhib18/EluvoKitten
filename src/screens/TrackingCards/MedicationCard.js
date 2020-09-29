@@ -150,7 +150,7 @@ export default class MedicationCard extends React.Component {
         let  medicationTimeTaken= this.state.medicationTimeTaken ||"";
         let isMedicationEnabled = (this.state.userSettings && this.state.userSettings.enable_medication) || false;
         return (
-            <Layout style={TrackingStyles.container}>
+            <Layout>
                {isMedicationEnabled ? (
                     <>
                 <TouchableWithoutFeedback onPress={() => { this.setMedicationVisible(true); }}>

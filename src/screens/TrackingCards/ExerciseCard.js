@@ -149,7 +149,7 @@ export default class ExerciseCard extends React.Component {
         const { selectedHours, selectedMinutes } = this.state;
         let isExerciseEnabled = (this.state.userSettings && this.state.userSettings.enable_exercise) || false;
         return (
-            <Layout style={TrackingStyles.container}>
+            <Layout>
                {isExerciseEnabled ? (
                     <>
                 <TouchableWithoutFeedback onPress={() => { this.setExerciseVisible(true); }}>

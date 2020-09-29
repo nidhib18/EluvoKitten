@@ -157,7 +157,7 @@ export default class SexCard extends React.Component {
         let sexualActivity = this.state.sexualActivity || [] ; // get all the possible value from the list item , if not then empty array .
         let isSexEnabled = (this.state.userSettings && this.state.userSettings.enable_sex) || false;
         return (
-            <Layout style={TrackingStyles.container}>
+            <Layout>
               {isSexEnabled ? (
                     <>
                 <TouchableWithoutFeedback onPress={() => { this.setSexVisible(true); }}>

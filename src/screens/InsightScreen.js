@@ -256,6 +256,7 @@ export default class InsightScreen extends React.Component
   <VictoryAxis
     dependentAxis
     label="Symptom Level"
+    domain={5,10}
     style={{axisLabel: {padding: 35 } }} 
   />
     <VictoryGroup  offset={20} padding={{left: 50}} colorScale={["tomato", "orange", "gold"]} 
@@ -268,10 +269,11 @@ export default class InsightScreen extends React.Component
                     <>
         <VictoryBar
              
-              style={{ data: { fill: "#f08974", width: Responsive.width(25)s } }}
+              style={{ data: { fill: "#f08974", width: Responsive.width(25) } }}
               barWidth={15}
               cornerRadius={7}
               domainPadding={{x: [7, -7]}}
+              
               //alignment="start"
               //barRatio={0.8}
               data={this.state.painData}/>
