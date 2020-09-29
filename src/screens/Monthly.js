@@ -238,7 +238,7 @@ export default class Monthly extends React.Component
     textAlign: 'left',
     fontWeight: 'bold',
     top:120,
-    fontSize: Responsive.font(15)}}> (i) Not enough data to view the graph</Text>
+    fontSize: Responsive.font(15)}}> (i) No data to view the graph</Text>
                     </Card>
           </>
       ): (
@@ -327,7 +327,7 @@ export default class Monthly extends React.Component
             
              <Toggle
               style ={{top :-170, right: -90}}
-              status='Warning'
+              //status='Warning'
               
               onChange={this.onCheckedPainChange.bind(this)}
               checked={isPainChecked}
@@ -340,7 +340,7 @@ export default class Monthly extends React.Component
     //           style={{
     // top: hp("400%")}} 
               style ={{top :-130, right: -90}}
-              status='Warning'
+             // status='Warning'
               checked={isMoodChecked}
               onChange={this.onCheckedMoodChange.bind(this)}
               
@@ -357,7 +357,7 @@ export default class Monthly extends React.Component
             <Toggle
                style ={{top :-80, right: -90}}
               // style={styles.toggleBlood}
-              status='Warning'
+              //status='Warning'
               checked={isBloodChecked}
               //onChange={(value) => this.setState({bleedingChecked: value})}
               onChange={this.onCheckedBloodChange.bind(this)}

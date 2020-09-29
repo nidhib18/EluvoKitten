@@ -151,7 +151,7 @@ export default class DietCard extends React.Component {
         let foodTypes = this.state.foodTypes || [] ; 
         let isDietEnabled = (this.state.userSettings && this.state.userSettings.enable_diet) || false;
         return (
-            <Layout style={TrackingStyles.container}>
+            <Layout>
               {isDietEnabled ? (
                     <>
                 <TouchableWithoutFeedback onPress={() => { this.setDietVisible(true); }}>

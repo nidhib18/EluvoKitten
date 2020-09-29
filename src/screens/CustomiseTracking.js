@@ -267,12 +267,7 @@ render()
               style={styles.toggleMood}
               checked={isMoodChecked}
               onChange={this.onCheckedMoodChange.bind(this)}
-              //onValueChange={(value) => this.setState({moodChecked: value} )}
-              //onChange={this.onCheckedChange.bind(this)}
             
-              //value = {this.state.moodChecked}
-            //   onValueChange={this.switchOne}
-            //   value={this.state.activeSwitch === 1}
             >
               {`Checked: ${this.state.moodChecked}`}
             </Toggle>

@@ -48,6 +48,7 @@ var dietSymptoms = [];
 var digestionSymptoms = [];
 var exerciseSymptoms = [];
 var sexSymptoms = [];
+var appointment = [];
 
 const { Width } = Dimensions.get("window");
 let datesWhitelist = [
@@ -83,12 +84,14 @@ export default class Home extends React.Component {
           this.props.route.params.username) ||"",
       // If any data is available, then we need to display the card
       isAnyDataAvailable: false,
+      isAnyAppointmentAvailable:false,
       // The symptom data/cards to be populated only after all symptom data has been loaded
       isAllDataLoaded: false,
     };
     this.setDate = this.setDate.bind(this);
     this.getUserSymptoms = this.getUserSymptoms.bind(this);
-
+    this.getAppointments = this.getAppointments.bind(this);
+    this.loadAppointmentData = this.loadAppointmentData.bind(this);
     this.loadPainSymptomData = this.loadPainSymptomData.bind(this);
     this.loadMoodSymptomData = this.loadMoodSymptomData.bind(this);
     this.loadMedicationData = this.loadMedicationData.bind(this);
@@ -197,7 +200,8 @@ export default class Home extends React.Component {
       {
         currentDate: newDate,
       },
-      () => this.getUserSymptoms()
+      () => this.getUserSymptoms(),
+            this.getAppointments()
     );
   }
   resetState() {
@@ -214,7 +218,31 @@ export default class Home extends React.Component {
     exerciseSymptoms = [];
     sexSymptoms = [];
   }
-
+  loadAppointmentData(appointmentDetails) {
+    var id = 0;
+     appointment = [];
+    appointmentDetails.forEach((appointmentData, index) => {
+      var appointment = {
+        id: id,
+        name: "Appointment",
+        // logTime: moment(medicationData.medication.occurred_date).format(
+        //   "hh:mm A"
+        // ),
+        medTags: appointmentData.appointment.appointment_date,
+        medTagText: "Side Effect:",
+        medicationTypeText: "Type:",
+        medicationType: appointmentData.appointment.appointment_type,
+        medicationTimeText: "Time Taken:",
+        medicationTime:appointmentData.appointment.appointment_notes,
+        quantityText: "Quantity:",
+        quantity:appointmentData.appointment.appointment_location,
+        // image: require("../../assets/medicationia.png"),
+        available: true,
+      };
+      appointment.push(appointment);
+      id = id + 1;
+    });
+  }
   loadPainSymptomData(painDetails) {
     var id = 0;
     painSymptoms = [];
@@ -485,6 +513,44 @@ export default class Home extends React.Component {
     );
   }
 
+  getAppointments()
+  {
+    let userId = this.state.userDetails.user_id;
+    let url = constants.GETAPPOINTMENT_DEV_URL.replace("[userId]", userId).replace(
+      "[occurredDate]",
+      localToUtcDateTime(this.state.currentDate));
+
+      var isAnyAppointmentAvailable = false;
+      var appointmentDetails = [];
+      
+  
+      getData(constants.JWTKEY).then((jwt) =>
+        fetch(url, {
+          //calling API
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + jwt, //Passing this will authorize the user
+          },
+        })
+          .then((response) => response.json())
+          .then((responseData) => {
+            console.log("Completed API call");
+            if (Object.keys(responseData.appointmentRecords).length) {
+              isAnyAppointmentAvailable = true;
+              appointmentDetails = responseData.appointmentRecords;
+            }
+
+            this.setState({
+              isAnyAppointmentAvailable:   isAnyAppointmentAvailable,
+              
+            });
+          })
+          .catch((err) => console.log(err))
+            // if (appointmentDetails.length) this.loadPainSymptomData(painDetails);
+      
+      );
+}
+
   // async componentDidMount() {
   //   await saveUserDetails(this.state.username);
   //   console.log("Get user details")
@@ -521,7 +587,8 @@ export default class Home extends React.Component {
       // Read back the user details from storage and convert to object
       this.setState({
         userDetails: JSON.parse(data),
-        }, () => this.getUserSymptoms());
+        }, () => this.getUserSymptoms(),
+        this.getAppointments());
     })
     .then((data) => {
         saveUserSettings(this.state.userDetails.user_id).then((data) => {
@@ -536,6 +603,7 @@ export default class Home extends React.Component {
     this.props.navigation.addListener("focus", () => {
       // To load symptoms for the selected date after tracking as the home screen is already mounted and only comes into focus
       this.getUserSymptoms();
+      this.getAppointments();
     });
   }
   // async componentDidMount() {
@@ -748,6 +816,18 @@ export default class Home extends React.Component {
                         renderItem={this.renderItem}
                         keyExtractor={extractKey}
                       />
+
+                      <FlatList
+                        style={{
+                          flex: 0,
+                          width: Responsive.width(400),
+                          top: Responsive.height(25),
+                          left: Responsive.width(-37),
+                        }}
+                        data={appointment}
+                        renderItem={this.renderItem}
+                        keyExtractor={extractKey}
+                      />
                     </Card>
                   </ScrollView>
                 </View>
@@ -811,14 +891,14 @@ export default class Home extends React.Component {
               source={require("../../assets/insights.png")}
             />
           </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback>
+          <TouchableWithoutFeedback  onPress={() => this.props.navigation.navigate("Learn")}>
             <Image
               style={HomeStyles.learn}
               source={require("../../assets/learn.png")}
             />
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
-            onPress={() => this.props.navigation.navigate("Settings")}
+            onPress={() => this.props.navigation.navigate("HTwo")}
           >
             <Image
               style={HomeStyles.settings}

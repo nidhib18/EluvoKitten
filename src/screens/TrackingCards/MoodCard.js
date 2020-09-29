@@ -175,7 +175,7 @@ export default class MoodCard extends React.Component {
         let moodDescriptions = this.state.moodDescriptions || [] ; // get all the possible value from the list item , if not then empty array .
         let isMoodEnabled = (this.state.userSettings && this.state.userSettings.enable_mood) || false;
         return (
-            <Layout style={TrackingStyles.container}>
+            <Layout>
               {isMoodEnabled ? (
                     <>
                 <TouchableWithoutFeedback onPress={() => { this.setMoodVisible(true); }}>

@@ -204,7 +204,7 @@ export default class PainCard extends React.Component {
         console.log("Is Pain Enabled", isPainEnabled);
         return (
 
-            <Layout style={TrackingStyles.container}>
+            <Layout>
                 {isPainEnabled ? (
                     <>
                     <TouchableWithoutFeedback onPress={() => {
