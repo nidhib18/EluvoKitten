@@ -247,24 +247,22 @@ export default class InsightScreen extends React.Component
     <Card style={styles.cardStyle} >
    
     
-    <VictoryChart domainPadding={40}>
-    <VictoryAxis
-   
-    label="Days"
-    style={{axisLabel: {padding: 35} }} 
-  />
-  <VictoryAxis
-    dependentAxis
-    label="Symptom Level"
-    domain={5,10}
-    style={{axisLabel: {padding: 35 } }} 
-  />
-    <VictoryGroup  offset={20} padding={{left: 50}} colorScale={["tomato", "orange", "gold"]} 
-       
-     >
+    <VictoryChart  padding={{ left:30, top: 30, bottom:45 }} maxDomain={{ y:5 }}>
+          <VictoryAxis
+        
+          label="Days"
+          style={{axisLabel: {padding: 35} }} 
+        />
+        <VictoryAxis
+          dependentAxis
+          label="Symptom Level"
+          domain={5,10}
+          style={{axisLabel: {padding: 35 } }} 
+        />
+    <VictoryGroup  offset={20} padding={{left: 50}} colorScale={["tomato", "orange", "gold"]} >
      
    
-     {isPainChecked && this.state.painData.length? 
+{isPainChecked && this.state.painData.length? 
       (
                     <>
         <VictoryBar
@@ -281,7 +279,7 @@ export default class InsightScreen extends React.Component
       ): (<></>)
       }
 
-      {isMoodChecked && this.state.moodData.length? 
+{isMoodChecked && this.state.moodData.length? 
       (
                     <>
         <VictoryBar
@@ -293,7 +291,7 @@ export default class InsightScreen extends React.Component
           </>
       ): (<></>)
       }
-      {isBloodChecked && this.state.bloodData.length? 
+{isBloodChecked && this.state.bloodData.length? 
       (
                     <>
         <VictoryBar

@@ -326,9 +326,8 @@ render()
                             appearance='outline'
                             onPress={() => {
                                 //this.getUserSettings();
-                                this.updateUserSettings(); 
-                                
-                                this.props.navigation.navigate('TrackCust');
+                                this.updateUserSettings();  
+                                this.props.navigation.navigate("Track");
                                 
                             }}
                            

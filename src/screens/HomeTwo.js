@@ -833,6 +833,9 @@ export default class HomeTwo extends Component {
               >
                 ________________________________________
                   </Text>
+            <TouchableOpacity  onPress={() =>
+                  navigation.navigate('Edit')
+                }>
               <Text style={{
                 paddingBottom: Responsive.height(50),
                 top: Responsive.height(-50),
@@ -854,7 +857,7 @@ export default class HomeTwo extends Component {
                 }}
                 source={require("../../assets/goto.png")}
               ></Image>
-
+              </TouchableOpacity>
             </Card>
             
             

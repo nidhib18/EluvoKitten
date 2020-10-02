@@ -48,7 +48,7 @@ var dietSymptoms = [];
 var digestionSymptoms = [];
 var exerciseSymptoms = [];
 var sexSymptoms = [];
-var appointment = [];
+var appointments = [];
 
 const { Width } = Dimensions.get("window");
 let datesWhitelist = [
@@ -200,8 +200,7 @@ export default class Home extends React.Component {
       {
         currentDate: newDate,
       },
-      () => this.getUserSymptoms(),
-            this.getAppointments()
+      () => this.getUserSymptoms()
     );
   }
   resetState() {
@@ -220,7 +219,7 @@ export default class Home extends React.Component {
   }
   loadAppointmentData(appointmentDetails) {
     var id = 0;
-     appointment = [];
+    appointments = [];
     appointmentDetails.forEach((appointmentData, index) => {
       var appointment = {
         id: id,
@@ -228,18 +227,18 @@ export default class Home extends React.Component {
         // logTime: moment(medicationData.medication.occurred_date).format(
         //   "hh:mm A"
         // ),
-        medTags: appointmentData.appointment.appointment_date,
+        medTags: appointmentData.appointment_date,
         medTagText: "Side Effect:",
         medicationTypeText: "Type:",
-        medicationType: appointmentData.appointment.appointment_type,
+        medicationType: appointmentData.appointment_type,
         medicationTimeText: "Time Taken:",
-        medicationTime:appointmentData.appointment.appointment_notes,
+        medicationTime:appointmentData.appointment_notes,
         quantityText: "Quantity:",
-        quantity:appointmentData.appointment.appointment_location,
+        quantity:appointmentData.appointment_location,
         // image: require("../../assets/medicationia.png"),
         available: true,
       };
-      appointment.push(appointment);
+      appointments.push(appointment);
       id = id + 1;
     });
   }
@@ -450,6 +449,8 @@ export default class Home extends React.Component {
     var sexDetails = [];
     var medicationDetails = [];
 
+    this.getAppointments();
+
     getData(constants.JWTKEY).then((jwt) =>
       fetch(url, {
         //calling API
@@ -517,13 +518,11 @@ export default class Home extends React.Component {
   {
     let userId = this.state.userDetails.user_id;
     let url = constants.GETAPPOINTMENT_DEV_URL.replace("[userId]", userId).replace(
-      "[occurredDate]",
+      "[appointmentDate]",
       localToUtcDateTime(this.state.currentDate));
-
-      var isAnyAppointmentAvailable = false;
+      console.log ("Appointment URL"+url);
+      var isAnyAppointmentAvailable = false;  
       var appointmentDetails = [];
-      
-  
       getData(constants.JWTKEY).then((jwt) =>
         fetch(url, {
           //calling API
@@ -534,19 +533,20 @@ export default class Home extends React.Component {
         })
           .then((response) => response.json())
           .then((responseData) => {
-            console.log("Completed API call");
-            if (Object.keys(responseData.appointmentRecords).length) {
+            console.log("Completed appointment API call");
+            if (responseData.length) {
               isAnyAppointmentAvailable = true;
-              appointmentDetails = responseData.appointmentRecords;
+              appointmentDetails = responseData;
+              console.log("Appointment", appointmentDetails);
             }
 
             this.setState({
-              isAnyAppointmentAvailable:   isAnyAppointmentAvailable,
-              
+              isAnyAppointmentAvailable:isAnyAppointmentAvailable
             });
+            this.loadAppointmentData(appointmentDetails)
           })
           .catch((err) => console.log(err))
-            // if (appointmentDetails.length) this.loadPainSymptomData(painDetails);
+         
       
       );
 }
@@ -587,8 +587,9 @@ export default class Home extends React.Component {
       // Read back the user details from storage and convert to object
       this.setState({
         userDetails: JSON.parse(data),
-        }, () => this.getUserSymptoms(),
-        this.getAppointments());
+        }, () => {
+          this.getUserSymptoms();
+        });
     })
     .then((data) => {
         saveUserSettings(this.state.userDetails.user_id).then((data) => {
@@ -603,7 +604,6 @@ export default class Home extends React.Component {
     this.props.navigation.addListener("focus", () => {
       // To load symptoms for the selected date after tracking as the home screen is already mounted and only comes into focus
       this.getUserSymptoms();
-      this.getAppointments();
     });
   }
   // async componentDidMount() {
@@ -691,9 +691,12 @@ export default class Home extends React.Component {
             iconContainer={{ flex: 0.13 }}
           />
         </View>
+
+       
+
         {this.state.isAllDataLoaded ? (
           <>
-            {this.state.isAnyDataAvailable ? (
+            {this.state.isAnyDataAvailable ||  this.state.isAnyAppointmentAvailable? (
               <>
                 <View
                   style={{
@@ -824,11 +827,25 @@ export default class Home extends React.Component {
                           top: Responsive.height(25),
                           left: Responsive.width(-37),
                         }}
-                        data={appointment}
+                        data={appointments}
                         renderItem={this.renderItem}
                         keyExtractor={extractKey}
                       />
                     </Card>
+                    <Card style={styles.cardContainer}>
+                    <FlatList
+                        style={{
+                          flex: 0,
+                          width: Responsive.width(400),
+                          top: Responsive.height(25),
+                          left: Responsive.width(-37),
+                        }}
+                        data={appointments}
+                        renderItem={this.renderItem}
+                        keyExtractor={extractKey}
+                      />
+                    </Card>
+
                   </ScrollView>
                 </View>
               </>

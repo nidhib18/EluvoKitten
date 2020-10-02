@@ -15,8 +15,10 @@ import Learn from './Learn';
 import ResetPassword from './ResetPassword.js'
 import Instruction from './Instruction';
 import HomeTwo from './HomeTwo';
+import SelectAppointment from './SelectAppointment';
 // import CreateTask from './CreateTask';
 import AddAppointment from './AddAppointment';
+import EditAppointment from './EditAppointment';
 import Home from './Home'
 import { TrackScreen } from './TrackScreen';
 // import {CalendarScreen} from './CalendarScreen'; 
@@ -34,6 +36,8 @@ function MainStackScreen() {
       <MainStack.Screen name='Forgot' component= {ForgotPassword}/>
       <MainStack.Screen name='SignUp' component={SignUpScreen} />
       <MainStack.Screen name='Home' component={Home} /> 
+      <MainStack.Screen name='Select' component={SelectAppointment} />
+      <MainStack.Screen name='Edit' component={EditAppointment} />
       <MainStack.Screen name='Monthly' component={Monthly} /> 
       <MainStack.Screen name='Yearly' component={Yearly} /> 
       <MainStack.Screen name='Learn' component={Learn} /> 

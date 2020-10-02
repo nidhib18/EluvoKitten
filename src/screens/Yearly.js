@@ -242,8 +242,8 @@ export default class Yearly extends React.Component
     <Card style={styles.cardStyle} >
    
     
-    <VictoryChart domainPadding={40}>
-    <VictoryAxis
+    <VictoryChart padding={{ left:30, top: 30, bottom:45 }} maxDomain={{ y:5 }}>
+    {/* <VictoryAxis
    
     label="Years"
     style={{axisLabel: {padding: 35} }} 
@@ -252,7 +252,7 @@ export default class Yearly extends React.Component
     dependentAxis
     label="Symptom Level"
     style={{axisLabel: {padding: 35 } }} 
-  />
+  /> */}
     <VictoryGroup  offset={20} padding={{left:100}} colorScale={["tomato", "orange", "gold"]} 
        
      >

@@ -33,7 +33,7 @@ changePassword = async () =>
     })
 
     .then(() => {
-        this.props.navigation.navigate('Settings')
+      this.props.navigation.navigate('HTwo')
         alert('The new password submitted successfully')
       })
 
@@ -50,7 +50,7 @@ changePassword = async () =>
 
 }
   if (passwordOld == passwordNew) {
-    alert("Your new password is the same as the old password!");
+    alert("Your new password cannot be same as the old password!");
   }
 }
 render ()

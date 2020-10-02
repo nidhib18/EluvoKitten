@@ -371,7 +371,7 @@ componentDidMount() //after Ui has been uploaded
                   style={{ left: wp('-2%'), top: wp('-2'), width:hp('14%') }}
 
                      appearance="outline"
-                     onPress={() => this.props.navigation.navigate("HTwo")}
+                     onPress={() =>  this.props.navigation.navigate("Select")}
                  >
                      Cancel
                 
@@ -617,6 +617,7 @@ componentDidMount() //after Ui has been uploaded
                       if (!isAlarmSet) {
                         this._handleCreateEventData(value);
                       }
+                     
                     }}
                   >
                     <Text

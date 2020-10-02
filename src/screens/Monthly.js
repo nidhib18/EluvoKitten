@@ -175,7 +175,7 @@ export default class Monthly extends React.Component
      var isPainChecked = (this.state.painChecked );
      var isMoodChecked = (this.state.moodChecked );
      var isBloodChecked = (this.state.bleedingChecked ) ;//|| false;
-     
+     var data = this.state.painData.length & this.state.moodData.length & this.state.bloodData.length;
     
   return (
     <Layout style={styles.container}>
@@ -246,7 +246,7 @@ export default class Monthly extends React.Component
     <Card style={styles.cardStyle} >
    
     
-    <VictoryChart domainPadding={40}>
+    <VictoryChart  fixLabelOverlap  padding={{ left:30, top: 30, bottom:45 }} maxDomain={{ x:15,y:5 }}>
     {/* <VictoryAxis
    
     label="Month"
@@ -302,6 +302,16 @@ export default class Monthly extends React.Component
           </>
       ): (<></>)
       }
+      {data==0 ?
+        (
+          <>
+              <Text>Insert some data</Text>
+          </>
+        ):(<></>)
+      }
+    
+      
+      
     </VictoryGroup>
     </VictoryChart>
     
