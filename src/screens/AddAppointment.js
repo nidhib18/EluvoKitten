@@ -1,16 +1,6 @@
-
-// import React from "react";
-// import { SafeAreaView, Image, StyleSheet, Dimensions, Text, View } from "react-native";
-// import { Button, Divider, Layout, TopNavigation, Card } from "@ui-kitten/components";
-// import { ImageStyles } from "./ImageStyles";
-
-// const { width, height } = Dimensions.get("window");
-// import { TrackScreen } from './TrackScreen'
-// import PainCard from "./TrackingCards/PainCard";
-// import Responsive from "react-native-lightweight-responsive";
 import React, { Component } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { Divider, Layout, TopNavigation, Button, Input } from "@ui-kitten/components";
+import { Divider, Layout, TopNavigation, Button, Input, Datepicker } from "@ui-kitten/components";
 import {
   Text,
   Image,
@@ -37,96 +27,58 @@ import { constants } from "../resources/Constants";
 import { initAppointmentDetails } from "../models/AppointmentDetails";
 import { utcToLocal, localToUtcDate, localToUtcDateTime } from "../helpers/DateHelpers";
 
-// import { mapListItemsToTags } from "../../helpers/TagHelpers"
-
 const { width: vw } = Dimensions.get('window');
-// moment().format('YYYY/MM/DD')
-
 
 export default class AddAppointment extends Component {
- 
-  state = {
-    selectedDay: {
-      [`${moment().format('YYYY')}-${moment().format('MM')}-${moment().format(
-        'DD'
-      )}`]: {
-        selected: true,
-        selectedColor: '#f09874',
-      },
-    },
-    appointment_date:"",
-    appointment_type: "",
-    appointment_with: "",
-    appointment_location: "",
-    appointment_notes:"",
-    userDetails:{},
-    appointmentDetails:initAppointmentDetails(0,  moment().format('YYYY-MM-DD')) ,
-    currentDate: this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD'),   
-    currentDay: moment().format(),
-    taskText: '',
-    notesText: '',
-    keyboardHeight: 0,
-    visibleHeight: Dimensions.get('window').height,
-    isAlarmSet: false,
-    alarmTime: moment().format(),
-    isDateTimePickerVisible: false,
-    timeType: '',
-    creatTodo: {},
-    createEventAsyncRes: '',
-    //.saveAppointmentDetails = this.saveAppointmentDetails.bind(this)
-  
-  };
-  
-
-  // constructor(props) {
-  //   super(props);
-  //     this.state ={
-     
-  //     };
+    constructor(props) {
+        super(props);
+        this.state = {
+            selectedDay: {
+            [`${moment().format('YYYY')}-${moment().format('MM')}-${moment().format(
+                'DD'
+            )}`]: {
+                selected: true,
+                selectedColor: '#f09874',
+            },
+            },
+            appointment_date: new Date(),
+            appointment_type: "",
+            appointment_with: "",
+            appointment_location: "",
+            appointment_notes:"",
+            userDetails:{},
+            appointmentDetails: initAppointmentDetails(0,  moment().format('YYYY-MM-DD')) ,
+            taskText: '',
+            notesText: '',
+            keyboardHeight: 0,
+            visibleHeight: Dimensions.get('window').height,
+            isAlarmSet: false,
+            alarmTime: moment().format(),
+            isDateTimePickerVisible: false,
+            timeType: '',
+            creatTodo: {},
+            createEventAsyncRes: '',
+            minDate: new Date(1960, 0, 1),
+            maxDate: new Date(),
+        };
+        this.setDate = this.setDate.bind(this);
+    }
+    setDate(newDate) {
+        let appointmentDate = new Date(newDate);
+        this.setState({ appointment_date: appointmentDate });
+    }
       
-  // }
-    getAppointments () {
-  
-    let url = constants.GETAPPOINTMENT_DEV_URL;
-          getData(constants.JWTKEY).then((jwt) =>
-              fetch(url, {
-                  //calling API
-                  method: "GET",
-                  headers: {
-                      Authorization: "Bearer" + jwt, //Passing this will authorize the user
-                  },
-              })
-                  .then((response) => response.json())
-                  // .then((responseData) => {
-                  // let medicationSideEffects = [];//getting all possible paintype tags from the database  //{} is an object [] an array a value
-                  // medicationSideEffects = mapListItemsToTags(responseData);
-                      
-                  //     this.setState({ medicationSideEffects: medicationSideEffects });
-                  // })
-                  .catch((err) => console.log(err))
-          );
-      };
-
-      
-      saveAppointmentDetails() {
+    saveAppointmentDetails() {
 
       // Add the saved med level
       let userId = this.state.userDetails.user_id;
-      let occurredDate = moment(this.state.currentDate).add(moment().hour(), 'hour').add(moment().minute(), 'minute');
-      // Add medication side effects 
-      // let medicationSideEffects = null ;
-      // if (this.state.selectedMedicationSideEffects.length > 0)
-      // medicationSideEffects = this.state.selectedMedicationSideEffects[0]; 
-
       let appointment = { 
           user_id: userId,
           appointment_date:this.state.appointment_date,
           appointment_type: this.state.appointment_type,
           appointment_with: this.state.appointment_with,
           appointment_location: this.state.appointment_location,
-          appointment_notes:this.state.appointment_notes,
-          occurred_date: localToUtcDateTime(occurredDate),
-          
+          appointment_notes:this.state.appointment_notes     
       };
      
       let url = constants.ADDAPPOINTMENT_DEV_URL;
@@ -140,245 +92,218 @@ export default class AddAppointment extends Component {
                   'Content-Type': 'application/json'
               },
               body: JSON.stringify(appointment)
-          })
-              .then((response) => {
-                  //console.log(response.json());
-                  return response.json();
-              })
-      );
-}
+            })
+            .then((response) => {
+                //console.log(response.json());
+                return response.json();
+            })
+        );
+    }   
   
-componentDidMount() //after Ui has been uploaded 
-{
-   getData(constants.USERDETAILS).then((data) => {
-       // Read back the user details from storage and convert to object
-       this.state.userDetails = JSON.parse(data);
-       this.setState({
-           userDetails: JSON.parse(data),
-       });
-       this.getAppointments(); 
-            
-   })
-  //  .then((data) => {
-  //      getData(constants.USERSETTINGS).then((data) => {
-  //          // Read back the user settings from storage and convert to object
-  //          console.log ("****USER SETTINGS in medication card****" ,data);
-  //          this.setState({
-  //            userSettings: JSON.parse(data),
-  //          });
-  //      });
-  //     });
-}
-
-//
-  componentWillMount() {
-    this.keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      this._keyboardDidShow
-    );
-    this.keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      this._keyboardDidHide
-    );
-  }
-
-  componentWillUnmount() {
-    Keyboard.removeListener('keyboardDidShow', this._keyboardDidShow);
-    Keyboard.removeListener('keyboardDidHide', this._keyboardDidHide);
-  }
-
-  _keyboardDidShow = e => {
-    this.setState({
-      keyboardHeight: e.endCoordinates.height,
-      visibleHeight:
-        Dimensions.get('window').height - e.endCoordinates.height - 30,
-    });
-  };
-
-  _keyboardDidHide = () => {
-    this.setState({
-      visibleHeight: Dimensions.get('window').height,
-    });
-  };
-
-  handleAlarmSet = () => {
-    const { isAlarmSet } = this.state;
-    this.setState({
-      isAlarmSet: !isAlarmSet,
-    });
-  };
-
-  synchronizeCalendar = async value => {
-    const { navigation } = this.props;
-    const { createNewCalendar } = navigation.state.params;
-    const calendarId = await createNewCalendar();
-    try {
-      const createEventAsyncRes = await this._addEventsToCalendar(calendarId);
-      this.setState(
-        {
-          createEventAsyncRes,
-        },
-        () => {
-          this._handleCreateEventData(value);
-        }
-      );
-    } catch (e) {
-      Alert.alert(e.message);
+    componentDidMount() //after Ui has been uploaded 
+    {
+        getData(constants.USERDETAILS).then((data) => {
+            // Read back the user details from storage and convert to object
+            this.state.userDetails = JSON.parse(data);
+            this.setState({
+                userDetails: JSON.parse(data),
+            });                   
+        })   
     }
-  };
 
-  _addEventsToCalendar = async calendarId => {
-    const { taskText, notesText, alarmTime } = this.state;
-    const event = {
-      title: taskText,
-      notes: notesText,
-      startDate: moment(alarmTime)
-        .add(0, 'm')
-        .toDate(),
-      endDate: moment(alarmTime)
-        .add(5, 'm')
-        .toDate(),
-      timeZone: Localization.timezone,
+    componentWillMount() {
+        this.keyboardDidShowListener = Keyboard.addListener(
+        'keyboardDidShow',
+        this._keyboardDidShow
+        );
+        this.keyboardDidHideListener = Keyboard.addListener(
+        'keyboardDidHide',
+        this._keyboardDidHide
+        );
+    }
+
+    componentWillUnmount() {
+        Keyboard.removeListener('keyboardDidShow', this._keyboardDidShow);
+        Keyboard.removeListener('keyboardDidHide', this._keyboardDidHide);
+    }
+
+    _keyboardDidShow = e => {
+        this.setState({
+        keyboardHeight: e.endCoordinates.height,
+        visibleHeight:
+            Dimensions.get('window').height - e.endCoordinates.height - 30,
+        });
     };
 
-    try {
-      const createEventAsyncRes = await Calendar.createEventAsync(
-        calendarId.toString(),
-        event
-      );
+    _keyboardDidHide = () => {
+        this.setState({
+        visibleHeight: Dimensions.get('window').height,
+        });
+    };
 
-      return createEventAsyncRes;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    handleAlarmSet = () => {
+        const { isAlarmSet } = this.state;
+        this.setState({
+        isAlarmSet: !isAlarmSet,
+        });
+    };
 
-  _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
-
-  _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
-
-  _handleCreateEventData = async value => {
-    const {
-      state: {
-        currentDay,
-        taskText,
-        notesText,
-        isAlarmSet,
-        alarmTime,
-        createEventAsyncRes,
-      },
-      props: { navigation },
-    } = this;
-    const { updateCurrentTask, currentDate } = navigation.state.params;
-    const creatTodo = {
-      key: uuid(),
-      date: `${moment(currentDay).format('YYYY')}-${moment(currentDay).format(
-        'MM'
-      )}-${moment(currentDay).format('DD')}`,
-      todoList: [
-        {
-          key: uuid(),
-          title: taskText,
-          notes: notesText,
-          alarm: {
-            time: alarmTime,
-            isOn: isAlarmSet,
+    synchronizeCalendar = async value => {
+        const { navigation } = this.props;
+        const { createNewCalendar } = navigation.state.params;
+        const calendarId = await createNewCalendar();
+        try {
+        const createEventAsyncRes = await this._addEventsToCalendar(calendarId);
+        this.setState(
+            {
             createEventAsyncRes,
-          },
-          color: `rgb(${Math.floor(
-            Math.random() * Math.floor(256)
-          )},${Math.floor(Math.random() * Math.floor(256))},${Math.floor(
-            Math.random() * Math.floor(256)
-          )})`,
-        },
-      ],
-      markedDot: {
-        date: currentDay,
-        dots: [
-          {
-            key: uuid(),
-            color: 'white',
-            selectedDotColor: 'white',
-          },
-        ],
-      },
+            },
+            () => {
+            this._handleCreateEventData(value);
+            }
+        );
+        } catch (e) {
+        Alert.alert(e.message);
+        }
     };
 
-    await value.updateTodo(creatTodo);
-    await updateCurrentTask(currentDate);
-    navigation.navigate('Home');
-  };
+    _addEventsToCalendar = async calendarId => {
+        const { taskText, notesText, alarmTime } = this.state;
+        const event = {
+        title: taskText,
+        notes: notesText,
+        startDate: moment(alarmTime)
+            .add(0, 'm')
+            .toDate(),
+        endDate: moment(alarmTime)
+            .add(5, 'm')
+            .toDate(),
+        timeZone: Localization.timezone,
+        };
 
-  _handleDatePicked = date => {
-    const { currentDay } = this.state;
-    const selectedDatePicked = currentDay;
-    const hour = moment(date).hour();
-    const minute = moment(date).minute();
-    const newModifiedDay = moment(selectedDatePicked)
-      .hour(hour)
-      .minute(minute);
+        try {
+        const createEventAsyncRes = await Calendar.createEventAsync(
+            calendarId.toString(),
+            event
+        );
 
-    this.setState({
-      alarmTime: newModifiedDay,
-    });
+        return createEventAsyncRes;
+        } catch (error) {
+        console.log(error);
+        }
+    };
 
-    this._hideDateTimePicker();
-  };
+    _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
 
-  render() {
-    appointment_date= this.state.appointment_date || "";
-    appointment_type= this.state.appointment_type || "",
-    appointment_with= this.state.appointment_with || "",
-    appointment_location= this.state.appointment_location|| "",
-    appointment_notes = this.state.appointment_notes || ""
+    _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
+
+    _handleCreateEventData = async value => {
+        const {
+        state: {
+            currentDay,
+            taskText,
+            notesText,
+            isAlarmSet,
+            alarmTime,
+            createEventAsyncRes,
+        },
+        props: { navigation },
+        } = this;
+        const { updateCurrentTask, currentDate } = navigation.state.params;
+        const creatTodo = {
+        key: uuid(),
+        date: `${moment(currentDay).format('YYYY')}-${moment(currentDay).format(
+            'MM'
+        )}-${moment(currentDay).format('DD')}`,
+        todoList: [
+            {
+            key: uuid(),
+            title: taskText,
+            notes: notesText,
+            alarm: {
+                time: alarmTime,
+                isOn: isAlarmSet,
+                createEventAsyncRes,
+            },
+            color: `rgb(${Math.floor(
+                Math.random() * Math.floor(256)
+            )},${Math.floor(Math.random() * Math.floor(256))},${Math.floor(
+                Math.random() * Math.floor(256)
+            )})`,
+            },
+        ],
+        markedDot: {
+            date: currentDay,
+            dots: [
+            {
+                key: uuid(),
+                color: 'white',
+                selectedDotColor: 'white',
+            },
+            ],
+        },
+        };
+
+        await value.updateTodo(creatTodo);
+        await updateCurrentTask(currentDate);
+        navigation.navigate('Home');
+    };
+
+    _handleDatePicked = date => {
+        const { currentDay } = this.state;
+        const selectedDatePicked = currentDay;
+        const hour = moment(date).hour();
+        const minute = moment(date).minute();
+        const newModifiedDay = moment(selectedDatePicked)
+        .hour(hour)
+        .minute(minute);
+
+        this.setState({
+        alarmTime: newModifiedDay,
+        });
+
+        this._hideDateTimePicker();
+    };
+
+    render() {
+
+        appointment_date= this.state.appointment_date || new Date();
+        console.log("DATE FECHA FORMAT",appointment_date)
+        appointment_type= this.state.appointment_type || "";
+        appointment_with= this.state.appointment_with || "";
+        appointment_location= this.state.appointment_location|| "";
+        appointment_notes = this.state.appointment_notes || "";
    
-    const {
-      state: {
-        selectedDay,
-        currentDay,
-        taskText,
-        visibleHeight,
-        notesText,
-        isAlarmSet,
-        alarmTime,
-        isDateTimePickerVisible,
-      },
-      props: { navigation },
-    } = this;
+        const {
+          state: {
+            selectedDay,
+            currentDay,
+            taskText,
+            visibleHeight,
+            notesText,
+            isAlarmSet,
+            alarmTime,
+            isDateTimePickerVisible,
+          },
+          props: { navigation },
+        } = this;
 
-    return (
-        <Layout style={styles.mainContainer}>
+        return (
+            <Layout style={styles.mainContainer}>
 
- <TopNavigation position="absolute"
-                    top={0}
-                     style={{ height: hp('10%'), width: width }} />
-                 {/* <Text style={{ top: hp('2%'), left: wp('-30'), fontSize: wp('7.5%'), fontWeight: '700' }}>Settings</Text> */}
-                 <Button
-                  style={{ left: wp('80%'), top: wp('14'),  width:hp('12%') }}
-
-                     appearance="outline"
-                     onPress={() => {
-                     //this.props.navigation.navigate("HTwo")
-                     //this.setMedicationVisible(!this.state.medicationVisible)
-                     this.saveAppointmentDetails();
-                     }}
-                 >
-                     Save
-                
-             </Button>
-             <Text style={{ left: wp('34%'), top: wp('4'), color:'white', fontWeight:'500', fontSize:Responsive.font(16) }}>Add appointment</Text>
-             <Button
-                  style={{ left: wp('-2%'), top: wp('-2'), width:hp('14%') }}
-
-                     appearance="outline"
-                     onPress={() =>  this.props.navigation.navigate("Select")}
-                 >
+            <TopNavigation position="absolute" top={0} style={{ height: hp('10%'), width: width }} />
+            <Button style={{ left: wp('80%'), top: wp('14'),  width:hp('12%') }}
+                appearance="outline"
+                onPress={() => {
+                    this.saveAppointmentDetails();
+            }}> Save
+            </Button>
+            <Text style={{ left: wp('34%'), top: wp('4'), color:'white', fontWeight:'500', fontSize:Responsive.font(16) }}>Add appointment</Text>
+            <Button style={{ left: wp('-2%'), top: wp('-2'), width:hp('14%') }} appearance="outline"
+                     onPress={() =>  this.props.navigation.navigate("Select")}>
                      Cancel
-                
-             </Button>
-             
-             
-                <Divider />
+            </Button>
+            <Divider />
       <Context.Consumer>
         {value => (
           <>
@@ -509,7 +434,7 @@ componentDidMount() //after Ui has been uploaded
                           backgroundColor: '#FBFBFB',
                           top:80
                         }}
-                      onChangeText={(value) => this.setState({appointment_location: value })}
+                      onChangeText={(value) =>this.setState({appointment_location:value})}
                       value={appointment_location}
                       placeholder='Location'
                       placeholderTextColor='#8A8A8E'
@@ -519,19 +444,24 @@ componentDidMount() //after Ui has been uploaded
                     <View>
                       {/* <Text style={styles.notes}>Notes</Text> */}
                       <Text style={{fontWeight:'500', top:110}} >Notes</Text>
-                      <Input
-                        style={{
-                          height: 55,
-                          fontSize: 19,
-                          marginTop: 3,
-                          backgroundColor: '#FBFBFB',
-                          top:115
-                        }}
-                        onChangeText={(value) => this.setState({appointment_notes: value })}
-                        value={appointment_notes}
-                        // placeholder="Enter notes about the task."
+                      <Datepicker
+                        style={styles.datepicker}
+                        date={appointment_date}
+                        onSelect={this.setDate}
+                        accessoryRight={this.DateIcon}
+                        //label="Date of Birth"
+                        min={this.state.minDate}
+                        max={this.state.maxDate}
+                        // max = n
+                        placeholder="dd/mm/yyyy"
                       />
                     </View>
+
+                    <View>
+                    
+                    </View>
+
+
                     {/* <View style={styles.seperator} /> */}
                     <View>
                       {/* <Text
@@ -611,12 +541,15 @@ componentDidMount() //after Ui has been uploaded
                       },
                     ]}
                     onPress={async () => {
+
+                     
                       if (isAlarmSet) {
                         await this.synchronizeCalendar(value);
                       }
                       if (!isAlarmSet) {
                         this._handleCreateEventData(value);
                       }
+                      this.saveAppointmentDetails();
                      
                     }}
                   >
@@ -781,6 +714,13 @@ const styles = StyleSheet.create({
     color: '#9CAAC4',
     fontSize: 16,
     fontWeight: '600',
+  },
+  datepicker: {
+    width:Responsive.width(320),
+    height:Responsive.height(48),
+    position: "absolute",
+    top:120,
+    borderRadius: Responsive.height(24),
   },
   notesContent: {
     height: 0.5,

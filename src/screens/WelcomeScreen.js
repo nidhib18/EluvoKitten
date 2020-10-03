@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import { SafeAreaView, Image, StyleSheet, Dimensions } from "react-native";
 import { Button, Divider, Layout, TopNavigation } from "@ui-kitten/components";
 import { ImageStyles } from "./ImageStyles";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { storeData, getData } from "../helpers/StorageHelpers";
+import { constants } from "../resources/Constants";
 const { width, height } = Dimensions.get("window");
 import Responsive from 'react-native-lightweight-responsive';
 
@@ -10,54 +12,83 @@ console.disableYellowBox = true;
 console.reportErrorsAsExceptions = false;
 
 export const WelcomeScreen = ({ navigation }) => {
-  return (
-    <Layout style={ImageStyles.mainContainer}>
-      <TopNavigation position="absolute" />
-      <Divider />
-      <Image
-        style={ImageStyles.logoContainer}
-        source={require("../../assets/logo.png")}
-      />
-      <Image
-        style={ImageStyles.bubbleContainer}
-        source={require("../../assets/bubble.png")}
-      />
+  const [isAlreadyLoggedIn, setIsAlreadyLoggedIn] = useState(false);
+  const [username, setUsername] = useState("");
+  useEffect(() => {
+    console.log("In use effect");
+    async function getUserDetails()
+    {
+      getData(constants.USERDETAILS).then((data) => {
+        console.log("USe effect data", data);
+        if (data != "")
+        {
+             var userDetails = JSON.parse(data);
+             console.log("Got welocome data", userDetails);
+             setIsAlreadyLoggedIn(true);
+             setUsername(userDetails.user_name);
+        }
+        else {
+          setIsAlreadyLoggedIn(false);
+        }
+        if (isAlreadyLoggedIn)
+        {
+          return navigation.navigate("Home", {username: username});
+        }
+    })
+    };
+    return getUserDetails();
+  }, []);
 
-      <Image
-        style={ImageStyles.squiggleContainer}
-        source={require("../../assets/squiggle.png")}
-      />
 
-      <Image
-        style={ImageStyles.dotsContainer}
-        source={require("../../assets/dots.png")}
-      />
+    return (
+      <Layout style={ImageStyles.mainContainer}>
+        <TopNavigation position="absolute" />
+        <Divider />
+        <Image
+          style={ImageStyles.logoContainer}
+          source={require("../../assets/logo.png")}
+        />
+        <Image
+          style={ImageStyles.bubbleContainer}
+          source={require("../../assets/bubble.png")}
+        />
 
-      <Image
-        style={ImageStyles.eluvoContainer}
-        source={require("../../assets/eluvo.png")}
-      />
+        <Image
+          style={ImageStyles.squiggleContainer}
+          source={require("../../assets/squiggle.png")}
+        />
 
-      <Image
-        style={ImageStyles.eluvoTextContainer}
-        source={require("../../assets/eluvotext.png")}
-      />
+        <Image
+          style={ImageStyles.dotsContainer}
+          source={require("../../assets/dots.png")}
+        />
 
-      <Button
-        style={styles.loginBtnContainer}
-        onPress={() => navigation.navigate("Login")}
-      >
-        Log in
-      </Button>
+        <Image
+          style={ImageStyles.eluvoContainer}
+          source={require("../../assets/eluvo.png")}
+        />
 
-      <Button
-        style={styles.signBtnContainer}
-        onPress={() => navigation.navigate("SignUp")}  //This is the create an account button that will navigate to sign up page
-      >
-        Create an account
-      </Button>
-    </Layout>
-  );
+        <Image
+          style={ImageStyles.eluvoTextContainer}
+          source={require("../../assets/eluvotext.png")}
+        />
+
+        <Button
+          style={styles.loginBtnContainer}
+          onPress={() => navigation.navigate("Login")}
+        >
+          Log in
+        </Button>
+
+        <Button
+          style={styles.signBtnContainer}
+          onPress={() => navigation.navigate("SignUp")}  //This is the create an account button that will navigate to sign up page
+        >
+          Create an account
+        </Button>
+      </Layout>
+    );
+
 };       
 
 const styles = StyleSheet.create({

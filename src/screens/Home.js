@@ -606,21 +606,11 @@ export default class Home extends React.Component {
       this.getUserSymptoms();
     });
   }
-  // async componentDidMount() {
-  //   await saveUserSettings(this.state.username);
-  //   console.log("Get user details")
-  //   getData(constants.GETUSERSETTINGS_DEV_URL).then((data) => {
-  //     // Read back the user details from storage and convert to object
-  //     this.setState({
-  //       userDetails: JSON.parse(data),
-  //       }, () => this.getUserSettings());
-  //   });
-  //   this.props.navigation.addListener("focus", () => {
-  //     // To load symptoms for the selected date after tracking as the home screen is already mounted and only comes into focus
-  //     this.getUserSettings();
-  //   });
-  // }
+
   render() {
+
+    console.log("All symproms need to be displayed",bloodSymptoms)
+    console.log("Appointments need**** to be displayed",appointments)
     return (
       <Layout style={styles.container}>
         <TopNavigation position="absolute" />
@@ -692,12 +682,15 @@ export default class Home extends React.Component {
           />
         </View>
 
-       
+     
 
         {this.state.isAllDataLoaded ? (
+        
           <>
             {this.state.isAnyDataAvailable ||  this.state.isAnyAppointmentAvailable? (
+             
               <>
+              
                 <View
                   style={{
                     width: Responsive.width(360),
@@ -723,6 +716,19 @@ export default class Home extends React.Component {
                       shadowRadius: 30,
                     }}
                   >
+                    {this.state.isAnyDataAvailable ? (
+             
+             <>
+             
+
+
+
+
+
+
+
+
+
                     <Card style={styles.cardContainer}>
                       <Text style={styles.cardText}>
                         Today you experienced...
@@ -820,19 +826,13 @@ export default class Home extends React.Component {
                         keyExtractor={extractKey}
                       />
 
-                      <FlatList
-                        style={{
-                          flex: 0,
-                          width: Responsive.width(400),
-                          top: Responsive.height(25),
-                          left: Responsive.width(-37),
-                        }}
-                        data={appointments}
-                        renderItem={this.renderItem}
-                        keyExtractor={extractKey}
-                      />
                     </Card>
-                    <Card style={styles.cardContainer}>
+                    </>) : (<><Text>No symptoms</Text></>)}
+
+                    {this.state.isAnyAppointmentAvailable? (
+             
+             <>
+                    <Card style={styles.appointmentcardContainer}>
                     <FlatList
                         style={{
                           flex: 0,
@@ -845,7 +845,7 @@ export default class Home extends React.Component {
                         keyExtractor={extractKey}
                       />
                     </Card>
-
+            </>) :(<><Text>No appointment</Text></>)}
                   </ScrollView>
                 </View>
               </>
@@ -964,9 +964,31 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: Responsive.width(330),
     borderRadius: Responsive.width(20),
-    flexDirection: "row",
+    flexDirection: "column",
     alignSelf: "center",
-    top: Responsive.height(-125),
+   top: Responsive.height(-125),
+    alignItems: "center",
+    //left: wp('5'),
+    backgroundColor: "#ffff",
+    borderBottomColor: "#ffffff",
+    borderTopColor: "#ffffff",
+    borderLeftColor: "#ffffff",
+    borderRightColor: "#ffffff",
+    backgroundColor: "#ffffff",
+    shadowColor: "#c8c8c8",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 30,
+  },
+
+  appointmentcardContainer: {
+    flex: 1,
+    position: "absolute",
+    width: Responsive.width(330),
+    borderRadius: Responsive.width(20),
+    flexDirection: "column",
+    alignSelf: "center",
+    //top: Responsive.height(-10),
     alignItems: "center",
     //left: wp('5'),
     backgroundColor: "#ffff",
