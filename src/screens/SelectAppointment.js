@@ -187,18 +187,16 @@ render()
              {/* <Card.Title>APPOINTMENT</Card.Title>  
              <Card.Divider/>    */}
              <Button
-                   style={{ left: wp('70%'), top: wp('30%'),  width:hp('5%'),  backgroundColor: "#f08974",
-            borderRadius:5,appearance:"outline"}}
+                   style={{ left: wp('70%'), top: wp('30%'),  width:hp('5%'),  backgroundColor: "#f08974",color:"#ffffff",borderRadius:5,appearance:"outline"}}
  
                       
                       onPress={() => {
-                      //this.props.navigation.navigate("HTwo")
-                      //this.setMedicationVisible(!this.state.medicationVisible)
-                      this.props.navigation.navigate("Track");
+
+                      this.props.navigation.navigate("Edit", {appointmentId: appointment.appointment_id});
                       }}
                   >
                      
-                 
+                
               </Button>
              <Text style={{
                   left: wp('-5%'),

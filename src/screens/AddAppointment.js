@@ -44,7 +44,7 @@ export default class AddAppointment extends Component {
             appointment_date: new Date(),
             appointment_type: "",
             appointment_with: "",
-            appointment_location: "",
+            appointment_location: " ",
             appointment_notes:"",
             userDetails:{},
             appointmentDetails: initAppointmentDetails(0,  moment().format('YYYY-MM-DD')) ,
@@ -58,8 +58,8 @@ export default class AddAppointment extends Component {
             timeType: '',
             creatTodo: {},
             createEventAsyncRes: '',
-            minDate: new Date(1960, 0, 1),
-            maxDate: new Date(),
+            minDate: new Date(2019, 0, 1),
+            maxDate: new Date(2070,0,1)
         };
         this.setDate = this.setDate.bind(this);
     }
@@ -108,7 +108,11 @@ export default class AddAppointment extends Component {
             this.setState({
                 userDetails: JSON.parse(data),
             });                   
-        })   
+        })  
+
+          
+        
+        
     }
 
     componentWillMount() {
@@ -410,8 +414,8 @@ export default class AddAppointment extends Component {
                         </Text>
                       </View>
                     </View>
-                    <Text style={{fontWeight:'500', top:40}} >Practitioner</Text>
-                    <Input
+                    <Text style={{fontWeight:'500',top:40}}>Practitioner</Text>
+                  <Input
                         style={{
                           height: 25,
                           fontSize: 19,
@@ -419,34 +423,71 @@ export default class AddAppointment extends Component {
                           backgroundColor: '#FBFBFB',
                           top:50
                         }}
-                      onChangeText={(value) => this.setState({appointment_with: value })}
+                      onChangeText={(value) => this.setState({ appointment_with: value })}
                       value={appointment_with}
-                      placeholder='Practitioner name' 
-                      placeholderTextColor='#8A8A8E'
-                     
-                    />
-                    <Text style={{fontWeight:'500', top:80}} >Location</Text>
+                      placeholder='E.g.Practitoner'
+                      placeholderTextColor='#8A8A8E'/>
+                    <Text style={{fontWeight:'500', top:80}}>Location</Text>
                     <Input
                         style={{
-                          height: 25,
+                          height:-40,
                           fontSize: 19,
                           marginTop: 3,
                           backgroundColor: '#FBFBFB',
                           top:80
                         }}
-                      onChangeText={(value) =>this.setState({appointment_location:value})}
+                      onChangeText={(value) => this.setState({appointment_location: value })}
                       value={appointment_location}
-                      placeholder='Location'
+                      placeholder='E.g.Location'
                       placeholderTextColor='#8A8A8E'
+                      
+                      
                      
                     />
+
+                <Text style={{fontWeight:'500', top:80}} >Notes</Text>
+                    <Input
+                        style={{
+                          height:-40,
+                          fontSize: 19,
+                          marginTop: 3,
+                          backgroundColor: '#FBFBFB',
+                          top:90,
+                          // hitSlop:{top: 90, bottom: 100}
+                        }}
+                      onChangeText={(value) => this.setState({ appointment_notes: value })}
+                      value={appointment_notes}
+                      placeholder='E.g.Notes'
+                      placeholderTextColor='#8A8A8E'
+                      
+                      
+                     
+                    />
+                    {/* <Text style={{fontWeight:'500', top:80}} >Notes</Text>
+                    <Input
+                        style={{
+                          height:-40,
+                          fontSize: 19,
+                          marginTop: 3,
+                          backgroundColor: '#FBFBFB',
+                          top:90
+                        }}
+                      onChangeText={(value) => this.setState({ appointment_with: value })}
+                      value={appointment_with}
+                      placeholder='E.g.Practitoner'
+                      placeholderTextColor='#8A8A8E'
+                      
+                      
+                     
+                    /> */}
+                    
                     {/* <View style={styles.notesContent} /> */}
                     <View>
                       {/* <Text style={styles.notes}>Notes</Text> */}
-                      <Text style={{fontWeight:'500', top:110}} >Notes</Text>
+                      <Text style={{fontWeight:'500', top:100}} >Date</Text>
                       <Datepicker
                         style={styles.datepicker}
-                        date={appointment_date}
+                        //date={appointment_date}
                         onSelect={this.setDate}
                         accessoryRight={this.DateIcon}
                         //label="Date of Birth"

@@ -719,16 +719,6 @@ export default class Home extends React.Component {
                     {this.state.isAnyDataAvailable ? (
              
              <>
-             
-
-
-
-
-
-
-
-
-
                     <Card style={styles.cardContainer}>
                       <Text style={styles.cardText}>
                         Today you experienced...

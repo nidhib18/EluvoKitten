@@ -16,7 +16,10 @@ import {
 import moment from 'moment';
 import * as Calendar from 'expo-calendar';
 import * as Localization from 'expo-localization';
+import { Auth } from "aws-amplify";
 import Constants from 'expo-constants';
+import { removeData } from "../helpers/StorageHelpers";
+import { constants } from "../resources/Constants";
 import {
     Button,
     Divider,
@@ -256,7 +259,14 @@ export default class HomeTwo extends Component {
   componentWillMount() {
     this._handleDeletePreviousDayTask();
   }
-
+  handleSignOut = () => {
+        Auth.signOut()
+          .then(() => {
+            removeData(constants.USERDETAILS).then(() => this.props.navigation.navigate("Welcome"));
+            
+          })
+          .catch((err) => console.log(err));
+      };
   _handleDeletePreviousDayTask = async () => {
     const { currentDate } = this.state;
     try {

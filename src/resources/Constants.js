@@ -7,6 +7,7 @@ export const constants = {
   USERDETAILS: "@userdetails",
   CURRENTDATE: "currentDate",
   USERSETTINGS: "usersettings",
+  APPOINTMENT: "appointment",
   NO_OF_YEARS: 5 ,
 
   /* API URls */
@@ -104,13 +105,11 @@ export const constants = {
     "https://xnho3p0bdg.execute-api.ap-southeast-2.amazonaws.com/DEV/addappointment",
 
     UPDATEAPPOINTMENT_DEV_URL:
-    "https://mtm2pz3j8l.execute-api.ap-southeast-2.amazonaws.com/DEV/updateappointment",
+    "https://mtm2pz3j8l.execute-api.ap-southeast-2.amazonaws.com/DEV/`updateappointment",
 
-      GETALLAPPOINTMENTS_DEV_URL:
-      "https://ewan0blk87.execute-api.ap-southeast-2.amazonaws.com/DEV/getappointment?userId=[userId]"
-    
-
-
-
+    GETALLAPPOINTMENTS_DEV_URL:
+      "https://ewan0blk87.execute-api.ap-southeast-2.amazonaws.com/DEV/getappointment?userId=[userId]",
+    GETEDITAPPOINTMENT_DEV_URL:
+      "https://ewan0blk87.execute-api.ap-southeast-2.amazonaws.com/DEV/getappointment?userId=[userId]&appointmentId=[appointmentId]",
 
 };

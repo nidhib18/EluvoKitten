@@ -1,416 +1,893 @@
-import React from "react";
+import React, { Component } from 'react';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { Divider, Layout, TopNavigation, Button, Input, Datepicker } from "@ui-kitten/components";
 import {
-  SafeAreaView,
-  Image,
-  StyleSheet,
-  Dimensions,
   Text,
+  Image,
   View,
-} from "react-native";
-import {
-  Button,
-  Divider,
-  Layout,
-  TopNavigation,
-  Card,
-  Toggle,
-} from "@ui-kitten/components";
-import { ImageStyles } from "./ImageStyles";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
-const { width, height } = Dimensions.get("window");
+  TouchableOpacity,
+  Dimensions,
+  ScrollView,
+  TextInput,
+  Keyboard,
+  Switch,
+  StyleSheet,
+  Alert,
+} from 'react-native';
+import { CalendarList } from 'react-native-calendars';
+import moment from 'moment';
+import * as Calendar from 'expo-calendar';
+import * as Localization from 'expo-localization';
 import Constants from 'expo-constants';
+import DateTimePicker from 'react-native-modal-datetime-picker';
+import uuid from 'uuid';
+import { Context } from './Context';
 import { storeData, getData } from "../helpers/StorageHelpers";
 import { constants } from "../resources/Constants";
-import {saveUserSettings} from "../helpers/SettingHelpers";
-import {
-  utcToLocal,
-  localToUtcDate,
-  localToUtcDateTime,
-} from "../helpers/DateHelpers"
-import Responsive from "react-native-lightweight-responsive";
-import moment from "moment";
-import { ScrollView } from "react-native-gesture-handler";
-export default class EditAppointment extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
+import { initAppointmentDetails } from "../models/AppointmentDetails";
+import { utcToLocal, localToUtcDate, localToUtcDateTime } from "../helpers/DateHelpers";
 
-      userDetails: {},
-      appointmentDetails:[],
+const { width: vw } = Dimensions.get('window');
+
+export default class AddAppointment extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            selectedDay: {
+            [`${moment().format('YYYY')}-${moment().format('MM')}-${moment().format(
+                'DD'
+            )}`]: {
+                selected: true,
+                selectedColor: '#f09874',
+            },
+            },
+            appointment:{},
+            appointment_date: new Date(),
+            appointment_type: "",
+            appointment_with: "",
+            appointment_location: " ",
+            appointment_notes:"",
+            userDetails:{},
+            appointmentDetails: initAppointmentDetails(0,  moment().format('YYYY-MM-DD')) ,
+            taskText: '',
+            notesText: '',
+            keyboardHeight: 0,
+            visibleHeight: Dimensions.get('window').height,
+            isAlarmSet: false,
+            alarmTime: moment().format(),
+            isDateTimePickerVisible: false,
+            timeType: '',
+            creatTodo: {},
+            createEventAsyncRes: '',
+            minDate: new Date(2019, 0, 1),
+            maxDate: new Date(2070,0,1),
+            appointment_id: (this.props &&
+                    this.props.route &&
+                    this.props.route.params &&
+                    this.props.route.params.appointmentId) ||0,
+        };
+        this.setDate = this.setDate.bind(this);
+    }
+    setDate(newDate) {
+        let appointmentDate = new Date(newDate);
+        this.setState({ appointment_date: appointmentDate });
+    }
       
-      currentDate:
-        (this.props &&
-          this.props.route &&
-          this.props.route.params &&
-          this.props.route.params.currentDate) ||
-        moment().format("YYYY-MM-DD"),
+    saveAppointmentDetails() {
+
+      // Add the saved med level
+      let userId = this.state.userDetails.user_id;
+      let appointment = { 
+          user_id: userId,
+          appointment_id:this.state.appointment_id,
+          appointment_date:this.state.appointment_date,
+          appointment_type: this.state.appointment_type,
+          appointment_with: this.state.appointment_with,
+          appointment_location: this.state.appointment_location,
+          appointment_notes:this.state.appointment_notes     
+      };
+     
+      let url = constants.UPDATEAPPOINTMENT_DEV_URL;
+      getData(constants.JWTKEY).then((jwt) =>
+          fetch(url, {
+              //calling API
+              method: "PUT",
+              headers: {
+                  Authorization: "Bearer " + jwt, //Passing this will authorize the user
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(appointment)
+            })
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+              console.log("RESPONSE",data);
+            })
+        );
+    }   
+  
+    componentDidMount() //after Ui has been uploaded 
+    {
+        getData(constants.USERDETAILS).then((data) => {
+            // Read back the user details from storage and convert to object
+            this.state.userDetails = JSON.parse(data);
+            this.setState({
+                userDetails: JSON.parse(data),
+            });                   
+        })  
+        .then((data) => {
+          let userId = this.state.userDetails.user_id;
+          let url = constants.GETEDITAPPOINTMENT_DEV_URL.replace("[userId]", userId).replace(
+            "[appointmentId]",this.state.appointment_id);
+            console.log ("GET Appointment in Edit URL"+url);
+            var isAnyAppointmentAvailable = false;  
+            var appointmentDetails = [];
+            getData(constants.JWTKEY).then((jwt) =>
+              fetch(url, {
+                //calling API
+                method: "GET",
+                headers: {
+                  Authorization: "Bearer " + jwt, //Passing this will authorize the user
+                },
+              })
+                .then((response) => response.json())
+                .then((responseData) => {
+                  console.log("Completed appointment API call");
+                  if (responseData.length) {
+                    isAnyAppointmentAvailable = true;
+                    appointmentDetails = responseData[0];
+                    console.log("Appointment", appointmentDetails);
+                  }
+      
+                  this.setState({
+                    isAnyAppointmentAvailable:isAnyAppointmentAvailable,
+                    appointment_date: appointmentDetails.appointment_date,
+                    appointment_location: appointmentDetails.appointment_location,
+                    appointment_type:appointmentDetails.appointment_type,
+                    appointment_with:appointmentDetails.appointment_with,
+                    appointment_notes:appointmentDetails.appointment_notes
+                  });
+                })
+                .catch((err) => console.log(err))
+               
+            
+            );
+      });
+        
+        
+    }
     
-      // If any data is available, then we need to display the card
-      isAnyDataAvailable: false,
-      isAnyAppointmentAvailable:false,
+
+    componentWillMount() {
+        this.keyboardDidShowListener = Keyboard.addListener(
+        'keyboardDidShow',
+        this._keyboardDidShow
+        );
+        this.keyboardDidHideListener = Keyboard.addListener(
+        'keyboardDidHide',
+        this._keyboardDidHide
+        );
+    }
+
+    componentWillUnmount() {
+        Keyboard.removeListener('keyboardDidShow', this._keyboardDidShow);
+        Keyboard.removeListener('keyboardDidHide', this._keyboardDidHide);
+    }
+
+    _keyboardDidShow = e => {
+        this.setState({
+        keyboardHeight: e.endCoordinates.height,
+        visibleHeight:
+            Dimensions.get('window').height - e.endCoordinates.height - 30,
+        });
     };
 
-    this.getAllAppointments = this.getAllAppointments.bind(this);
+    _keyboardDidHide = () => {
+        this.setState({
+        visibleHeight: Dimensions.get('window').height,
+        });
+    };
 
-  }
-  
-  
-  // constructor() {
-    //     super();
-    //     this.state = {
-    //       show: false,
-    //       PainCard: false,
-    //       activeSwitch: null,
-    //       userDetails: {},
-    //       userSettings: {}
-    //     };
-    //   }
+    handleAlarmSet = () => {
+        const { isAlarmSet } = this.state;
+        this.setState({
+        isAlarmSet: !isAlarmSet,
+        });
+    };
 
-
-    getAllAppointments()
-    {
-      let userId = this.state.userDetails.user_id;
-      let url = constants.GETALLAPPOINTMENTS_DEV_URL.replace("[userId]", userId)
-        console.log ("All the Appointments as a list URL"+url);
-        var isAnyAppointmentAvailable = false;  
-        var appointmentDetails = [];
-        getData(constants.JWTKEY).then((jwt) =>
-          fetch(url, {
-            //calling API
-            method: "GET",
-            headers: {
-              Authorization: "Bearer " + jwt, //Passing this will authorize the user
+    synchronizeCalendar = async value => {
+        const { navigation } = this.props;
+        const { createNewCalendar } = navigation.state.params;
+        const calendarId = await createNewCalendar();
+        try {
+        const createEventAsyncRes = await this._addEventsToCalendar(calendarId);
+        this.setState(
+            {
+            createEventAsyncRes,
             },
-          })
-            .then((response) => response.json())
-            .then((responseData) => {
-              console.log("Completed appointment API call");
-              if (responseData.length) {
-                isAnyAppointmentAvailable = true;
-                appointmentDetails = responseData;
-                console.log("Appointment", appointmentDetails);
-              }
-  
-              this.setState({
-                isAnyAppointmentAvailable:isAnyAppointmentAvailable,
-                appointmentDetails:appointmentDetails
-              });
-              
-            })
-            .catch((err) => console.log(err))
-           
-        
+            () => {
+            this._handleCreateEventData(value);
+            }
         );
-  }
+        } catch (e) {
+        Alert.alert(e.message);
+        }
+    };
 
-  async componentDidMount() {
-    //await saveUserDetails(this.state.username);
-    console.log("Get user details")
-    getData(constants.USERDETAILS).then((data) => {
-      // Read back the user details from storage and convert to object
-      this.setState({
-        userDetails: JSON.parse(data),
-        }, () => {
-          this.getAllAppointments();
-        });
-    })
-    
-  }
-render()
-{
-  console.log("Appointment Details in render",this.state.appointmentDetails);
+    _addEventsToCalendar = async calendarId => {
+        const { taskText, notesText, alarmTime } = this.state;
+        const event = {
+        title: taskText,
+        notes: notesText,
+        startDate: moment(alarmTime)
+            .add(0, 'm')
+            .toDate(),
+        endDate: moment(alarmTime)
+            .add(5, 'm')
+            .toDate(),
+        timeZone: Localization.timezone,
+        };
 
-  this.state.appointmentDetails.map(function(appointment, i){
+        try {
+        const createEventAsyncRes = await Calendar.createEventAsync(
+            calendarId.toString(),
+            event
+        );
 
-    console.log(appointment.appointment_with);
-  })
-  // console.log("Appointment Details Practitioner",this.state.appointmentDetails[1].appointment_with);
-  
-  
+        return createEventAsyncRes;
+        } catch (error) {
+        console.log(error);
+        }
+    };
 
-  return (
-  
-  <Layout style={styles.mainContainer}>
+    _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
 
-  <TopNavigation position="absolute"
-                      top={0}
-                      style={{ height: hp('10%'), width: width }} />
-                  {/* <Text style={{ top: hp('2%'), left: wp('-30'), fontSize: wp('7.5%'), fontWeight: '700' }}>Settings</Text> */}
-                  <Button
-                   style={{ left: wp('80%'), top: wp('14'),  width:hp('12%') }}
- 
-                      appearance="outline"
-                      onPress={() => {
-                      //this.props.navigation.navigate("HTwo")
-                      //this.setMedicationVisible(!this.state.medicationVisible)
-                     
-                      }}
-                  >
-                      Save
-                 
-              </Button>
-              <Text style={{ left: wp('34%'), top: wp('4'), color:'white', fontWeight:'500', fontSize:Responsive.font(16) }}>Select appointment</Text>
-              <Button
-                   style={{ left: wp('-2%'), top: wp('-2'), width:hp('14%') }}
- 
-                      appearance="outline"
-                      onPress={() =>  this.props.navigation.navigate("Select")}
-                  >
-                      Cancel
-                 
-              </Button>
-              
-              
-                 <Divider />
-        <ScrollView>
-                
-         { this.state.appointmentDetails.map((appointment, i)=>{
-          return<Card style={{backgroundColor:'#ffff',height:hp('40%'),marginBottom:hp('-15%'),width:hp('45%'), borderRadius:Responsive.width(10),
-    flexDirection: "row",
-    alignSelf: "center",
-    // top: Responsive.height(-125),
-    alignItems: "center",
-    //left: wp('5'),
-    backgroundColor: "#ffff",
-    borderBottomColor: "#ffffff",
-    borderTopColor: "#ffffff",
-    borderLeftColor: "#ffffff",
-    borderRightColor: "#ffffff",
-    backgroundColor: "#ffffff",
-    shadowColor: "#c8c8c8",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 30,}}>
-             {/* <Card.Title>APPOINTMENT</Card.Title>  
-             <Card.Divider/>    */}
-             <Button
-                   style={{ left: wp('70%'), top: wp('30%'),  width:hp('5%'),  backgroundColor: "#f08974",
-            borderRadius:5,appearance:"outline"}}
- 
-                      
-                      onPress={() => {
-                      //this.props.navigation.navigate("HTwo")
-                      //this.setMedicationVisible(!this.state.medicationVisible)
-                      this.props.navigation.navigate("Track");
-                      }}
-                  >
-                      Edit
-                 
-              </Button>
-             <Text style={{
-                  left: wp('-5%'),
-                  paddingTop: hp('10%'),
-                  top:wp('-20%'),
-                  color: "#8A8A8E"}}>Appointment Type {appointment.appointment_type}</Text> 
-              <Text
-                style={{
-                  left: wp('-5%'),
-                  paddingTop: hp('10%'),
-                  color: "#8A8A8E",
-                  top:wp('-30%')
-                }}
-              >Practitioner name : {appointment.appointment_with}</Text>
+    _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
 
-              <Text style={{
-                  left: wp('-5%'),
-                  paddingTop: hp('10%'),
-                  top:wp('-50%'),
-                  color: "#8A8A8E"}}>Location: {appointment.appointment_location}
-                
-              </Text>
-              <Text style={{ top:wp('-50%')}}>___________________________</Text>
-              <Text style={{
-                  left: wp('-5%'),
-                  top:wp('-70%'),
-                  paddingTop: hp('10%'),
-                  color: "#8A8A8E"}}>Notes {appointment.appointment_notes}</Text> 
-            
-              
-            </Card>
-
-           
-           
-         })} 
-         </ScrollView>
-                </Layout>
- )}}
-
-        const styles = StyleSheet.create({
-          createTaskButton: {
-            width: 252,
-            height: 48,
-            alignSelf: 'center',
-            marginTop: 40,
-            borderRadius: 5,
-            justifyContent: 'center',
-          },
-          // seperator: {
-          //   height: 0.5,
-          //   width: '100%',
-          //   backgroundColor: '#979797',
-          //   alignSelf: 'center',
-          //   marginVertical: 20,
-          // },
-          notes: {
-            color: '#9CAAC4',
-            fontSize: 16,
-            fontWeight: '600',
-          },
-          notesContent: {
-            height: 0.5,
-            width: '100%',
-            backgroundColor: '#979797',
-            alignSelf: 'center',
-            marginVertical: 20,
-          },
-          learn: {
-            height: 23,
-            width: 51,
-            backgroundColor: '#F8D557',
-            justifyContent: 'center',
-            borderRadius: 5,
-            top:18,
-          },
-          design: {
-            height: 23,
-            width: 59,
-            backgroundColor: '#F3A878',
-            justifyContent: 'center',
-            borderRadius: 5,
-            marginRight: 7,
-            top:18,
-          },
-          readBook: {
-            height: 23,
-            width: 83,
-            backgroundColor: '#F09874',
-            justifyContent: 'center',
-            borderRadius: 5,
-            marginRight: 7,
-            width:90,
-            top:18
-          },
-
-          trackButton: {
-            position: "absolute",
-            alignItems: "center",
-            justifyContent: "center",
-            top:wp('-10%'),
-            left: wp('-25%'),
-            backgroundColor: "#f09874",
-            borderRadius:5,
-            width: wp('30%'),
-        
-          },
-
-          textContainer: {
-            flex: 1,
-            position: "absolute",
-            top: hp('88%'),
-            justifyContent: "center",
-            alignItems: "center",
-          },
-          cardContainer: {
-            
-            flex: 1,
-    position: "absolute",
-    width: Responsive.width(330),
-    borderRadius: Responsive.width(20),
-    flexDirection: "row",
-    alignSelf: "center",
-    top: Responsive.height(-125),
-    alignItems: "center",
-    //left: wp('5'),
-    backgroundColor: "#ffff",
-    borderBottomColor: "#ffffff",
-    borderTopColor: "#ffffff",
-    borderLeftColor: "#ffffff",
-    borderRightColor: "#ffffff",
-    backgroundColor: "#ffffff",
-    shadowColor: "#c8c8c8",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 30,
-          },
-
-          cardText: {
-            flex: 1,
-        
-            left: Responsive.width(10),
-            position: "absolute",
-            fontSize: Responsive.font(16),
-            fontWeight: "bold",
-            letterSpacing: wp("0%"),
-            justifyContent: "center",
-            alignItems: "center",
-            paddingLeft: hp("0%"),
-            top: Responsive.height(7),
-          },
-
-          symptomText: {
-            flex: 1,
-            position: "absolute",
-            fontSize: Responsive.font(18),
-            fontWeight: "bold",
-            letterSpacing: wp("0%"),
-            justifyContent: "center",
-            alignItems: "center",
-            left: Responsive.width(74),
-            paddingLeft: Responsive.height(2),
-            paddingBottom: Responsive.height(-20),
-            top: Responsive.height(2),
-          },
-          title: {
-            height: 25,
-           
-            borderLeftWidth: 1,
-            paddingLeft: 8,
-            fontSize: 19,
-            backgroundColor: '#FBFBFB'
-          },
-          taskContainer: {
-            height: 600,
-            width: 367,
-            alignSelf: 'center',
-            borderRadius: 20,
-            shadowColor: '#2E66E7',
-            backgroundColor: '#ffffff',
-            shadowOffset: {
-              width: 3,
-              height: 3,
+    _handleCreateEventData = async value => {
+        const {
+        state: {
+            currentDay,
+            taskText,
+            notesText,
+            isAlarmSet,
+            alarmTime,
+            createEventAsyncRes,
+        },
+        props: { navigation },
+        } = this;
+        const { updateCurrentTask, currentDate } = navigation.state.params;
+        const creatTodo = {
+        key: uuid(),
+        date: `${moment(currentDay).format('YYYY')}-${moment(currentDay).format(
+            'MM'
+        )}-${moment(currentDay).format('DD')}`,
+        todoList: [
+            {
+            key: uuid(),
+            title: taskText,
+            notes: notesText,
+            alarm: {
+                time: alarmTime,
+                isOn: isAlarmSet,
+                createEventAsyncRes,
             },
-            shadowRadius: 20,
-            shadowOpacity: 0.2,
-            elevation: 5,
-            padding: 22,
-          },
-          calenderContainer: {
-            marginTop: 30,
-            width: 350,
-            height: 350,
-            alignSelf: 'center',
-          },
-          newTask: {
-            alignSelf: 'center',
-            fontSize: 20,
-            width: 120,
-            height: 25,
-            textAlign: 'center',
-          },
-          backButton: {
-            flexDirection: 'row',
-            marginTop: 60,
-            width: '100%',
-            alignItems: 'center',
-          },
-          container: {
-            flex: 1,
-            top:10,
-            paddingTop: Constants.statusBarHeight,
-            //backgroundColor: '#fbfbfb',
-          },
+            color: `rgb(${Math.floor(
+                Math.random() * Math.floor(256)
+            )},${Math.floor(Math.random() * Math.floor(256))},${Math.floor(
+                Math.random() * Math.floor(256)
+            )})`,
+            },
+        ],
+        markedDot: {
+            date: currentDay,
+            dots: [
+            {
+                key: uuid(),
+                color: 'white',
+                selectedDotColor: 'white',
+            },
+            ],
+        },
+        };
+
+        await value.updateTodo(creatTodo);
+        await updateCurrentTask(currentDate);
+        navigation.navigate('Home');
+    };
+
+    _handleDatePicked = date => {
+        const { currentDay } = this.state;
+        const selectedDatePicked = currentDay;
+        const hour = moment(date).hour();
+        const minute = moment(date).minute();
+        const newModifiedDay = moment(selectedDatePicked)
+        .hour(hour)
+        .minute(minute);
+
+        this.setState({
+        alarmTime: newModifiedDay,
         });
+
+        this._hideDateTimePicker();
+    };
+  
+    render() {
+
+        appointment_date= this.state.appointment_date || new Date();
+        appointment_type= this.state.appointment_type || "";
+        appointment_with= this.state.appointment_with || "";
+        appointment_location= this.state.appointment_location|| "";
+        appointment_notes = this.state.appointment_notes || "";
+
+        const {
+          state: {
+            selectedDay,
+            currentDay,
+            taskText,
+            visibleHeight,
+            notesText,
+            isAlarmSet,
+            alarmTime,
+            isDateTimePickerVisible,
+          },
+          props: { navigation },
+        } = this;
+
+        return (
+            <Layout style={styles.mainContainer}>
+
+            <TopNavigation position="absolute" top={0} style={{ height: hp('10%'), width: width }} />
+            <Button style={{ left: wp('80%'), top: wp('14'),  width:hp('12%') }}
+                appearance="outline"
+                onPress={() => {
+                    this.saveAppointmentDetails();
+            }}> Save
+            </Button>
+            <Text style={{ left: wp('34%'), top: wp('4'), color:'white', fontWeight:'500', fontSize:Responsive.font(16) }}>Add appointment</Text>
+            <Button style={{ left: wp('-2%'), top: wp('-2'), width:hp('14%') }} appearance="outline"
+                     onPress={() =>  this.props.navigation.navigate("Select")}>
+                     Cancel
+            </Button>
+            <Divider />
+      <Context.Consumer>
+        {value => (
+          <>
+            <DateTimePicker
+              isVisible={isDateTimePickerVisible}
+              onConfirm={this._handleDatePicked}
+              onCancel={this._hideDateTimePicker}
+              mode="time"
+            />
+
+            <View style={styles.container}>
+              <View
+                style={{
+                  height: visibleHeight,
+                }}
+              >
+                <ScrollView
+                  contentContainerStyle={{
+                    paddingBottom: 150, bottom:-500, top:-20
+                  }}
+                >
+                  
+                  <View style={styles.calenderContainer}>
+                    <CalendarList
+                      style={{
+                        width: 350,
+                        height: 350,
+                      }}
+                      current={currentDay}
+                      minDate={moment().format()}
+                      horizontal
+                      pastScrollRange={0}
+                      pagingEnabled
+                      calendarWidth={350}
+                      onDayPress={day => {
+                        this.setState({
+                          selectedDay: {
+                            [day.dateString]: {
+                              selected: true,
+                              selectedColor: '#f09874',
+                            },
+                          },
+                          currentDay: day.dateString,
+                          alarmTime: day.dateString,
+                        });
+                      }}
+                      monthFormat="yyyy MMMM"
+                      hideArrows
+                      markingType="simple"
+                      theme={{
+                        selectedDayBackgroundColor: '#f09874',
+                        selectedDayTextColor: '#ffffff',
+                        todayTextColor: 'white',
+                        backgroundColor: '#eaeef7',
+                        calendarBackground: '#eaeef7',
+                        textDisabledColor: '#d9dbe0',
+                      }}
+                      markedDates={selectedDay}
+                    />
+                  </View>
+                  <View style={styles.taskContainer}>
+                  <Text style={{fontWeight:'500'}} >Appointment Type</Text>
+                  <Input
+                        style={{
+                          height: 25,
+                          fontSize: 19,
+                          marginTop: 3,
+                          backgroundColor: '#FBFBFB',
+                          top:10
+                        }}
+                      onChangeText={(value) => this.setState({ appointment_type: value })}
+                      value={appointment_type}
+                      placeholder='E.g. Gynecologist'
+                      placeholderTextColor='#8A8A8E'
+                      
+                      
+                     
+                    />
+                    
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        color: '#BDC6D8',
+                        marginVertical: 10,
+                        top:20
+                      }}
+                    >
+                      Suggestion
+                    </Text>
+                    <View style={{ flexDirection: 'row' }}>
+                      <View style={styles.readBook}>
+                        <Text style={{ textAlign: 'center', fontSize: 14, width:90, color:'white', fontWeight:'500' }}>
+                        Gynecologist
+                        </Text>
+                      </View>
+                      <View style={styles.design}>
+                        <Text style={{textAlign: 'center', fontSize: 14, color:'white', fontWeight:'500' }}>
+                          Physio
+                        </Text>
+                      </View>
+                      <View style={styles.learn}>
+                        <Text style={{textAlign: 'center', fontSize: 14, color:'white', fontWeight:'500' }}>
+                          Social meeting
+                        </Text>
+                      </View>
+                    </View>
+                    <Text style={{fontWeight:'500',top:40}}>Practitioner</Text>
+                  <Input
+                        style={{
+                          height: 25,
+                          fontSize: 19,
+                          marginTop: 3,
+                          backgroundColor: '#FBFBFB',
+                          top:50
+                        }}
+                      onChangeText={(value) => this.setState({ appointment_with: value })}
+                      value={appointment_with}
+                      placeholder='E.g.Practitoner'
+                      placeholderTextColor='#8A8A8E'/>
+                    <Text style={{fontWeight:'500', top:80}}>Location</Text>
+                    <Input
+                        style={{
+                          height:-40,
+                          fontSize: 19,
+                          marginTop: 3,
+                          backgroundColor: '#FBFBFB',
+                          top:80
+                        }}
+                      onChangeText={(value) => this.setState({appointment_location: value })}
+                      value={appointment_location}
+                      placeholder='E.g.Location'
+                      placeholderTextColor='#8A8A8E'
+                      
+                      
+                     
+                    />
+
+                <Text style={{fontWeight:'500', top:80}} >Notes</Text>
+                    <Input
+                        style={{
+                          height:-40,
+                          fontSize: 19,
+                          marginTop: 3,
+                          backgroundColor: '#FBFBFB',
+                          top:90,
+                          // hitSlop:{top: 90, bottom: 100}
+                        }}
+                      onChangeText={(value) => this.setState({ appointment_notes: value })}
+                      value={appointment_notes}
+                      placeholder='E.g.Notes'
+                      placeholderTextColor='#8A8A8E'
+                      
+                      
+                     
+                    />
+                    {/* <Text style={{fontWeight:'500', top:80}} >Notes</Text>
+                    <Input
+                        style={{
+                          height:-40,
+                          fontSize: 19,
+                          marginTop: 3,
+                          backgroundColor: '#FBFBFB',
+                          top:90
+                        }}
+                      onChangeText={(value) => this.setState({ appointment_with: value })}
+                      value={appointment_with}
+                      placeholder='E.g.Practitoner'
+                      placeholderTextColor='#8A8A8E'
+                      
+                      
+                     
+                    /> */}
+                    
+                    {/* <View style={styles.notesContent} /> */}
+                    <View>
+                      {/* <Text style={styles.notes}>Notes</Text> */}
+                      <Text style={{fontWeight:'500', top:100}} >Date</Text>
+                      <Datepicker
+                        style={styles.datepicker}
+                        //date={appointment_date}
+                        onSelect={this.setDate}
+                        accessoryRight={this.DateIcon}
+                        //label="Date of Birth"
+                        min={this.state.minDate}
+                        max={this.state.maxDate}
+                        // max = n
+                        placeholder="dd/mm/yyyy"
+                      />
+                    </View>
+
+                    <View>
+                    
+                    </View>
+
+
+                    {/* <View style={styles.seperator} /> */}
+                    <View>
+                      {/* <Text
+                        style={{
+                          color: '#9CAAC4',
+                          fontSize: 16,
+                          fontWeight: '600',
+                        }}
+                      >
+                        Times
+                      </Text> */}
+                      <Text style={{fontWeight:'500', top:120}}>Time</Text>
+                      <TouchableOpacity
+                        onPress={() => this._showDateTimePicker()}
+                        style={{
+                          height: 35,
+                          marginTop: 3,
+                          top:125,
+                          
+                        }}
+                      >
+                      
+                        <Text style={{ fontSize: 19, }}>
+                          {moment(alarmTime).format('h:mm A')}
+                        </Text>
+                      </TouchableOpacity>
+                      <Text style={{fontWeight:'500', top:130}}>Reminder</Text>
+                    </View>
+                    {/* <View style={styles.seperator} /> */}
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <View>
+                        {/* <Text
+                          style={{
+                            color: '#9CAAC4',
+                            fontSize: 16,
+                            fontWeight: '600',
+                          }}
+                        >
+                          Alarm
+                        </Text> */}
+                        <View
+                          style={{
+                            height: 25,
+                            marginTop: 3,
+                            top:120
+                          }}
+                        >
+                          <Text style={{ fontSize: 19 , top:15}}>
+                            {moment(alarmTime).format('h:mm A')}
+                          </Text>
+                        </View>
+                      </View>
+                      <Switch
+                      style={{top:138}}
+                        value={isAlarmSet}
+                        onValueChange={this.handleAlarmSet}
+                      />
+                    </View>
+                  </View>
+                  <TouchableOpacity
+                    disabled={taskText === ''}
+                    style={[
+                      styles.createTaskButton,
+                      {
+                        borderRadius:25,
+                        width:350,
+                        backgroundColor:
+                          taskText === ''
+                            ? '#f09874'
+                            : '#f09874',
+                      },
+                    ]}
+                    onPress={async () => {
+
+                     
+                      if (isAlarmSet) {
+                        await this.synchronizeCalendar(value);
+                      }
+                      if (!isAlarmSet) {
+                        this._handleCreateEventData(value);
+                      }
+                      this.saveAppointmentDetails();
+                     
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        textAlign: 'center',
+                        color: '#fff',
+                      }}
+                    >
+                      Save
+                    </Text>
+                  </TouchableOpacity>
+                </ScrollView>
+              </View>
+            </View>
+            
+          </>
+          
+        )}
         
+      </Context.Consumer>
+      </Layout>
+      
+    );
+  }
+
+//====================================================================================================================
+// export default class AddAppointment extends React.Component {
+//     constructor() {
+//         super();
+//         this.state = {
+//             show: false,
+//             PainCard:false
+//         };
+//     }
+//     ShowHideComponent = () => {
+//             console.log(state);
+//             this.setState({ show:!this.state.show });
+//         // } else {
+//         //     this.setState({ show: true });
+//         // }
+//     };
+//     render() {
+//         return (
+//             <Layout style={styles.mainContainer}>
+
+// <TopNavigation position="absolute"
+//                     top={0}
+//                      style={{ height: hp('10%'), width: width }} />
+//                  {/* <Text style={{ top: hp('2%'), left: wp('-30'), fontSize: wp('7.5%'), fontWeight: '700' }}>Settings</Text> */}
+//                  <Button
+//                   style={{ left: wp('80%'), top: wp('14'),  width:hp('12%') }}
+
+//                      appearance="outline"
+//                      onPress={() => this.props.navigation.navigate("Settings")}
+//                  >
+//                      Save
+                
+//              </Button>
+//              <Text style={{ left: wp('34%'), top: wp('4'), color:'white', fontWeight:'500', fontSize:Responsive.font(16) }}>Add appointment</Text>
+//              <Button
+//                   style={{ left: wp('-2%'), top: wp('-2'), width:hp('14%') }}
+
+//                      appearance="outline"
+//                      onPress={() => this.props.navigation.navigate("Settings")}
+//                  >
+//                      Cancel
+                
+//              </Button>
+             
+             
+//                 <Divider />
+//                 <View style={{
+//                     shadowColor: '#c8c8c8',
+//                     shadowOffset: { width: 0, height: 2 },
+//                     shadowOpacity: 0.8,
+//                     shadowRadius: 30,
+//                 }}>
+//                     <Card style={styles.cardContainer}>
+
+//                     <Text style={{ left: wp('-20%'), top: wp('4'), color:'black', fontWeight:'500', fontSize:Responsive.font(16) }}> Appointment Details</Text>
+
+                       
+//                     </Card>
+//                 </View>
+
+
+//             </Layout>
+//         );
+//     };
+// }
+// const styles = StyleSheet.create({
+//         container: {
+//             justifyContent: "center",
+//             alignItems: "center",
+//             backgroundColor: "#fbfbfb",
+//             height: hp('14'),
+//         },
+//         signBtnContainer: {
+//             position: "absolute",
+//             width: wp('95%'),
+//             height: hp('7%'),
+//             borderRadius: 24,
+//             top: hp('85%'),
+//             backgroundColor: "#fff",
+//             includeFontPadding: true,
+//             paddingVertical: 5,
+//         },
+    
+//         loginBtnContainer: {
+//             position: "absolute",
+//             width: wp('95%'),
+//             height: hp('7%'),
+//             borderRadius: 24,
+//             top: hp('75%'),
+//             backgroundColor: "white",
+//             includeFontPadding: true,
+//             paddingVertical: 5,
+//         },
+//         cardContainer: {
+//             flex: 1,
+//             position: "absolute",
+//             width: wp('90%'),
+//             borderRadius: 20,
+//             height: hp('80%'),
+//             left: wp('5'),
+//             top: hp('3%'),
+//             alignItems: "center",
+//             backgroundColor: "#ffff",
+//             borderBottomColor: '#ffffff',
+//             borderTopColor: '#ffffff',
+//             borderLeftColor: '#ffffff',
+//             borderRightColor: '#ffffff',
+//             backgroundColor: '#ffffff',
+//             shadowColor: '#c8c8c8',
+//             shadowOffset: { width: 0, height: 2 },
+//             shadowOpacity: 0.8,
+//             shadowRadius: 30,
+//             // resizeMode: "contain"
+//         },
+    
+//     });
+}
+const styles = StyleSheet.create({
+  createTaskButton: {
+    width: 252,
+    height: 48,
+    alignSelf: 'center',
+    marginTop: 40,
+    borderRadius: 5,
+    justifyContent: 'center',
+  },
+  // seperator: {
+  //   height: 0.5,
+  //   width: '100%',
+  //   backgroundColor: '#979797',
+  //   alignSelf: 'center',
+  //   marginVertical: 20,
+  // },
+  notes: {
+    color: '#9CAAC4',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  datepicker: {
+    width:Responsive.width(320),
+    height:Responsive.height(48),
+    position: "absolute",
+    top:120,
+    borderRadius: Responsive.height(24),
+  },
+  notesContent: {
+    height: 0.5,
+    width: '100%',
+    backgroundColor: '#979797',
+    alignSelf: 'center',
+    marginVertical: 20,
+  },
+  learn: {
+    height: 23,
+    width: 51,
+    backgroundColor: '#F8D557',
+    justifyContent: 'center',
+    borderRadius: 5,
+    top:18,
+  },
+  design: {
+    height: 23,
+    width: 59,
+    backgroundColor: '#F3A878',
+    justifyContent: 'center',
+    borderRadius: 5,
+    marginRight: 7,
+    top:18,
+  },
+  readBook: {
+    height: 23,
+    width: 83,
+    backgroundColor: '#F09874',
+    justifyContent: 'center',
+    borderRadius: 5,
+    marginRight: 7,
+    width:90,
+    top:18
+  },
+  title: {
+    height: 25,
+   
+    borderLeftWidth: 1,
+    paddingLeft: 8,
+    fontSize: 19,
+    backgroundColor: '#FBFBFB'
+  },
+  taskContainer: {
+    height: 600,
+    width: 367,
+    alignSelf: 'center',
+    borderRadius: 20,
+    shadowColor: '#2E66E7',
+    backgroundColor: '#ffffff',
+    shadowOffset: {
+      width: 3,
+      height: 3,
+    },
+    shadowRadius: 20,
+    shadowOpacity: 0.2,
+    elevation: 5,
+    padding: 22,
+  },
+  calenderContainer: {
+    marginTop: 30,
+    width: 350,
+    height: 350,
+    alignSelf: 'center',
+  },
+  newTask: {
+    alignSelf: 'center',
+    fontSize: 20,
+    width: 120,
+    height: 25,
+    textAlign: 'center',
+  },
+  backButton: {
+    flexDirection: 'row',
+    marginTop: 60,
+    width: '100%',
+    alignItems: 'center',
+  },
+  container: {
+    flex: 1,
+    top:10,
+    paddingTop: Constants.statusBarHeight,
+    //backgroundColor: '#fbfbfb',
+  },
+});
