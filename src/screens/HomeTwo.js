@@ -5,18 +5,19 @@ import {
   TouchableOpacity,
   AsyncStorage,
   ScrollView,
- 
   Dimensions,
   TextInput,
   Switch,
   StyleSheet,
   Alert,
   Platform,
+  TouchableWithoutFeedback
 } from 'react-native';
 import moment from 'moment';
 import * as Calendar from 'expo-calendar';
 import * as Localization from 'expo-localization';
 import Constants from 'expo-constants';
+import { HomeStyles } from "./HomeStyles";
 import {
     Button,
     Divider,
@@ -166,7 +167,7 @@ const styles = StyleSheet.create({
     width: Responsive.width(325),
     borderRadius: 20,
     flexDirection: "row",
-    height: Responsive.height(280),
+    height: Responsive.height(180),
     //alignSelf: "flex-start",
     bottom: Responsive.height(1040),
     alignItems: "center",
@@ -181,7 +182,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
     shadowRadius: 30,
-    top:-1570
+    top:Responsive.height(-1370)
   },
 
   // cardNotificationContainer: {
@@ -201,7 +202,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: Responsive.width(325),
     borderRadius: 20,
-    top: Responsive.height(420),
+    top: Responsive.height(330),
     width: Responsive.width(325),
     height: Responsive.height(200),
     bottom: Responsive.height(2000),
@@ -215,7 +216,7 @@ const styles = StyleSheet.create({
   },
   cardAppointmentsContainer: {
     flex: 1,
-    top: Responsive.height(180),
+    top: Responsive.height(90),
     paddingLeft: Responsive.width(10),
     position: "absolute",
     width: Responsive.width(325),
@@ -504,7 +505,7 @@ export default class HomeTwo extends Component {
         <Text
           style={{
             top: Responsive.height(35),
-            left: Responsive.width(-100),
+            left: Responsive.width(-90),
             fontSize: Responsive.font(30),
             fontWeight: "700",
           }}
@@ -559,6 +560,7 @@ export default class HomeTwo extends Component {
           >
             <View style>
               <Card disabled={true} style={styles.cardTrackingContainer}>
+              <View style={{top:-20}}>
                 <Text
                   style={{
                     paddingBottom: Responsive.height(50),
@@ -607,8 +609,9 @@ export default class HomeTwo extends Component {
                       fontSize: Responsive.font(16),
                     }}
                   >
-                    ______________________________________
+                    _________________________
                   </Text>
+                  
                   <Image
                     style={{
                       left: Responsive.width(280),
@@ -620,7 +623,8 @@ export default class HomeTwo extends Component {
                     source={require("../../assets/goto.png")}
                   ></Image>
                 </TouchableOpacity>
-                <TouchableOpacity>
+                </View>
+                {/* <TouchableOpacity>
                   <Text
                     style={{
                       left: wp("0%"),
@@ -652,7 +656,7 @@ export default class HomeTwo extends Component {
                       fontSize: Responsive.font(16),
                     }}
                   >
-                    ______________________________________
+                    ____________________________
                   </Text>
                   <Image
                     style={{
@@ -664,7 +668,7 @@ export default class HomeTwo extends Component {
                     }}
                     source={require("../../assets/goto.png")}
                   ></Image>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </Card>
             </View>
             {/* <Card style={styles.cardNotificationContainer}>
@@ -737,7 +741,7 @@ export default class HomeTwo extends Component {
                     fontSize: Responsive.font(16)
                   }}
                 >
-                  ______________________________________
+                  _____________________
                   </Text>
                 <Image
                   style={{
@@ -774,7 +778,7 @@ export default class HomeTwo extends Component {
                     fontSize: Responsive.font(16)
                   }}
                 >
-                  ________________________________________
+                  ________________________
                   </Text>
 
               </TouchableOpacity>
@@ -831,7 +835,7 @@ export default class HomeTwo extends Component {
                   fontSize: Responsive.font(16)
                 }}
               >
-                ________________________________________
+                __________________________
                   </Text>
               <Text style={{
                 paddingBottom: Responsive.height(50),
@@ -1229,8 +1233,56 @@ export default class HomeTwo extends Component {
               </View>
             </View>
           </>
+          
         )}
       </Context.Consumer>
+      <Image
+          style={HomeStyles.tabContainer}
+          source={require("../../assets/bottomtab.png")}
+        />
+    
+          <TouchableWithoutFeedback
+          onPress={() => this.props.navigation.navigate("Home")}>
+            <Image
+              style={HomeStyles.insightcareplan}
+              source={require("../../assets/careplan.png")}
+            />
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback
+            onPress={() => this.props.navigation.navigate("Insights")}
+          >
+            <Image
+              style={HomeStyles.insightinsights}
+              source={require("../../assets/insights.png")}
+            />
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback  onPress={() => this.props.navigation.navigate("Learn")}>
+            <Image
+              style={HomeStyles.insightlearn}
+              source={require("../../assets/learn.png")}
+            />
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback
+            onPress={() => this.props.navigation.navigate("HTwo")}
+          >
+            <Image
+              style={HomeStyles.insightsettings}
+              source={require("../../assets/settings.png")}
+            />
+          </TouchableWithoutFeedback>
+
+          <TouchableWithoutFeedback
+            onPress={() =>
+              this.props.navigation.navigate("Track", {
+                currentDate: this.state.currentDate,
+              })
+            }
+          >
+            <Image
+              style={HomeStyles.ovalContainerInsights}
+              source={require("../../assets/oval.png")}
+            />
+          </TouchableWithoutFeedback>
       </Layout>
     );
   }

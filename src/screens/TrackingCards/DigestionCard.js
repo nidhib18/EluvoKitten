@@ -154,7 +154,12 @@ export default class DigestionCard extends React.Component {
                 </TouchableWithoutFeedback>
                 </>
                 )
-                : (<></>)
+                : (<>
+                    <Image
+                      style={TrackingStyles.digestionButton}
+                      source={require("../../../assets/digestionbw.png")}
+                    />
+                </>)
                 }
 
                 <Modal style={{

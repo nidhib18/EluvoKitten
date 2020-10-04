@@ -186,7 +186,12 @@ export default class MoodCard extends React.Component {
                 </TouchableWithoutFeedback>
                 </>
                 )
-                : (<></>)
+                : (<>
+                    <Image
+                      style={TrackingStyles.moodButton}
+                      source={require("../../../assets/moodbw.png")}
+                    />
+                </>)
                 }
 
                 <Modal style={{

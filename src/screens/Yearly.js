@@ -1,5 +1,5 @@
 import React from "react";
-import { SafeAreaView, Image, StyleSheet, Dimensions,View,ScrollView,Text} from "react-native";
+import { SafeAreaView, Image, StyleSheet, Dimensions,View,ScrollView,Text,TouchableWithoutFeedback, Switch} from "react-native";
 import { Button, Divider, Layout, TopNavigation,Card,Toggle } from "@ui-kitten/components";
 import { TrackingStyles } from "./TrackingStyles";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -17,6 +17,7 @@ import {
   localToUtcDate,
   localToUtcDateTime,
 } from "../helpers/DateHelpers";
+import { HomeStyles } from "./HomeStyles";
 import { storeData, getData } from "../helpers/StorageHelpers";
 //import TopBarNav from './TopBarNav';
 
@@ -125,10 +126,19 @@ export default class Yearly extends React.Component
     <TopNavigation position="absolute"
         top={0}
         style={{ height:hp('20%'), width: width }} /> 
+      <Text style={{
+            left: Responsive.width(-100),
+            top: Responsive.width(145),
+            height: Responsive.height(40),
+            width: Responsive.width(130),
+            color:'white',
+            fontSize:Responsive.font(28),
+            fontWeight:'600'
+          }}>Insights</Text>
       <Button
           style={{
             left: Responsive.width(140),
-            top: Responsive.width(75),
+            top: Responsive.width(155),
             height: Responsive.height(40),
             width: Responsive.width(130),
           }}
@@ -140,7 +150,7 @@ export default class Yearly extends React.Component
         <Button
           style={{
             left: Responsive.width(10),
-            top: Responsive.width(35),
+            top: Responsive.width(115),
             height: Responsive.height(40),
             width: Responsive.width(130),
           }}
@@ -152,14 +162,17 @@ export default class Yearly extends React.Component
         <Button
           style={{
             left: Responsive.width(-120),
-            top: Responsive.width(-5),
+            top: Responsive.width(75),
             height: Responsive.height(40),
             width: Responsive.width(130),
+           
           }}
           appearance="outline"
+
           onPress={() => this.props.navigation.navigate("Insights")}
         >
          Week
+         
         </Button>
         <Text style ={{left: Responsive.width(-100),
             top: Responsive.width(-80),
@@ -224,6 +237,45 @@ export default class Yearly extends React.Component
          
         </Button> */}
         <Divider />
+        
+        <View style={{
+          width: width,
+          height: Responsive.height(673),
+          backgroundColor: "#f2f2f2",
+          top: Responsive.height(43),
+          alignContent: "center",
+          shadowColor: "#c8c8c8",
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.8,
+          shadowRadius: 30,
+        }}>
+          <ScrollView contentContainerStyle={{
+            justifyContent: "center",
+            flex: 1,
+            flexGrow: 1,
+            flexDirection: "column",
+            marginTop: Responsive.height(830),
+              marginBottom: Responsive.height(-1100),
+            justifyContent: "center",
+            bottom: Responsive.height(200),
+            top: Responsive.height(-970),
+            left: Responsive.height(1),
+            shadowColor: "#c8c8c8",
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.8,
+            shadowRadius: 30,
+          }}>
+            <Text style={{
+              left: Responsive.width(-100),
+              top: Responsive.width(-80),
+              height: Responsive.height(40),
+              width: Responsive.width(130),
+              color: '#ffff',
+              //textAlign: 'left',
+              fontWeight: 'bold',
+
+              fontSize: Responsive.font(25)
+            }}>Insights</Text>
      
           <View style>
     {!isPainChecked & !isBloodChecked & !isMoodChecked?
@@ -307,38 +359,44 @@ export default class Yearly extends React.Component
           <Card style={styles.cardToggle}>
             <Image
               source={require("../../assets/painia.png")}
-              style ={{width:60,height:60}}
+              style ={{width:Responsive.width(60),height:Responsive.height(60)}}
               // 
             />
 
             <Image
               source={require("../../assets/moodia.png")}
-              style={{ width: 60, height: 60, top: 10 }}
+              style={{ width: Responsive.width(60), height: Responsive.height(60), top: Responsive.height(10) }}
             />
 
             <Image
               source={require("../../assets/bloodia.png")}
-              style={{ width: 60, height: 60, top: 20 }}
+              style={{ width: Responsive.width(60), height: Responsive.height(60), top: Responsive.height(20) }}
             />
             
-             <Toggle
-              style ={{top :-170, right: -90}}
-              status='Warning'
+             <Switch
+              style ={{top :Responsive.height(-170), right: Responsive.width(-250)}}
+             
               
-              onChange={this.onCheckedPainChange.bind(this)}
-              checked={isPainChecked}
+              onValueChange={this.onCheckedPainChange.bind(this)}
+              value={isPainChecked}
+              trackColor={{ false: "#767577", true: "#f09874" }}
+              thumbColor={isPainChecked ? "#f4f3f4" : "#f4f3f4"}
+              ios_backgroundColor="#8A8A8E"
               //onChange={(value) => this.setState({painChecked: value})}
                 //value = {this.state.painChecked}
             >
               {/* {`Checked: ${this.state.painChecked}`}{" "} */}
-            </Toggle>
-            <Toggle
+            </Switch>
+            <Switch
     //           style={{
     // top: hp("400%")}} 
-              style ={{top :-130, right: -90}}
+              style ={{top :Responsive.height(-130), right: Responsive.width(-250)}}
               status='Warning'
-              checked={isMoodChecked}
-              onChange={this.onCheckedMoodChange.bind(this)}
+              value={isMoodChecked}
+              onValueChange={this.onCheckedMoodChange.bind(this)}
+              trackColor={{ false: "#767577", true: "#f09874" }}
+              thumbColor={isMoodChecked ? "#f4f3f4" : "#f4f3f4"}
+              ios_backgroundColor="#8A8A8E"
               
               //onValueChange={(value) => this.setState({moodChecked: value} )}
               //onChange={this.onCheckedChange.bind(this)}
@@ -348,26 +406,77 @@ export default class Yearly extends React.Component
             //   value={this.state.activeSwitch === 1}
             >
               {/* {`Checked: ${this.state.moodChecked}`} */}
-            </Toggle>
+            </Switch>
         
-            <Toggle
-               style ={{top :-80, right: -90}}
+            <Switch
+               style ={{top :Responsive.height(-80), right: Responsive.width(-250)}}
               // style={styles.toggleBlood}
               status='Warning'
-              checked={isBloodChecked}
+              value={isBloodChecked}
               //onChange={(value) => this.setState({bleedingChecked: value})}
-              onChange={this.onCheckedBloodChange.bind(this)}
+              onValueChange={this.onCheckedBloodChange.bind(this)}
+              trackColor={{ false: "#767577", true: "#f09874" }}
+              thumbColor={isBloodChecked ? "#f4f3f4" : "#f4f3f4"}
+              ios_backgroundColor="#8A8A8E"
               
             >
               {/* {`Checked: ${this.state.bleedingChecked}`} */}
-            </Toggle>
+            </Switch>
             </Card>
         {/* <InsightScreen data={data} round={100} unit="€" /> */}
     
  
 </View>
        {/* </ScrollView> */}
-       
+       </ScrollView>
+       </View>
+       <Image
+          style={HomeStyles.tabContainer}
+          source={require("../../assets/bottomtab.png")}
+        />
+    
+          <TouchableWithoutFeedback
+           onPress={() => this.props.navigation.navigate("Home")}>
+            <Image
+              style={HomeStyles.insightcareplan}
+              source={require("../../assets/careplan.png")}
+            />
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback
+            onPress={() => this.props.navigation.navigate("Insights")}
+          >
+            <Image
+              style={HomeStyles.insightinsights}
+              source={require("../../assets/insights.png")}
+            />
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback  onPress={() => this.props.navigation.navigate("Learn")}>
+            <Image
+              style={HomeStyles.insightlearn}
+              source={require("../../assets/learn.png")}
+            />
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback
+            onPress={() => this.props.navigation.navigate("HTwo")}
+          >
+            <Image
+              style={HomeStyles.insightsettings}
+              source={require("../../assets/settings.png")}
+            />
+          </TouchableWithoutFeedback>
+
+          <TouchableWithoutFeedback
+            onPress={() =>
+              this.props.navigation.navigate("Track", {
+                currentDate: this.state.currentDate,
+              })
+            }
+          >
+            <Image
+              style={HomeStyles.ovalContainerInsights}
+              source={require("../../assets/oval.png")}
+            />
+          </TouchableWithoutFeedback>
     </Layout>
   );
 };
@@ -387,11 +496,11 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   cardStyle: {
-    top:Responsive.height(-20),
+    top:Responsive.height(-35),
     width:Responsive.width(338),
     height:Responsive.height(290),
     borderRadius: 20,
-    left:0,
+    left:10,
     borderBottomColor: '#ffffff',
     borderTopColor: '#ffffff',
     borderLeftColor: '#ffffff',
@@ -406,9 +515,9 @@ const styles = StyleSheet.create({
   cardToggle: {
     top:Responsive.height(-10),
     width:Responsive.width(338),
-    height:Responsive.height(200),
+    height:Responsive.height(260),
     borderRadius: 20,
-    left:0,
+    left:Responsive.width(10),
     borderBottomColor: '#ffffff',
     borderTopColor: '#ffffff',
     borderLeftColor: '#ffffff',

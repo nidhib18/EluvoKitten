@@ -19,6 +19,7 @@ import HomeTwo from './HomeTwo';
 import AddAppointment from './AddAppointment';
 import Home from './Home'
 import { TrackScreen } from './TrackScreen';
+
 // import {CalendarScreen} from './CalendarScreen'; 
 // import ErrorBoundary from './ErrorBoundary';
 
@@ -36,7 +37,7 @@ function MainStackScreen() {
       <MainStack.Screen name='Home' component={Home} /> 
       <MainStack.Screen name='Monthly' component={Monthly} /> 
       <MainStack.Screen name='Yearly' component={Yearly} /> 
-      <MainStack.Screen name='Learn' component={Learn} /> 
+      {/* <MainStack.Screen name='Learn' component={Learn} />  */}
       <MainStack.Screen name='TrackCust' component={CustomiseTracking} /> 
       <MainStack.Screen name='Instruction' component={Instruction} />
       {/* <MainStack.Screen name='Calendar' component={CalendarScreen} /> */}
@@ -77,6 +78,12 @@ function RootStackScreen() {
         options={{ headerShown: false }}
       />
       <RootStack.Screen name="HTwo" component={HomeTwo} />
+      <RootStack.Screen
+        name="lrn"
+        component={MainStackScreen}
+        options={{ headerShown: false }}
+      />
+      <RootStack.Screen name='Learn' component={Learn} />
     </RootStack.Navigator>
   );
 }

@@ -397,22 +397,22 @@ componentDidMount() //after Ui has been uploaded
               >
                 <ScrollView
                   contentContainerStyle={{
-                    paddingBottom: 150, bottom:-500, top:-20
+                    paddingBottom: Responsive.height(150), bottom: Responsive.height(-500), top: Responsive.height(-20)
                   }}
                 >
                   
                   <View style={styles.calenderContainer}>
                     <CalendarList
                       style={{
-                        width: 350,
-                        height: 350,
+                        width:  Responsive.width(350),
+                        height:  Responsive.height(350),
                       }}
                       current={currentDay}
                       minDate={moment().format()}
                       horizontal
                       pastScrollRange={0}
                       pagingEnabled
-                      calendarWidth={350}
+                      calendarWidth={ Responsive.width(350)}
                       onDayPress={day => {
                         this.setState({
                           selectedDay: {
@@ -443,11 +443,11 @@ componentDidMount() //after Ui has been uploaded
                   <Text style={{fontWeight:'500'}} >Appointment Type</Text>
                   <Input
                         style={{
-                          height: 25,
-                          fontSize: 19,
-                          marginTop: 3,
+                          height:  Responsive.height(25),
+                          fontSize:  Responsive.font(19),
+                          marginTop: Responsive.height(3),
                           backgroundColor: '#FBFBFB',
-                          top:10
+                          top: Responsive.height(10)
                         }}
                       onChangeText={(value) => this.setState({ appointment_type: value })}
                       value={appointment_type}
@@ -460,10 +460,10 @@ componentDidMount() //after Ui has been uploaded
                     
                     <Text
                       style={{
-                        fontSize: 14,
+                        fontSize:  Responsive.font(14),
                         color: '#BDC6D8',
-                        marginVertical: 10,
-                        top:20
+                        marginVertical:  Responsive.height(10),
+                        top: Responsive.height(20)
                       }}
                     >
                       Suggestion

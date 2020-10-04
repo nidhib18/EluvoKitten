@@ -829,6 +829,9 @@ export default class Home extends React.Component {
                         keyExtractor={extractKey}
                       />
                     </Card>
+                    <Card>
+                      
+                    </Card>
                   </ScrollView>
                 </View>
               </>

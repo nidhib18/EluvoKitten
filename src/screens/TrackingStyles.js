@@ -19,6 +19,14 @@ export const TrackingStyles= {
     right: wp('25%'),
     resizeMode: "contain",
   },
+  painbuttonbw: {
+    position: "absolute",
+    top: hp('27.5%'),
+    width: wp('20%'),
+    height: hp('26.5%'),
+    right: wp('25%'),
+    resizeMode: "contain",
+  },
 
   moodButton: {
     position: "absolute",

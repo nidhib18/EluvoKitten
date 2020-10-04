@@ -168,7 +168,12 @@ export default class SexCard extends React.Component {
                 </TouchableWithoutFeedback>
                 </>
                 )
-                : (<></>)
+                : (<>
+                    <Image
+                      style={TrackingStyles.sexButton}
+                      source={require("../../../assets/sexbw.png")}
+                    />
+                </>)
                 }
                 <Modal style={{
                     shadowColor: '#c8c8c8',

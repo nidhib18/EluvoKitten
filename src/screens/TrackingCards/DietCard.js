@@ -162,7 +162,12 @@ export default class DietCard extends React.Component {
                 </TouchableWithoutFeedback>
                 </>
                 )
-                : (<></>)
+                : (<>
+                    <Image
+                      style={TrackingStyles.dietButton}
+                      source={require("../../../assets/dietbw.png")}
+                    />
+                </>)
                 }
                 <Modal style={{
                     shadowColor: '#c8c8c8',

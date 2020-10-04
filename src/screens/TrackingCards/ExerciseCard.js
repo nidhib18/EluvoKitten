@@ -160,7 +160,12 @@ export default class ExerciseCard extends React.Component {
                 </TouchableWithoutFeedback>
                 </>
                 )
-                : (<></>)
+                : (<>
+                    <Image
+                      style={TrackingStyles.exerciseButton}
+                      source={require("../../../assets/exercisebw.png")}
+                    />
+                </>)
                 }
                 <Modal style={{
                     shadowColor: '#c8c8c8',
