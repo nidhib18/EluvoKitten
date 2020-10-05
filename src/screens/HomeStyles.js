@@ -51,7 +51,7 @@ export const HomeStyles = {
 
   },
   careplan: {
-    flex: 1,
+    
     position: "absolute",
     width: Responsive.width(50),
     height: Responsive.height(50),
@@ -62,7 +62,7 @@ export const HomeStyles = {
 
   },
   insights: {
-    flex: 1,
+    
     position: "absolute",
     width: Responsive.width(50),
     height: Responsive.height(50),
@@ -73,7 +73,7 @@ export const HomeStyles = {
 
   },
   learn: {
-    flex: 1,
+    
     position: "absolute",
     width: Responsive.width(45),
     height: Responsive.height(45),
@@ -84,7 +84,7 @@ export const HomeStyles = {
 
   },
   settings: {
-    flex: 1,
+    
     position: "absolute",
     width: Responsive.width(45),
     height: Responsive.height(45),
@@ -93,5 +93,61 @@ export const HomeStyles = {
     alignItems: "center",
     resizeMode: "contain",
 
+  },
+  insightsettings: {
+    
+    position: "absolute",
+    width: Responsive.width(45),
+    height: Responsive.height(45),
+    top: Responsive.height(590),
+    left: Responsive.width(305),
+    alignItems: "center",
+    resizeMode: "contain",
+
+  },
+  insightlearn: {
+    
+    position: "absolute",
+    width: Responsive.width(45),
+    height: Responsive.height(45),
+    top: Responsive.height(590),
+    left: Responsive.width(230),
+    alignItems: "center",
+    resizeMode: "contain",
+
+  },
+  insightinsights: {
+    
+    position: "absolute",
+    width: Responsive.width(50),
+    height: Responsive.height(50),
+    top: Responsive.height(590),
+    left: Responsive.width(90),
+    alignItems: "center",
+    resizeMode: "contain",
+
+  },
+  insightcareplan: {
+    
+    position: "absolute",
+    width: Responsive.width(50),
+    height: Responsive.height(50),
+    top: Responsive.height(590),
+    left: Responsive.width(17),
+    alignItems: "center",
+    resizeMode: "contain",
+
+
+
+  },
+  ovalContainerInsights: {
+    flex: 1,
+    position: "absolute",
+    width: Responsive.width(100),
+    height: Responsive.height(100),
+    top: Responsive.height(540),
+    left: Responsive.width(127),
+    alignItems: "center",
+    resizeMode: "contain",
   },
 };

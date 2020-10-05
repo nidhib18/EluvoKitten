@@ -73,11 +73,8 @@ export const TrackScreen = ({ route,navigation }) => {
         
         <MedicationCard  navigation={navigation}
          route= {route}/>
-       {/* {show ? ( */}
-          <PainCard navigation={navigation}
+        <PainCard navigation={navigation}
             route={route} />
-        {/* ) :null} */}
-        
         <MoodCard navigation={navigation}
          route= {route}/>
         <BloodCard navigation={navigation}
@@ -90,19 +87,12 @@ export const TrackScreen = ({ route,navigation }) => {
          route= {route}/>
         <SexCard navigation={navigation}
          route= {route}/>      
-        <SaveCard navigation={navigation} />
-        {/* <Text style={TrackingStyles.dietText}>Diet</Text>
-        <Text style={TrackingStyles.sexText}>Sex</Text> */}
-        {/* <Text style={TrackingStyles.painText}>Pain</Text> */}
-        {/* <Text style={TrackingStyles.smallSaveText}>Save</Text> */}
+        <SaveCard navigation={navigation} />     
       </ScrollView>
-      {/* <AppointmentCard/>
-      <Text style={TrackingStyles.appointmentText}>Appointment</Text> */}
     </Layout>
     
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     justifyContent: "center",

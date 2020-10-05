@@ -78,13 +78,6 @@ export default class SignUpScreen extends Component {
     navigation.goBack();
   };
 
-  BackAction = () => (
-    <TopNavigationAction icon={BackIcon} onPress={navigateBack} />
-  );
-
-  DateIcon = (props) => <Icon {...props} name={"calendar"} />;
-  renderIcon = (props) => <Icon {...props} name={"eye"} fill="#0000" />;
-
   handleSignUp = () => {
     const {
       given_name,

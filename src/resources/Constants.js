@@ -7,7 +7,17 @@ export const constants = {
   USERDETAILS: "@userdetails",
   CURRENTDATE: "currentDate",
   USERSETTINGS: "usersettings",
+  APPOINTMENT: "appointment",
   NO_OF_YEARS: 5 ,
+  PERIODPRODUCTS_LISTID: 8,
+  BOWELSYMPTOMS:9,
+  EXERCISETYPE_LISTID:10,
+  FOODTYPE_LISTID:12,
+  SEXUALACTIVITY_LISTID:11,
+
+
+
+
 
   /* API URls */
     USERDETAILS_DEV_URL:
@@ -98,18 +108,17 @@ export const constants = {
     NO_OF_YEARS: 5,
 
     GETAPPOINTMENT_DEV_URL:
-    "https://ewan0blk87.execute-api.ap-southeast-2.amazonaws.com/DEV/getappointment?userId=[userId]&occuredDate=[occuredDate]",
+    "https://ewan0blk87.execute-api.ap-southeast-2.amazonaws.com/DEV/getappointment?userId=[userId]&appointmentDate=[appointmentDate]",
 
     ADDAPPOINTMENT_DEV_URL:
     "https://xnho3p0bdg.execute-api.ap-southeast-2.amazonaws.com/DEV/addappointment",
 
     UPDATEAPPOINTMENT_DEV_URL:
-    "https://mtm2pz3j8l.execute-api.ap-southeast-2.amazonaws.com/DEV/updateappointment"
-
-
-    
-
-
-
+    "https://mtm2pz3j8l.execute-api.ap-southeast-2.amazonaws.com/DEV/updateappointment",
+   
+    GETALLAPPOINTMENTS_DEV_URL:
+      "https://ewan0blk87.execute-api.ap-southeast-2.amazonaws.com/DEV/getappointment?userId=[userId]",
+    GETEDITAPPOINTMENT_DEV_URL:
+      "https://ewan0blk87.execute-api.ap-southeast-2.amazonaws.com/DEV/getappointment?userId=[userId]&appointmentId=[appointmentId]",
 
 };
