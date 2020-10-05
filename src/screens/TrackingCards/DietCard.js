@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { Image, Dimensions, TouchableOpacity,TouchableWithoutFeedback, Slider, StyleSheet, View } from 'react-native';
+import { Image, Dimensions, TouchableOpacity,TouchableWithoutFeedback, Slider, StyleSheet, View,TextInput} from 'react-native';
 import { Layout, Card, Modal, Text, Button } from '@ui-kitten/components';
 import { TrackingStyles } from "../TrackingStyles";
 import TagSelector from 'react-native-tag-selector';
@@ -25,6 +25,8 @@ export default class DietCard extends React.Component {
             dietValue: 0,
             minValue: 0,
             maxValue: 5,
+            textInput: [],
+            inputData: [],
             selectedFoodType: [], 
             foodTypes:[],
             userDetails: {},       
@@ -33,6 +35,35 @@ export default class DietCard extends React.Component {
             currentDate: this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD')    
         };
         this.saveDietDetails = this.saveDietDetails.bind(this);
+    }
+
+    addTextInput = (index) => {
+        let textInput = this.state.textInput;
+        let inputData = this.state.inputData;
+
+        textInput.push(
+
+            <TouchableOpacity>
+               <TextInput
+                    onEndEditing={(e) => 
+                    {
+                        this.addValues(e.nativeEvent.text, index)
+                    }}
+                    style={styles.InputStyle}
+                    //editable={(inputData.length === 0)}
+                    value={this.state.inputData}
+                   // onChangeText={inputData => this.setState({ inputData: inputData })}
+               
+
+                />
+
+
+            </TouchableOpacity>
+
+        );
+
+        this.setState({ textInput });
+
     }
     setDietVisible(visible) {
         this.setState({ dietVisible: visible });
@@ -60,7 +91,48 @@ export default class DietCard extends React.Component {
         );
     };
 
-    
+    async addTags(tagText) {
+        let url = constants.ADDTAGS_DEV_URL;
+        console.log("In add Period Products", tagText);
+        var tag = {
+            list_id: constants.FOODTYPE_LISTID,
+            user_id: this.state.userDetails.user_id,
+            list_item_name: tagText
+        };
+        console.log("Tag to be saved", tag);
+        let newTagId = 0;
+        let selectedTagIds = [];
+        await getData(constants.JWTKEY).then((jwt) =>
+            fetch(url, {
+                //calling API
+                method: "POST",
+                headers: {
+                    Authorization: "Bearer " + jwt, //Passing this will authorize the user
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(tag)
+            })
+            .then((response) => {
+                return response.json();
+            })
+            .then((responseData) => {
+                newTagId = responseData.list_item_id;
+                console.log("New list item", newTagId);
+                selectedTagIds.push(newTagId);
+                this.setState({ selectedFoodType: selectedTagIds });
+            })
+        );
+    }
+    addValues = async (text, index) => {
+         // Add the tag to list item
+        await this.addTags(text);
+    }
+
+    getValues = () => {
+        console.log('Data', this.state.inputData);
+    }
+
 
     saveDietDetails() {
       
@@ -211,6 +283,29 @@ export default class DietCard extends React.Component {
                                 onChange={(selected) => this.setState({ selectedFoodType: selected })}
                             />
                         </View>
+                        <View style={{ top: Responsive.height(130), left: Responsive.width(-10), width: Responsive.width(350) }}>
+
+<View style={{ flexDirection: 'row', flexGrow: '1', flexWrap: 'wrap', width: Responsive.width(300) }}>
+    {this.state.textInput.map((value) => {
+        return value
+    })}
+    <TouchableWithoutFeedback onPress={() => {
+        this.addTextInput(this.state.textInput.length)
+    }
+    }>
+        <Image
+            style={{ marginLeft: 8, width: 38, height: 38 }}
+            source={require('../../../assets/plusButton.png')}
+        />
+    </TouchableWithoutFeedback>
+    {/* <Button title='Get Values' onPress={() => this.getValues()} /> */}
+</View>
+<View style={styles.row}>
+    <View style={{ margin: 10, top: Responsive.height(75) }}>
+        {/* <Button onPress={() => this.removeTextInput()}>Remove</Button> */}
+    </View>
+</View>
+</View>
 
                         <Button
                             style={TrackingStyles.trackButton}
@@ -259,7 +354,44 @@ const styles = StyleSheet.create({
         fontWeight:'400',
         fontSize:Responsive.font(13)
 
-    }
-
-
+    },
+    InputStyle: {
+        alignItems: 'center',
+        alignSelf: 'flex-start',
+        paddingBottom: Responsive.height(8),
+        paddingTop: Responsive.height(8),
+        paddingLeft: Responsive.width(16),
+        paddingRight: Responsive.width(16),
+        marginLeft: Responsive.width(8),
+        marginBottom: Responsive.height(8),
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        overflow: 'hidden',
+        borderRadius: Responsive.height(14),
+        height: Responsive.height(30),
+        color: 'white',
+        fontWeight: '500',
+        backgroundColor: '#f09874',
+    },
+    pressedStyle: {
+        alignSelf: 'flex-start',
+        paddingBottom: Responsive.height(8),
+        paddingTop: Responsive.height(8),
+        paddingLeft: Responsive.width(16),
+        paddingRight: Responsive.width(16),
+        marginLeft: Responsive.width(8),
+        marginBottom: Responsive.height(8),
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        overflow: 'hidden',
+        borderRadius: Responsive.height(14),
+        height: Responsive.height(30),
+        color: 'white',
+        fontWeight: '500',
+        backgroundColor: '#f09874',
+    },
+    row: {
+        flexDirection: 'row',
+        justifyContent: 'center'
+    },
 });

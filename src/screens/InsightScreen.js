@@ -170,7 +170,7 @@ export default class InsightScreen extends React.Component
      var isPainChecked = (this.state.painChecked ) ;
      var isMoodChecked = (this.state.moodChecked ) ;
      var isBloodChecked = (this.state.bleedingChecked ) ;//|| false;
-     
+     var isNoDataAvailable = this.state.painData.length ==0  && this.state.moodData.length == 0 && this.state.bloodData.length == 0;
     
   return (
     <Layout style={styles.container}>
@@ -239,14 +239,20 @@ export default class InsightScreen extends React.Component
     textAlign: 'left',
     fontWeight: 'bold',
     top:120,
-    fontSize: Responsive.font(15)}}> (i) No data to view the graph</Text>
+    fontSize: Responsive.font(15)}}>*Toggle on to view the graph</Text>
                     </Card>
           </>
       ): (
     
     <Card style={styles.cardStyle} >
    
-    
+    {isNoDataAvailable ?
+        (
+          <>
+              <Text>There is not enough data to display the chart.</Text>
+          </>
+        ):
+        (
     <VictoryChart  padding={{ left:30, top: 30, bottom:45 }} maxDomain={{ y:5 }}>
           <VictoryAxis
         
@@ -262,7 +268,7 @@ export default class InsightScreen extends React.Component
     <VictoryGroup  offset={20} padding={{left: 50}} colorScale={["tomato", "orange", "gold"]} >
      
    
-{isPainChecked && this.state.painData.length? 
+      {isPainChecked && this.state.painData.length? 
       (
                     <>
         <VictoryBar
@@ -305,7 +311,7 @@ export default class InsightScreen extends React.Component
       }
     </VictoryGroup>
     </VictoryChart>
-    
+        )}
             </Card>
       )}
 

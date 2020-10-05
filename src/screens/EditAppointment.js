@@ -86,7 +86,7 @@ export default class AddAppointment extends Component {
           appointment_location: this.state.appointment_location,
           appointment_notes:this.state.appointment_notes     
       };
-     
+      console.log("Appointment to be saved", appointment);
       let url = constants.UPDATEAPPOINTMENT_DEV_URL;
       getData(constants.JWTKEY).then((jwt) =>
           fetch(url, {
@@ -102,8 +102,8 @@ export default class AddAppointment extends Component {
             .then((response) => {
                 return response.json();
             })
-            .then((data) => {
-              console.log("RESPONSE",data);
+            .then((responseData) => {
+              console.log("RESPONSE", responseData);
             })
         );
     }   
@@ -143,6 +143,7 @@ export default class AddAppointment extends Component {
       
                   this.setState({
                     isAnyAppointmentAvailable:isAnyAppointmentAvailable,
+                    appointment_id:appointmentDetails.appointment_id,
                     appointment_date: appointmentDetails.appointment_date,
                     appointment_location: appointmentDetails.appointment_location,
                     appointment_type:appointmentDetails.appointment_type,

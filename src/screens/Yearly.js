@@ -118,7 +118,7 @@ export default class Yearly extends React.Component
      var isPainChecked = (this.state.painChecked ) ;
      var isMoodChecked = (this.state.moodChecked ) ;
      var isBloodChecked = (this.state.bleedingChecked ) ;
-     
+     var isNoDataAvailable = this.state.painData.length ==0  && this.state.moodData.length == 0 && this.state.bloodData.length == 0; 
     
   return (
     <Layout style={styles.container}>
@@ -231,16 +231,24 @@ export default class Yearly extends React.Component
                     <>
                     <Card style={styles.cardStyle} >
                     <Text style = {{ color: 'black',
-    textAlign: 'left',
-    fontWeight: 'bold',
-    top:120,
-    fontSize: Responsive.font(15)}}> (i) Not enough data to view the graph</Text>
+                    textAlign: 'left',
+                    position:'centre',
+                    fontWeight: 'bold',
+                    top:120,
+                    fontSize: Responsive.font(15)}}> *Toggle on to view the graph* </Text>
                     </Card>
           </>
       ): (
     
     <Card style={styles.cardStyle} >
-   
+    {isNoDataAvailable ?
+        (
+          <>
+              <Text>There is not enough data to display the chart.</Text>
+          </>
+        ):
+        
+        (
     
     <VictoryChart padding={{ left:30, top: 30, bottom:45 }} maxDomain={{ y:5 }}>
     {/* <VictoryAxis
@@ -253,9 +261,7 @@ export default class Yearly extends React.Component
     label="Symptom Level"
     style={{axisLabel: {padding: 35 } }} 
   /> */}
-    <VictoryGroup  offset={20} padding={{left:100}} colorScale={["tomato", "orange", "gold"]} 
-       
-     >
+    <VictoryGroup  offset={20} padding={{left:100}} colorScale={["tomato", "orange", "gold"]}  >
      
    
      {isPainChecked && this.state.painData.length? 
@@ -300,7 +306,8 @@ export default class Yearly extends React.Component
       }
     </VictoryGroup>
     </VictoryChart>
-    
+    )
+      }
             </Card>
       )}
 

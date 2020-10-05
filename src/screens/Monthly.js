@@ -94,6 +94,7 @@ export default class Monthly extends React.Component
       painChecked: true,
       moodChecked: true,
       bleedingChecked: true,
+      isDataAvailable:0,
       painData : [],
       moodData: [],
       bloodData: [],
@@ -175,7 +176,7 @@ export default class Monthly extends React.Component
      var isPainChecked = (this.state.painChecked );
      var isMoodChecked = (this.state.moodChecked );
      var isBloodChecked = (this.state.bleedingChecked ) ;//|| false;
-     var data = this.state.painData.length & this.state.moodData.length & this.state.bloodData.length;
+     var isNoDataAvailable = this.state.painData.length ==0  && this.state.moodData.length == 0 && this.state.bloodData.length == 0;
     
   return (
     <Layout style={styles.container}>
@@ -234,89 +235,90 @@ export default class Monthly extends React.Component
       (
                     <>
                     <Card style={styles.cardStyle} >
-                    <Text style = {{ color: 'black',
-    textAlign: 'left',
-    fontWeight: 'bold',
-    top:120,
-    fontSize: Responsive.font(15)}}> (i) No data to view the graph</Text>
+                    <Text style = 
+                    {{ 
+                      color: 'black',
+                      textAlign: 'left',
+                      fontWeight: 'bold',
+                      top:120,
+                      fontSize: Responsive.font(15) }}> *Toggle on to view the graph* </Text>
                     </Card>
           </>
       ): (
     
     <Card style={styles.cardStyle} >
    
-    
-    <VictoryChart  fixLabelOverlap  padding={{ left:30, top: 30, bottom:45 }} maxDomain={{ x:15,y:5 }}>
-    {/* <VictoryAxis
-   
-    label="Month"
-    style={{axisLabel: {padding: 35} }} 
-  />
-  <VictoryAxis
-    dependentAxis
-    label="Symptom Level"
-    style={{axisLabel: {padding: 35 } }} 
-  /> */}
-    <VictoryGroup  offset={20} padding={{left: 50}} 
-       tickLabelComponent={<VictoryLabel angle={45}/>}
-     >
-     
-   
-     {isPainChecked && this.state.painData.length? 
-      (
-                    <>
-        <VictoryBar
-             
-              style={{ data: { fill: "#f08974", width: 25 } }}
-              barWidth={15}
-              cornerRadius={7}
-              domainPadding={{x: [7, -7]}}
-              //alignment="start"
-              //barRatio={0.8}
-              data={this.state.painData}/>
-          </>
-      ): (<></>)
-      }
-
-      {isMoodChecked && this.state.moodData.length? 
-      (
-                    <>
-        <VictoryBar
-              style={{ data: { fill: "gold", width: 25 } }}
-              barWidth={15}
-              cornerRadius={7}
-              domainPadding={{x: [25, -25]}}
-              data={this.state.moodData}/>
-          </>
-      ): (<></>)
-      }
-      {isBloodChecked && this.state.bloodData.length? 
-      (
-                    <>
-        <VictoryBar
-          style={{ data: { fill: "#FFBF81", width: 25 } }}
-              barWidth={15}
-              cornerRadius={7}
-              domainPadding={{x: [40, -40]}}
-              data={this.state.bloodData}/>
-          </>
-      ): (<></>)
-      }
-      {data==0 ?
+    {isNoDataAvailable ?
         (
           <>
-              <Text>Insert some data</Text>
+              <Text>There is not enough data to display the chart.</Text>
           </>
-        ):(<></>)
+        ):
+        (
+          <VictoryChart  fixLabelOverlap  padding={{ left:30, top: 30, bottom:45 }} maxDomain={{ x:15,y:5 }}>
+            {/* <VictoryAxis
+          
+            label="Month"
+            style={{axisLabel: {padding: 35} }} 
+          />
+          <VictoryAxis
+            dependentAxis
+            label="Symptom Level"
+            style={{axisLabel: {padding: 35 } }} 
+          /> */}
+            <VictoryGroup  offset={20} padding={{left: 50}} 
+              tickLabelComponent={<VictoryLabel angle={45}/>}
+            >
+            
+          
+            {isPainChecked && this.state.painData.length? 
+              (
+                            <>
+                <VictoryBar
+                    
+                      style={{ data: { fill: "#f08974", width: 25 } }}
+                      barWidth={15}
+                      cornerRadius={7}
+                      domainPadding={{x: [7, -7]}}
+                      //alignment="start"
+                      //barRatio={0.8}
+                      data={this.state.painData}/>
+                  </>
+              ): (<></>)
+              }
+
+              {isMoodChecked && this.state.moodData.length? 
+              (
+                            <>
+                <VictoryBar
+                      style={{ data: { fill: "gold", width: 25 } }}
+                      barWidth={15}
+                      cornerRadius={7}
+                      domainPadding={{x: [25, -25]}}
+                      data={this.state.moodData}/>
+                  </>
+              ): (<></>)
+              }
+              {isBloodChecked && this.state.bloodData.length? 
+              (
+                            <>
+                <VictoryBar
+                  style={{ data: { fill: "#FFBF81", width: 25 } }}
+                      barWidth={15}
+                      cornerRadius={7}
+                      domainPadding={{x: [40, -40]}}
+                      data={this.state.bloodData}/>
+                  </>
+              ): (<></>)
+              }
+
+            </VictoryGroup>
+            </VictoryChart>
+        )
       }
     
-      
-      
-    </VictoryGroup>
-    </VictoryChart>
-    
-            </Card>
-      )}
+    </Card>
+ )}
 
           <Card style={styles.cardToggle}>
             <Image
