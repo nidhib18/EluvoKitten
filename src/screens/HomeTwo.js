@@ -7,6 +7,7 @@ import {
   StyleSheet,
   TouchableWithoutFeedback
 } from 'react-native';
+import { Auth } from "aws-amplify";
 import { HomeStyles } from "./HomeStyles";
 import {
     Button,
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
 });
 
 export default class HomeTwo extends Component {
-
+  handleSignOut = () => {Auth.signOut().then(() => this.props.navigation.navigate("Welcome")).catch((err) => console.log(err));  };
   render() {
     return (
         <Layout style={styles.container}>

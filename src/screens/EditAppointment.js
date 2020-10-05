@@ -21,7 +21,7 @@ import * as Localization from 'expo-localization';
 import Constants from 'expo-constants';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import uuid from 'uuid';
-
+import { Context } from './Context';
 import { storeData, getData } from "../helpers/StorageHelpers";
 import { constants } from "../resources/Constants";
 import { initAppointmentDetails } from "../models/AppointmentDetails";
@@ -197,7 +197,7 @@ export default class AddAppointment extends Component {
                     this.saveAppointmentDetails();
             }}> Save
             </Button>
-            <Text style={{ left: wp('34%'), top: wp('4'), color:'white', fontWeight:'500', fontSize:Responsive.font(16) }}>Add appointment</Text>
+            <Text style={{ left: wp('34%'), top: wp('4'), color:'white', fontWeight:'500', fontSize:Responsive.font(16) }}>Edit appointment</Text>
             <Button style={{ left: wp('-2%'), top: wp('-2'), width:hp('14%') }} appearance="outline"
                      onPress={() =>  this.props.navigation.navigate("Select")}>
                      Cancel
@@ -378,18 +378,10 @@ export default class AddAppointment extends Component {
                             : '#f09874',
                       },
                     ]}
-                    onPress={async () => {
-
-                     
-                      if (isAlarmSet) {
-                        await this.synchronizeCalendar(value);
-                      }
-                      if (!isAlarmSet) {
-                        this._handleCreateEventData(value);
-                      }
-                      this.saveAppointmentDetails();
-                     
-                    }}
+                    onPress={() => {
+                    this.saveAppointmentDetails();
+                    Alert.alert("Updated Successfully");
+            }}
                   >
                     <Text
                       style={{

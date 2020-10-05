@@ -30,12 +30,15 @@ export default class BloodCard extends React.Component {
             maxValue: 5,
             textInput: [],
             inputData: [],
-            
+            pressed: false,
+            editable: true,
             selectedPeriodProduct: [],
             periodProducts: [], // moodDescriptions:[],
             userDetails: {},
             userSettings: {},
-            
+            backgroundColor: 'black',
+            backgroundColor2: 'black',
+            pressed: false,
             bloodDetails: initBloodDetails(0, moment().format('YYYY-MM-DD')),
             currentDate: this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD')
         };
@@ -49,13 +52,16 @@ export default class BloodCard extends React.Component {
         textInput.push(
 
             <TouchableOpacity>
-                <TextInput
-                    onChangeText={(text) => this.addValues(text, index)}
+               <TextInput
+                    onEndEditing={(e) => 
+                    {
+                        this.addValues(e.nativeEvent.text, index)
+                    }}
                     style={styles.InputStyle}
                     //editable={(inputData.length === 0)}
                     value={this.state.inputData}
-                // onChangeText={inputData => this.setState({ inputData: inputData })}
-
+                   // onChangeText={inputData => this.setState({ inputData: inputData })}
+               
 
                 />
 
@@ -93,15 +99,25 @@ export default class BloodCard extends React.Component {
                     periodProducts = mapListItemsToTags(responseData);
 
                     this.setState({ periodProducts: periodProducts });
+                    console.log("All the period porducts", periodProducts);
                 })
                 .catch((err) => console.log(err))
         );
     };
 
     //Add Tags 
-    addPeriodProducts() {
+    async addPeriodProducts(tagText) {
         let url = constants.ADDTAGS_DEV_URL;
-        getData(constants.JWTKEY).then((jwt) =>
+        console.log("In add Period Products", tagText);
+        var tag = {
+            list_id: constants.PERIODPRODUCTS_LISTID,
+            user_id: this.state.userDetails.user_id,
+            list_item_name: tagText
+        };
+        console.log("Tag to be saved", tag);
+        let newTagId = 0;
+        let selectedTagIds = [];
+        await getData(constants.JWTKEY).then((jwt) =>
             fetch(url, {
                 //calling API
                 method: "POST",
@@ -110,36 +126,24 @@ export default class BloodCard extends React.Component {
                     Accept: 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(blood)
+                body: JSON.stringify(tag)
             })
-                .then((response) => {
-                    return response.json();
-                })
+            .then((response) => {
+                return response.json();
+            })
+            .then((responseData) => {
+                newTagId = responseData.list_item_id;
+                console.log("New list item", newTagId);
+                selectedTagIds.push(newTagId);
+                this.setState({ selectedPeriodProduct: selectedTagIds });
+            })
         );
     }
-    addValues = (text, index) => {
-        let dataArray = this.state.inputData;
-        let checkBool = false;
-        if (dataArray.length !== 0) {
-            dataArray.forEach(element => {
-                if (element.index === index) {
-                    element.text = text;
-                    checkBool = true;
-                }
-            });
-        }
-        if (checkBool) {
-            this.setState({
-                inputData: dataArray
-            });
-        }
-        else {
-            dataArray.push({ 'text': text, 'index': index });
-            this.setState({
-                inputData: dataArray
-            });
-        }
+    addValues = async (text, index) => {
+         // Add the tag to list item
+        await this.addPeriodProducts(text);
     }
+
     getValues = () => {
         console.log('Data', this.state.inputData);
     }
@@ -163,7 +167,7 @@ export default class BloodCard extends React.Component {
             occurred_date: localToUtcDateTime(occurredDate),
 
         };
-
+        console.log("Blood to be saved", blood);
 
         let url = constants.ADDUSERBLOOD_DEV_URL;
         getData(constants.JWTKEY).then((jwt) =>
@@ -244,7 +248,7 @@ export default class BloodCard extends React.Component {
                     : (<>
                         <Image
                             style={TrackingStyles.bloodButton}
-                            source={require("../../../assets/bloodbw.png")}
+                            source={require("../../../assets/blood.png")}
                         />
                     </>)
                 }

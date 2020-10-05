@@ -306,7 +306,7 @@ export default class InsightScreen extends React.Component
                     <>
         <VictoryBar
              
-              style={{ data: { fill: "#f08974", width: Responsive.width(25) } }}
+              style={{ data: { fill: "#f09874", width: Responsive.width(25) } }}
               barWidth={15}
               cornerRadius={7}
               domainPadding={{x: [7, -7]}}
@@ -386,7 +386,7 @@ export default class InsightScreen extends React.Component
               //status='Warning'
               value={isMoodChecked}
               onValueChange={this.onCheckedMoodChange.bind(this)}
-              trackColor={{ false: "#767577", true: "#f09874" }}
+              trackColor={{ false: "#767577", true: "gold" }}
               thumbColor={isMoodChecked ? "#f4f3f4" : "#f4f3f4"}
               ios_backgroundColor="#8A8A8E"
               
@@ -407,7 +407,7 @@ export default class InsightScreen extends React.Component
               value={isBloodChecked}
               //onChange={(value) => this.setState({bleedingChecked: value})}
               onValueChange={this.onCheckedBloodChange.bind(this)}
-              trackColor={{ false: "#767577", true: "#f09874" }}
+              trackColor={{ false: "#767577", true: "#FFBF81" }}
               thumbColor={isMoodChecked ? "#f4f3f4" : "#f4f3f4"}
               ios_backgroundColor="#8A8A8E"
               

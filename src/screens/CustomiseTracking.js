@@ -130,6 +130,7 @@ export default class CustomiseTracking extends React.Component {
         body: JSON.stringify(setting)
       })
         .then((response) => {
+          alert("Customised Successfully")
           // Update the saved settings 
           saveUserSettings(this.state.userDetails.user_id);
         })

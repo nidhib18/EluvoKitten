@@ -95,7 +95,7 @@ export default class AddAppointment extends Component {
               body: JSON.stringify(appointment)
             })
             .then((response) => {
-                //console.log(response.json());
+                alert("Saved Successfully")
                 return response.json();
             })
         );
@@ -208,17 +208,17 @@ export default class AddAppointment extends Component {
                       Suggestion
                     </Text>
                     <View style={{ flexDirection: 'row' }}>
-                      <View style={styles.readBook}>
+                      <View style={styles.gyne}>
                         <Text style={{ textAlign: 'center', fontSize: 14, width:90, color:'white', fontWeight:'500' }}>
                         Gynecologist
                         </Text>
                       </View>
-                      <View style={styles.design}>
+                      <View style={styles.physio}>
                         <Text style={{textAlign: 'center', fontSize: 14, color:'white', fontWeight:'500' }}>
                           Physio
                         </Text>
                       </View>
-                      <View style={styles.learn}>
+                      <View style={styles.social}>
                         <Text style={{textAlign: 'center', fontSize: 14, color:'white', fontWeight:'500' }}>
                           Social meeting
                         </Text>
@@ -384,7 +384,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginVertical: 20,
   },
-  learn: {
+  social: {
     height: 23,
     width: 51,
     backgroundColor: '#F8D557',
@@ -392,7 +392,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     top:18,
   },
-  design: {
+  physio: {
     height: 23,
     width: 59,
     backgroundColor: '#F3A878',
@@ -401,7 +401,7 @@ const styles = StyleSheet.create({
     marginRight: 7,
     top:18,
   },
-  readBook: {
+  gyne: {
     height: 23,
     width: 83,
     backgroundColor: '#F09874',

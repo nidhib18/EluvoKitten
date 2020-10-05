@@ -73,11 +73,8 @@ export const TrackScreen = ({ route,navigation }) => {
         
         <MedicationCard  navigation={navigation}
          route= {route}/>
-       {/* {show ? ( */}
-          <PainCard navigation={navigation}
+        <PainCard navigation={navigation}
             route={route} />
-        {/* ) :null} */}
-        
         <MoodCard navigation={navigation}
          route= {route}/>
         <BloodCard navigation={navigation}
@@ -90,14 +87,12 @@ export const TrackScreen = ({ route,navigation }) => {
          route= {route}/>
         <SexCard navigation={navigation}
          route= {route}/>      
-        <SaveCard navigation={navigation} />
-      
+        <SaveCard navigation={navigation} />     
       </ScrollView>
     </Layout>
     
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     justifyContent: "center",

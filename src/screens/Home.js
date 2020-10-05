@@ -228,7 +228,7 @@ export default class Home extends React.Component {
         // logTime: moment(medicationData.medication.occurred_date).format(
         //   "hh:mm A"
         // ),
-        medTags: appointmentData.appointment_date,
+        //medTags: appointmentData.appointment_date,
         medTagText: "Notes:",
         medicationTypeText: "Type:",
         medicationType: appointmentData.appointment_type,

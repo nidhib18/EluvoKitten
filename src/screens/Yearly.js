@@ -116,9 +116,10 @@ export default class Yearly extends React.Component
   render ()
    {
 
-     var isPainChecked = (this.state.painChecked ) ;
-     var isMoodChecked = (this.state.moodChecked ) ;
-     var isBloodChecked = (this.state.bleedingChecked ) ;
+    var isPainChecked = (this.state.painChecked ) ;
+    var isMoodChecked = (this.state.moodChecked ) ;
+    var isBloodChecked = (this.state.bleedingChecked ) ;
+    var isNoDataAvailable = this.state.painData.length ==0  && this.state.moodData.length == 0 && this.state.bloodData.length == 0; 
      
     
   return (
@@ -277,25 +278,33 @@ export default class Yearly extends React.Component
               fontSize: Responsive.font(25)
             }}>Insights</Text>
      
-          <View style>
+     <View style>
     {!isPainChecked & !isBloodChecked & !isMoodChecked?
       (
                     <>
                     <Card style={styles.cardStyle} >
                     <Text style = {{ color: 'black',
-    textAlign: 'left',
-    fontWeight: 'bold',
-    top:120,
-    fontSize: Responsive.font(15)}}> (i) Not enough data to view the graph</Text>
+                    textAlign: 'left',
+                    position:'centre',
+                    fontWeight: 'bold',
+                    top:120,
+                    fontSize: Responsive.font(15)}}> *Toggle on to view the graph* </Text>
                     </Card>
           </>
       ): (
     
     <Card style={styles.cardStyle} >
-   
+    {isNoDataAvailable ?
+        (
+          <>
+              <Text>There is not enough data to display the chart.</Text>
+          </>
+        ):
+        
+        (
     
-    <VictoryChart domainPadding={40}>
-    <VictoryAxis
+    <VictoryChart padding={{ left:30, top: 30, bottom:45 }} maxDomain={{ y:5 }}>
+    {/* <VictoryAxis
    
     label="Years"
     style={{axisLabel: {padding: 35} }} 
@@ -304,10 +313,8 @@ export default class Yearly extends React.Component
     dependentAxis
     label="Symptom Level"
     style={{axisLabel: {padding: 35 } }} 
-  />
-    <VictoryGroup  offset={20} padding={{left:100}} colorScale={["tomato", "orange", "gold"]} 
-       
-     >
+  /> */}
+    <VictoryGroup  offset={20} padding={{left:100}} colorScale={["tomato", "orange", "gold"]}  >
      
    
      {isPainChecked && this.state.painData.length? 
@@ -315,7 +322,7 @@ export default class Yearly extends React.Component
                     <>
         <VictoryBar
              
-              style={{ data: { fill: "#f08974", width: 25 } }}
+              style={{ data: { fill: "#f09874", width: 25 } }}
               barWidth={15}
               cornerRadius={7}
               domainPadding={{x: [0, 100]}}
@@ -330,7 +337,7 @@ export default class Yearly extends React.Component
       (
                     <>
         <VictoryBar
-              style={{ data: { fill: "#f09", width: 25 } }}
+              style={{ data: { fill: "gold", width: 25 } }}
               barWidth={15}
               cornerRadius={7}
               domainPadding={{x: [0, 30]}}
@@ -352,7 +359,8 @@ export default class Yearly extends React.Component
       }
     </VictoryGroup>
     </VictoryChart>
-    
+    )
+      }
             </Card>
       )}
 
@@ -395,7 +403,7 @@ export default class Yearly extends React.Component
               status='Warning'
               value={isMoodChecked}
               onValueChange={this.onCheckedMoodChange.bind(this)}
-              trackColor={{ false: "#767577", true: "#f09874" }}
+              trackColor={{ false: "#767577", true: "gold" }}
               thumbColor={isMoodChecked ? "#f4f3f4" : "#f4f3f4"}
               ios_backgroundColor="#8A8A8E"
               
@@ -416,7 +424,7 @@ export default class Yearly extends React.Component
               value={isBloodChecked}
               //onChange={(value) => this.setState({bleedingChecked: value})}
               onValueChange={this.onCheckedBloodChange.bind(this)}
-              trackColor={{ false: "#767577", true: "#f09874" }}
+              trackColor={{ false: "#767577", true: "#FFBF81" }}
               thumbColor={isBloodChecked ? "#f4f3f4" : "#f4f3f4"}
               ios_backgroundColor="#8A8A8E"
               

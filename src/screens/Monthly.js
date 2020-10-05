@@ -1,26 +1,25 @@
 import React from "react";
-import { SafeAreaView, Image, StyleSheet, Dimensions, View, ScrollView, Text, TouchableWithoutFeedback, Switch } from "react-native";
-import { Button, Divider, Layout, TopNavigation, Card, Toggle } from "@ui-kitten/components";
+import { SafeAreaView, Image, StyleSheet, Dimensions,View,ScrollView,Text,Switch, TouchableWithoutFeedback} from "react-native";
+import { Button, Divider, Layout, TopNavigation,Card,Toggle } from "@ui-kitten/components";
 import { TrackingStyles } from "./TrackingStyles";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 const { width, height } = Dimensions.get("window");
-import { HomeStyles } from "./HomeStyles";
 //import React from "react";
 //import { StyleSheet, View } from "react-native";
-import { VictoryBar, VictoryChart, VictoryLabel, VictoryTheme, VictoryGroup } from "victory-native";
+import { VictoryBar, VictoryChart,VictoryLabel, VictoryTheme,VictoryGroup} from "victory-native";
 import { color } from "react-native-reanimated";
 // import TopBarNav from 'top-bar-nav';
 // import { mapMoodDataToChartData,mapPainDataToChartData,mapBloodDataToChartData} from "../helpers/ChartHelpers";
-import { mapMoodToChartData, mapPainToChartData, mapBloodToChartData } from "../helpers/MonthHelpers";
+import { mapMoodToChartData,mapPainToChartData,mapBloodToChartData} from "../helpers/MonthHelpers";
 import moment from "moment";
 import { constants } from "../resources/Constants";
+import { HomeStyles } from "./HomeStyles";
 import {
   utcToLocal,
   localToUtcDate,
   localToUtcDateTime,
 } from "../helpers/DateHelpers";
 import { storeData, getData } from "../helpers/StorageHelpers";
-
 //import TopBarNav from './TopBarNav';
 
 // import { Layout, Card, Modal, Text, Button } from "@ui-kitten/components";
@@ -37,9 +36,9 @@ const lime300 = "#DCE775";
 const lightGreen500 = "#8BC34A";
 const teal700 = "#00796B";
 const cyan900 = "#006064";
-const colors =
+const colors = 
 {
-  fill: deepOrange600,
+ fill: deepOrange600,
   // yellow200,
   // lime300,
   // lightGreen500,
@@ -74,19 +73,20 @@ const colors =
 // const ROUTES = {
 //   Scene,
 //   SceneTwo
-
+  
 //   // ideally you would have a ROUTES object with multiple React component scenes
 // };
 
 // There are three types of labels (image, text, and element)
 // const ROUTESTACK = [
-
+  
 //   { text: 'WEEK', title: 'Scene' },
 //   { text: 'MONTH', title: 'SceneTwo' },
 //   { text: 'YEAR', title: 'Scene' }
 // ];
 
-export default class Monthly extends React.Component {
+export default class Monthly extends React.Component
+{
   constructor() {
     super();
     this.state = {
@@ -95,7 +95,8 @@ export default class Monthly extends React.Component {
       painChecked: true,
       moodChecked: true,
       bleedingChecked: true,
-      painData: [],
+      isDataAvailable:0,
+      painData : [],
       moodData: [],
       bloodData: [],
       activeSwitch: null,
@@ -103,38 +104,42 @@ export default class Monthly extends React.Component {
       currentDate: moment().format("YYYY-MM-DD")
     };
   }
+ 
+  onCheckedPainChange = () =>
+   {
+        this.setState({ painChecked: !this.state.painChecked });
+        
+   };
 
-  onCheckedPainChange = () => {
-    this.setState({ painChecked: !this.state.painChecked });
-
-  };
-
-  onCheckedBloodChange = () => {
-    this.setState({ bleedingChecked: !this.state.bleedingChecked });
-  };
-  onCheckedMoodChange = () => {
-    this.setState({ moodChecked: !this.state.moodChecked });
-  };
-
-  componentDidMount() {
+   onCheckedBloodChange = () =>
+   {
+        this.setState({ bleedingChecked: !this.state.bleedingChecked });
+   };
+   onCheckedMoodChange = () =>
+   {
+        this.setState({ moodChecked: !this.state.moodChecked });
+   };
+   
+  componentDidMount()
+  {
     getData(constants.USERDETAILS).then((data) => {
       // Read back the user details from storage and convert to object
       this.setState({
-        userDetails: JSON.parse(data),
-      });
+          userDetails: JSON.parse(data),
+      });    
     })
-      .then(data => {
-        console.log("In component did mount");
-        //this.setState({ painChecked: true}) ;
-        this.getChartData();
-      })
-
+    .then(data => {
+      console.log("In component did mount");
+      //this.setState({ painChecked: true}) ;
+      this.getChartData();
+    })
+     
   }
   getChartData() {
     let userId = this.state.userDetails.user_id;
-    let url = constants.GETMONTHLYCHARTS_DEV_URL.replace("[userId]", userId);
+    let url = constants. GETMONTHLYCHARTS_DEV_URL.replace("[userId]", userId); 
     console.log("Chart Url is", url);
-
+  
 
     getData(constants.JWTKEY).then((jwt) =>
       fetch(url, {
@@ -156,21 +161,22 @@ export default class Monthly extends React.Component {
 
           let bloodData = [];
           bloodData = mapBloodToChartData(responseData);
-          console.log("PAIN CHART DATA", painData);
-          console.log("MOOD CHART DATA", moodData);
-          console.log("BLOOD CHART DATA", bloodData);
+          console.log ("PAIN CHART DATA",painData);
+          console.log ("MOOD CHART DATA",moodData);
+          console.log ("BLOOD CHART DATA",bloodData);
 
-          this.setState({ painData: painData, moodData: moodData, bloodData: bloodData });
+          this.setState({painData:painData,moodData:moodData,bloodData:bloodData});
 
         })
         .catch((err) => console.log(err))
-    );
+    ); 
   }
   render() {
 
-    var isPainChecked = (this.state.painChecked);
-    var isMoodChecked = (this.state.moodChecked);
-    var isBloodChecked = (this.state.bleedingChecked);//|| false;
+    var isPainChecked = (this.state.painChecked );
+     var isMoodChecked = (this.state.moodChecked );
+     var isBloodChecked = (this.state.bleedingChecked ) ;//|| false;
+     var isNoDataAvailable = this.state.painData.length ==0  && this.state.moodData.length == 0 && this.state.bloodData.length == 0;
 
 
     return (
@@ -274,85 +280,94 @@ export default class Monthly extends React.Component {
               fontSize: Responsive.font(25)
             }}>Insights</Text>
 
-            <View style>
-              {!isPainChecked & !isBloodChecked & !isMoodChecked ?
-                (
-                  <>
+<View style>
+    {!isPainChecked & !isBloodChecked & !isMoodChecked?
+      (
+                    <>
                     <Card style={styles.cardStyle} >
-                      <Text style={{
-                        color: 'black',
-                        textAlign: 'left',
-                        fontWeight: 'bold',
-                        top: 120,
-                        fontSize: Responsive.font(15)
-                      }}> (i) No data to view the graph</Text>
+                    <Text style = 
+                    {{ 
+                      color: 'black',
+                      textAlign: 'left',
+                      fontWeight: 'bold',
+                      top:120,
+                      fontSize: Responsive.font(15) }}> *Toggle on to view the graph* </Text>
                     </Card>
-                  </>
-                ) : (
-
-                  <Card style={styles.cardStyle} >
-
-
-                    <VictoryChart domainPadding={40}>
-                      {/* <VictoryAxis
+          </>
+      ): (
+    
+    <Card style={styles.cardStyle} >
    
-    label="Month"
-    style={{axisLabel: {padding: 35} }} 
-  />
-  <VictoryAxis
-    dependentAxis
-    label="Symptom Level"
-    style={{axisLabel: {padding: 35 } }} 
-  /> */}
-                      <VictoryGroup offset={20} padding={{ left: 50 }}
-                        tickLabelComponent={<VictoryLabel angle={45} />}
-                      >
-
-
-                        {isPainChecked && this.state.painData.length ?
-                          (
+    {isNoDataAvailable ?
+        (
+          <>
+              <Text>There is not enough data to display the chart.</Text>
+          </>
+        ):
+        (
+          <VictoryChart  fixLabelOverlap  padding={{ left:30, top: 30, bottom:45 }} maxDomain={{ x:15,y:5 }}>
+            {/* <VictoryAxis
+          
+            label="Month"
+            style={{axisLabel: {padding: 35} }} 
+          />
+          <VictoryAxis
+            dependentAxis
+            label="Symptom Level"
+            style={{axisLabel: {padding: 35 } }} 
+          /> */}
+            <VictoryGroup  offset={20} padding={{left: 50}} 
+              tickLabelComponent={<VictoryLabel angle={45}/>}
+            >
+            
+          
+            {isPainChecked && this.state.painData.length? 
+              (
                             <>
-                              <VictoryBar
+                <VictoryBar
+                    
+                      style={{ data: { fill: "#f09874", width: 25 } }}
+                      barWidth={15}
+                      cornerRadius={7}
+                      domainPadding={{x: [7, -7]}}
+                      //alignment="start"
+                      //barRatio={0.8}
+                      data={this.state.painData}/>
+                  </>
+              ): (<></>)
+              }
 
-                                style={{ data: { fill: "#f08974", width: 25 } }}
-                                barWidth={15}
-                                cornerRadius={7}
-                                domainPadding={{ x: [7, -7] }}
-                                //alignment="start"
-                                //barRatio={0.8}
-                                data={this.state.painData} />
-                            </>
-                          ) : (<></>)
-                        }
-
-                        {isMoodChecked && this.state.moodData.length ?
-                          (
+              {isMoodChecked && this.state.moodData.length? 
+              (
                             <>
-                              <VictoryBar
-                                style={{ data: { fill: "gold", width: 25 } }}
-                                barWidth={15}
-                                cornerRadius={7}
-                                domainPadding={{ x: [25, -25] }}
-                                data={this.state.moodData} />
-                            </>
-                          ) : (<></>)
-                        }
-                        {isBloodChecked && this.state.bloodData.length ?
-                          (
+                <VictoryBar
+                      style={{ data: { fill: "gold", width: 25 } }}
+                      barWidth={15}
+                      cornerRadius={7}
+                      domainPadding={{x: [25, -25]}}
+                      data={this.state.moodData}/>
+                  </>
+              ): (<></>)
+              }
+              {isBloodChecked && this.state.bloodData.length? 
+              (
                             <>
-                              <VictoryBar
-                                style={{ data: { fill: "#FFBF81", width: 25 } }}
-                                barWidth={15}
-                                cornerRadius={7}
-                                domainPadding={{ x: [40, -40] }}
-                                data={this.state.bloodData} />
-                            </>
-                          ) : (<></>)
-                        }
-                      </VictoryGroup>
-                    </VictoryChart>
+                <VictoryBar
+                  style={{ data: { fill: "#FFBF81", width: 25 } }}
+                      barWidth={15}
+                      cornerRadius={7}
+                      domainPadding={{x: [40, -40]}}
+                      data={this.state.bloodData}/>
+                  </>
+              ): (<></>)
+              }
 
-                  </Card>
+            </VictoryGroup>
+            </VictoryChart>
+        )
+      }
+    
+    </Card>
                 )}
 
               <Card style={styles.cardToggle}>
@@ -394,7 +409,7 @@ export default class Monthly extends React.Component {
                   // status='Warning'
                   value={isMoodChecked}
                   onValueChange={this.onCheckedMoodChange.bind(this)}
-                  trackColor={{ false: "#767577", true: "#f09874" }}
+                  trackColor={{ false: "#767577", true: "gold" }}
                   thumbColor={isMoodChecked ? "#f4f3f4" : "#f4f3f4"}
                   ios_backgroundColor="#8A8A8E"
 
@@ -415,7 +430,7 @@ export default class Monthly extends React.Component {
                   value={isBloodChecked}
                   //onChange={(value) => this.setState({bleedingChecked: value})}
                   onValueChange={this.onCheckedBloodChange.bind(this)}
-                  trackColor={{ false: "#767577", true: "#f09874" }}
+                  trackColor={{ false: "#767577", true: "#FFBF81" }}
                   thumbColor={isBloodChecked ? "#f4f3f4" : "#f4f3f4"}
                   ios_backgroundColor="#8A8A8E"
 
