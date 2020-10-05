@@ -58,17 +58,7 @@ export default class LoginScreen extends Component {
           alert(err.message);
       });
   };
-  // handleConfirmationCode = () => {
-  //   const { username, confirmationCode } = this.state;
-  //   Auth.confirmSignUp(username, confirmationCode, {})
-
-  //     .then((user) => {
-  //       this.setState({ modalVisible: false });
-      
-  //     })
-
-  //     .catch((err) => console.log(err));
-  // };
+  
   render() {
     return (
       

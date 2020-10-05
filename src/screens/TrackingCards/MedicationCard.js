@@ -161,7 +161,12 @@ export default class MedicationCard extends React.Component {
                 </TouchableWithoutFeedback>
                 </>
                 )
-                : (<></>)
+                : (<>
+                    <Image
+                      style={TrackingStyles.medicationButton}
+                      source={require("../../../assets/medicationbw.png")}
+                    />
+                </>)
                 }
                 <Modal style={{
                     shadowColor: '#c8c8c8',

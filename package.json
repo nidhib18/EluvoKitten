@@ -2,7 +2,6 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
-   
     "eject": "expo eject"
   },
   "dependencies": {
@@ -14,6 +13,7 @@
     "@react-native-community/masked-view": "0.1.6",
     "@react-native-community/netinfo": "^5.9.2",
     "@react-native-community/slider": "^3.0.0",
+    "@react-navigation/bottom-tabs": "^5.9.1",
     "@react-navigation/native": "^5.5.0",
     "@react-navigation/stack": "^5.4.1",
     "@ui-kitten/components": "^5.0.0",
@@ -54,6 +54,7 @@
     "react-native-tag-group": "^1.0.2",
     "react-native-tag-selector": "0.0.3",
     "react-native-web": "~0.11.7",
+    "react-native-webview": "^10.9.1",
     "react-navigation": "^4.4.0",
     "react-navigation-stack": "^2.8.2",
     "react-time-picker": "^4.0.1",

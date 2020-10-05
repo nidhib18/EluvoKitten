@@ -217,7 +217,12 @@ export default class PainCard extends React.Component {
                     </TouchableWithoutFeedback>
                     </>
                 )
-                : (<></>)
+                : (<>
+                    <Image
+                      style={TrackingStyles.painbuttonbw}
+                      source={require("../../../assets/painbw.png")}
+                    />
+                </>)
                 }
 
 
