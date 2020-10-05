@@ -225,15 +225,12 @@ export default class Home extends React.Component {
       var appointment = {
         id: id,
         name: "Appointments",
-        // logTime: moment(medicationData.medication.occurred_date).format(
-        //   "hh:mm A"
-        // ),
-        //medTags: appointmentData.appointment_date,
         medTagText: "Notes:",
+        medTags: appointmentData.appointment_notes,
         medicationTypeText: "Type:",
         medicationType: appointmentData.appointment_type,
         medicationTimeText: "Practitioner:",
-        medicationTime:appointmentData.appointment_notes,
+        medicationTime:appointmentData.appointment_with,
         quantityText: "Location:",
         quantity:appointmentData.appointment_location,
         // image: require("../../assets/medicationia.png"),
@@ -439,7 +436,6 @@ export default class Home extends React.Component {
       localToUtcDateTime(this.state.currentDate));
       
    
-    console.log("Url is", url);
     var isAnyDataAvailable = false;
     var painDetails = [];
     var moodDetails = [];
@@ -534,7 +530,7 @@ export default class Home extends React.Component {
         })
           .then((response) => response.json())
           .then((responseData) => {
-            console.log("Completed appointment API call");
+            console.log("GET APPOINTEMNTS", responseData);
             if (responseData.length) {
               isAnyAppointmentAvailable = true;
               appointmentDetails = responseData;
@@ -791,7 +787,7 @@ export default class Home extends React.Component {
                         keyExtractor={extractKey}
                       />
                       
-                       <FlatList
+                       {/* <FlatList
                       
                         style={{
                           flex: 0,
@@ -802,11 +798,28 @@ export default class Home extends React.Component {
                         data={appointments}
                         renderItem={this.renderItem}
                         keyExtractor={extractKey}
-                      />
+                      /> */}
                       </View>
                     </Card>
                     </>) : (<><Text></Text></>)}
 
+                    {this.state.isAnyAppointmentAvailable? (
+             
+             <>
+                    <Card style={styles.appointmentcardContainer}>
+                    <FlatList
+                        style={{
+                          flex: 0,
+                          width: Responsive.width(400),
+                          top: Responsive.height(25),
+                          left: Responsive.width(-37),
+                        }}
+                        data={appointments}
+                        renderItem={this.renderItem}
+                        keyExtractor={extractKey}
+                      />
+                    </Card>
+            </>) :(<></>)}
                     {/* {this.state.isAnyAppointmentAvailable? (
              
              <>
@@ -959,7 +972,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
     shadowRadius: 30,
-    //top:300
+    top:Responsive.height(130)
   },
   symptomView: {
     padding: Responsive.height(17),

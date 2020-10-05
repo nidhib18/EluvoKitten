@@ -27,6 +27,7 @@ import { constants } from "../resources/Constants";
 import { initAppointmentDetails } from "../models/AppointmentDetails";
 import { utcToLocal, localToUtcDate, localToUtcDateTime } from "../helpers/DateHelpers";
 import Responsive from 'react-native-lightweight-responsive';
+import { TouchableWithoutFeedback } from 'react-native';
 
 const { width: vw } = Dimensions.get('window');
 
@@ -63,6 +64,7 @@ export default class AddAppointment extends Component {
             maxDate: new Date(2070,0,1)
         };
         this.setDate = this.setDate.bind(this);
+        this.saveAppointmentDetails = this.saveAppointmentDetails.bind(this);
     }
     setDate(newDate) {
         let appointmentDate = new Date(newDate);
@@ -70,7 +72,7 @@ export default class AddAppointment extends Component {
     }
       
     saveAppointmentDetails() {
-
+    console.log("SAVE!!!!");
       // Add the saved med level
       let userId = this.state.userDetails.user_id;
       let appointment = { 
@@ -81,7 +83,7 @@ export default class AddAppointment extends Component {
           appointment_location: this.state.appointment_location,
           appointment_notes:this.state.appointment_notes     
       };
-     
+      console.log("Appointment to be added", appointment);
       let url = constants.ADDAPPOINTMENT_DEV_URL;
       getData(constants.JWTKEY).then((jwt) =>
           fetch(url, {
@@ -95,8 +97,12 @@ export default class AddAppointment extends Component {
               body: JSON.stringify(appointment)
             })
             .then((response) => {
-                alert("Saved Successfully")
                 return response.json();
+            })
+            .then((responseData) => {
+              console.log("Add Appointment", responseData);
+              this.props.navigation.navigate("HTwo");
+               alert("Saved Successfully")
             })
         );
     }   
@@ -121,7 +127,6 @@ export default class AddAppointment extends Component {
     render() {
 
         appointment_date= this.state.appointment_date || new Date();
-        console.log("DATE FECHA FORMAT",appointment_date)
         appointment_type= this.state.appointment_type || "";
         appointment_with= this.state.appointment_with || "";
         appointment_location= this.state.appointment_location|| "";
@@ -149,12 +154,13 @@ export default class AddAppointment extends Component {
                 appearance="outline"
                 onPress={() => {
                     this.saveAppointmentDetails();
+                    //this.props.navigation.navigate("HTwo")
             }}> Save
             </Button>
             <Text style={{ left: wp('34%'), top: wp('4'), color:'white', fontWeight:'500', fontSize:Responsive.font(16) }}>Add appointment</Text>
             <Button style={{ left: wp('-2%'), top: wp('-2'), width:hp('14%') }} appearance="outline"
                      onPress={() =>  this.props.navigation.navigate("HTwo")}>
-                     Cancel
+                     Back
             </Button>
             <Divider />
       <Context.Consumer>
@@ -309,8 +315,8 @@ export default class AddAppointment extends Component {
                       
                     </View>
                   </View>
-                  <TouchableOpacity
-                    disabled={taskText === ''}
+                  <Button
+                    // disabled={taskText === ''}
                     style={[
                       styles.createTaskButton,
                       {
@@ -337,7 +343,7 @@ export default class AddAppointment extends Component {
                     >
                       Save
                     </Text>
-                  </TouchableOpacity>
+                  </Button>
                 </ScrollView>
               </View>
             </View>
