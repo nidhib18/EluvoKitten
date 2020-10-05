@@ -91,13 +91,8 @@ export const TrackScreen = ({ route,navigation }) => {
         <SexCard navigation={navigation}
          route= {route}/>      
         <SaveCard navigation={navigation} />
-        {/* <Text style={TrackingStyles.dietText}>Diet</Text>
-        <Text style={TrackingStyles.sexText}>Sex</Text> */}
-        {/* <Text style={TrackingStyles.painText}>Pain</Text> */}
-        {/* <Text style={TrackingStyles.smallSaveText}>Save</Text> */}
+      
       </ScrollView>
-      {/* <AppointmentCard/>
-      <Text style={TrackingStyles.appointmentText}>Appointment</Text> */}
     </Layout>
     
   );

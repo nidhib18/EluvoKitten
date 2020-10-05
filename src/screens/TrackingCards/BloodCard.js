@@ -30,15 +30,12 @@ export default class BloodCard extends React.Component {
             maxValue: 5,
             textInput: [],
             inputData: [],
-            pressed: false,
-            editable: true,
+            
             selectedPeriodProduct: [],
             periodProducts: [], // moodDescriptions:[],
             userDetails: {},
             userSettings: {},
-            backgroundColor: 'black',
-            backgroundColor2: 'black',
-            pressed: false,
+            
             bloodDetails: initBloodDetails(0, moment().format('YYYY-MM-DD')),
             currentDate: this.props && this.props.route && this.props.route.params && this.props.route.params.currentDate || moment().format('YYYY-MM-DD')
         };
@@ -52,13 +49,13 @@ export default class BloodCard extends React.Component {
         textInput.push(
 
             <TouchableOpacity>
-               <TextInput
-                    onChangeText={(text) => this.addValues(text, index) }
+                <TextInput
+                    onChangeText={(text) => this.addValues(text, index)}
                     style={styles.InputStyle}
                     //editable={(inputData.length === 0)}
                     value={this.state.inputData}
-                   // onChangeText={inputData => this.setState({ inputData: inputData })}
-               
+                // onChangeText={inputData => this.setState({ inputData: inputData })}
+
 
                 />
 

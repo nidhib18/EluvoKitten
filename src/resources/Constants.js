@@ -98,13 +98,18 @@ export const constants = {
     NO_OF_YEARS: 5,
 
     GETAPPOINTMENT_DEV_URL:
-    "https://ewan0blk87.execute-api.ap-southeast-2.amazonaws.com/DEV/getappointment?userId=[userId]&occuredDate=[occuredDate]",
+    "https://ewan0blk87.execute-api.ap-southeast-2.amazonaws.com/DEV/getappointment?userId=[userId]&appointmentDate=[appointmentDate]",
 
     ADDAPPOINTMENT_DEV_URL:
     "https://xnho3p0bdg.execute-api.ap-southeast-2.amazonaws.com/DEV/addappointment",
 
     UPDATEAPPOINTMENT_DEV_URL:
-    "https://mtm2pz3j8l.execute-api.ap-southeast-2.amazonaws.com/DEV/updateappointment"
+    "https://mtm2pz3j8l.execute-api.ap-southeast-2.amazonaws.com/DEV/updateappointment",
+
+    GETALLAPPOINTMENTS_DEV_URL:
+      "https://ewan0blk87.execute-api.ap-southeast-2.amazonaws.com/DEV/getappointment?userId=[userId]",
+    GETEDITAPPOINTMENT_DEV_URL:
+      "https://ewan0blk87.execute-api.ap-southeast-2.amazonaws.com/DEV/getappointment?userId=[userId]&appointmentId=[appointmentId]",
 
 
     

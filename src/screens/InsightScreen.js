@@ -366,7 +366,7 @@ export default class InsightScreen extends React.Component
             />
              {/* <Text style={{ top: Responsive.height(-170), fontSize: Responsive.font(18), fontWeight: '500', left: Responsive.width(-150), color:'black' }}>Pain</Text> */}
              <Switch
-              style ={{top :Responsive.height(-170), right: Responsive.width(-250)}}
+              style ={{top :Responsive.height(-165), right: Responsive.width(-250)}}
               //status='Warning' 
               onValueChange={this.onCheckedPainChange.bind(this)}
               value={isPainChecked}
@@ -378,11 +378,11 @@ export default class InsightScreen extends React.Component
             >
               {/* {`Checked: ${this.state.painChecked}`}{" "} */}
             </Switch>
-            <Text style={{top:Responsive.height(-190), fontSize: Responsive.font(18), fontWeight: '500', left: Responsive.width(70)}}>Pain</Text>
+            <Text style={{top:Responsive.height(-190), width:Responsive.width(90), fontSize: Responsive.font(18), fontWeight: '500', left: Responsive.width(70)}}>Pain</Text>
             <Switch
     //           style={{
     // top: hp("400%")}} 
-              style ={{top :Responsive.height(-130), right: Responsive.width(-250)}}
+              style ={{top :Responsive.height(-145), right: Responsive.width(-250)}}
               //status='Warning'
               value={isMoodChecked}
               onValueChange={this.onCheckedMoodChange.bind(this)}
@@ -399,9 +399,9 @@ export default class InsightScreen extends React.Component
             >
               {/* {`Checked: ${this.state.moodChecked}`} */}
             </Switch>
-            <Text style={{top:Responsive.height(-170), fontSize: Responsive.font(18), fontWeight: '500', left: Responsive.width(70)}}>Mood</Text>
+            <Text style={{top:Responsive.height(-170),  width:Responsive.width(90), fontSize: Responsive.font(18), fontWeight: '500', left: Responsive.width(70)}}>Mood</Text>
             <Switch
-               style ={{top :Responsive.height(-80), right: Responsive.width(-250)}}
+               style ={{top :Responsive.height(-120), right: Responsive.width(-250)}}
               // style={styles.toggleBlood}
               //status='Warning'
               value={isBloodChecked}
@@ -414,6 +414,7 @@ export default class InsightScreen extends React.Component
             >
               {/* {`Checked: ${this.state.bleedingChecked}`} */}
             </Switch>
+            <Text style={{top:Responsive.height(-150),  width:Responsive.width(90), fontSize: Responsive.font(18), fontWeight: '500', left: Responsive.width(70)}}>Blood</Text>
             </Card>
         {/* <InsightScreen data={data} round={100} unit="€" /> */}
     

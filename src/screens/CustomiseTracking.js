@@ -280,10 +280,7 @@ export default class CustomiseTracking extends React.Component {
                 trackColor={{ false: "#767577", true: "#f09874" }}
                 thumbColor={isPainChecked ? "#f4f3f4" : "#f4f3f4"}
                 ios_backgroundColor="#8A8A8E"
-              //onChange={(value) => this.setState({painChecked: value})}
-              //value = {this.state.painChecked}
-              >
-                {/* {`Checked: ${this.state.painChecked}`}{" "} */}
+              >  
               </Switch>
               <Text style={{ top: Responsive.height(-433), fontSize: Responsive.font(18), fontWeight: '500', left: Responsive.width(-10) }}>Mood</Text>
               <Switch
@@ -295,22 +292,18 @@ export default class CustomiseTracking extends React.Component {
                 ios_backgroundColor="#8A8A8E"
 
               >
-                {/* {`Checked: ${this.state.moodChecked}`} */}
               </Switch>
 
               <Text style={{ top: Responsive.height(-385), fontSize: Responsive.font(18), fontWeight: '500', left: Responsive.width(-10) }}>Blood</Text>
               <Switch
                 style={styles.toggleBlood}
                 value={isBleedingChecked}
-                //onChange={(value) => this.setState({bleedingChecked: value})}
                 onValueChange={this.onCheckedBloodChange.bind(this)}
-              // value = {this.state.bleedingChecked}
                 trackColor={{ false: "#767577", true: "#f09874" }}
                 thumbColor={isBleedingChecked ? "#f4f3f4" : "#f4f3f4"}
                 ios_backgroundColor="#8A8A8E"
 
               >
-                {/* {`Checked: ${this.state.bleedingChecked}`} */}
               </Switch>
               <Text style={{ top: Responsive.height(-337), fontSize: Responsive.font(18), fontWeight: '500', left: Responsive.width(-10) }}>Diet</Text>
               <Switch
@@ -322,8 +315,6 @@ export default class CustomiseTracking extends React.Component {
                 ios_backgroundColor="#8A8A8E"
 
               >
-
-                {/* {`Checked: ${this.state.dietChecked}`} */}
               </Switch>
               <Text style={{ top: Responsive.height(-290), fontSize: Responsive.font(18), fontWeight: '500', left: Responsive.width(-10) }}>Exercise</Text>
               <Switch
@@ -334,7 +325,6 @@ export default class CustomiseTracking extends React.Component {
                 thumbColor={isExerciseChecked ? "#f4f3f4" : "#f4f3f4"}
                 ios_backgroundColor="#8A8A8E"
               >
-                {/* {`Checked: ${this.state.exerciseChecked}`} */}
               </Switch>
               <Text style={{ top: Responsive.height(-250), fontSize: Responsive.font(18), fontWeight: '500', left: Responsive.width(-10) }}>Medication</Text>
               <Switch
@@ -345,7 +335,6 @@ export default class CustomiseTracking extends React.Component {
                 thumbColor={isMedicationChecked ? "#f4f3f4" : "#f4f3f4"}
                 ios_backgroundColor="#8A8A8E"
               >
-                {/* {`Checked: ${this.state.medicationChecked}`} */}
               </Switch>
               <Text style={{ top: Responsive.height(-210), fontSize: Responsive.font(18), fontWeight: '500', left: Responsive.width(-10) }}>Digestion</Text>
               <Switch
@@ -356,7 +345,6 @@ export default class CustomiseTracking extends React.Component {
                 thumbColor={isDigestionChecked ? "#f4f3f4" : "#f4f3f4"}
                 ios_backgroundColor="#8A8A8E"
               >
-                {/* {`Checked: ${this.state.digestionChecked}`}  */}
               </Switch>
               <Text style={{ top: Responsive.height(-170), fontSize: Responsive.font(18), fontWeight: '500', left: Responsive.width(-10) }}>Sex</Text>
               <Switch
@@ -367,14 +355,14 @@ export default class CustomiseTracking extends React.Component {
                 thumbColor={isSexChecked ? "#f4f3f4" : "#f4f3f4"}
                 ios_backgroundColor="#8A8A8E"
               >
-                {/* {`Checked: ${this.state.sexChecked}`} */}
+              
               </Switch>
 
               <Button
                 style={styles.trackButton}
                 appearance='outline'
                 onPress={() => {
-                  //this.getUserSettings();
+             
                   this.updateUserSettings();
 
                   this.props.navigation.navigate('TrackCust');
@@ -384,32 +372,7 @@ export default class CustomiseTracking extends React.Component {
               > Save!
                             </Button>
 
-              {/* <Toggle style ={styles.toggleMood} checked={this.state.checked} onChange={this.onCheckedChange.bind(this)}>
-                                 {`Checked: ${this.state.checked}`}
-                        </Toggle>
-
-                        <Toggle checked={this.state.checked} onChange={this.onCheckedChange.bind(this)}>
-                                 {`Checked: ${this.state.checked}`}
-                        </Toggle>
-
-                        <Toggle checked={this.state.checked} onChange={this.onCheckedChange.bind(this)}>
-                                 {`Checked: ${this.state.checked}`}
-                        </Toggle>
-                        <Toggle checked={this.state.checked} onChange={this.onCheckedChange.bind(this)}>
-                                 {`Checked: ${this.state.checked}`}
-                        </Toggle>
-                        <Toggle checked={this.state.checked} onChange={this.onCheckedChange.bind(this)}>
-                                 {`Checked: ${this.state.checked}`}
-                        </Toggle>
-                        <Toggle checked={this.state.checked} onChange={this.onCheckedChange.bind(this)}>
-                                 {`Checked: ${this.state.checked}`}
-                        </Toggle>
-                        <Toggle checked={this.state.checked} onChange={this.onCheckedChange.bind(this)}>
-                                 {`Checked: ${this.state.checked}`}
-                        </Toggle> */}
             </Card>
-            {/* </View>
-         */}
           </ScrollView>
           
         </View>
@@ -570,7 +533,5 @@ const styles = StyleSheet.create({
     shadowColor: "#c8c8c8",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
-    shadowRadius: 30,
-    // resizeMode: "contain"
   },
 });

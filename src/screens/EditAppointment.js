@@ -21,12 +21,11 @@ import * as Localization from 'expo-localization';
 import Constants from 'expo-constants';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import uuid from 'uuid';
-import { Context } from './Context';
+
 import { storeData, getData } from "../helpers/StorageHelpers";
 import { constants } from "../resources/Constants";
 import { initAppointmentDetails } from "../models/AppointmentDetails";
 import { utcToLocal, localToUtcDate, localToUtcDateTime } from "../helpers/DateHelpers";
-import Responsive from 'react-native-lightweight-responsive';
 
 const { width: vw } = Dimensions.get('window');
 
@@ -42,6 +41,7 @@ export default class AddAppointment extends Component {
                 selectedColor: '#f09874',
             },
             },
+            appointment:{},
             appointment_date: new Date(),
             appointment_type: "",
             appointment_with: "",
@@ -60,7 +60,11 @@ export default class AddAppointment extends Component {
             creatTodo: {},
             createEventAsyncRes: '',
             minDate: new Date(2019, 0, 1),
-            maxDate: new Date(2070,0,1)
+            maxDate: new Date(2070,0,1),
+            appointment_id: (this.props &&
+                    this.props.route &&
+                    this.props.route.params &&
+                    this.props.route.params.appointmentId) ||0,
         };
         this.setDate = this.setDate.bind(this);
     }
@@ -75,18 +79,19 @@ export default class AddAppointment extends Component {
       let userId = this.state.userDetails.user_id;
       let appointment = { 
           user_id: userId,
+          appointment_id:this.state.appointment_id,
           appointment_date:this.state.appointment_date,
           appointment_type: this.state.appointment_type,
           appointment_with: this.state.appointment_with,
           appointment_location: this.state.appointment_location,
           appointment_notes:this.state.appointment_notes     
       };
-     
-      let url = constants.ADDAPPOINTMENT_DEV_URL;
+      console.log("Appointment to be saved", appointment);
+      let url = constants.UPDATEAPPOINTMENT_DEV_URL;
       getData(constants.JWTKEY).then((jwt) =>
           fetch(url, {
               //calling API
-              method: "POST",
+              method: "PUT",
               headers: {
                   Authorization: "Bearer " + jwt, //Passing this will authorize the user
                   Accept: 'application/json',
@@ -95,8 +100,10 @@ export default class AddAppointment extends Component {
               body: JSON.stringify(appointment)
             })
             .then((response) => {
-                //console.log(response.json());
                 return response.json();
+            })
+            .then((responseData) => {
+              console.log("RESPONSE", responseData);
             })
         );
     }   
@@ -110,23 +117,62 @@ export default class AddAppointment extends Component {
                 userDetails: JSON.parse(data),
             });                   
         })  
-
-          
+        .then((data) => {
+          let userId = this.state.userDetails.user_id;
+          let url = constants.GETEDITAPPOINTMENT_DEV_URL.replace("[userId]", userId).replace(
+            "[appointmentId]",this.state.appointment_id);
+            console.log ("GET Appointment in Edit URL"+url);
+            var isAnyAppointmentAvailable = false;  
+            var appointmentDetails = [];
+            getData(constants.JWTKEY).then((jwt) =>
+              fetch(url, {
+                //calling API
+                method: "GET",
+                headers: {
+                  Authorization: "Bearer " + jwt, //Passing this will authorize the user
+                },
+              })
+                .then((response) => response.json())
+                .then((responseData) => {
+                  console.log("Completed appointment API call");
+                  if (responseData.length) {
+                    isAnyAppointmentAvailable = true;
+                    appointmentDetails = responseData[0];
+                    console.log("Appointment", appointmentDetails);
+                  }
+      
+                  this.setState({
+                    isAnyAppointmentAvailable:isAnyAppointmentAvailable,
+                    appointment_id:appointmentDetails.appointment_id,
+                    appointment_date: appointmentDetails.appointment_date,
+                    appointment_location: appointmentDetails.appointment_location,
+                    appointment_type:appointmentDetails.appointment_type,
+                    appointment_with:appointmentDetails.appointment_with,
+                    appointment_notes:appointmentDetails.appointment_notes
+                  });
+                })
+                .catch((err) => console.log(err))
+               
+            
+            );
+      });
         
         
     }
+    
 
+   
 
-
+   
+   
     render() {
 
         appointment_date= this.state.appointment_date || new Date();
-        console.log("DATE FECHA FORMAT",appointment_date)
         appointment_type= this.state.appointment_type || "";
         appointment_with= this.state.appointment_with || "";
         appointment_location= this.state.appointment_location|| "";
         appointment_notes = this.state.appointment_notes || "";
-   
+
         const {
           state: {
             selectedDay,
@@ -153,14 +199,19 @@ export default class AddAppointment extends Component {
             </Button>
             <Text style={{ left: wp('34%'), top: wp('4'), color:'white', fontWeight:'500', fontSize:Responsive.font(16) }}>Add appointment</Text>
             <Button style={{ left: wp('-2%'), top: wp('-2'), width:hp('14%') }} appearance="outline"
-                     onPress={() =>  this.props.navigation.navigate("HTwo")}>
+                     onPress={() =>  this.props.navigation.navigate("Select")}>
                      Cancel
             </Button>
             <Divider />
       <Context.Consumer>
         {value => (
           <>
-           
+            <DateTimePicker
+              isVisible={isDateTimePickerVisible}
+              onConfirm={this._handleDatePicked}
+              onCancel={this._hideDateTimePicker}
+              mode="time"
+            />
 
             <View style={styles.container}>
               <View
@@ -174,9 +225,7 @@ export default class AddAppointment extends Component {
                   }}
                 >
                   
-                  <View style={styles.calenderContainer}>
-                    
-                  </View>
+                  
                   <View style={styles.taskContainer}>
                   <Text style={{fontWeight:'500'}} >Appointment Type</Text>
                   <Input
@@ -190,8 +239,8 @@ export default class AddAppointment extends Component {
                       onChangeText={(value) => this.setState({ appointment_type: value })}
                       value={appointment_type}
                       placeholder='E.g. Gynecologist'
-                      placeholderTextColor='#8A8A8E'
                       color='#8A8A8E'
+                      placeholderTextColor='#8A8A8E'
                       
                       
                      
@@ -208,19 +257,19 @@ export default class AddAppointment extends Component {
                       Suggestion
                     </Text>
                     <View style={{ flexDirection: 'row' }}>
-                      <View style={styles.readBook}>
+                      <View style={styles.gyne}>
                         <Text style={{ textAlign: 'center', fontSize: 14, width:90, color:'white', fontWeight:'500' }}>
                         Gynecologist
                         </Text>
                       </View>
-                      <View style={styles.design}>
+                      <View style={styles.physio}>
                         <Text style={{textAlign: 'center', fontSize: 14, color:'white', fontWeight:'500' }}>
                           Physio
                         </Text>
                       </View>
-                      <View style={styles.learn}>
+                      <View style={styles.social}>
                         <Text style={{textAlign: 'center', fontSize: 14, color:'white', fontWeight:'500' }}>
-                          Social meeting
+                          Social 
                         </Text>
                       </View>
                     </View>
@@ -235,10 +284,9 @@ export default class AddAppointment extends Component {
                         }}
                       onChangeText={(value) => this.setState({ appointment_with: value })}
                       value={appointment_with}
-                      color='#8A8A8E'
                       placeholder='E.g.Practitoner'
+                      color='#8A8A8E'
                       placeholderTextColor='#8A8A8E'/>
-                      
                     <Text style={{fontWeight:'500', top:80}}>Location</Text>
                     <Input
                         style={{
@@ -251,8 +299,8 @@ export default class AddAppointment extends Component {
                       onChangeText={(value) => this.setState({appointment_location: value })}
                       value={appointment_location}
                       placeholder='E.g.Location'
-                      placeholderTextColor='#8A8A8E'
                       color='#8A8A8E'
+                      placeholderTextColor='#8A8A8E'
                       
                       
                      
@@ -260,9 +308,7 @@ export default class AddAppointment extends Component {
 
                 <Text style={{fontWeight:'500', top:80}} >Notes</Text>
                     <Input
-                        
                         style={{
-                          
                           height:-40,
                           fontSize: 19,
                           marginTop: 3,
@@ -273,19 +319,19 @@ export default class AddAppointment extends Component {
                       onChangeText={(value) => this.setState({ appointment_notes: value })}
                       value={appointment_notes}
                       placeholder='E.g.Notes'
-                      placeholderTextColor='#8A8A8E'
                       color='#8A8A8E'
+                      placeholderTextColor='#8A8A8E'
                       
                       
                      
                     />
                    
-                   
-
-                   <Text style={{fontWeight:'500', top:Responsive.height(100)}} >Date</Text>
+                    <View>
+                      {/* <Text style={styles.notes}>Notes</Text> */}
+                      <Text style={{fontWeight:'500', top:100}} >Date</Text>
                       <Datepicker
                         style={styles.datepicker}
-                        date={appointment_date}
+                        //date={appointment_date}
                         onSelect={this.setDate}
                         accessoryRight={this.DateIcon}
                         //label="Date of Birth"
@@ -294,20 +340,30 @@ export default class AddAppointment extends Component {
                         // max = n
                         placeholder="dd/mm/yyyy"
                       />
-                    
-                    
-                   
-                    {/* <View style={styles.seperator} /> */}
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                      }}
-                    >
-                      
-                      
                     </View>
+
+                    <View>
+                    
+                    </View>
+
+
+                    {/* <View style={styles.seperator} /> */}
+                    <View>
+                      {/* <Text
+                        style={{
+                          color: '#9CAAC4',
+                          fontSize: 16,
+                          fontWeight: '600',
+                        }}
+                      >
+                        Times
+                      </Text> */}
+                    
+                     
+                    </View>
+                    {/* <View style={styles.seperator} /> */}
+                   
+                    
                   </View>
                   <TouchableOpacity
                     disabled={taskText === ''}
@@ -316,23 +372,30 @@ export default class AddAppointment extends Component {
                       {
                         borderRadius:25,
                         width:350,
-                        top:-450,
-
                         backgroundColor:
                           taskText === ''
                             ? '#f09874'
                             : '#f09874',
                       },
                     ]}
-                    onPress={() => {
-                    this.saveAppointmentDetails();
-            }}>
+                    onPress={async () => {
+
+                     
+                      if (isAlarmSet) {
+                        await this.synchronizeCalendar(value);
+                      }
+                      if (!isAlarmSet) {
+                        this._handleCreateEventData(value);
+                      }
+                      this.saveAppointmentDetails();
+                     
+                    }}
+                  >
                     <Text
                       style={{
                         fontSize: 18,
                         textAlign: 'center',
                         color: '#fff',
-                        top:1
                       }}
                     >
                       Save
@@ -351,31 +414,31 @@ export default class AddAppointment extends Component {
       
     );
   }
+
+
 }
-
-
 const styles = StyleSheet.create({
   createTaskButton: {
-    width: 252,
-    height: 48,
+    width: Responsive.width(240),
+    height: Responsive.height(45),
     alignSelf: 'center',
     marginTop: 40,
     borderRadius: 5,
     justifyContent: 'center',
+    top:-100
   },
-  
+ 
   notes: {
     color: '#9CAAC4',
     fontSize: 16,
     fontWeight: '600',
   },
   datepicker: {
-    width:Responsive.width(280),
+    width:Responsive.width(290),
     height:Responsive.height(48),
     position: "absolute",
-    top:Responsive.height(390),
+    top:130,
     borderRadius: Responsive.height(24),
-    left:Responsive.width(20)
   },
   notesContent: {
     height: 0.5,
@@ -384,7 +447,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginVertical: 20,
   },
-  learn: {
+  social: {
     height: 23,
     width: 51,
     backgroundColor: '#F8D557',
@@ -392,16 +455,16 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     top:18,
   },
-  design: {
-    height: 23,
-    width: 59,
+  physio: {
+    height: Responsive.width(23),
+    width: Responsive.width(59),
     backgroundColor: '#F3A878',
     justifyContent: 'center',
     borderRadius: 5,
     marginRight: 7,
     top:18,
   },
-  readBook: {
+  gyne: {
     height: 23,
     width: 83,
     backgroundColor: '#F09874',
@@ -420,8 +483,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FBFBFB'
   },
   taskContainer: {
-    height: 600,
-    width: 367,
+    height: Responsive.height(600),
+    width: Responsive.width(327),
     alignSelf: 'center',
     borderRadius: 20,
     shadowColor: '#2E66E7',
@@ -434,7 +497,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     elevation: 5,
     padding: 22,
-    top:-330
+    top:30
   },
   calenderContainer: {
     marginTop: 30,
