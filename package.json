@@ -59,7 +59,7 @@
     "react-navigation-stack": "^2.8.2",
     "react-time-picker": "^4.0.1",
     "uuid": "^8.3.0",
-    "victory-native": "^35.0.1"
+    "victory-native": "^36.6.8"
   },
   "devDependencies": {
     "babel-preset-expo": "~8.1.0",
